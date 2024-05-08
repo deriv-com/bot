@@ -17,7 +17,7 @@ export default function Home() {
 
     return (
         <Fragment>
-            <div>Home Page</div>
+            <div>Deriv-Bot&apos;s new Home!</div>
             <Dashboard />
         </Fragment>
     );
