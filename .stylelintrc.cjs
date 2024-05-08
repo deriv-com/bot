@@ -1,0 +1,33 @@
+module.exports = {
+    plugins: ['stylelint-no-unsupported-browser-features'],
+    rules: {
+        'color-named': 'never',
+        'color-no-invalid-hex': true,
+        'declaration-block-no-duplicate-properties': [true, { ignore: ['consecutive-duplicates'] }],
+        'declaration-block-no-shorthand-property-overrides': true,
+        'font-family-name-quotes': 'always-unless-keyword',
+        'function-calc-no-unspaced-operator': true,
+        'function-name-case': 'lower',
+        'function-url-quotes': 'always',
+        'no-duplicate-selectors': true,
+        'no-invalid-double-slash-comments': true,
+        'number-max-precision': 3,
+        'selector-pseudo-class-no-unknown': [
+            true,
+            {
+                ignorePseudoClasses: ['export'],
+            },
+        ],
+        'selector-pseudo-element-colon-notation': 'single',
+        'selector-pseudo-element-no-unknown': true,
+        'selector-type-case': 'lower',
+        'selector-type-no-unknown': [true, { ignoreTypes: ['from', 'to', '0%', '50%', '100%', '_'] }],
+        'shorthand-property-no-redundant-values': true,
+        'string-no-newline': true,
+        'time-min-milliseconds': 100,
+        'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'svh', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
+        'value-keyword-case': 'lower',
+    },
+    extends: ['stylelint-config-standard-scss'],
+    ignoreFiles: ['packages/*/dist/**/*.css'],
+};

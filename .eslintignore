@@ -1,0 +1,5 @@
+dist/*.js
+src/**/__tests__/*.js
+src/_common/lib/**/*.js
+.eslintrc.js
+.eslintrc.cjs
