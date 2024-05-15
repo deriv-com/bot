@@ -21,8 +21,6 @@ jobs:
         timeout-minutes: 30
         runs-on: ubuntu-latest
         permissions:
-            checks: write
-            pull-requests: write
         steps:
             - name: Verify user
               uses: 'deriv-com/shared-actions/.github/actions/verify_user_in_organization@v1'
