@@ -1,0 +1,27 @@
+import { localize } from '@/utils/tmp/dummy';
+
+window.Blockly.Blocks.last_digit = {
+    init() {
+        this.jsonInit(this.definition());
+    },
+    definition() {
+        return {
+            message0: localize('Last Digit'),
+            output: 'Number',
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            tooltip: localize('Returns the last digit of the latest tick'),
+            category: window.Blockly.Categories.Tick_Analysis,
+        };
+    },
+    meta() {
+        return {
+            display_name: localize('Last Digit'),
+            description: localize('This block gives you the last digit of the latest tick value.'),
+        };
+    },
+};
+
+window.Blockly.JavaScript.last_digit = () => ['Bot.getLastDigit()', window.Blockly.JavaScript.ORDER_ATOMIC];

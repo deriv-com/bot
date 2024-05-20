@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 
+import Bot from '../external/bot-skeleton/scratch/dbot';
 import RootStore from '../stores';
 
 const StoreContext = createContext<null | RootStore>(null);
@@ -10,7 +11,7 @@ type TStoreProvider = {
 
 const StoreProvider: React.FC<TStoreProvider> = ({ children }) => {
     const memoizedValue = useMemo(() => {
-        return new RootStore();
+        return new RootStore(Bot);
     }, []);
 
     return <StoreContext.Provider value={memoizedValue}>{children}</StoreContext.Provider>;
