@@ -1,5 +1,5 @@
 import React from 'react';
-import debounce from 'lodash.debounce';
+import debounce from 'debounce';
 import { observer } from 'mobx-react-lite';
 
 import { Analytics } from '@deriv-com/analytics';

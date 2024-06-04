@@ -1,6 +1,6 @@
 import React from 'react';
+import debounce from 'debounce';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import debounce from 'lodash.debounce';
 
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { Text } from '@deriv-com/ui';

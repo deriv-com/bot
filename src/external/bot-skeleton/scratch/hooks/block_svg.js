@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce';
+import debounce from 'debounce';
 
 import { localize } from '@/utils/tmp/dummy';
 
