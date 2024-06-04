@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv-com/ui';
 
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Tabs from '@/components/shared_ui/tabs/tabs';
 import TradingViewModal from '@/components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from '@/constants/bot-contents';
@@ -183,7 +184,7 @@ const AppWrapper = observer(() => {
                 <ChartModal />
                 <TradingViewModal />
             </DesktopWrapper>
-            {/* <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper> */}
+            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'

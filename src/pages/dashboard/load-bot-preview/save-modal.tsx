@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Input, Modal, Text } from '@deriv-com/ui';
 
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
+import RadioGroup from '@/components/shared_ui/radio-group';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
@@ -80,8 +81,7 @@ const SaveModalForm = ({
                                 </Field>
                             </div>
                             <div className='modal__content-row'>
-                                {/* TODO: fix */}
-                                {/* <RadioGroup
+                                <RadioGroup
                                     className='radio-group__save-type'
                                     name='is_local'
                                     selected={() => {
@@ -116,7 +116,7 @@ const SaveModalForm = ({
                                             'dc-radio-group__item-disabled': !is_authorised,
                                         })}
                                     />
-                                </RadioGroup> */}
+                                </RadioGroup>
                             </div>
                             {/* removed this from the save modal popup because it is not there in the design */}
                             {/* <>
