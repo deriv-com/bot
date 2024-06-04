@@ -174,7 +174,7 @@ class DBot {
                     window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
-                
+
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
@@ -379,6 +379,7 @@ class DBot {
         }
     }
 
+    // eslint-disable-next-line class-methods-use-this
     terminateConnection = () => {
         api_base.terminate();
     };

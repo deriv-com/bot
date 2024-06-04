@@ -285,7 +285,7 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options = new window.window.window.Blockly.Options({ media: `${__webpack_public_path__}media/` });
+        const options = new window.window.window.Blockly.Options({ media: `${window.__webpack_public_path__}media/` });
         const el_injection_div = new DocumentFragment();
         const workspace = window.window.window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
@@ -383,7 +383,12 @@ export default class BlockConversion {
             current_name = variable_name + counter;
         }
 
-        const ws_variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
+        const ws_variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
+            this.workspace,
+            '',
+            current_name,
+            ''
+        );
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
 
         return ws_variable;

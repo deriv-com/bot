@@ -2,7 +2,7 @@ module.exports = {
     extends: ['@deriv-com/eslint-config-deriv'],
     rules: {
         'global-require': 'off',
-        "import/no-extraneous-dependencies": 'off',
+        'import/no-extraneous-dependencies': 'off',
     },
     overrides: [
         {

@@ -5,7 +5,9 @@
     background: var(--general-main-2);
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 8px 2px var(--shadow-menu);
-    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+        opacity 0.25s linear;
     padding: 1.6rem;
     width: 240px;
     z-index: 99;
@@ -14,11 +16,13 @@
         opacity: 1;
         transform: translate3d(0, 0, 0);
     }
+
     &--enter,
     &--exit {
         opacity: 0;
         transform: translate3d(-20px, 0, 0);
     }
+
     &__input {
         @include mobile {
             border-bottom: 1px solid var(--border-disabled);
@@ -28,10 +32,12 @@
                 padding: 0.6rem 1rem;
             }
         }
+
         .dc-input-wrapper__input {
             border: 1px solid var(--border-normal);
             appearance: none;
         }
+
         &--currency {
             position: absolute;
             height: 3.2rem;
@@ -47,12 +53,15 @@
             &--symbol {
                 padding-bottom: 0.2rem;
             }
+
             &:before {
                 @include typeface(--paragraph-center-normal-black);
+
                 color: inherit;
             }
         }
     }
+
     &__popover {
         margin-top: -50%;
     }
@@ -68,6 +77,7 @@
             }
         }
     }
+
     &__button {
         margin-top: 0.8rem;
 
@@ -81,9 +91,11 @@
             }
         }
     }
+
     &__form {
         display: grid;
         flex: 1;
+
         @include mobile {
             grid-template-rows: auto auto 1fr;
             margin: 0 0 1.6rem;
@@ -92,6 +104,7 @@
                 grid-template-rows: auto 1fr;
             }
         }
+
         @include desktop {
             grid-gap: 0.8rem;
         }
@@ -100,6 +113,7 @@
             margin-left: 0;
         }
     }
+
     &__total-profit {
         height: 3.6rem;
         padding: 1.6rem;
@@ -120,7 +134,8 @@
     justify-content: end;
     width: calc(100% + 0.4rem);
     height: calc(100% + 0.4rem);
-    /*rtl:ignore*/
+
+    /* rtl:ignore */
     right: 0.4rem;
     top: -0.4rem;
     border: 1px solid var(--general-section-1);
@@ -131,10 +146,11 @@
     }
 
     &__icon {
-        /*rtl:ignore*/
+        /* rtl:ignore */
         float: right;
         margin: 3px;
     }
+
     &:hover {
         cursor: pointer;
         border-color: var(--button-secondary-default);
