@@ -1,7 +1,9 @@
-import React from 'react';
 import { Field as FormField, FieldProps, Form, Formik } from 'formik';
+
 import { Input } from '@deriv-com/ui';
+
 import { localize } from '@/utils/tmp/dummy';
+
 import SearchIcon from './search-icon';
 
 type TSearchBox = {

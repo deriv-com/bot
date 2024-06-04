@@ -45,6 +45,7 @@ export const showUnavailableLocationError = flow(function* (showError, is_logged
     });
 });
 
+// eslint-disable-next-line default-param-last
 export const isMarketClosed = (active_symbols: ActiveSymbols = [], symbol: string) => {
     if (!active_symbols.length) return false;
     return active_symbols.filter(x => x.symbol === symbol)[0]
@@ -133,6 +134,7 @@ export type TActiveSymbols = {
     display_name: string;
 }[];
 
+// eslint-disable-next-line default-param-last
 export const getSymbolDisplayName = (active_symbols: TActiveSymbols = [], symbol: string) =>
     (
         active_symbols.find(symbol_info => symbol_info.symbol.toUpperCase() === symbol.toUpperCase()) || {

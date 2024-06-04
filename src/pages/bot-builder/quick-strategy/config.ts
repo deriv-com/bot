@@ -1,5 +1,6 @@
 import { config as qs_config } from '@/external/bot-skeleton';
 import { localize } from '@/utils/tmp/dummy';
+
 import {
     D_ALEMBERT,
     MARTINGALE,
@@ -8,6 +9,7 @@ import {
     REVERSE_MARTINGALE,
     STRATEGY_1_3_2_6,
 } from '../../../constants/quick-strategies';
+
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [

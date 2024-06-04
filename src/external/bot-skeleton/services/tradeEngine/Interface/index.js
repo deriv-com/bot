@@ -1,11 +1,13 @@
-import getToolsInterface from './ToolsInterface';
-import getTicksInterface from './TicksInterface';
-import getBotInterface from './BotInterface';
 import TradeEngine from '../trade';
+
+import getBotInterface from './BotInterface';
+import getTicksInterface from './TicksInterface';
+import getToolsInterface from './ToolsInterface';
 
 const sleep = (observer, arg = 1) => {
     return new Promise(
         r =>
+            // eslint-disable-next-line no-promise-executor-return
             setTimeout(() => {
                 r();
                 setTimeout(() => observer.emit('CONTINUE'), 0);

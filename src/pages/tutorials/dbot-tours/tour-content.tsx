@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from '@deriv-com/ui';
 
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Icon, Localize, localize } from '@/utils/tmp/dummy';
 
 import { getImageLocation, getUrlBase } from '../../../public-path';
 

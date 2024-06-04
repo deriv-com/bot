@@ -7,6 +7,7 @@ import { TDbot } from 'Types';
 
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
+import { isSafari, mobileOSDetect } from '@/components/shared';
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
@@ -14,7 +15,6 @@ import { journalError, switch_account_notification } from '@/utils/bot-notificat
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
 import { localize, routes } from '@/utils/tmp/dummy';
-import { isSafari, mobileOSDetect } from '@/utils/tmp/os-detect';
 
 import RootStore from './root-store';
 

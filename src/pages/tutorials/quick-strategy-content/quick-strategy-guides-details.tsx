@@ -5,7 +5,7 @@ import { Text } from '@deriv-com/ui';
 
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { Icon, Localize } from '@/utils/tmp/dummy';
 
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
@@ -26,7 +26,7 @@ const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const text_size = is_mobile ? 'xs' : 's';
+        const text_size = is_mobile ? 'xs' : 'sm';
 
         return (
             <>

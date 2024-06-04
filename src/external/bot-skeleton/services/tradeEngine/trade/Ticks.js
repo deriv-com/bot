@@ -1,9 +1,13 @@
+/* eslint-disable no-promise-executor-return */
 import { getLast } from 'binary-utils';
+
 import { localize } from '@/utils/tmp/dummy';
-import * as constants from './state/constants';
+
+import { observer as globalObserver } from '../../../utils/observer';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
-import { observer as globalObserver } from '../../../utils/observer';
+
+import * as constants from './state/constants';
 
 let tickListenerKey;
 

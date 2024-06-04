@@ -1,4 +1,3 @@
-import React from 'react';
 import TradeAnimation from '@/components/trade-animation';
 
 const RunStrategy = () => (

@@ -1,4 +1,4 @@
-import { Map, List } from 'immutable';
+import { List, Map } from 'immutable';
 /**
 Below are the list of events we can register to listen to :
  

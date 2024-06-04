@@ -1,4 +1,4 @@
-import { getCurrencyDisplayCode } from '@/components/shared';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 
 import { config } from '../../../../constants/config';
@@ -154,12 +154,12 @@ window.Blockly.Blocks.trade_definition_multiplier = {
                 }
             } else if (event.blockId === this.id) {
                 switch (event.name) {
-                    case 'MULTIPLIERTYPE_LIST': {
-                        this.updateMultiplierInput(false);
-                        break;
-                    }
-                    default:
-                        break;
+                case 'MULTIPLIERTYPE_LIST': {
+                    this.updateMultiplierInput(false);
+                    break;
+                }
+                default:
+                    break;
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateMultiplierInput(true);

@@ -1,6 +1,7 @@
-import { getImageLocation } from '../../public-path';
 import { localize } from '@/utils/tmp/dummy';
+
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
+import { getImageLocation } from '../../public-path';
 
 export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
     {

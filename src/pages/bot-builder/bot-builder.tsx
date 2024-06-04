@@ -19,7 +19,7 @@ import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
     const { ui } = useStore();
-    const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store, dbot } = useStore();
+    const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store } = useStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;

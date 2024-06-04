@@ -1,5 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
+
 import { config, load, runGroupedEvents } from '@/external/bot-skeleton';
+
 import RootStore from './root-store';
 
 interface IToolbarStore {

@@ -51,7 +51,7 @@ const AccordionStrategyGroup = observer(
         return (
             <>
                 {Array.isArray(grouped_objects_by_title) &&
-                    (grouped_objects_by_title as TDescriptionItem[][]).map((data: TDescriptionItem[], key: number) => {
+                    (grouped_objects_by_title as TDescriptionItem[][]).map((data: TDescriptionItem[]) => {
                         const subtitle_value = data?.[0]?.content?.[0] ?? '';
                         return (
                             <Accordion

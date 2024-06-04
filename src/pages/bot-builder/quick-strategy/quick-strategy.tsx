@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 
 import { Modal } from '@deriv-com/ui';
 
+import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
@@ -18,7 +19,6 @@ import Form from './form';
 import { TConfigItem, TFormData, TFormValues } from './types';
 
 import './quick-strategy.scss';
-import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 
 type TFormikWrapper = {
     children: React.ReactNode;
@@ -109,7 +109,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                               })
                             : true;
                         if (should_validate && field.name === 'max_stake') {
-                            min = +form_data?.stake;
+                            min = +(form_data?.stake ?? 0);
                             if (isNaN(min)) {
                                 min = +initial_value.stake;
                             }
@@ -227,7 +227,7 @@ const QuickStrategy = observer(() => {
                         </MobileFormWrapper>
                     </MobileFullPageModal>
                 ) : (
-                    <Modal className='modal--strategy' is_open={is_open} width='72rem'>
+                    <Modal className='modal--strategy' isOpen={is_open} width='72rem'>
                         <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
                             <Form />
                         </DesktopFormWrapper>

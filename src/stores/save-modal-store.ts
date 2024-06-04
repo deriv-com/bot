@@ -1,6 +1,11 @@
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { action, makeObservable, observable } from 'mobx';
+
+import { TStrategy } from 'Types';
+
+import { MAX_STRATEGIES } from '@/constants/bot-contents';
+import { button_status } from '@/constants/button-status';
 import {
     getSavedWorkspaces,
     observer as globalObserver,
@@ -9,9 +14,7 @@ import {
     saveWorkspaceToRecent,
 } from '@/external/bot-skeleton';
 import { localize } from '@/utils/tmp/dummy';
-import { MAX_STRATEGIES } from '@/constants/bot-contents';
-import { button_status } from '@/constants/button-status';
-import { TStrategy } from 'Types';
+
 import RootStore from './root-store';
 
 type IOnConfirmProps = {

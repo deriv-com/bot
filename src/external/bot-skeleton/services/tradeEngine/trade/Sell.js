@@ -1,9 +1,10 @@
-import { DURING_PURCHASE } from './state/constants';
-import { contractStatus, log } from '../utils/broadcast';
-import { recoverFromError, doUntilDone } from '../utils/helpers';
 import { LogTypes } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
+import { contractStatus, log } from '../utils/broadcast';
+import { doUntilDone, recoverFromError } from '../utils/helpers';
+
+import { DURING_PURCHASE } from './state/constants';
 
 export default Engine =>
     class Sell extends Engine {
@@ -98,6 +99,7 @@ export default Engine =>
 
                 // Restart buy/sell on error is enabled, don't recover from sell error.
                 if (!this.options.timeMachineEnabled) {
+                    // eslint-disable-next-line no-promise-executor-return
                     return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response =>
                         onContractSold(sell_response)
                     );
@@ -107,6 +109,7 @@ export default Engine =>
                 const recoverFn = (error_code, makeDelay) => {
                     return makeDelay().then(() => this.observer.emit('REVERT', 'during'));
                 };
+                // eslint-disable-next-line no-promise-executor-return
                 return recoverFromError(
                     sellContractAndGetContractInfo,
                     recoverFn,

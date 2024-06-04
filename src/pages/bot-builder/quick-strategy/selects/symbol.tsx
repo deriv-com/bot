@@ -114,7 +114,7 @@ const SymbolSelect: React.FC = () => {
     return (
         <div className='qs__form__field qs__form__field__input'>
             <Field name='symbol' key='asset' id='asset'>
-                {({ field: { value, ...rest_field } }: FieldProps) => (
+                {({ field: { ...rest_field } }: FieldProps) => (
                     <>
                         <Autocomplete
                             {...rest_field}

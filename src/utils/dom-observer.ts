@@ -1,7 +1,8 @@
 export const waitForDomElement = (selector: string, observingParent?: Element) => {
     return new Promise(resolve => {
         if (document.querySelector(selector)) {
-            return resolve(document.querySelector(selector));
+            resolve(document.querySelector(selector));
+            return;
         }
 
         const observer = new MutationObserver(() => {

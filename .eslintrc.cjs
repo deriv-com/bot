@@ -3,6 +3,7 @@ module.exports = {
     rules: {
         'global-require': 'off',
         'import/no-extraneous-dependencies': 'off',
+        'class-methods-use-this': 'off',
     },
     overrides: [
         {
@@ -30,6 +31,10 @@ module.exports = {
                 'plugin:prettier/recommended',
                 'plugin:react/jsx-runtime',
             ],
+            rules: {
+                // TODO: fix need to turn on later
+                '@typescript-eslint/no-explicit-any': 'off',
+            },
             parserOptions: {
                 ecmaversion: 2018,
                 sourceType: 'module',

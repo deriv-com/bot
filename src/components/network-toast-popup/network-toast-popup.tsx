@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { Toast } from '@deriv-com/ui';
-
-import { useStore } from '@/hooks/useStore';
+// import { Toast } from '@deriv-com/ui';
+// import { useStore } from '@/hooks/useStore';
 
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,
@@ -16,13 +15,14 @@ import { useStore } from '@/hooks/useStore';
  */
 
 const NetworkStatusToastError = observer(({ should_open = false }: { should_open?: boolean }) => {
-    const { common } = useStore();
+    // const { common } = useStore();
     // const { network_status } = common;
     const [is_open, setIsOpen] = React.useState(should_open);
     // const { message, status } = network_status;
     const portal_el = document.getElementById('popup_root');
 
-    if (!portal_el || !message) return null;
+    // if (!portal_el || !message) return null;
+    if (!portal_el) return null;
 
     if (!is_open && status !== 'online') {
         setIsOpen(true); // open if status === 'blinker' or 'offline'

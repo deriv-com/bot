@@ -1,7 +1,9 @@
 import React from 'react';
-import { getUUID } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
-import { Text } from '@deriv-com/ui';
 import { observer } from 'mobx-react-lite';
+
+import { Text } from '@deriv-com/ui';
+
+import { getUUID } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
 
 type TTourSteps = {
     content: string[] | React.ReactElement[];
@@ -47,7 +49,7 @@ const TourSteps = observer(
 
                         <div className='onboard__content'>
                             <>
-                                {content.map((content_data, index) => {
+                                {content.map(content_data => {
                                     return has_localize_component ? (
                                         content_data
                                     ) : (

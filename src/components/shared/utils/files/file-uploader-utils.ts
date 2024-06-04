@@ -1,5 +1,6 @@
 import { useMutation } from '@deriv/api';
-import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } from './image/image_utility';
+
+import { compressImg, convertToBase64, getFormatFromMIME, isImageType, TImage } from './image/image_utility';
 
 export type TSettings = Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload'];
 

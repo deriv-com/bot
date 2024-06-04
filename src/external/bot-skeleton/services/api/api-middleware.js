@@ -28,7 +28,9 @@ class APIMiddleware {
         return req_type;
     };
 
+    // eslint-disable-next-line no-unused-vars, default-param-last
     log = (measures = [], is_bot_running) => {
+        // TODO: fix this
         if (window.is_datadog_logging_enabled && measures && measures.length) {
             // measures.forEach(measure => {
             //     datadogLogs.logger.info(measure.name, {

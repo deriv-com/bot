@@ -1,4 +1,3 @@
-import React from 'react';
 import { TSidebarItem } from './constants';
 
 type TIntroCard = {

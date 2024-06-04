@@ -3,9 +3,9 @@ import { action, makeObservable, observable, reaction } from 'mobx';
 
 import { TStores } from '@deriv/stores/types';
 
+import { cloneObject } from '@/components/shared';
 import { DBot } from '@/external/bot-skeleton';
 import { isProduction } from '@/utils/tmp/dummy';
-import { cloneObject } from '@/utils/tmp/object-helper';
 
 import RootStore from './root-store';
 

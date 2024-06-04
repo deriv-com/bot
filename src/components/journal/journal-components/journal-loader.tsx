@@ -1,6 +1,5 @@
-import React from 'react';
-import classnames from 'classnames';
 import ContentLoader from 'react-content-loader';
+import classnames from 'classnames';
 
 const JournalLoader = ({ is_mobile }: { is_mobile: boolean }) => (
     <ContentLoader

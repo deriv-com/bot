@@ -2,8 +2,8 @@ import classnames from 'classnames';
 
 import { Text } from '@deriv-com/ui';
 
+import { formatMoney, getCurrencyDisplayCode } from '@/components/shared';
 import { LogTypes } from '@/external/bot-skeleton';
-import { formatMoney, getCurrencyDisplayCode } from '@/utils/tmp/currency-helper';
 import { Localize, localize } from '@/utils/tmp/dummy';
 
 import { TFormatMessageProps } from '../journal.types';

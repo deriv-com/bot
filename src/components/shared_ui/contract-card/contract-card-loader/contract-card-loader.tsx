@@ -1,5 +1,4 @@
 import ContentLoader from 'react-content-loader';
-import React from 'react';
 
 const ContractCardLoader = ({ speed }: { speed: number }) => (
     <ContentLoader height={173} width={218} speed={speed}>

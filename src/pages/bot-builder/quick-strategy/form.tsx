@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import { useStore } from '@/hooks/useStore';
@@ -83,7 +84,7 @@ const QuickStrategyForm = observer(() => {
                                 }
                                 const should_validate = field.should_have;
                                 if (should_validate && field.name === 'max_stake') {
-                                    min = +form_data?.stake;
+                                    min = +(form_data?.stake ?? 0);
                                     if (isNaN(min)) {
                                         min = +initial_stake;
                                     }

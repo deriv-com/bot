@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { localize } from '@/utils/tmp/dummy';
+import { Localize } from '@/utils/tmp/dummy';
 
 import { unique } from '../object';
 import { isForwardStarting } from '../shortcode';

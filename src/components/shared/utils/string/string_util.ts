@@ -59,3 +59,10 @@ export const getCharCount = (target_string: string, char: string | RegExp) =>
 
 export const capitalizeFirstLetter = (target_string: string) =>
     target_string && target_string[0].toUpperCase() + target_string.slice(1);
+
+export const getEnglishCharacters = (input: string) =>
+    input
+        .normalize('NFD')
+        .split('')
+        .filter(char => /^[a-z ]*$/i.test(char))
+        .join('');

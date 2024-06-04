@@ -1,5 +1,5 @@
 const darkMode = () => {
-    const workspace = Blockly;
+    const workspace = window.Blockly;
     workspace.Colours.RootBlock = {
         colour: '#183046',
         colourSecondary: '#F2F3F5',
@@ -31,7 +31,7 @@ const darkMode = () => {
 };
 
 const lightMode = () => {
-    const workspace = Blockly;
+    const workspace = window.Blockly;
     workspace.Colours.RootBlock = {
         colour: '#064e72',
         colourSecondary: '#064e72',
@@ -62,4 +62,5 @@ const lightMode = () => {
         colourTertiary: '#6d7278',
     };
 };
+// eslint-disable-next-line no-confusing-arrow
 export const setColors = is_dark_mode => (is_dark_mode ? darkMode() : lightMode());

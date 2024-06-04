@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactJoyride, { CallBackProps, Step, Styles } from 'react-joyride';
+
 import { localize } from '@/utils/tmp/dummy';
 
 const common_tour_button_properties = {

@@ -1,4 +1,4 @@
-import { sequence } from '@/utils/tmp/object-helper';
+import { sequence } from '@/components/shared';
 
 import { stddev, takeLast } from '../utils/math';
 

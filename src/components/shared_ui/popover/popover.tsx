@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Text, useDevice } from '@deriv-com/ui';
 
 import { useHover, useHoverCallback } from '@/hooks/use-hover';
+import { Icon } from '@/utils/tmp/dummy';
 
 import { TPopoverProps } from '../types';
 

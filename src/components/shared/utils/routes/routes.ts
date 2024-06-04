@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlBinaryBot, getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     error404: '/404',

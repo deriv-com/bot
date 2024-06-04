@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { notify } from '../utils/broadcast';
+
 import { observer as globalObserver } from '../../../utils/observer';
+import { notify } from '../utils/broadcast';
 
 const getMiscInterface = tradeEngine => {
     return {

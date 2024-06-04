@@ -1,4 +1,5 @@
 import { STRATEGIES } from '../config';
+
 import { STORED_ITEM_NOT_FOUND, TFormStrategy } from './constants';
 
 export const getRsDropdownTextFromLocalStorage = () => {

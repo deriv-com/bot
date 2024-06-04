@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { runInvisibleEvents } from '../utils';
 
 /**
@@ -7,6 +8,7 @@ import { runInvisibleEvents } from '../utils';
  */
 
 const FieldCheckbox = () => {
+    // eslint-disable-next-line no-confusing-arrow
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
     const onCheckboxClick = function () {
         if (this.sourceBlock_.workspace.options.readOnly || this.sourceBlock_.isInFlyout) {

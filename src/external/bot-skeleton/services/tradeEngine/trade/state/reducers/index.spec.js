@@ -1,4 +1,5 @@
 import * as constants from '../constants';
+
 import signal from '.';
 
 let state;

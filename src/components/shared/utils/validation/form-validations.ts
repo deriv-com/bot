@@ -1,7 +1,9 @@
+import fromEntries from 'object.fromentries';
+
 import { EMPLOYMENT_VALUES } from '../constants';
 import { TEmploymentStatus } from '../types';
-import { TInitPreBuildDVRs, TOptions, getPreBuildDVRs } from './declarative-validation-rules';
-import fromEntries from 'object.fromentries';
+
+import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from './declarative-validation-rules';
 
 type TConfig = {
     default_value: string | boolean | number;

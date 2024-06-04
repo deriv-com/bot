@@ -3,10 +3,8 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { TPortfolioPosition, TStores } from '@deriv/stores/types';
 
-// import { formatDate, isEnded } from '@deriv-com/utils';
+import { formatDate, isEnded } from '@/components/shared';
 import { LogTypes } from '@/external/bot-skeleton';
-import { isEnded } from '@/utils/tmp/contract-helper';
-import { formatDate } from '@/utils/tmp/time-helper';
 
 import { TContractInfo } from '../components/summary/summary-card.types';
 import { transaction_elements } from '../constants/transactions';

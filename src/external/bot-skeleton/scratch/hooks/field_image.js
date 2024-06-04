@@ -17,7 +17,7 @@ window.Blockly.FieldImage = function (src, width, height, optAlt, optOnClick, op
     // Ensure height and width are numbers.  Strings are bad at math.
     this.height_ = Number(height);
     this.width_ = Number(width);
-    this.size_ = new goog.math.Size(this.width_, this.height_);
+    this.size_ = new window.goog.math.Size(this.width_, this.height_);
     this.flipRtl_ = optFlipRtl;
     this.should_collapse_ = should_collapse;
     this.tooltip_ = '';
@@ -28,7 +28,7 @@ window.Blockly.FieldImage = function (src, width, height, optAlt, optOnClick, op
         this.clickHandler_ = optOnClick;
     }
 };
-goog.inherits(window.Blockly.FieldImage, window.Blockly.Field);
+window.goog.inherits(window.Blockly.FieldImage, window.Blockly.Field);
 
 /**
  * Construct a FieldImage from a JSON arg object,
@@ -98,7 +98,7 @@ window.Blockly.FieldImage.prototype.init = function () {
  * Dispose of all DOM objects belonging to this text.
  */
 window.Blockly.FieldImage.prototype.dispose = function () {
-    goog.dom.removeNode(this.fieldGroup_);
+    window.goog.dom.removeNode(this.fieldGroup_);
     this.fieldGroup_ = null;
     this.imageElement_ = null;
 };

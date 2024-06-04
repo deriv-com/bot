@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import { localize } from '@/utils/tmp/dummy';
 
 import { config } from '../../constants/config';

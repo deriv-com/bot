@@ -1,5 +1,3 @@
-import React from 'react';
-
 type TFlyoutImageProps = {
     width: string;
     url: string;

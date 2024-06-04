@@ -4,9 +4,9 @@
  * @return {number} Horizontal offset for next item to draw.
  */
 
-Blockly.Icon = new Blockly.icons.Icon();
+window.Blockly.Icon = new window.Blockly.icons.Icon();
 
-Blockly.Icon.renderIcon = function (cursorX) {
+window.Blockly.Icon.renderIcon = function (cursorX) {
     if (this.collapseHidden && this.block_.isCollapsed()) {
         this.iconGroup_.setAttribute('display', 'none');
         return cursorX;
@@ -26,9 +26,9 @@ Blockly.Icon.renderIcon = function (cursorX) {
     this.computeIconLocation();
 
     if (this.block_.RTL) {
-        newCursorX -= Blockly.BlockSvg.SEP_SPACE_X;
+        newCursorX -= window.Blockly.BlockSvg.SEP_SPACE_X;
     } else {
-        newCursorX += width + Blockly.BlockSvg.SEP_SPACE_X;
+        newCursorX += width + window.Blockly.BlockSvg.SEP_SPACE_X;
     }
 
     return newCursorX;

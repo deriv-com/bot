@@ -1,13 +1,13 @@
 import {
-    simpleMovingAverage as sma,
-    simpleMovingAverageArray as smaa,
     bollingerBands as bb,
     bollingerBandsArray as bba,
     exponentialMovingAverage as ema,
     exponentialMovingAverageArray as emaa,
+    macdArray as macda,
     relativeStrengthIndex as rsi,
     relativeStrengthIndexArray as rsia,
-    macdArray as macda,
+    simpleMovingAverage as sma,
+    simpleMovingAverageArray as smaa,
 } from '@/external/indicators/index';
 
 const decorate = (f, input, tradeEngine, config, ...args) => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import PendingPromise from '../../utils/pending-promise';
 
 const ServerTime = (() => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text } from '@deriv-com/ui';
 
 const FlyoutText = (props: { text: string }) => {

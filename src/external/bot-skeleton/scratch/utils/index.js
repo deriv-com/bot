@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { localize } from '@/utils/tmp/dummy';
 
 import { config } from '../../constants/config';
@@ -52,14 +53,14 @@ export const validateErrorOnBlockDelete = () => {
     const blockY = blockRect?.top || 0;
     const mandatory_trade_option_block = getSelectedTradeType();
     const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
-    if (required_block_types?.includes(Blockly?.getSelected()?.type)) {
+    if (required_block_types?.includes(window.Blockly?.getSelected()?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&
             blockY <= translate_Y + translate_offset &&
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', error_message_map[Blockly?.getSelected()?.type]?.default);
+            globalObserver.emit('ui.log.error', error_message_map[window.Blockly?.getSelected()?.type]?.default);
         }
     }
 };
@@ -100,6 +101,7 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
     workspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
+// eslint-disable-next-line default-param-last
 export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
@@ -108,6 +110,7 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
+// eslint-disable-next-line no-promise-executor-return
 const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const load = async ({
@@ -249,6 +252,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
         try {
             xml = window.Blockly.utils.xml.textToDom(xml_string);
         } catch (error) {
+            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('Unrecognized file format'));
         }
 
@@ -286,6 +290,7 @@ export const loadBlocksFromRemote = block => {
         const has_possible_missing_index_xml = url.slice(-1)[0] === '/';
 
         if (!url.match(url_pattern) && !has_possible_missing_index_xml) {
+            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('Target must be an XML file'));
         }
 
@@ -295,6 +300,7 @@ export const loadBlocksFromRemote = block => {
 
         if (block.isKnownUrl(url)) {
             block.setDisabled(true);
+            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('This URL is already loaded'));
         }
 

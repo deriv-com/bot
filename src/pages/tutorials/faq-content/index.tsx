@@ -4,7 +4,7 @@ import { Accordion, Text } from '@deriv-com/ui';
 
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { Localize } from '@/utils/tmp/dummy';
 
 import { TDescription } from '../tutorials.types';
 
@@ -25,7 +25,7 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
     return (
         <Text
             as='p'
-            size={is_mobile ? 'xs' : 's'}
+            size={is_mobile ? 'xs' : 'sm'}
             line_height={is_mobile ? 'xl' : 'xxl'}
             className='faq__description'
             weight='normal'
@@ -105,7 +105,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                     className='faq__title'
                     weight='bold'
                     key={title}
-                    size={is_mobile ? 'xs' : 's'}
+                    size={is_mobile ? 'xs' : 'sm'}
                 >
                     {title}
                 </Text>
@@ -127,7 +127,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                                 line_height='xl'
                                 className='faq__wrapper__header'
                                 weight='bold'
-                                size={is_mobile ? 'xs' : 's'}
+                                size={is_mobile ? 'xs' : 'sm'}
                             >
                                 <Localize i18n_default_text='FAQ' />
                             </Text>

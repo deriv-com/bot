@@ -14,8 +14,6 @@ import {
 
 import RootStore from './root-store';
 
-const Blockly = window.Blockly;
-
 export default class AppStore {
     root_store: RootStore;
     core: TStores;
@@ -177,8 +175,8 @@ export default class AppStore {
         DBot.terminateBot();
         DBot.terminateConnection();
         if (window.Blockly?.derivWorkspace) {
-            clearInterval(window.Blockly.derivWorkspace.save_workspace_interval);
-            window.Blockly.derivWorkspace.dispose();
+            clearInterval(window.Blockly?.derivWorkspace.save_workspace_interval);
+            window.Blockly.derivWorkspace?.dispose();
         }
         if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
             this.disposeReloadOnLanguageChangeReaction();
@@ -201,7 +199,7 @@ export default class AppStore {
 
         // Ensure account switch is re-enabled.
         // TODO: fix
-        const { ui } = this.core;
+        // const { ui } = this.core;
 
         // ui.setAccountSwitcherDisabledMessage();
         // ui.setPromptHandler(false);
@@ -237,9 +235,9 @@ export default class AppStore {
         this.disposeCurrencyReaction = reaction(
             () => this.core.client.currency,
             currency => {
-                if (!Blockly.derivWorkspace) return;
+                if (!window.Blockly?.derivWorkspace) return;
 
-                const trade_options_blocks = Blockly.derivWorkspace
+                const trade_options_blocks = window.Blockly?.derivWorkspace
                     .getAllBlocks()
                     .filter(
                         b =>
@@ -265,16 +263,16 @@ export default class AppStore {
                 if (ApiHelpers.instance) {
                     const { active_symbols, contracts_for } = ApiHelpers.instance;
 
-                    if (Blockly.derivWorkspace) {
+                    if (window.Blockly?.derivWorkspace) {
                         active_symbols.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();
-                            Blockly.derivWorkspace
+                            window.Blockly?.derivWorkspace
                                 .getAllBlocks()
                                 .filter(block => block.type === 'trade_definition_market')
-                                .forEach(block => {
+                                .forEach(() => {
                                     runIrreversibleEvents(() => {
-                                        const fake_create_event = new Blockly.Events.BlockCreate(this);
-                                        Blockly.Events.fire(fake_create_event);
+                                        const fake_create_event = new window.Blockly.Events.BlockCreate(this);
+                                        window.Blockly.Events.fire(fake_create_event);
                                     });
                                 });
                         });

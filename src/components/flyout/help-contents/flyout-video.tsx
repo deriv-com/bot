@@ -1,5 +1,3 @@
-import React from 'react';
-
 const FlyoutVideo = (props: { url: string }) => (
     <div className='flyout__item' data-testid='dt_flyout_video_container'>
         <iframe

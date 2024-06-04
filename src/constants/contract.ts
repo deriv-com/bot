@@ -1,4 +1,4 @@
-import { getTotalProfit } from '@/utils/tmp/contract-helper';
+import { getTotalProfit } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 
 export type TContract = {

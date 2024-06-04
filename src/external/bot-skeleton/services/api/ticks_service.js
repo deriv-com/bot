@@ -1,7 +1,10 @@
+/* eslint-disable no-confusing-arrow */
+import { getLast, historyToTicks } from 'binary-utils';
 import { Map } from 'immutable';
-import { historyToTicks, getLast } from 'binary-utils';
-import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
+
 import { observer as globalObserver } from '../../utils/observer';
+import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
+
 import { api_base } from './api-base';
 
 const parseTick = tick => ({

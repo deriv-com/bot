@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
-import { deriv_urls } from '../url/constants';
+
 import { getPropertyValue, isEmptyObject } from '../object/object';
+import { deriv_urls } from '../url/constants';
 
 type TCookieStorageThis = {
     initialized: boolean;

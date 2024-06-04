@@ -1,4 +1,4 @@
-import { getPropertyValue, deepFreeze } from '../object';
+import { deepFreeze, getPropertyValue } from '../object';
 
 export type TCurrenciesConfig = {
     [key: string]: {

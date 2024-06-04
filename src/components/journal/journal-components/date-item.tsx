@@ -1,4 +1,3 @@
-import React from 'react';
 import { TDateItemProps } from '../journal.types';
 
 const DateItem = ({ date, time }: TDateItemProps) => (

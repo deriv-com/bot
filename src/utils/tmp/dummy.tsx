@@ -1,6 +1,6 @@
 export const localize = (str: unknown, obj: unknown = {}) => `${str} ${JSON.stringify(obj)}`;
 
-export const Localize = ({ i18n_default_text = '', values = {}, components = [], options = {} }) => {
+export const Localize = ({ i18n_default_text = '', values = {}, components = [] }) => {
     // Simulate basic interpolation
     const interpolatedText = i18n_default_text.replace(/\{\{([^}]+)\}\}/g, (match, key) => values[key] || '');
 
@@ -26,7 +26,7 @@ export const i18n = {
     language: 'en',
 };
 
-export const Icon = ({ icon, size = 16 }) => {
+export const Icon = ({ icon }) => {
     // Simulate placeholder icon rendering
     return <div className='dummy-icon'>{icon}</div>;
 };
@@ -56,6 +56,7 @@ export const ContentFlag = Object.freeze({
 export const routes = {
     traders_hub: '/appstore/traders-hub',
     reports: '/reports',
+    bot: '/bot',
 };
 
 // eu countries to support

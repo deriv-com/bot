@@ -1,7 +1,9 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
+
 import { localize } from '@/utils/tmp/dummy';
-import { CFD_PLATFORMS } from '../platform';
+
 import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
+import { CFD_PLATFORMS } from '../platform';
 
 let CFD_text_translated: { [key: string]: () => void };
 

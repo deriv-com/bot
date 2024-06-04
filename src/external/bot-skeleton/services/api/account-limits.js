@@ -2,6 +2,7 @@ export default class AccountLimits {
     constructor(store) {
         this.ws = store.ws;
     }
+    // eslint-disable-next-line default-param-last
     getStakePayoutLimits(currency = 'AUD', landing_company_shortcode = 'svg', selected_market) {
         return this.ws
             .send({

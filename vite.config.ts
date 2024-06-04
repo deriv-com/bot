@@ -38,6 +38,9 @@ export default defineConfig({
                 @import "src/components/shared/styles/devices.scss";
                 @import "src/components/shared/styles/fonts.scss";
                 @import "src/components/shared/styles/mixins.scss";
+                @import "src/components/shared/styles/reset.scss";
+                @import "src/components/shared/styles/inline-icons.scss";
+                @import "src/components/shared/styles/google-fonts.scss";
                 @import "src/styles/mixins.scss";
             `,
             },

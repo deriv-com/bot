@@ -1,4 +1,5 @@
 import { Analytics } from '@deriv-com/analytics';
+
 import { isMobile } from '../utils/screen';
 
 declare global {

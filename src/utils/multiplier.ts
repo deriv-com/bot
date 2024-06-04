@@ -1,6 +1,6 @@
 import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
 
-import { getLimitOrderAmount } from './tmp/contract-helper';
+import { getLimitOrderAmount } from '@/components/shared';
 
 type TContractUpdateConfig = (ContractUpdate & ProposalOpenContract['limit_order']) | undefined;
 /**

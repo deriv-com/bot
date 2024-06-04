@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Text } from '@deriv-com/ui';
+
 import { localize } from '@/utils/tmp/dummy';
 
 type TIconRadio = {

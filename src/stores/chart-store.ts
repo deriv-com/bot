@@ -8,8 +8,8 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 
+import { LocalStore } from '@/components/shared';
 import { ServerTime } from '@/external/bot-skeleton';
-import { LocalStore } from '@/utils/tmp/local-storage-helper';
 
 import RootStore from './root-store';
 
@@ -130,7 +130,7 @@ export default class ChartStore {
     wsSubscribe = (req: TicksStreamRequest, callback: () => void) => {
         if (req.subscribe === 1) {
             const key = JSON.stringify(req);
-            const subscriber = WS.subscribeTicksHistory(req, callback);
+            const subscriber = WS?.subscribeTicksHistory(req, callback);
             g_subscribers_map[key] = subscriber;
         }
     };
@@ -144,7 +144,7 @@ export default class ChartStore {
     };
 
     wsForgetStream = (stream_id: string) => {
-        WS.forgetStream(stream_id);
+        WS?.forgetStream(stream_id);
     };
 
     wsSendRequest = (req: TradingTimesRequest | ActiveSymbolsRequest | ServerTimeRequest) => {
@@ -157,9 +157,9 @@ export default class ChartStore {
             });
         }
         if ('active_symbols' in req && req.active_symbols) {
-            return WS.activeSymbols();
+            return WS?.activeSymbols();
         }
-        if (WS.storage.send) return WS.storage.send(req);
+        if (WS?.storage.send) return WS?.storage.send(req);
     };
 
     getMarketsOrder = (active_symbols: { market: string; display_name: string }[]) => {

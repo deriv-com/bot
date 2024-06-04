@@ -1,7 +1,9 @@
 import { action, makeObservable, observable } from 'mobx';
-import { onWorkspaceResize } from '@/external/bot-skeleton';
+
 import { tabs_title } from '@/constants/bot-contents';
+import { onWorkspaceResize } from '@/external/bot-skeleton';
 import { getSetting, storeSetting } from '@/utils/settings';
+
 import RootStore from './root-store';
 
 export default class BlocklyStore {

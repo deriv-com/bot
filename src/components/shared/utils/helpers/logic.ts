@@ -1,9 +1,11 @@
 import moment from 'moment';
-import { isEmptyObject } from '../object';
+
+import { AccountListResponse, TickSpotData, WebsiteStatus } from '@deriv/api-types';
+
+import { getSupportedContracts } from '../constants/contract';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
-import { TickSpotData, WebsiteStatus, AccountListResponse } from '@deriv/api-types';
-import { getSupportedContracts } from '../constants/contract';
+import { isEmptyObject } from '../object';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
 

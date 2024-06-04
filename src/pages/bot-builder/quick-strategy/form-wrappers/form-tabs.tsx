@@ -1,7 +1,9 @@
 import React, { KeyboardEvent } from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv-com/ui';
 import { observer } from 'mobx-react-lite';
+
+import { Text } from '@deriv-com/ui';
+
 import { FORM_TABS } from '../config';
 import { TDescriptionItem } from '../types';
 

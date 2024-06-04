@@ -1,6 +1,8 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import React from 'react';
 
 import { isDesktop, isMobile } from '@/components/shared';
+import { Icon } from '@/utils/tmp/dummy';
 
 import DesktopWrapper from '../../desktop-wrapper';
 import Div100vhContainer from '../../div100vh-container';

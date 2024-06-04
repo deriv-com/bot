@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { TStores } from '@deriv/stores/types';
 
+import { formatDate } from '@/components/shared';
 import { LogTypes, MessageTypes } from '@/external/bot-skeleton';
 import { config } from '@/external/bot-skeleton/constants/config';
 import { localize } from '@/utils/tmp/dummy';
-import { formatDate } from '@/utils/tmp/time-helper';
 
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';

@@ -1,5 +1,5 @@
-import TicksService from '../../api/ticks_service';
 import Observer from '../../../utils/observer';
+import TicksService from '../../api/ticks_service';
 
 export const createScope = () => {
     const observer = new Observer();

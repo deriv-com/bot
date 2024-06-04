@@ -1,4 +1,4 @@
-import { getFormattedText } from '@/utils/tmp/currency-helper';
+import { getFormattedText } from '@/components/shared';
 
 import DBotStore from '../../../scratch/dbot-store';
 import { api_base } from '../../api/api-base';

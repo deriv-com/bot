@@ -3,12 +3,11 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
 import { TStores } from '@deriv/stores/types';
 
+import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@/components/shared';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { getValidationRules, TValidationRuleIndex, TValidationRules } from '@/constants/contract';
 import { contract_stages } from '@/constants/contract-stage';
 import { getContractUpdateConfig } from '@/utils/multiplier';
-import { getIndicativePrice, isMultiplierContract } from '@/utils/tmp/contract-helper';
-import { isEqualObject } from '@/utils/tmp/object-helper';
 import Validator from '@/utils/tmp/validator';
 
 import RootStore from './root-store';

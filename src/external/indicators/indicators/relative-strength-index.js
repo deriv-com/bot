@@ -1,4 +1,6 @@
-import { sequence } from '@/utils/tmp/object-helper';
+/* eslint-disable no-confusing-arrow */
+
+import { sequence } from '@/components/shared';
 
 import { takeField } from '../utils/math';
 

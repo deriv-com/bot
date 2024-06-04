@@ -8,8 +8,8 @@ import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
-import { convertDateFormat } from '@/utils/tmp/time-helper';
 
+import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 
 type TTransactionIconWithText = {

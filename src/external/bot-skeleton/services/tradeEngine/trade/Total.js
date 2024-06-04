@@ -1,4 +1,4 @@
-import { getRoundedNumber } from '@/utils/tmp/currency-helper';
+import { getRoundedNumber } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 
 import { LogTypes } from '../../../constants/messages';

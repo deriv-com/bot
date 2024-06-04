@@ -1,4 +1,4 @@
-import { getRoundedNumber } from '@/utils/tmp/currency-helper';
+import { getRoundedNumber } from '@/components/shared';
 
 import { api_base } from '../../api/api-base';
 import { contract as broadcastContract, contractStatus } from '../utils/broadcast';

@@ -1,9 +1,10 @@
-import { purchaseSuccessful } from './state/actions';
-import { BEFORE_PURCHASE } from './state/constants';
-import { contractStatus, info, log } from '../utils/broadcast';
-import { getUUID, recoverFromError, doUntilDone, tradeOptionToBuy } from '../utils/helpers';
 import { LogTypes } from '../../../constants/messages';
 import { api_base } from '../../api/api-base';
+import { contractStatus, info, log } from '../utils/broadcast';
+import { doUntilDone, getUUID, recoverFromError, tradeOptionToBuy } from '../utils/helpers';
+
+import { purchaseSuccessful } from './state/actions';
+import { BEFORE_PURCHASE } from './state/constants';
 
 let delayIndex = 0;
 let purchase_reference;
