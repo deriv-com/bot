@@ -1,11 +1,22 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@/external/bot-skeleton';
-import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+
 import { TStores } from '@deriv/stores/types';
-import { localize } from '@/utils/tmp/dummy';
-import { clearInjectionDiv, tabs_title } from '@/constants/load-modal';
+
 import { TStrategy } from 'Types';
+
+import { clearInjectionDiv, tabs_title } from '@/constants/load-modal';
+import {
+    config,
+    getSavedWorkspaces,
+    load,
+    removeExistingWorkspace,
+    save_types,
+    setColors,
+} from '@/external/bot-skeleton';
+import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+import { localize } from '@/utils/tmp/dummy';
+
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -221,7 +232,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const workspace = window.Blockly.derivWorkspace;
         if (workspace) {
             window.Blockly.derivWorkspace.asyncClear();
-            window.Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(workspace.cached_xml.main), workspace);
+            window.Blockly.Xml.domToWorkspace(window.Blockly.utils.xml.textToDom(workspace.cached_xml.main), workspace);
             window.Blockly.derivWorkspace.strategy_to_load = workspace.cached_xml.main;
         }
     };

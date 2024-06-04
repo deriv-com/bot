@@ -5,9 +5,11 @@ import { observer } from 'mobx-react-lite';
 
 import { Button, Input, Modal, Text } from '@deriv-com/ui';
 
+import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
+import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize, MobileFullPageModal, ThemedScrollbars } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 
 import IconRadio from './icon-radio';
 

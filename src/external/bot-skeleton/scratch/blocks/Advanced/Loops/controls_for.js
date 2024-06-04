@@ -44,6 +44,7 @@ window.Blockly.Blocks.controls_for = {
                     name: 'DO',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -72,19 +73,41 @@ window.Blockly.Blocks.controls_for = {
     },
 };
 
-window.Blockly.JavaScript.controls_for = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_for = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const variable0 = window.Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), window.Blockly.Variables.NAME_TYPE);
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'FROM', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'TO', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
-    const increment = window.Blockly.JavaScript.valueToCode(block, 'BY', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || '1';
+    const variable0 = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FROM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || '0';
+    const argument1 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TO',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || '0';
+    const increment =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'BY',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || '1';
 
-    let branch = window.Blockly.JavaScript.statementToCode(block, 'DO');
-    branch = window.Blockly.JavaScript.addLoopTrap(branch, block.id);
+    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+    branch = window.Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
 
     let code = '';
 
-    if (window.Blockly.isNumber(argument0) && window.Blockly.isNumber(argument1) && window.Blockly.isNumber(increment)) {
+    if (
+        window.Blockly.isNumber(argument0) &&
+        window.Blockly.isNumber(argument1) &&
+        window.Blockly.isNumber(increment)
+    ) {
         const up = parseFloat(argument0) <= parseFloat(argument1);
         const operator = up ? '<=' : '>=';
         const step = Math.abs(parseFloat(increment));
@@ -104,7 +127,7 @@ window.Blockly.JavaScript.controls_for = block => {
             // eslint-disable-next-line no-underscore-dangle
             startVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
                 `${variable0}_start`,
-                window.Blockly.Variables.NAME_TYPE
+                window.Blockly.Variables.CATEGORY_NAME
             );
             code = `var ${startVar} = ${argument0};\n`;
         }
@@ -112,13 +135,19 @@ window.Blockly.JavaScript.controls_for = block => {
         let endVar = argument1;
         if (!argument1.match(/^\w+$/) && !window.Blockly.isNumber(argument1)) {
             // eslint-disable-next-line no-underscore-dangle
-            endVar = window.Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_end`, window.Blockly.Variables.NAME_TYPE);
+            endVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+                `${variable0}_end`,
+                window.Blockly.Variables.CATEGORY_NAME
+            );
             code += `var ${endVar} = ${argument1};\n`;
         }
 
         // Determine loop direction at start, in case one of the bounds changes during loop execution.
         // eslint-disable-next-line no-underscore-dangle
-        const incVar = window.Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_inc`, window.Blockly.Variables.NAME_TYPE);
+        const incVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            `${variable0}_inc`,
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         const incVal = window.Blockly.isNumber(increment) ? Math.abs(increment) : `Math.abs(${increment})`;
 
         code += `

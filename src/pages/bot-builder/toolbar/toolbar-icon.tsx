@@ -1,5 +1,8 @@
+import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Popover from '@/components/shared_ui/popover';
 import { popover_zindex } from '@/constants/z-indexes';
-import { DesktopWrapper, Icon, MobileWrapper, Popover } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 type TToolbarIcon = {
     popover_message: string;

@@ -5,8 +5,10 @@ import classNames from 'classnames';
 import { transaction_elements } from '@/constants/transactions';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes, Popover } from '@/utils/tmp/dummy';
+import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
 import { convertDateFormat } from '@/utils/tmp/time-helper';
+
+import Popover from '../shared_ui/popover';
 
 import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
 

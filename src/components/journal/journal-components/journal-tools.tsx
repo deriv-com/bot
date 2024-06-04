@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Text } from '@deriv-com/ui';
 
 import Download from '@/components/download';
-import { Icon, Localize } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 
 import { TJournalToolsProps } from '../journal.types';
 

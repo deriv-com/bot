@@ -4,9 +4,9 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 
+import Autocomplete from '@/components/shared_ui/autocomplete';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Autocomplete } from '@/utils/tmp/dummy';
 
 import { TApiHelpersInstance, TDurationUnitItem, TFormData } from '../types';
 

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_print = {
@@ -38,8 +39,13 @@ window.Blockly.Blocks.text_print = {
     },
 };
 
-window.Blockly.JavaScript.text_print = block => {
-    const msg = window.Blockly.JavaScript.valueToCode(block, 'TEXT', window.Blockly.JavaScript.ORDER_NONE) || "''";
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_print = block => {
+    const msg =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TEXT',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
     const code = `window.alert(${msg});\n`;
     return code;
 };

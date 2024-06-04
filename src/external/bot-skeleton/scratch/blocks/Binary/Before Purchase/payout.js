@@ -36,9 +36,9 @@ window.Blockly.Blocks.payout = {
     enforceLimitations: window.Blockly.Blocks.purchase.enforceLimitations,
 };
 
-window.Blockly.JavaScript.payout = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getPayout('${purchaseList}')`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -70,10 +70,12 @@ window.Blockly.Blocks.math_number_property = {
             if (!inputExists) {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
-                this.render(false);
+                //commented this line breaks the backward compatibility
+                //this.render(false);
             }
         } else {
-            this.removeInput('DIVISOR');
+            //commented this line breaks the backward compatibiliy
+            //this.removeInput('DIVISOR');
         }
     },
     getRequiredValueInputs() {
@@ -83,15 +85,20 @@ window.Blockly.Blocks.math_number_property = {
     },
 };
 
-window.Blockly.JavaScript.math_number_property = block => {
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'NUMBER_TO_CHECK', window.Blockly.JavaScript.ORDER_MODULUS) || '0';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUMBER_TO_CHECK',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+        ) || '0';
     const property = block.getFieldValue('PROPERTY');
 
     let code;
 
     if (property === 'PRIME') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = window.Blockly.JavaScript.provideFunction_('mathIsPrime', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
@@ -115,7 +122,7 @@ window.Blockly.JavaScript.math_number_property = block => {
             }`,
         ]);
         code = `${functionName}(${argument0})`;
-        return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     } else if (property === 'EVEN') {
         code = `${argument0} % 2 === 0`;
     } else if (property === 'ODD') {
@@ -127,9 +134,14 @@ window.Blockly.JavaScript.math_number_property = block => {
     } else if (property === 'NEGATIVE') {
         code = `${argument0} < 0`;
     } else if (property === 'DIVISIBLE_BY') {
-        const divisor = window.Blockly.JavaScript.valueToCode(block, 'DIVISOR', window.Blockly.JavaScript.ORDER_MODULUS) || '0';
+        const divisor =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'DIVISOR',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            ) || '0';
         code = `${argument0} % ${divisor} == 0`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_EQUALITY];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text } from '@deriv-com/ui';
 
-import { Popover } from '@/utils/tmp/dummy';
+import Popover from '@/components/shared_ui/popover';
 
 type TQSInputLabel = {
     children?: React.ReactNode;

@@ -52,9 +52,14 @@ window.Blockly.Blocks.math_round = {
     },
 };
 
-window.Blockly.JavaScript.math_round = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_round = block => {
     const operation = block.getFieldValue('OP');
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'NUM', window.Blockly.JavaScript.ORDER_ATOMIC) || '0';
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '0';
 
     let code;
 
@@ -66,5 +71,5 @@ window.Blockly.JavaScript.math_round = block => {
         code = `Math.floor(${argument0})`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+
+import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { minusIconDark } from '../../images';
-import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 
 window.Blockly.Blocks.lists_statement = {
     required_parent_type: 'lists_create_with',
@@ -19,6 +20,7 @@ window.Blockly.Blocks.lists_statement = {
                     name: 'VALUE',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -34,7 +36,7 @@ window.Blockly.Blocks.lists_statement = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -44,11 +46,11 @@ window.Blockly.Blocks.lists_statement = {
         });
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.END_DRAG) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const surround_parent = this.getSurroundParent();
 
             if (!surround_parent) {
@@ -83,7 +85,12 @@ window.Blockly.Blocks.lists_statement = {
     },
 };
 
-window.Blockly.JavaScript.lists_statement = block => {
-    const code = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_ATOMIC) || 'null';
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_statement = block => {
+    const code =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || 'null';
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -1,6 +1,3 @@
-@import '../../styles/mixins.scss';
-@import '../../styles/constants.scss';
-
 #scratch_div {
     position: relative;
     width: calc(100vw - 3.2rem);
@@ -12,7 +9,7 @@
     }
 }
 
-.blocklyTextRootBlockHeader {
+.blocklyText.blocklyTextRootBlockHeader {
     font-size: calc(var(--text-size-sm) * 0.9);
     font-weight: normal;
     font-stretch: normal;

@@ -1,6 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { plusIconDark } from '../../images';
-import { isDarkRgbColour } from '../../../utils';
 
 window.Blockly.Blocks.procedures_defreturn = {
     init() {
@@ -8,7 +8,6 @@ window.Blockly.Blocks.procedures_defreturn = {
         this.argument_var_models = [];
 
         this.jsonInit(this.definition());
-
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
         nameField.setValidator(window.Blockly.Procedures.rename);
@@ -16,9 +15,7 @@ window.Blockly.Blocks.procedures_defreturn = {
         // Render a ➕-icon for adding parameters
         const fieldImage = new window.Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
 
-        const dropdown_path =
-            this.workspace.options.pathToMedia +
-            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new window.Blockly.FieldImage(
             dropdown_path,
@@ -65,9 +62,9 @@ window.Blockly.Blocks.procedures_defreturn = {
                     type: 'input_value',
                     name: 'RETURN',
                     check: null,
-                    align: window.Blockly.ALIGN_RIGHT,
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Special2.colour,
             colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
             colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
@@ -106,8 +103,9 @@ window.Blockly.Blocks.procedures_defreturn = {
     renameVarById: window.Blockly.Blocks.procedures_defnoreturn.renameVarById,
     displayRenamedVar: window.Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
     customContextMenu: window.Blockly.Blocks.procedures_defnoreturn.customContextMenu,
-    callType: 'procedures_callreturn',
     registerWorkspaceListener: window.Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
+    callType: 'procedures_callreturn',
 };
 
-window.Blockly.JavaScript.procedures_defreturn = window.Blockly.JavaScript.procedures_defnoreturn;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defreturn =
+    window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;

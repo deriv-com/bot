@@ -6,9 +6,12 @@ import { observer } from 'mobx-react-lite';
 import { Dialog, Text } from '@deriv-com/ui';
 
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
+import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { DesktopWrapper, Icon, localize, MobileFullPageModal, MobileWrapper } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 
 import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 

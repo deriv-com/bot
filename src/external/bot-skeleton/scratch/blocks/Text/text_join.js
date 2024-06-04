@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { plusIconDark } from '../images';
+
 import { runGroupedEvents } from '../../utils';
+import { plusIconDark } from '../images';
 
 window.Blockly.Blocks.text_join = {
     protected_statements: ['STACK'],
@@ -28,6 +29,7 @@ window.Blockly.Blocks.text_join = {
                     name: 'STACK',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -46,7 +48,7 @@ window.Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -55,13 +57,15 @@ window.Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            text_block.render();
+            // kept this commented to fix backward compatibility issue
+            text_block?.renderEfficiently();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            shadow_block.render();
+            // kept this commented to fix backward compatibility issue
+            shadow_block?.renderEfficiently();
 
             const text_input = text_block.getInput('TEXT');
             text_input.connection.connect(shadow_block.outputConnection);
@@ -78,15 +82,15 @@ window.Blockly.Blocks.text_join = {
 };
 
 // window.Blockly.JavaScript.text_join = window.Blockly.JavaScript.lists_create_with;
-window.Blockly.JavaScript.text_join = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_join = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.NAME_TYPE
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
     const elements = blocks_in_stack.map(b => {
-        const value = window.Blockly.JavaScript[b.type](b);
+        const value = window.Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });
 

@@ -1,3 +1,5 @@
+import { getPreBuildDVRs } from '@/components/shared';
+
 import Errors from './errors';
 
 type TRule<T extends object> = string | Array<string | TRuleOptions<T>>;
@@ -33,8 +35,10 @@ class Validator<T extends object, S extends object> {
      * @param {object} rule
      */
     addFailure(attribute: string, rule: { name: string; options: TRuleOptions<S> }, error_message?: string) {
-        let message = error_message || rule.options.message;
-        // TODO: fix || (getPreBuildDVRs() as unknown as { [key: string]: { message: () => string } })[rule.name].message();
+        let message =
+            error_message ||
+            rule.options.message ||
+            (getPreBuildDVRs() as unknown as { [key: string]: { message: () => string } })[rule.name].message();
 
         if (rule.name === 'length') {
             message = template(message, [
@@ -118,15 +122,16 @@ class Validator<T extends object, S extends object> {
         return {
             name: rule_object_name,
             options: rule_object_options,
-            validator: rule_object_name === 'custom' ? rule_object_options.func : {},
-            // TODO: fix
-            // (
-            //       getPreBuildDVRs() as {
-            //           [key: string]: {
-            //               func: TRuleOptions<S>['func'];
-            //           };
-            //       }
-            //   )[rule_object_name].func,
+            validator:
+                rule_object_name === 'custom'
+                    ? rule_object_options.func
+                    : (
+                          getPreBuildDVRs() as {
+                              [key: string]: {
+                                  func: TRuleOptions<S>['func'];
+                              };
+                          }
+                      )[rule_object_name].func,
         };
     }
 }

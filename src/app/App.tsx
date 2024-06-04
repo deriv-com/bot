@@ -1,31 +1,35 @@
 import { Fragment } from 'react/jsx-runtime';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import { AppDataProvider } from '@deriv-com/api-hooks';
+import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Layout from '../components/layout';
 import { StoreProvider } from '../hooks/useStore';
-import Home from '../pages/home';
 
 import AppContent from './app-content';
 
-import '@/styles/index.scss';
-
 const queryClient = new QueryClient();
+
+const i18nInstance = initializeI18n({ cdnUrl: 'https://cdn.example.com' });
 
 function App() {
     return (
         <Fragment>
-            <QueryClientProvider client={queryClient}>
-                <AppDataProvider>
-                    <StoreProvider>
-                        <Layout>
-                            <Home />
-                            <AppContent />
-                        </Layout>
-                    </StoreProvider>
-                </AppDataProvider>
-            </QueryClientProvider>
+            <Router>
+                <QueryClientProvider client={queryClient}>
+                    <TranslationProvider defaultLang={'EN'} i18nInstance={i18nInstance}>
+                        <AppDataProvider>
+                            <StoreProvider>
+                                <Layout>
+                                    <AppContent />
+                                </Layout>
+                            </StoreProvider>
+                        </AppDataProvider>
+                    </TranslationProvider>
+                </QueryClientProvider>
+            </Router>
         </Fragment>
     );
 }

@@ -1,9 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
 
+import { localize } from '@deriv-com/translations';
+
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
-import { getLanguage, localize } from '@/utils/tmp/dummy';
+import { getLanguage } from '@/utils/tmp/dummy';
 
 import RootStore from './root-store';
 

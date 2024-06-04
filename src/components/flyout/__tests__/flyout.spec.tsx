@@ -2,13 +2,13 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mock_ws } from '@/utils/mock';
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
-import { DBotStoreProvider, mockDBotStore } from '@/stores/__useDBotStore';
+import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Flyout from '../flyout';
 
-jest.mock('@/external/bot-skeleton/scratch/xml/main.xml', () => '<xml>sample</xml>');
-jest.mock('@/external/bot-skeleton/scratch/dbot', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/xml/main.xml', () => '<xml>sample</xml>');
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 const mockDomToBlock = jest.fn(() => ({
     getHeightWidth: jest.fn(() => ({ height: 100, width: 100 })),
@@ -65,6 +65,7 @@ window.Blockly = {
     utils: {
         genUid: jest.fn(() => Date.now()),
     },
+    Options: jest.fn(),
 };
 
 const mockPushDataLayer = jest.fn();

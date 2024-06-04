@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../../../utils';
 
 window.Blockly.Blocks.totimestamp = {
@@ -44,8 +45,12 @@ window.Blockly.Blocks.totimestamp = {
     },
 };
 
-window.Blockly.JavaScript.totimestamp = block => {
-    const datetime_string = window.Blockly.JavaScript.valueToCode(block, 'DATETIME', window.Blockly.JavaScript.ORDER_ATOMIC);
+window.Blockly.JavaScript.javascriptGenerator.forBlock.totimestamp = block => {
+    const datetime_string = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DATETIME',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    );
     const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

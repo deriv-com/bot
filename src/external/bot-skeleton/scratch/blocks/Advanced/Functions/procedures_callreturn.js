@@ -4,7 +4,6 @@ window.Blockly.Blocks.procedures_callreturn = {
     init() {
         this.arguments = [];
         this.previousDisabledState = false;
-
         this.jsonInit(this.definition());
     },
     definition() {
@@ -28,6 +27,7 @@ window.Blockly.Blocks.procedures_callreturn = {
             colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
             tooltip: localize('Custom function'),
             category: window.Blockly.Categories.Functions,
+            inputsInline: true,
         };
     },
     meta() {
@@ -49,16 +49,21 @@ window.Blockly.Blocks.procedures_callreturn = {
     defType: 'procedures_defreturn',
 };
 
-window.Blockly.JavaScript.procedures_callreturn = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_callreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        window.Blockly.Procedures.NAME_TYPE
+        window.Blockly.Procedures.CATEGORY_NAME
     );
     const args = block.arguments.map(
-        (arg, i) => window.Blockly.JavaScript.valueToCode(block, `ARG${i}`, window.Blockly.JavaScript.ORDER_COMMA) || 'null'
+        (arg, i) =>
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                `ARG${i}`,
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            ) || 'null'
     );
 
     const code = `${functionName}(${args.join(', ')})`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

@@ -33,6 +33,7 @@ window.Blockly.Blocks.lists_indexOf = {
                 },
             ],
             output: 'Number',
+            inputsInline: true,
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
@@ -55,16 +56,26 @@ window.Blockly.Blocks.lists_indexOf = {
     },
 };
 
-window.Blockly.JavaScript.lists_indexOf = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
     const operator = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
-    const item = window.Blockly.JavaScript.valueToCode(block, 'FIND', window.Blockly.JavaScript.ORDER_NONE) || "''";
-    const list = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_MEMBER) || "''";
+    const item =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FIND',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
+    const list =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
 
     const code = `${list}.${operator}(${item})`;
 
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, window.Blockly.JavaScript.ORDER_ADDITION];
+        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

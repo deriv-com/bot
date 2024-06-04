@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
 
@@ -26,7 +27,7 @@ window.Blockly.Blocks.trade_definition_contracttype = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -61,4 +62,4 @@ window.Blockly.Blocks.trade_definition_contracttype = {
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-window.Blockly.JavaScript.trade_definition_contracttype = () => '';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_contracttype = () => '';

@@ -11,9 +11,38 @@ export default defineConfig({
     define: {
         global: 'window',
     },
-    plugins: [react(), svgr(), basicSsl(), tsconfigPaths(), viteRequire()],
+    plugins: [
+        react(),
+        svgr(),
+        basicSsl(),
+        tsconfigPaths(),
+        viteRequire(),
+        {
+            name: 'xml',
+            transform(code, id) {
+                if (id.endsWith('.xml')) {
+                    return {
+                        code: `export default ${JSON.stringify(code)};`,
+                        map: null,
+                    };
+                }
+            },
+        },
+    ],
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `
+                @import "src/styles/mixins.scss";
+                @import "src/components/shared/styles/constants.scss";
+                @import "src/components/shared/styles/devices.scss";
+                @import "src/components/shared/styles/fonts.scss";
+                @import "src/components/shared/styles/mixins.scss";
+            `,
+            },
+        },
+    },
     server: {
         port: 8443,
     },
-    assetsInclude: ['**/*.xml'],
 });

@@ -24,4 +24,7 @@ window.Blockly.Blocks.math_random_float = {
     },
 };
 
-window.Blockly.JavaScript.math_random_float = () => ['Math.random()', window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_random_float = () => [
+    'Math.random()',
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL,
+];

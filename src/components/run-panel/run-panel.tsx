@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
+import { Localize, localize } from '@deriv-com/translations';
 import { Button, Drawer, Modal, Tabs, Text } from '@deriv-com/ui';
 
 import Journal from '@/components/journal';
@@ -12,7 +13,9 @@ import Transactions from '@/components/transactions';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { popover_zindex } from '@/constants/z-indexes';
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize, Money, ThemedScrollbars } from '@/utils/tmp/dummy';
+import { Money } from '@/utils/tmp/dummy';
+
+import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 
 type TStatisticsTile = {
     content: React.ElementType | string;

@@ -7,7 +7,12 @@ import PropTypes from 'prop-types';
 import { Button, Input, Modal } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { Div100vhContainer, FadeWrapper,localize, MobileWrapper, PageOverlay } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+
+import Div100vhContainer from '../shared_ui/div100vh-container';
+import FadeWrapper from '../shared_ui/fade-wrapper';
+import MobileWrapper from '../shared_ui/mobile-wrapper';
+import PageOverlay from '../shared_ui/page-overlay';
 
 const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');

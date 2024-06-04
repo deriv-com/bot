@@ -29,6 +29,7 @@ window.Blockly.Blocks.logic_compare = {
                     name: 'B',
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -52,7 +53,7 @@ window.Blockly.Blocks.logic_compare = {
     },
 };
 
-window.Blockly.JavaScript.logic_compare = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_compare = block => {
     const operatorMapping = {
         EQ: '==',
         NEQ: '!=',
@@ -64,11 +65,11 @@ window.Blockly.JavaScript.logic_compare = block => {
 
     const operator = operatorMapping[block.getFieldValue('OP') || 'EQ'];
     const order = ['==', '!='].includes(operator)
-        ? window.Blockly.JavaScript.ORDER_EQUALITY
-        : window.Blockly.JavaScript.ORDER_RELATIONAL;
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_RELATIONAL;
 
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'A', order) || 'false';
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'B', order) || 'false';
+    const argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', order) || 'false';
+    const argument1 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', order) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

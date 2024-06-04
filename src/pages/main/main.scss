@@ -1,7 +1,3 @@
-@import './../../styles/mixins.scss';
-@import './../../styles/constants.scss';
-@import './../../styles/devices.scss';
-
 .run-panel {
     // fix for the RTL issue on tab active line
     .dc-tabs__active-line {
@@ -343,7 +339,8 @@
     position: absolute;
     top: 6.6rem;
     inset-inline-start: 1.6rem;
-    z-index: 1;
+    z-index: -1;
+    visibility: hidden;
     background: var(--general-main-1);
     height: var(--tab-content-height);
 
@@ -365,6 +362,7 @@
 
     &--active {
         z-index: 1;
+        visibility: visible;
     }
 
     &--inactive {

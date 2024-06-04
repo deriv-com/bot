@@ -30,7 +30,7 @@ window.Blockly.Blocks.trade_again = {
     restricted_parents: ['after_purchase'],
 };
 
-window.Blockly.JavaScript.trade_again = () => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_again = () => {
     const code = `
         Bot.isTradeAgain(true);\n
         return true;\n

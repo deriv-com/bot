@@ -2,15 +2,10 @@ import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 
 import { TStores } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import {
-    ContentFlag,
-    isEuResidenceWithOnlyVRTC,
-    localize,
-    routes,
-    showDigitalOptionsUnavailableError,
-} from '@/utils/tmp/dummy';
+import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 
 import RootStore from './root-store';
 
@@ -125,7 +120,7 @@ export default class AppStore {
         return false;
     };
 
-    onMount = () => {
+    onMount = async () => {
         const { blockly_store, run_panel } = this.root_store;
         const { client, ui, traders_hub } = this.core;
         this.showDigitalOptionsMaltainvestError();
@@ -148,10 +143,11 @@ export default class AppStore {
 
         blockly_store.setLoading(true);
         console.log('test calling initWorkspace');
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
-            blockly_store.setContainerSize();
-            blockly_store.setLoading(false);
-        });
+        await DBot.initWorkspace('/', this.dbot_store, this.api_helpers_store, ui.is_mobile, false);
+        blockly_store.setContainerSize();
+        blockly_store.setLoading(false);
+        console.log('test calling initWorkspace end');
+
         this.registerReloadOnLanguageChange();
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
@@ -274,7 +270,7 @@ export default class AppStore {
                                 .filter(block => block.type === 'trade_definition_market')
                                 .forEach(block => {
                                     runIrreversibleEvents(() => {
-                                        const fake_create_event = new Blockly.Events.Create(block);
+                                        const fake_create_event = new Blockly.Events.BlockCreate(this);
                                         Blockly.Events.fire(fake_create_event);
                                     });
                                 });
@@ -344,7 +340,7 @@ export default class AppStore {
             );
 
             if (is_click_outside_blockly) {
-                Blockly?.hideChaff(/* allowToolbox */ false);
+                window.Blockly?.hideChaff(/* allowToolbox */ false);
             }
         }
     };

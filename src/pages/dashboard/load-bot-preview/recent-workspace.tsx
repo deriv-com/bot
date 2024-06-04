@@ -4,12 +4,15 @@ import { observer } from 'mobx-react-lite';
 
 import { Text } from '@deriv-com/ui';
 
+import { isDesktop } from '@/components/shared';
+import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
 import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
-import { DesktopWrapper, Icon, MobileWrapper } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
@@ -47,9 +50,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    // TODO: fix
-    // const is_desktop = isDesktop();
-    const is_desktop = true;
+    const is_desktop = isDesktop();
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;

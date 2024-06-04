@@ -48,9 +48,14 @@ window.Blockly.Blocks.timeout = {
     },
 };
 
-window.Blockly.JavaScript.timeout = block => {
-    const stack = window.Blockly.JavaScript.statementToCode(block, 'TIMEOUTSTACK');
-    const seconds = window.Blockly.JavaScript.valueToCode(block, 'SECONDS', window.Blockly.JavaScript.ORDER_ATOMIC) || '1';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
+    const seconds =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'SECONDS',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '1';
 
     const code = `sleep(${seconds});\n${stack}\n`;
     return code;

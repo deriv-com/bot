@@ -1,11 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
+import { Localize, localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize, MobileWrapper } from '@/utils/tmp/dummy';
 
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';

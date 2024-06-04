@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.check_direction = {
@@ -34,9 +35,9 @@ window.Blockly.Blocks.check_direction = {
     },
 };
 
-window.Blockly.JavaScript.check_direction = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.check_direction = block => {
     const checkWith = block.getFieldValue('CHECK_DIRECTION');
 
     const code = `Bot.checkDirection('${checkWith}')`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -22,15 +22,15 @@ window.Blockly.Blocks.lists_getIndex = {
         this.appendValueInput('VALUE').setCheck('Array').appendField(localize('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
-        // eslint-disable-next-line no-underscore-dangle
-        this.setColourFromRawValues_(
-            window.Blockly.Colours.Base.colour,
-            window.Blockly.Colours.Base.colourSecondary,
-            window.Blockly.Colours.Base.colourTertiary
-        );
+        const block_color =
+            window.Blockly.Colours.Base.colour ||
+            window.Blockly.Colours.Base.colourSecondary ||
+            window.Blockly.Colours.Base.colourTertiary;
+        this.setColour(block_color);
         this.setTooltip(
             'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
         );
+        this.setInputsInline(true);
         this.setOutput(true, null);
         this.setOutputShape(window.Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
@@ -72,7 +72,8 @@ window.Blockly.Blocks.lists_getIndex = {
             this.setNextStatement(newStatement);
 
             this.initSvg();
-            this.render(false);
+            // kept this commented to fix backward compatibility issue
+            // this.render(false);
         }
     },
     updateAt(isAt) {
@@ -97,63 +98,67 @@ window.Blockly.Blocks.lists_getIndex = {
         this.getInput('AT').appendField(menu, 'WHERE');
 
         this.initSvg();
-        this.render(false);
+        // kept this commented to fix backward compatibility issue
+        //this.render(false);
     },
 };
 
-window.Blockly.JavaScript.lists_getIndex = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getIndex = block => {
     const mode = block.getFieldValue('MODE') || 'GET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
-    const listOrder = where === 'RANDOM' ? window.Blockly.JavaScript.ORDER_COMMA : window.Blockly.JavaScript.ORDER_MEMBER;
-    const list = window.Blockly.JavaScript.valueToCode(block, 'VALUE', listOrder) || '[]';
+    const listOrder =
+        where === 'RANDOM'
+            ? window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            : window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const list = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', listOrder) || '[]';
 
     let code, order;
 
     if (where === 'FIRST') {
         if (mode === 'GET') {
             code = `${list}[0]`;
-            order = window.Blockly.JavaScript.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.shift()`;
-            order = window.Blockly.JavaScript.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.shift();\n`;
         }
     } else if (where === 'LAST') {
         if (mode === 'GET') {
             code = `${list}.slice(-1)[0]`;
-            order = window.Blockly.JavaScript.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.pop()`;
-            order = window.Blockly.JavaScript.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.pop();\n`;
         }
     } else if (where === 'FROM_START') {
-        const at = window.Blockly.JavaScript.getAdjusted(block, 'AT');
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         if (mode === 'GET') {
             code = `${list}[${at}]`;
-            order = window.Blockly.JavaScript.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = window.Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = window.Blockly.JavaScript.getAdjusted(block, 'AT', 1, true);
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT', 1, true);
         if (mode === 'GET') {
             code = `${list}.slice(${at})[0]`;
-            order = window.Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = window.Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'RANDOM') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = window.Blockly.JavaScript.provideFunction_('listsGetRandomItem', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('listsGetRandomItem', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
                 var x = Math.floor(Math.random() * list.length);
@@ -168,7 +173,7 @@ window.Blockly.JavaScript.lists_getIndex = block => {
         code = `${functionName}(${list}, ${mode !== 'GET'})`;
 
         if (mode === 'GET' || mode === 'GET_REMOVE') {
-            order = window.Blockly.JavaScript.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${code};\n`;
         }

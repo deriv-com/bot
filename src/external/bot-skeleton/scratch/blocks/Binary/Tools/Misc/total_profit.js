@@ -25,12 +25,12 @@ window.Blockly.Blocks.total_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
         if (
-            event.type === window.Blockly.Events.END_DRAG ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) ||
             (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
         ) {
             const input_statement = this.getRootInputTargetBlock();
@@ -67,5 +67,11 @@ window.Blockly.Blocks.total_profit_string = {
     onchange: window.Blockly.Blocks.total_profit.onchange,
 };
 
-window.Blockly.JavaScript.total_profit = () => ['Bot.getTotalProfit(false)', window.Blockly.JavaScript.ORDER_ATOMIC];
-window.Blockly.JavaScript.total_profit_string = () => ['Bot.getTotalProfit(true)', window.Blockly.JavaScript.ORDER_ATOMIC];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.total_profit = () => [
+    'Bot.getTotalProfit(false)',
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.total_profit_string = () => [
+    'Bot.getTotalProfit(true)',
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

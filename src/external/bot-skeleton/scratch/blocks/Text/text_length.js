@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_length = {
@@ -38,9 +39,14 @@ window.Blockly.Blocks.text_length = {
     },
 };
 
-window.Blockly.JavaScript.text_length = block => {
-    const text = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_FUNCTION_CALL) || "''";
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_length = block => {
+    const text =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || "''";
 
     const code = `${text}.length`;
-    return [code, window.Blockly.JavaScript.ORDER_MEMBER];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
 };

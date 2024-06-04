@@ -16,6 +16,7 @@ type TExtendedMoment = typeof moment & {
 export const initMoment = (lang: string) => {
     const ignored_language = ['EN', 'AR', 'BN', 'SI'];
     if (!lang || ignored_language.includes(lang)) return moment;
+    // TODO: Fix
     return import(
         /* @vite-ignore */
         `moment/locale/${lang.toLowerCase().replace('_', '-')}`

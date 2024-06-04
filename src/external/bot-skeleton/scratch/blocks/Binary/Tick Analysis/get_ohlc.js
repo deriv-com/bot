@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.get_ohlc = {
@@ -44,12 +45,16 @@ window.Blockly.Blocks.get_ohlc = {
         };
     },
 };
-
-window.Blockly.JavaScript.get_ohlc = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
-    const index = window.Blockly.JavaScript.valueToCode(block, 'CANDLEINDEX', window.Blockly.JavaScript.ORDER_ATOMIC) || '1';
+    const index =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'CANDLEINDEX',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '1';
 
     const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${granularity} })`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -5,9 +5,10 @@ import debounce from 'lodash.debounce';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { Text } from '@deriv-com/ui';
 
+import Autocomplete from '@/components/shared_ui/autocomplete';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Autocomplete, IconTradeTypes } from '@/utils/tmp/dummy';
+import { IconTradeTypes } from '@/utils/tmp/dummy';
 
 import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 

@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
+import { Localize, localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { Icon, Localize, localize } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';

@@ -1,10 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
+import { localize } from '@deriv-com/translations';
 import { Dialog, Text } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 const BotStopped = observer(() => {
     const { dashboard } = useStore();

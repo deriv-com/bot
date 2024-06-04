@@ -7,7 +7,6 @@ import { localize } from '@/utils/tmp/dummy';
 window.Blockly.Blocks.procedures_ifreturn = {
     init() {
         this.hasReturnValue = true;
-
         this.jsonInit(this.definition());
     },
     definition() {
@@ -23,6 +22,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
                     name: 'VALUE',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Special2.colour,
             colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
             colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
@@ -63,7 +63,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
             this.removeInput('VALUE');
             this.appendDummyInput('VALUE').appendField(localize('return'));
             this.initSvg();
-            this.render();
+            this.renderEfficiently();
         }
     },
     /**
@@ -92,7 +92,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
         if (legal) {
             const rerender = () => {
                 this.initSvg();
-                this.render();
+                this.renderEfficiently();
             };
 
             // If needed, toggle whether this block has a return value.
@@ -108,10 +108,10 @@ window.Blockly.Blocks.procedures_ifreturn = {
                 this.hasReturnValue = true;
             }
 
-            if (!this.isInFlyout) {
+            if (!window.Blockly.derivWorkspace.isFlyout_) {
                 this.setDisabled(false);
             }
-        } else if (!this.isInFlyout && !this.getInheritedDisabled()) {
+        } else if (!window.Blockly.derivWorkspace.isFlyout_ && !this.getInheritedDisabled()) {
             this.setDisabled(true);
         }
     },
@@ -123,12 +123,22 @@ window.Blockly.Blocks.procedures_ifreturn = {
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
 };
 
-window.Blockly.JavaScript.procedures_ifreturn = block => {
-    const condition = window.Blockly.JavaScript.valueToCode(block, 'CONDITION', window.Blockly.JavaScript.ORDER_NONE) || 'false';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_ifreturn = block => {
+    const condition =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'CONDITION',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || 'false';
 
     let branch;
     if (block.hasReturnValue) {
-        const value = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_NONE) || 'null';
+        const value =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'VALUE',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            ) || 'null';
         branch = `return ${value};\n`;
     } else {
         branch = 'return;\n';

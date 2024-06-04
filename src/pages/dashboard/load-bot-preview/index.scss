@@ -1,7 +1,3 @@
-@import './../../../styles/mixins.scss';
-@import './../../../styles/constants.scss';
-@import './../../../styles/devices.scss';
-
 @import './google-drive.scss';
 @import './delete-dialog.scss';
 @import './save-modal.scss';
@@ -475,7 +471,9 @@
 
         &__responsive {
             background: var(--general-main-1);
-            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
+            box-shadow:
+                0 0 2rem rgba(0, 0, 0, 0.05),
+                0 1.6rem 2rem rgba(0, 0, 0, 0.05);
             display: none;
             min-width: 15rem;
             position: absolute;

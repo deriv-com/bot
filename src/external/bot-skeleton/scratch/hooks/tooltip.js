@@ -4,7 +4,8 @@ window.Blockly.Tooltip.HOVER_MS = 50;
 
 window.Blockly.Tooltip.show_ = () => {
     let params;
-    window.Blockly.Tooltip.DIV = ((window.Blockly.Tooltip.poisonedElement_ = window.Blockly.Tooltip.element_), window.Blockly.Tooltip.DIV);
+    window.Blockly.Tooltip.DIV =
+        ((window.Blockly.Tooltip.poisonedElement_ = window.Blockly.Tooltip.element_), window.Blockly.Tooltip.DIV);
     if (!window.Blockly.Tooltip.blocked_) {
         window.Blockly.Tooltip.DIV.innerHTML = '';
         for (params = window.Blockly.Tooltip.element_.tooltip; typeof params === 'function'; ) params = params();
@@ -53,7 +54,10 @@ window.Blockly.Tooltip.show_ = () => {
         if (direction) {
             last_x = Math.max(window.Blockly.Tooltip.MARGINS - window.scrollX, last_x);
         }
-        if (last_x + window.Blockly.Tooltip.DIV.offsetWidth > client_width + window.scrollX - 2 * window.Blockly.Tooltip.MARGINS) {
+        if (
+            last_x + window.Blockly.Tooltip.DIV.offsetWidth >
+            client_width + window.scrollX - 2 * window.Blockly.Tooltip.MARGINS
+        ) {
             last_x = client_width - window.Blockly.Tooltip.DIV.offsetWidth - 2 * window.Blockly.Tooltip.MARGINS;
         }
         window.Blockly.Tooltip.DIV.style.top = `${last_y}px`;

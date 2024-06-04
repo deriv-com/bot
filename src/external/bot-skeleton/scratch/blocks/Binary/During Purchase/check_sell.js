@@ -27,7 +27,7 @@ window.Blockly.Blocks.check_sell = {
     restricted_parents: ['during_purchase'],
 };
 
-window.Blockly.JavaScript.check_sell = () => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.check_sell = () => {
     const code = 'Bot.isSellAvailable()';
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

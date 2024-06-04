@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_append = {
@@ -44,7 +45,7 @@ window.Blockly.Blocks.text_append = {
     },
 };
 
-window.Blockly.JavaScript.text_append = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_append = block => {
     const forceString = value => {
         const strRegExp = /^\s*'([^']|\\')*'\s*$/;
         if (strRegExp.test(value)) {
@@ -54,8 +55,16 @@ window.Blockly.JavaScript.text_append = block => {
     };
 
     // eslint-disable-next-line no-underscore-dangle
-    const varName = window.Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), window.Blockly.Variables.NAME_TYPE);
-    const value = window.Blockly.JavaScript.valueToCode(block, 'TEXT', window.Blockly.JavaScript.ORDER_NONE) || "''";
+    const varName = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
+    const value =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TEXT',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
 
     const code = `${varName} += ${forceString(value)};\n`;
     return code;

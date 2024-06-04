@@ -1,5 +1,4 @@
-import React from 'react';
-import { Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 
 export const helpers = {
     keep_current_contract: (

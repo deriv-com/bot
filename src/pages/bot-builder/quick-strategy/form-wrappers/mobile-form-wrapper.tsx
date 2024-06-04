@@ -5,8 +5,10 @@ import { observer } from 'mobx-react-lite';
 
 import { Button, Text } from '@deriv-com/ui';
 
+import SelectNative from '@/components/shared_ui/select-native';
+import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { localize, SelectNative, ThemedScrollbars } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
 
 import {
     rudderStackSendQsRunStrategyEvent,

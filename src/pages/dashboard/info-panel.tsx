@@ -3,9 +3,11 @@ import { observer } from 'mobx-react-lite';
 
 import { Modal, Text } from '@deriv-com/ui';
 
+import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { DesktopWrapper, Icon, MobileWrapper } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 import { SIDEBAR_INTRO } from './constants';
 

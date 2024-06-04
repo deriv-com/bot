@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
-import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
-import { observer as globalObserver } from '../../../../../utils/observer';
+
 import { LogTypes } from '../../../../../constants/messages';
+import { observer as globalObserver } from '../../../../../utils/observer';
+import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.loader = {
     init() {
@@ -35,7 +36,7 @@ window.Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -92,4 +93,4 @@ window.Blockly.Blocks.loader = {
     },
 };
 
-window.Blockly.JavaScript.loader = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.loader = () => {};

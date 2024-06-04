@@ -1,4 +1,6 @@
-import { Localize, localize, StaticUrl } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
+
+import StaticUrl from '@/components/shared_ui/static-url';
 
 export default {
     text: [

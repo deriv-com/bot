@@ -60,11 +60,16 @@ window.Blockly.Blocks.math_change = {
     },
 };
 
-window.Blockly.JavaScript.math_change = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_change = block => {
     const variable = block.getFieldValue('VAR');
     // eslint-disable-next-line no-underscore-dangle
-    const argument0 = window.Blockly.JavaScript.variableDB_.getName(variable, window.Blockly.Variables.NAME_TYPE);
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'DELTA', window.Blockly.JavaScript.ORDER_ADDITION) || '0';
+    const argument0 = window.Blockly.JavaScript.variableDB_.getName(variable, window.Blockly.Variables.CATEGORY_NAME);
+    const argument1 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'DELTA',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION
+        ) || '0';
     const code = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 
     return code;

@@ -24,4 +24,7 @@ window.Blockly.Blocks.epoch = {
     },
 };
 
-window.Blockly.JavaScript.epoch = () => ['Bot.getTime()', window.Blockly.JavaScript.ORDER_ATOMIC];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.epoch = () => [
+    'Bot.getTime()',
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

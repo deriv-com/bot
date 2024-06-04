@@ -3,7 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { StatisticsSummary } from '@/components/run-panel/run-panel';
 import { transaction_elements } from '@/constants/transactions';
 import { useStore } from '@/hooks/useStore';
-import { localize, MobileFullPageModal } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+
+import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';
 
 import MobileTransactionCards from './mobile-transaction-card';
 import { TRunPanelStore } from './transaction-details.types';

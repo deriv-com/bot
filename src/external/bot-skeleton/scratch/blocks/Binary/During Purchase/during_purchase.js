@@ -1,4 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
+
+import { removeExtraInput } from '../../../utils';
 import { sellContract } from '../../images';
 
 window.Blockly.Blocks.during_purchase = {
@@ -9,6 +11,7 @@ window.Blockly.Blocks.during_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -33,6 +36,14 @@ window.Blockly.Blocks.during_purchase = {
                     check: 'SellAtMarket',
                 },
             ],
+            args2: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: window.Blockly.Colours.RootBlock.colour,
             colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
@@ -48,10 +59,18 @@ window.Blockly.Blocks.during_purchase = {
             ),
         };
     },
+    onchange(event) {
+        if (
+            event.type === window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
+    },
 };
 
-window.Blockly.JavaScript.during_purchase = block => {
-    const stack = window.Blockly.JavaScript.statementToCode(block, 'DURING_PURCHASE_STACK');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.during_purchase = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DURING_PURCHASE_STACK');
 
     const code = `BinaryBotPrivateDuringPurchase = function BinaryBotPrivateDuringPurchase() {
         Bot.highlightBlock('${block.id}');

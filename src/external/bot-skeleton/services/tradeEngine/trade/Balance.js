@@ -1,4 +1,3 @@
-
 import { getFormattedText } from '@/utils/tmp/currency-helper';
 
 import DBotStore from '../../../scratch/dbot-store';

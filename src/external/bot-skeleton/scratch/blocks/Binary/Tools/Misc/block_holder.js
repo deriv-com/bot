@@ -39,4 +39,4 @@ window.Blockly.Blocks.block_holder = {
     },
 };
 
-window.Blockly.JavaScript.block_holder = () => '';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.block_holder = () => '';

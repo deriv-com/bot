@@ -5,8 +5,9 @@ import { observer } from 'mobx-react-lite';
 
 import { Button, Text } from '@deriv-com/ui';
 
+import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize, ThemedScrollbars } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 
 import {
     rudderStackSendQsEditStrategyEvent,

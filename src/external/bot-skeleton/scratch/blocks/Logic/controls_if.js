@@ -1,5 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
-import { plusIconDark, minusIconDark } from '../images';
+
+import { minusIconDark, plusIconDark } from '../images';
 
 window.Blockly.Blocks.controls_if = {
     init() {
@@ -8,7 +9,6 @@ window.Blockly.Blocks.controls_if = {
         this.else_statement_connection = null;
         this.else_if_count = 0;
         this.else_count = 0;
-
         this.jsonInit(this.definition());
         this.updateShape();
     },
@@ -16,6 +16,7 @@ window.Blockly.Blocks.controls_if = {
         return {
             message0: localize('if {{ condition }} then', { condition: '%1' }),
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'input_value',
@@ -25,10 +26,20 @@ window.Blockly.Blocks.controls_if = {
             ],
             args1: [
                 {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 150,
+                    height: 1,
+                },
+            ],
+            args2: [
+                {
                     type: 'input_statement',
                     name: 'DO0',
                 },
             ],
+            inputsInline: true,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -121,18 +132,24 @@ window.Blockly.Blocks.controls_if = {
         const new_mutation = new_mutation_dom && window.Blockly.Xml.domToText(new_mutation_dom);
 
         if (old_mutation !== new_mutation) {
-            const change_event = new window.Blockly.Events.BlockChange(this, 'mutation', null, old_mutation, new_mutation);
+            const change_event = new window.Blockly.Events.BlockChange(
+                this,
+                'mutation',
+                null,
+                old_mutation,
+                new_mutation
+            );
             window.Blockly.Events.fire(change_event);
 
             setTimeout(() => {
                 window.Blockly.Events.setGroup(group);
-                this.bumpNeighbours_();
+                this.bumpNeighbours();
                 window.Blockly.Events.setGroup(false);
             }, window.Blockly.BUMP_DELAY);
         }
 
         if (this.rendered) {
-            this.render();
+            this.renderEfficiently();
         }
 
         window.Blockly.Events.setGroup(false);
@@ -209,7 +226,9 @@ window.Blockly.Blocks.controls_if = {
         );
 
         this.initSvg();
-        this.render();
+        // kept this commented to fix backward compatibility issue
+        // need to fix this for mutliplier block
+        this.renderEfficiently();
     },
     storeConnections(arg = 0) {
         this.value_connections = [null];
@@ -291,19 +310,24 @@ window.Blockly.Blocks.controls_if = {
     },
 };
 
-window.Blockly.JavaScript.controls_if = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_if = block => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';
 
     do {
-        const condition = window.Blockly.JavaScript.valueToCode(block, `IF${n}`, window.Blockly.JavaScript.ORDER_NONE) || 'false';
+        const condition =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                `IF${n}`,
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            ) || 'false';
 
         // i.e. (else)? if { // code }
         const keyword = n > 0 ? 'else if' : 'if';
         code += `
         ${keyword} (${condition}) {
-            ${window.Blockly.JavaScript.statementToCode(block, `DO${n}`)}
+            ${window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, `DO${n}`)}
         }`;
         n++;
     } while (block.getInput(`IF${n}`));
@@ -311,7 +335,7 @@ window.Blockly.JavaScript.controls_if = block => {
     if (block.getInput('ELSE')) {
         code += `
         else {
-            ${window.Blockly.JavaScript.statementToCode(block, 'ELSE')}
+            ${window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'ELSE')}
         }`;
     }
 

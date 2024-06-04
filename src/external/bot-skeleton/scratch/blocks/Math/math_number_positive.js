@@ -17,4 +17,6 @@ window.Blockly.Blocks.math_number_positive = {
     },
 };
 
-window.Blockly.JavaScript.math_number_positive = window.Blockly.JavaScript.math_number;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_positive = block => {
+    return window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number(block);
+};

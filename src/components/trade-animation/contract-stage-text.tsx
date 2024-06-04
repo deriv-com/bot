@@ -1,6 +1,7 @@
 import React from 'react';
-import { Localize } from '@/utils/tmp/dummy';
+
 import { contract_stages } from '@/constants/contract-stage';
+import { Localize } from '@/utils/tmp/dummy';
 
 type TContractStageText = {
     contract_stage: number;

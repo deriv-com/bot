@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Dialog, Text } from '@deriv-com/ui';
+
 import { Localize, localize } from '@/utils/tmp/dummy';
 
 export type TStopBotModalContent = {

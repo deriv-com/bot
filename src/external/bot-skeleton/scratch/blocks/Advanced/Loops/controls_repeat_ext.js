@@ -21,6 +21,8 @@ window.Blockly.Blocks.controls_repeat_ext = {
                     name: 'DO',
                 },
             ],
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -45,24 +47,35 @@ window.Blockly.Blocks.controls_repeat_ext = {
     },
 };
 
-window.Blockly.JavaScript.controls_repeat_ext = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext = block => {
     let repeats;
     if (block.getField('TIMES')) {
         repeats = String(Number(block.getFieldValue('TIMES')));
     } else {
-        repeats = window.Blockly.JavaScript.valueToCode(block, 'TIMES', window.Blockly.JavaScript.ORDER_ATOMIC) || '0';
+        repeats =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'TIMES',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            ) || '0';
     }
 
-    const branch = window.Blockly.JavaScript.statementToCode(block, 'DO');
+    const branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     let code = '';
 
     // eslint-disable-next-line no-underscore-dangle
-    const loopVar = window.Blockly.JavaScript.variableDB_.getDistinctName('count', window.Blockly.Variables.NAME_TYPE);
+    const loopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        'count',
+        window.Blockly.Variables.CATEGORY_NAME
+    );
     let endVar = repeats;
 
     if (!repeats.match(/^\w+$/) && !window.Blockly.isNumber(repeats)) {
         // eslint-disable-next-line no-underscore-dangle
-        endVar = window.Blockly.JavaScript.variableDB_.getDistinctName('repeat_end', window.Blockly.Variables.NAME_TYPE);
+        endVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'repeat_end',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         code += `var ${endVar} = ${repeats};\n`;
     }
 

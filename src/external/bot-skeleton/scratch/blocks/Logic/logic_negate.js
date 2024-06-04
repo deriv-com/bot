@@ -13,6 +13,7 @@ window.Blockly.Blocks.logic_negate = {
                     name: 'BOOL',
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -35,9 +36,9 @@ window.Blockly.Blocks.logic_negate = {
     },
 };
 
-window.Blockly.JavaScript.logic_negate = block => {
-    const order = window.Blockly.JavaScript.ORDER_LOGICAL_NOT;
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'true';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_negate = block => {
+    const order = window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT;
+    const argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'true';
 
     const code = `!${argument0}`;
     return [code, order];

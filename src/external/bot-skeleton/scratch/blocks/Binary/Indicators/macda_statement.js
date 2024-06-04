@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.macda_statement = {
@@ -58,11 +59,11 @@ window.Blockly.Blocks.macda_statement = {
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };
 
-window.Blockly.JavaScript.macda_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.macda_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.NAME_TYPE
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const macd_field = block.getFieldValue('MACDFIELDS_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

@@ -25,4 +25,4 @@ window.Blockly.Blocks.sell_at_market = {
     restricted_parents: ['during_purchase'],
 };
 
-window.Blockly.JavaScript.sell_at_market = () => 'Bot.sellAtMarket();\n';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.sell_at_market = () => 'Bot.sellAtMarket();\n';

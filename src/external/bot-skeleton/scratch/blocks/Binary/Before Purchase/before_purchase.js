@@ -1,4 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
+
+import { removeExtraInput } from '../../../utils';
 import { purchase } from '../../images';
 
 window.Blockly.Blocks.before_purchase = {
@@ -10,6 +12,7 @@ window.Blockly.Blocks.before_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -34,12 +37,28 @@ window.Blockly.Blocks.before_purchase = {
                     check: 'Purchase',
                 },
             ],
+            args2: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: window.Blockly.Colours.RootBlock.colour,
             colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Specify contract type and purchase conditions.'),
             category: window.Blockly.Categories.Before_Purchase,
         };
+    },
+    onchange(event) {
+        if (
+            event.type === window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
     },
     meta() {
         return {
@@ -51,8 +70,8 @@ window.Blockly.Blocks.before_purchase = {
     },
 };
 
-window.Blockly.JavaScript.before_purchase = block => {
-    const stack = window.Blockly.JavaScript.statementToCode(block, 'BEFOREPURCHASE_STACK');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.before_purchase = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'BEFOREPURCHASE_STACK');
 
     const code = `BinaryBotPrivateBeforePurchase = function BinaryBotPrivateBeforePurchase() {
         Bot.highlightBlock('${block.id}');

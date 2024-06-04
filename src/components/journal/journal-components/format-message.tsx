@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/ui';
 
 import { LogTypes } from '@/external/bot-skeleton';
 import { formatMoney, getCurrencyDisplayCode } from '@/utils/tmp/currency-helper';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 
 import { TFormatMessageProps } from '../journal.types';
 

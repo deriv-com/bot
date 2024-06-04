@@ -53,13 +53,21 @@ window.Blockly.Blocks.controls_forEach = {
     },
 };
 
-window.Blockly.JavaScript.controls_forEach = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_forEach = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const variable0 = window.Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), window.Blockly.Variables.NAME_TYPE);
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'LIST', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || '[]';
+    const variable0 = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'LIST',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || '[]';
 
-    let branch = window.Blockly.JavaScript.statementToCode(block, 'DO');
-    branch = window.Blockly.JavaScript.addLoopTrap(branch, block.id);
+    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+    branch = window.Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
 
     let code = '';
 
@@ -67,12 +75,18 @@ window.Blockly.JavaScript.controls_forEach = block => {
     let listVar = argument0;
     if (!argument0.match(/^\w+$/)) {
         // eslint-disable-next-line no-underscore-dangle
-        listVar = window.Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_list`, window.Blockly.Variables.NAME_TYPE);
+        listVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            `${variable0}_list`,
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         code = `var ${listVar} = ${argument0};\n`;
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const indexVar = window.Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_list`, window.Blockly.Variables.NAME_TYPE);
+    const indexVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        `${variable0}_list`,
+        window.Blockly.Variables.CATEGORY_NAME
+    );
 
     code += `
     for (var ${indexVar} in ${listVar}) {

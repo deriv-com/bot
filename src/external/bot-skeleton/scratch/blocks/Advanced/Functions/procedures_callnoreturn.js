@@ -5,7 +5,6 @@ window.Blockly.Blocks.procedures_callnoreturn = {
         this.arguments = [];
         this.argument_var_models = [];
         this.previousDisabledState = false;
-
         this.jsonInit(this.definition());
     },
     /**
@@ -28,6 +27,7 @@ window.Blockly.Blocks.procedures_callnoreturn = {
                     name: 'TOPROW',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Special2.colour,
             colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
             colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
@@ -55,7 +55,7 @@ window.Blockly.Blocks.procedures_callnoreturn = {
      * @this window.Blockly.Block
      */
     onchange(event) {
-        if (!this.workspace || this.workspace.isFlyout) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_) {
             // Block is deleted or is in a flyout.
             return;
         }
@@ -71,7 +71,6 @@ window.Blockly.Blocks.procedures_callnoreturn = {
             // an empty definition block with the correct signature.
             const name = this.getProcedureCall();
             let def = window.Blockly.Procedures.getDefinition(name, this.workspace);
-
             if (
                 def &&
                 (def.type !== this.defType || JSON.stringify(def.arguments) !== JSON.stringify(this.arguments))
@@ -84,7 +83,6 @@ window.Blockly.Blocks.procedures_callnoreturn = {
                 this.data = def.id;
                 return;
             }
-
             window.Blockly.Events.setGroup(event.group);
             /**
              * Create matching definition block.
@@ -121,8 +119,8 @@ window.Blockly.Blocks.procedures_callnoreturn = {
 
             window.Blockly.Xml.domToWorkspace(xml, this.workspace);
             window.Blockly.Events.setGroup(false);
-
             const procedure_definition = window.Blockly.Procedures.getDefinition(name, this.workspace);
+
             this.data = procedure_definition.id;
         } else if (event.type === window.Blockly.Events.BLOCK_DELETE) {
             // Look for the case where a procedure definition has been deleted,
@@ -335,14 +333,19 @@ window.Blockly.Blocks.procedures_callnoreturn = {
     defType: 'procedures_defnoreturn',
 };
 
-window.Blockly.JavaScript.procedures_callnoreturn = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_callnoreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        window.Blockly.Procedures.NAME_TYPE
+        window.Blockly.Procedures.CATEGORY_NAME
     );
     const args = block.arguments.map(
-        (arg, i) => window.Blockly.JavaScript.valueToCode(block, `ARG${i}`, window.Blockly.JavaScript.ORDER_COMMA) || 'null'
+        (arg, i) =>
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                `ARG${i}`,
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            ) || 'null'
     );
 
     const code = `${functionName}(${args.join(', ')});\n`;

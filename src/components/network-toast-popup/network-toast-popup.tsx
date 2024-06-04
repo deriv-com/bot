@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { MobileWrapper, Toast } from '@deriv-com/ui';
+import { Toast } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
 

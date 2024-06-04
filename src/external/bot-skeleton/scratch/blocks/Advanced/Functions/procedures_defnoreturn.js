@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+
+import { removeExtraInput } from '../../../utils';
 import { plusIconLight } from '../../images';
-import { isDarkRgbColour } from '../../../utils';
 
 window.Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -8,7 +9,6 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         this.argument_var_models = [];
         this.is_adding = false;
         this.timeout_id;
-
         this.jsonInit(this.definition());
 
         // Enforce unique procedure names
@@ -18,9 +18,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         // Render a ➕-icon for adding parameters
         const fieldImage = new window.Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
 
-        const dropdown_path =
-            this.workspace.options.pathToMedia +
-            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new window.Blockly.FieldImage(
             dropdown_path,
@@ -54,6 +52,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
                     text: '',
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Special2.colour,
             colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
             colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
@@ -76,11 +75,15 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      * @this window.Blockly.Block
      */
     onchange(event) {
-        const allowedEvents = [window.Blockly.Events.BLOCK_DELETE, window.Blockly.Events.BLOCK_CREATE, window.Blockly.Events.BLOCK_CHANGE];
-        if (!this.workspace || this.workspace.isFlyout || !allowedEvents.includes(event.type)) {
+        const allowedEvents = [
+            window.Blockly.Events.BLOCK_DELETE,
+            window.Blockly.Events.BLOCK_CREATE,
+            window.Blockly.Events.BLOCK_CHANGE,
+        ];
+
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || !allowedEvents.includes(event.type)) {
             return;
         }
-
         if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
             // Sync names between definition- and execution-block
             if (event.blockId === this.id && event.name === 'NAME') {
@@ -88,6 +91,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
                     block.setFieldValue(event.newValue, 'NAME');
                 });
             }
+            removeExtraInput(this);
         }
     },
     /**
@@ -95,7 +99,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      * @this window.Blockly.Block
      */
     onAddClick() {
-        if (this.is_adding || this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.is_adding || this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -105,9 +109,14 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         // Wrap in setTimeout so block doesn't stick to mouse (window.Blockly.Events.END_DRAG event isn't blocked).
         this.timeout_id = setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
-            window.Blockly.prompt(promptMessage, '', paramName => {
+            window.Blockly.dialog.prompt(promptMessage, '', paramName => {
                 if (paramName) {
-                    const variable = window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
+                    const variable = window.Blockly.Variables.getOrCreateVariablePackage(
+                        this.workspace,
+                        null,
+                        paramName,
+                        ''
+                    );
                     if (variable) {
                         this.arguments.push(paramName);
                         this.argument_var_models.push(variable);
@@ -118,7 +127,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
                         this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);
                             block.initSvg();
-                            block.render(false);
+                            block.renderEfficiently();
                         });
                     }
                 }
@@ -184,7 +193,6 @@ window.Blockly.Blocks.procedures_defnoreturn = {
 
         this.argument_var_models.forEach((arg, i) => {
             const parameter = document.createElement('arg');
-
             parameter.setAttribute('name', arg.name);
             parameter.setAttribute('varid', arg.getId());
 
@@ -214,7 +222,12 @@ window.Blockly.Blocks.procedures_defnoreturn = {
             if (childNode.nodeName.toLowerCase() === 'arg') {
                 const var_name = childNode.getAttribute('name');
                 const var_id = childNode.getAttribute('varid') || childNode.getAttribute('varId');
-                const variable = window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, var_id, var_name, '');
+                const variable = window.Blockly.Variables.getOrCreateVariablePackage(
+                    this.workspace,
+                    var_id,
+                    var_name,
+                    ''
+                );
 
                 this.arguments.push(var_name);
 
@@ -275,7 +288,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      * @this window.Blockly.Block
      */
     customContextMenu(options) {
-        if (this.isInFlyout) {
+        if (window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
         // Add option to create caller.
@@ -319,14 +332,14 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     callType: 'procedures_callnoreturn',
 };
 
-window.Blockly.JavaScript.procedures_defnoreturn = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        window.Blockly.Procedures.NAME_TYPE
+        window.Blockly.Procedures.CATEGORY_NAME
     );
 
-    let branch = window.Blockly.JavaScript.statementToCode(block, 'STACK');
+    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'STACK');
 
     if (window.Blockly.JavaScript.STATEMENT_PREFIX) {
         const id = block.id.replace(/\$/g, '$$$$'); // Issue 251.
@@ -342,17 +355,23 @@ window.Blockly.JavaScript.procedures_defnoreturn = block => {
         branch = window.Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g, `'${block.id}'`) + branch;
     }
 
-    let returnValue = window.Blockly.JavaScript.valueToCode(block, 'RETURN', window.Blockly.JavaScript.ORDER_NONE) || '';
+    let returnValue =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'RETURN',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || '';
     if (returnValue) {
         returnValue = `${window.Blockly.JavaScript.INDENT}return ${returnValue};\n`;
     }
 
     const args = block.arguments.map(
-        argumentName => window.Blockly.JavaScript.variableDB_.getName(argumentName, window.Blockly.Variables.NAME_TYPE) // eslint-disable-line no-underscore-dangle
+        argumentName =>
+            window.Blockly.JavaScript.variableDB_.getName(argumentName, window.Blockly.Variables.CATEGORY_NAME) // eslint-disable-line no-underscore-dangle
     );
 
     // eslint-disable-next-line no-underscore-dangle
-    const code = window.Blockly.JavaScript.scrub_(
+    const code = window.Blockly.JavaScript.javascriptGenerator.scrub_(
         block,
         `
     function ${functionName}(${args.join(', ')}) {
@@ -363,6 +382,6 @@ window.Blockly.JavaScript.procedures_defnoreturn = block => {
 
     // Add % so as not to collide with helper functions in definitions list.
     // eslint-disable-next-line no-underscore-dangle
-    window.Blockly.JavaScript.definitions_[`%${functionName}`] = code;
+    window.Blockly.JavaScript.javascriptGenerator.definitions_[`%${functionName}`] = code;
     return null;
 };

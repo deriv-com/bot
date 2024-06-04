@@ -42,7 +42,7 @@ window.Blockly.Blocks.math_number = {
     },
 };
 
-window.Blockly.JavaScript.math_number = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number = block => {
     const code = block.getFieldValue('NUM');
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -22,6 +22,7 @@ window.Blockly.Blocks.math_modulo = {
                     check: 'Number',
                 },
             ],
+            inputsInline: true,
             output: 'Number',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -45,10 +46,20 @@ window.Blockly.Blocks.math_modulo = {
     },
 };
 
-window.Blockly.JavaScript.math_modulo = block => {
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'DIVIDEND', window.Blockly.JavaScript.ORDER_MODULUS) || '0';
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'DIVISOR', window.Blockly.JavaScript.ORDER_MODULUS) || '0';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_modulo = block => {
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'DIVIDEND',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+        ) || '0';
+    const argument1 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'DIVISOR',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+        ) || '0';
 
     const code = `${argument0} % ${argument1}`;
-    return [code, window.Blockly.JavaScript.ORDER_MODULUS];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS];
 };

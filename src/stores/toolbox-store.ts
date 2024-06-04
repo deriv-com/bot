@@ -49,7 +49,7 @@ export default class ToolboxStore {
     onMount = (toolbox_ref: React.RefObject<HTMLDivElement>) => {
         this.adjustWorkspace();
 
-        this.toolbox_dom = window.Blockly.Xml.textToDom(toolbox_ref?.current);
+        this.toolbox_dom = window.Blockly.utils.xml.textToDom(toolbox_ref?.current);
         const el = [...(this.toolbox_dom?.childNodes ?? [])].find(
             el => el instanceof HTMLElement && el.tagName === 'examples'
         );
@@ -168,7 +168,12 @@ export default class ToolboxStore {
 
         // Dynamic categories
         if (typeof dynamic === 'string') {
-            const fnToApply = workspace.getToolboxCategoryCallback(dynamic);
+            let fnToApply = workspace.getToolboxCategoryCallback(dynamic);
+            //we needed to add this check since we are not using
+            //blocky way of defining vaiables
+            if (dynamic === 'VARIABLE') {
+                fnToApply = Blockly.DataCategory;
+            }
             xml_list = fnToApply(workspace);
         }
         return xml_list;

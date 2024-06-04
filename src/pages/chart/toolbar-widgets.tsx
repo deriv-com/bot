@@ -1,4 +1,4 @@
-import { isDesktopOs } from '@/utils/tmp/os-detect';
+import { isDesktop } from '@/components/shared';
 
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 
@@ -12,8 +12,7 @@ const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolb
     return (
         <ToolbarWidget position={position}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {/* TODO: fix */}
-            {isDesktopOs() && (
+            {isDesktop() && (
                 <>
                     <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
                     <Views

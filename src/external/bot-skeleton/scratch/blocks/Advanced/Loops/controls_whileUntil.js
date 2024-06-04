@@ -29,6 +29,7 @@ window.Blockly.Blocks.controls_whileUntil = {
                     name: 'DO',
                 },
             ],
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -51,20 +52,28 @@ window.Blockly.Blocks.controls_whileUntil = {
     },
 };
 
-window.Blockly.JavaScript.controls_whileUntil = block => {
-    const branch = window.Blockly.JavaScript.statementToCode(block, 'DO');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_whileUntil = block => {
+    const branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
-    const order = until ? window.Blockly.JavaScript.ORDER_LOGICAL_NOT : window.Blockly.JavaScript.ORDER_NONE;
-    let argument0 = window.Blockly.JavaScript.valueToCode(block, 'BOOL', order) || 'false';
+    const order = until
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    let argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'false';
 
     if (until) {
         argument0 = `!${argument0}`;
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const maxLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', window.Blockly.Variables.NAME_TYPE);
+    const maxLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        'maxLoops',
+        window.Blockly.Variables.CATEGORY_NAME
+    );
     // eslint-disable-next-line no-underscore-dangle
-    const currentLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName('currentLoop', window.Blockly.Variables.NAME_TYPE);
+    const currentLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        'currentLoop',
+        window.Blockly.Variables.CATEGORY_NAME
+    );
 
     return `
         var ${maxLoopVar} = 10000;

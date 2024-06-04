@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.bb_statement = {
@@ -55,11 +56,11 @@ window.Blockly.Blocks.bb_statement = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.END_DRAG) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
                 if (!this.required_child_blocks.includes(block.type)) {
@@ -72,11 +73,11 @@ window.Blockly.Blocks.bb_statement = {
     },
 };
 
-window.Blockly.JavaScript.bb_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.bb_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.NAME_TYPE
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const bb_result = block.getFieldValue('BBRESULT_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

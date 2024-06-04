@@ -56,8 +56,11 @@ window.Blockly.Blocks.variables_get = {
     },
 };
 
-window.Blockly.JavaScript.variables_get = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.variables_get = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const code = window.Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), window.Blockly.Variables.NAME_TYPE);
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    const code = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

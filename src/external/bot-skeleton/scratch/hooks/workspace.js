@@ -1,13 +1,12 @@
 import DBotStore from '../dbot-store';
 import PendingPromise from '../../utils/pending-promise';
 
-window.Blockly.Workspace.prototype.wait_events = [];
-
+Blockly.Workspace.prototype.wait_events = [];
 /**
  * Clear the undo/redo stacks.
  * deriv-bot: Sync undo/redo stack with our toolbar store.
  */
-window.Blockly.Workspace.prototype.clearUndo = function () {
+Blockly.Workspace.prototype.clearUndo = function () {
     this.undoStack_.length = 0;
     this.redoStack_.length = 0;
 
@@ -17,15 +16,15 @@ window.Blockly.Workspace.prototype.clearUndo = function () {
     toolbar.setHasUndoStack();
 
     // Stop any events already in the firing queue from being undoable.
-    window.Blockly.Events.clearPendingUndo();
+    Blockly.Events.clearPendingUndo();
 };
 
 /**
  * Fire a change event.
  * deriv-bot: Sync undo/redo stack with our toolbar store.
- * @param {!window.Blockly.Events.Abstract} event Event to fire.
+ * @param {!Blockly.Events.Abstract} event Event to fire.
  */
-window.Blockly.Workspace.prototype.fireChangeListener = function (event) {
+Blockly.Workspace.prototype.fireChangeListener = function (event) {
     if (event.recordUndo) {
         this.undoStack_.push(event);
         this.redoStack_.length = 0;
@@ -41,22 +40,22 @@ window.Blockly.Workspace.prototype.fireChangeListener = function (event) {
     }
 
     // Copy listeners in case a listener attaches/detaches itself.
-    const current_listeners = this.listeners_.slice();
+    const current_listeners = this.listeners.slice();
 
     current_listeners.forEach(listener => {
         listener(event);
     });
     /**
      * Gets a trade definition block instance and returns it.
-     * @returns {window.Blockly.Block|null} The trade definition or null.
+     * @returns {Blockly.Block|null} The trade definition or null.
      */
 };
 
-window.Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
+Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
     return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
 };
 
-window.Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_event_type = null) {
+Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_event_type = null) {
     const event_promise = new PendingPromise();
 
     if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
@@ -70,7 +69,7 @@ window.Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_e
     return event_promise;
 };
 
-window.Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
+Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
     const { block_type, event_type, timeout } = options;
     const promise = new PendingPromise();
 
@@ -87,7 +86,7 @@ window.Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
     return promise;
 };
 
-window.Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) {
+Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) {
     this.wait_events.forEach((wait_event, idx) => {
         if (!event.blockId) {
             return;
@@ -109,9 +108,31 @@ window.Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) 
     });
 };
 
-window.Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
+Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
     return this.getAllBlocks(is_ordered).reduce((fields, block) => {
         block.inputList.forEach(input => fields.push(...input.fieldRow));
         return fields;
     }, []);
+};
+
+/* eslint-disble */
+/**
+ * Create a main workspace and add it to the SVG.
+ * @param {!Element} svg SVG element with pattern defined.
+ * @param {!Blockly.Options} options Dictionary of options.
+ * @param {!Blockly.BlockDragSurfaceSvg} blockDragSurface Drag surface SVG
+ *     for the blocks.
+ * @param {!Blockly.WorkspaceDragSurfaceSvg} workspaceDragSurface Drag surface
+ *     SVG for the workspace.
+ * @return {!Blockly.Workspace} Newly created main workspace.
+ * @private
+ */
+
+Blockly.createVirtualWorkspace_ = function (fragment, options, blockDragSurface, workspaceDragSurface) {
+    options.parentWorkspace = null;
+    const mainWorkspace = new Blockly.WorkspaceSvg(options, blockDragSurface, workspaceDragSurface);
+    mainWorkspace.scale = options.zoomOptions.startScale;
+    fragment.appendChild(mainWorkspace.createDom('blocklyMainBackground'));
+
+    return mainWorkspace;
 };

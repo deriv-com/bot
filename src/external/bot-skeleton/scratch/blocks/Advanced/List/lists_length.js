@@ -13,6 +13,7 @@ window.Blockly.Blocks.lists_length = {
                     name: 'VALUE',
                 },
             ],
+            inputsInline: true,
             output: 'Number',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -35,9 +36,14 @@ window.Blockly.Blocks.lists_length = {
     },
 };
 
-window.Blockly.JavaScript.lists_length = block => {
-    const list = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_MEMBER) || '[]';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_length = block => {
+    const list =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || '[]';
 
     const code = `${list}.length`;
-    return [code, window.Blockly.JavaScript.ORDER_MEMBER];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
 };

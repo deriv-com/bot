@@ -1,10 +1,13 @@
 import { observer } from 'mobx-react-lite';
 
+import { localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from '@/utils/download';
-import { Icon, localize, Popover } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
+
+import Popover from '../shared_ui/popover';
 
 type TDownloadProps = {
     tab: string;

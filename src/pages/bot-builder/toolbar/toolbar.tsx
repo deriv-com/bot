@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Dialog } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../../../utils';
 
 window.Blockly.Blocks.console = {
@@ -52,11 +53,14 @@ window.Blockly.Blocks.console = {
     },
 };
 
-window.Blockly.JavaScript.console = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
-        window.Blockly.JavaScript.valueToCode(block, 'MESSAGE', window.Blockly.JavaScript.ORDER_ATOMIC) ||
-        `"${localize('<empty message>')}"`;
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'MESSAGE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || `"${localize('<empty message>')}"`;
 
     const code = `Bot.console({ type: '${console_type}', message: ${message}});\n`;
     return code;

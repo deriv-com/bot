@@ -1,9 +1,13 @@
+import DOMPurify from 'dompurify';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { setColors } from '@/external/bot-skeleton';
+
 import { TStores } from '@deriv/stores/types';
+
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from '@/constants/load-modal';
+import { setColors } from '@/external/bot-skeleton';
+
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
 import {
@@ -21,8 +25,8 @@ import {
     TQuickStrategyContent,
     TUserGuideContent,
 } from '../pages/tutorials/tutorials.types';
+
 import RootStore from './root-store';
-import DOMPurify from 'dompurify';
 
 type TDialogOptions = {
     title?: string;
@@ -175,7 +179,7 @@ export default class DashboardStore implements IDashboardStore {
         const refreshBotBuilderTheme = () => {
             Blockly.derivWorkspace.asyncClear();
             Blockly.Xml.domToWorkspace(
-                Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
                 Blockly.derivWorkspace
             );
         };
@@ -401,7 +405,7 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     onZoomInOutClick = (is_zoom_in: boolean): void => {
-        const workspace = Blockly.getMainWorkspace();
+        const workspace = window.Blockly.getMainWorkspace();
         const metrics = workspace.getMetrics();
         const addition = is_zoom_in ? 1 : -1;
 

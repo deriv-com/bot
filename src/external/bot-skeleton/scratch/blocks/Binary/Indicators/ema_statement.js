@@ -50,11 +50,11 @@ window.Blockly.Blocks.ema_statement = {
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };
 
-window.Blockly.JavaScript.ema_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ema_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.NAME_TYPE
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const input = block.childValueToCode('input_list', 'INPUT_LIST');
     const period = block.childValueToCode('period', 'PERIOD');

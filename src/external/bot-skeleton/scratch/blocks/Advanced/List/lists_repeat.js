@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../../utils';
 
 window.Blockly.Blocks.lists_repeat = {
@@ -21,6 +22,7 @@ window.Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
+            inputsInline: true,
             output: null,
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -44,9 +46,9 @@ window.Blockly.Blocks.lists_repeat = {
     },
 };
 
-window.Blockly.JavaScript.lists_repeat = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const function_name = window.Blockly.JavaScript.provideFunction_('listsRepeat', [
+    const function_name = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('listsRepeat', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(value, n) {
             var array = [];
@@ -57,9 +59,19 @@ window.Blockly.JavaScript.lists_repeat = block => {
         }`,
     ]);
 
-    const element = window.Blockly.JavaScript.valueToCode(block, 'ITEM', window.Blockly.JavaScript.ORDER_COMMA) || 'null';
-    const repeat_count = window.Blockly.JavaScript.valueToCode(block, 'NUM', window.Blockly.JavaScript.ORDER_COMMA) || '0';
+    const element =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'ITEM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || 'null';
+    const repeat_count =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

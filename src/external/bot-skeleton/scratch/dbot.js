@@ -3,15 +3,14 @@ import { config } from '../constants/config';
 import { api_base } from '../services/api/api-base';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
-import { compareXml, observer as globalObserver, setColors } from '../utils';
+import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { isDbotRTL } from '../utils/workspace';
 
 import main_xml from './xml/main.xml';
+import { loadBlockly } from './blockly';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
-
-import './blockly';
 
 class DBot {
     constructor() {
@@ -25,15 +24,15 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
+        await loadBlockly(is_dark_mode);
+        console.log('test load Blockly done');
         const recent_files = await getSavedWorkspaces();
-
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
-        setColors(true);
-        Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
-            if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        window.Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
+            if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
                 return;
             }
 
@@ -41,7 +40,7 @@ class DBot {
 
             const { name, type } = event;
 
-            if (type === Blockly.Events.BLOCK_CHANGE) {
+            if (type === window.Blockly.Events.BLOCK_CHANGE) {
                 if (name === 'SYMBOL_LIST' || name === 'TRADETYPECAT_LIST') {
                     const { contracts_for } = ApiHelpers.instance;
                     const top_parent_block = this.getTopParent();
@@ -93,7 +92,7 @@ class DBot {
         };
 
         return new Promise((resolve, reject) => {
-            __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
+            window.__webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
@@ -114,11 +113,14 @@ class DBot {
                 if (!el_scratch_div) {
                     return;
                 }
+                console.log('test loading blockly start');
                 this.workspace = window.Blockly.inject(el_scratch_div, {
-                    media: '/media/',
+                    media: `${window.__webpack_public_path__}media/`,
+                    renderer: 'zelos',
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
                     scrollbars: true,
+                    theme: window.Blockly.Themes.zelos_renderer,
                 });
 
                 this.workspace.RTL = isDbotRTL();
@@ -129,8 +131,8 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                    if (event.type === 'endDrag' && !is_mobile) validateErrorOnBlockDelete();
-                    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+                    if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
+                    if (event.type == window.Blockly.Events.BLOCK_CHANGE) {
                         const block = this.workspace.getBlockById(event.blockId);
                         if (block && event.element == 'collapsed') {
                             block.contextMenu = false;
@@ -138,12 +140,12 @@ class DBot {
                     }
                 });
 
-                Blockly.derivWorkspace = this.workspace;
+                window.Blockly.derivWorkspace = this.workspace;
 
-                const varDB = new Blockly.Names('window');
-                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+                const varDB = new window.Blockly.Names('window');
+                varDB.variableMap = window.Blockly.derivWorkspace.getVariableMap();
 
-                Blockly.JavaScript.variableDB_ = varDB;
+                window.Blockly.JavaScript.variableDB_ = varDB;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -151,30 +153,33 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
                 // Push main.xml to workspace and reset the undo stack.
-                this.workspace.current_strategy_id = Blockly.utils.genUid();
-                Blockly.derivWorkspace.strategy_to_load = main_xml;
-                Blockly.getMainWorkspace().strategy_to_load = main_xml;
-                Blockly.getMainWorkspace().RTL = isDbotRTL();
+                this.workspace.current_strategy_id = window.Blockly.utils.idGenerator.genUid();
+
+                window.Blockly.derivWorkspace.strategy_to_load = main_xml;
+                window.Blockly.getMainWorkspace().strategy_to_load = main_xml;
+                window.Blockly.getMainWorkspace().RTL = isDbotRTL();
+
                 let file_name = config.default_file_name;
-                if (recent_files && recent_files.length) {
-                    const latest_file = recent_files[0];
-                    Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
-                    Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
-                    file_name = latest_file.name;
-                    Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-                    Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
-                }
+                // if (recent_files && recent_files.length) {
+                //     const latest_file = recent_files[0];
+                //     window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
+                //     window.Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
+                //     file_name = latest_file.name;
+                //     window.Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                //     window.Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
+                // }
 
                 const event_group = `dbot-load${Date.now()}`;
-                Blockly.Events.setGroup(event_group);
-                Blockly.Xml.domToWorkspace(
-                    Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.Events.setGroup(event_group);
+                window.Blockly.Xml.domToWorkspace(
+                    window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
+                console.log('test loading domToWorkspace done', main_xml);
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
-                this.workspace.cleanUp(0, is_mobile ? 60 : 56);
+                //this.workspace.cleanUp(0, is_mobile ? 60 : 56);
                 this.workspace.clearUndo();
 
                 window.dispatchEvent(new Event('resize'));
@@ -199,7 +204,7 @@ class DBot {
             )?.[0];
             if (stored_strategy?.xml) {
                 const stored_strategy_xml = stored_strategy?.xml;
-                const current_xml = Blockly.Xml.domToText(current_xml_dom);
+                const current_xml = window.Blockly.Xml.domToText(current_xml_dom);
                 const is_same_strategy = compareXml(stored_strategy_xml, current_xml);
                 if (is_same_strategy) {
                     return false;
@@ -212,7 +217,7 @@ class DBot {
     /** Saves the current workspace to local storage
      * and update saved status if strategy changes  */
     async saveRecentWorkspace() {
-        const current_xml_dom = this?.workspace ? Blockly?.Xml?.workspaceToDom(this.workspace) : null;
+        const current_xml_dom = this?.workspace ? window.Blockly?.Xml?.workspaceToDom(this.workspace) : null;
         try {
             const recent_files = await getSavedWorkspaces();
             if (current_xml_dom && this.isStrategyUpdated(current_xml_dom, recent_files)) {
@@ -295,7 +300,7 @@ class DBot {
                     }
                     if(typeof(list[i]) == 'number'){
                         final_list.push(list[i]);   
-                                  	
+                                  
                     }
                 }
                 return final_list;
@@ -321,7 +326,7 @@ class DBot {
                 }
             }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-            ${Blockly.JavaScript.workspaceToCode(this.workspace)}
+            ${window.Blockly.JavaScript.javascriptGenerator.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
@@ -342,7 +347,9 @@ class DBot {
                 if (!BinaryBotPrivateRun(BinaryBotPrivateAfterPurchase)) {
                     break;
                 }
-            }`;
+            }
+            
+            `;
     }
 
     /**
@@ -382,8 +389,8 @@ class DBot {
      */
     // eslint-disable-next-line class-methods-use-this
     unselectBlocks() {
-        if (Blockly.selected) {
-            Blockly.selected.unselect();
+        if (window.Blockly.selected) {
+            window.Blockly.selected.unselect();
         }
         return true;
     }
@@ -392,10 +399,11 @@ class DBot {
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
+        const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
         const top_blocks = this.workspace.getTopBlocks();
 
         top_blocks.forEach(block => {
-            if (!block.isMainBlock() && !block.isIndependentBlock()) {
+            if (!isMainBlock() && !block.isIndependentBlock()) {
                 this.disableBlocksRecursively(block);
             }
         });
@@ -403,11 +411,22 @@ class DBot {
         return true;
     }
 
+    // getDiv() {
+    //     return null;
+    // }
+    // setDisabled(isDisabled) {
+    //     this.isDisabled_ = isDisabled;
+    //     this.getDiv().setAttribute('disabled', `${isDisabled}`);
+    //     isDisabled
+    //         ? this.getDiv().setAttribute('disabled', 'true')
+    //         : this.getDiv().removeAttribute('disabled');
+    // }
+
     /**
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
-        block.setDisabled(true);
+        //this.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
         }
@@ -479,20 +498,20 @@ class DBot {
             return;
         }
 
-        Blockly.JavaScript.init(this.workspace);
+        window.Blockly.JavaScript.javascriptGenerator.init(this.workspace);
 
         if (force_check) {
-            Blockly.hideChaff(false);
+            window.Blockly.hideChaff(false);
         }
 
-        const isGlobalEndDragEvent = () => event.type === Blockly.Events.END_DRAG;
-        const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
-        const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
+        const isGlobalEndDragEvent = () => event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart;
+        const isGlobalDeleteEvent = () => event.type === window.Blockly.Events.BLOCK_DELETE;
+        const isGlobalCreateEvent = () => event.type === window.Blockly.Events.BLOCK_CREATE;
         const isClickEvent = () =>
-            event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
-        const isChangeEvent = b => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+            event.type === window.Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
+        const isChangeEvent = b => event.type === window.Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
         const isChangeInMyInputs = b => {
-            if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
                 return b.inputList.some(input => {
                     if (input.connection) {
                         const target_block = input.connection.targetBlock();
@@ -504,7 +523,7 @@ class DBot {
             return false;
         };
         const isParentEnabledEvent = b => {
-            if (event.type === Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
+            if (event.type === window.Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
                 let parent_block = b.getParent();
 
                 while (parent_block !== null) {
@@ -550,7 +569,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names = Object.keys(required_inputs_object);
                 const should_highlight = required_input_names.some(input_name => {
-                    const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
+                    const is_selected = window.Blockly.selected === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 
                     if (is_selected || is_disabled) {
@@ -571,8 +590,12 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.ORDER_ATOMIC;
-                        const value = Blockly.JavaScript.valueToCode(block, input_name, order);
+                        const order = window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
+                        const value = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                            block,
+                            input_name,
+                            order
+                        );
                         const inputValidatorFn = required_inputs_object[input_name];
 
                         // If a custom validator was supplied, use this to determine whether
@@ -594,7 +617,7 @@ class DBot {
                     block.removeSelect();
                 }
 
-                block.setErrorHighlighted(should_highlight, block.error_message || undefined);
+                // block.setErrorHighlighted(should_highlight, block.error_message || undefined);
 
                 // Automatically expand blocks that have been highlighted.
                 if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {

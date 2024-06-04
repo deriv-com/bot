@@ -1,4 +1,4 @@
-import { getCurrencyDisplayCode } from '@/utils/tmp/currency-helper';
+import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 
 import { config } from '../../../../constants/config';
@@ -45,12 +45,12 @@ window.Blockly.Blocks.multiplier_stop_loss = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
         if (
             (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === window.Blockly.Events.END_DRAG
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
         }
@@ -72,4 +72,4 @@ window.Blockly.Blocks.multiplier_stop_loss = {
     },
 };
 
-window.Blockly.JavaScript.multiplier_stop_loss = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_stop_loss = () => {};

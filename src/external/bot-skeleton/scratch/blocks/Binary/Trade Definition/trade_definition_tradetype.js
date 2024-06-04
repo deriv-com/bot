@@ -31,4 +31,4 @@ window.Blockly.Blocks.trade_definition_tradetype = {
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 
-window.Blockly.JavaScript.trade_definition_tradetype = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradetype = () => {};

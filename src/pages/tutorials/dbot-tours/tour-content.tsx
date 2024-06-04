@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { Localize, localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Localize, localize } from '@/utils/tmp/dummy';
 
 import { getImageLocation, getUrlBase } from '../../../public-path';
 

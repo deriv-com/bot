@@ -1,9 +1,9 @@
 import { getRoundedNumber } from '@/utils/tmp/currency-helper';
 
 import { api_base } from '../../api/api-base';
-import { contract as broadcastContract,contractStatus } from '../utils/broadcast';
+import { contract as broadcastContract, contractStatus } from '../utils/broadcast';
 
-import { openContractReceived,sell } from './state/actions';
+import { openContractReceived, sell } from './state/actions';
 
 export default Engine =>
     class OpenContract extends Engine {

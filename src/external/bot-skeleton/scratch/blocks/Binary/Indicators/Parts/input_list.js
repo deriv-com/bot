@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.input_list = {
@@ -23,7 +24,7 @@ window.Blockly.Blocks.input_list = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -36,7 +37,7 @@ window.Blockly.Blocks.input_list = {
 
         if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             setParentId();
-        } else if (event.type === window.Blockly.Events.END_DRAG) {
+        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             setParentId();
 
             const surround_parent = this.getSurroundParent();
@@ -79,4 +80,4 @@ window.Blockly.Blocks.input_list = {
     },
 };
 
-window.Blockly.JavaScript.input_list = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.input_list = () => {};

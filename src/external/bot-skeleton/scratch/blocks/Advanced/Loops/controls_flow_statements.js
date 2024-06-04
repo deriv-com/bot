@@ -17,6 +17,7 @@ window.Blockly.Blocks.controls_flow_statements = {
                     ],
                 },
             ],
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -38,7 +39,7 @@ window.Blockly.Blocks.controls_flow_statements = {
     },
 };
 
-window.Blockly.JavaScript.controls_flow_statements = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_flow_statements = block => {
     const keyword = block.getFieldValue('FLOW') === 'BREAK' ? 'break' : 'continue';
     return `${keyword};\n`;
 };

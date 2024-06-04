@@ -10,9 +10,7 @@ const Index = ({ sidebar_item }: TIntroCard) => {
     return (
         <div className='db-sidebar__card' key={label}>
             <h1>{label}</h1>
-            {content?.map(text => (
-                <p key={`sidebar-tour${text}`}>{text}</p>
-            ))}
+            {content?.map(text => <p key={`sidebar-tour${text}`}>{text}</p>)}
         </div>
     );
 };

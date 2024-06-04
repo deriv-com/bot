@@ -47,12 +47,16 @@ window.Blockly.Blocks.todatetime = {
     },
 };
 
-window.Blockly.JavaScript.todatetime = block => {
-    const timestamp = window.Blockly.JavaScript.valueToCode(block, 'TIMESTAMP', window.Blockly.JavaScript.ORDER_ATOMIC);
+window.Blockly.JavaScript.javascriptGenerator.forBlock.todatetime = block => {
+    const timestamp = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'TIMESTAMP',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    );
     const invalid_timestamp = `${localize('Invalid timestamp')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
-    const function_name = window.Blockly.JavaScript.provideFunction_('timestampToDateString', [
+    const function_name = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('timestampToDateString', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
             var datetime = new Date(timestamp * 1000);
@@ -90,5 +94,5 @@ window.Blockly.JavaScript.todatetime = block => {
     ]);
 
     const code = `${function_name}(${timestamp})`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

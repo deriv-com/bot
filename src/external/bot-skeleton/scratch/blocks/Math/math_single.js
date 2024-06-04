@@ -48,26 +48,41 @@ window.Blockly.Blocks.math_single = {
     },
 };
 
-window.Blockly.JavaScript.math_single = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
     const operator = block.getFieldValue('OP');
 
     let code, arg;
 
     if (operator === 'NEG') {
         // Negation is a special case given its different operator precedence.
-        arg = window.Blockly.JavaScript.valueToCode(block, 'NUM', window.Blockly.JavaScript.ORDER_UNARY_NEGATION) || '0';
+        arg =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION
+            ) || '0';
         if (arg[0] === '-') {
             // --3 is not legal in JS
             arg = ` ${arg}`;
         }
         code = `-${arg}`;
-        return [code, window.Blockly.JavaScript.ORDER_UNARY_NEGATION];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION];
     }
 
     if (['SIN', 'COS', 'TAN'].includes(operator)) {
-        arg = window.Blockly.JavaScript.valueToCode(block, 'NUM', window.Blockly.JavaScript.ORDER_DIVISION) || '0';
+        arg =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION
+            ) || '0';
     } else {
-        arg = window.Blockly.JavaScript.valueToCode(block, 'NUM', window.Blockly.JavaScript.ORDER_NONE) || '0';
+        arg =
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            ) || '0';
     }
 
     // First, handle cases which generate values that don't need parentheses
@@ -97,7 +112,7 @@ window.Blockly.JavaScript.math_single = block => {
     }
 
     if (code) {
-        return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     }
 
     // Second, handle cases which generate values that may need parentheses
@@ -112,5 +127,5 @@ window.Blockly.JavaScript.math_single = block => {
         code = `Math.atan(${arg}) / Math.PI * 180`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_DIVISION];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION];
 };

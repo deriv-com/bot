@@ -1,11 +1,26 @@
-import BlocklyJS from 'blockly/javascript';
+import * as BlocklyJavaScript from 'blockly/javascript';
 
-await import('@/utils/tmp/goog-helper');
-const Blockly = await import('scratch-blocks/dist/vertical');
-console.log('test loadBlockly start', { ...Blockly });
-window.Blockly = Blockly;
-window.Blockly.JavaScript = BlocklyJS;
+import { setColors } from './hooks/colours';
 
-await import('./blocks');
-import('./hooks');
-console.log('test loadBlockly end');
+const goog = await import('@/utils/tmp/goog-helper');
+window.goog = goog.default;
+
+export const loadBlockly = async isDarkMode => {
+    const BlocklyModule = await import('blockly');
+    window.Blockly = BlocklyModule.default;
+    window.Blockly.Colours = {};
+    const BlocklyGenerator = new window.Blockly.Generator('code');
+    const BlocklyJavaScriptGenerator = {
+        ...BlocklyJavaScript,
+        ...BlocklyGenerator,
+    };
+    window.Blockly.JavaScript = BlocklyJavaScriptGenerator;
+    window.Blockly.Themes.zelos_renderer = window.Blockly.Theme.defineTheme('zelos_renderer', {
+        base: window.Blockly.Themes.Zelos,
+        componentStyles: {},
+    });
+    setColors(isDarkMode);
+    await import('./blocks');
+    await import('./hooks');
+    console.log('test load Blockly loadBlockly->');
+};

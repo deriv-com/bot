@@ -20,12 +20,9 @@ window.Blockly.Blocks.lists_split = {
         this.setOutput(true, 'Array');
         this.setOutputShape(window.Blockly.OUTPUT_SHAPE_ROUND);
 
+        this.setColour(window.Blockly.Colours.Base.colour);
         // eslint-disable-next-line no-underscore-dangle
-        this.setColourFromRawValues_(
-            window.Blockly.Colours.Base.colour,
-            window.Blockly.Colours.Base.colourSecondary,
-            window.Blockly.Colours.Base.colourTertiary
-        );
+
         this.setTooltip(
             localize(
                 'This block creates a list from a given string of text, splitting it with the given delimiter. It can also join items in a list into a string of text.'
@@ -71,13 +68,23 @@ window.Blockly.Blocks.lists_split = {
         }
 
         this.initSvg();
-        this.render(false);
+        // kept this commented to fix backward compatibility issue
+        //this.render(false);
     },
 };
 
-window.Blockly.JavaScript.lists_split = block => {
-    const input = window.Blockly.JavaScript.valueToCode(block, 'INPUT', window.Blockly.JavaScript.ORDER_MEMBER);
-    const delimiter = window.Blockly.JavaScript.valueToCode(block, 'DELIM', window.Blockly.JavaScript.ORDER_NONE) || "''";
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_split = block => {
+    const input = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'INPUT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+    );
+    const delimiter =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'DELIM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
     const mode = block.getFieldValue('MODE');
 
     let code;
@@ -88,5 +95,5 @@ window.Blockly.JavaScript.lists_split = block => {
         code = `${input || '[]'}.join(${delimiter})`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

@@ -1,4 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
+
+import { removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 
 window.Blockly.Blocks.after_purchase = {
@@ -9,6 +11,7 @@ window.Blockly.Blocks.after_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -33,6 +36,14 @@ window.Blockly.Blocks.after_purchase = {
                     check: 'TradeAgain',
                 },
             ],
+            args2: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: window.Blockly.Colours.RootBlock.colour,
             colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
@@ -46,10 +57,18 @@ window.Blockly.Blocks.after_purchase = {
             description: localize('Here is where you can decide if your bot should continue trading.'),
         };
     },
+    onchange(event) {
+        if (
+            event.type === window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
+    },
 };
 
-window.Blockly.JavaScript.after_purchase = block => {
-    const stack = window.Blockly.JavaScript.statementToCode(block, 'AFTERPURCHASE_STACK');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
         Bot.highlightBlock('${block.id}');

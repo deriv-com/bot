@@ -110,7 +110,12 @@ window.Blockly.FieldImage.prototype.dispose = function () {
  */
 window.Blockly.FieldImage.prototype.maybeAddClickHandler_ = function () {
     if (this.clickHandler_ && !this.sourceBlock_.workspace.options.readOnly && !this.sourceBlock_.isInFlyout) {
-        this.mouseDownWrapper_ = window.Blockly.bindEventWithChecks_(this.fieldGroup_, 'mousedown', this, this.clickHandler_);
+        this.mouseDownWrapper_ = window.Blockly.bindEventWithChecks_(
+            this.fieldGroup_,
+            'mousedown',
+            this,
+            this.clickHandler_
+        );
         this.fieldGroup_.style.cursor = 'pointer';
     }
 };

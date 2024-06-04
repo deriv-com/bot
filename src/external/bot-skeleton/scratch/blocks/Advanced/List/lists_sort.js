@@ -33,6 +33,7 @@ window.Blockly.Blocks.lists_sort = {
                     name: 'LIST',
                 },
             ],
+            inputsInline: true,
             output: 'Array',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -57,14 +58,21 @@ window.Blockly.Blocks.lists_sort = {
     },
 };
 
-window.Blockly.JavaScript.lists_sort = block => {
-    const list = window.Blockly.JavaScript.valueToCode(block, 'LIST', window.Blockly.JavaScript.ORDER_FUNCTION_CALL) || '[]';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_sort = block => {
+    const list =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'LIST',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || '[]';
     const direction = block.getFieldValue('DIRECTION') === '1' ? 1 : -1;
     const type = block.getFieldValue('TYPE');
     // eslint-disable-next-line no-underscore-dangle
-    const getCompareFunctionName = window.Blockly.JavaScript.provideFunction_('listsGetSortCompare', [
-        // eslint-disable-next-line no-underscore-dangle
-        `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
+    const getCompareFunctionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_(
+        'listsGetSortCompare',
+        [
+            // eslint-disable-next-line no-underscore-dangle
+            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
             var compareFuncs = {
                 NUMERIC: function(a, b) {
                     return parseFloat(a) - parseFloat(b);
@@ -78,8 +86,9 @@ window.Blockly.JavaScript.lists_sort = block => {
                 return compareFuncs[type](a, b) * direction; 
             }
         }`,
-    ]);
+        ]
+    );
 
     const code = `${list}.sort().slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

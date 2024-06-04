@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.contract_check_result = {
@@ -31,11 +32,14 @@ window.Blockly.Blocks.contract_check_result = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.BLOCK_CREATE || event.type === window.Blockly.Events.END_DRAG) {
+        if (
+            event.type === window.Blockly.Events.BLOCK_CREATE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
             const top_parent = this.getTopParent();
 
             if (top_parent) {
@@ -49,9 +53,9 @@ window.Blockly.Blocks.contract_check_result = {
     },
 };
 
-window.Blockly.JavaScript.contract_check_result = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.contract_check_result = block => {
     const checkWith = block.getFieldValue('CHECK_RESULT');
 
     const code = `Bot.isResult('${checkWith}')`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

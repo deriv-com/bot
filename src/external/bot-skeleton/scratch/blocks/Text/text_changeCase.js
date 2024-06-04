@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_changeCase = {
@@ -50,15 +51,17 @@ window.Blockly.Blocks.text_changeCase = {
     },
 };
 
-window.Blockly.JavaScript.text_changeCase = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
     const operators = {
         UPPERCASE: '.toUpperCase()',
         LOWERCASE: '.toLowerCase()',
         TITLECASE: null,
     };
     const operator = operators[block.getFieldValue('CASE')];
-    const textOrder = operator ? window.Blockly.JavaScript.ORDER_MEMBER : window.Blockly.JavaScript.ORDER_NONE;
-    const text = window.Blockly.JavaScript.valueToCode(block, 'TEXT', textOrder) || "''";
+    const textOrder = operator
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    const text = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', textOrder) || "''";
 
     let code;
 
@@ -66,7 +69,7 @@ window.Blockly.JavaScript.text_changeCase = block => {
         code = `${text}${operator}`;
     } else {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = window.Blockly.JavaScript.provideFunction_('textToTitleCase', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('textToTitleCase', [
             // eslint-disable-next-line no-underscore-dangle
             `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(str) {
                 return str.toLowerCase().split(' ').map(function(word) {
@@ -77,5 +80,5 @@ window.Blockly.JavaScript.text_changeCase = block => {
         code = `${functionName}(${text})`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

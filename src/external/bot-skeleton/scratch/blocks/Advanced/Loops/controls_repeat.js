@@ -24,6 +24,8 @@ window.Blockly.Blocks.controls_repeat = {
                     name: 'DO',
                 },
             ],
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            inputsInline: true,
             colour: window.Blockly.Colours.Base.colour,
             colourSecondary: window.Blockly.Colours.Base.colourSecondary,
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
@@ -43,4 +45,5 @@ window.Blockly.Blocks.controls_repeat = {
     },
 };
 
-window.Blockly.JavaScript.controls_repeat = window.Blockly.JavaScript.controls_repeat_ext;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
+    window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;

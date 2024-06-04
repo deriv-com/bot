@@ -1,7 +1,9 @@
-import React from 'react';
 import classNames from 'classnames';
+
 import { Button, Text } from '@deriv-com/ui';
+
 import { Localize } from '@/utils/tmp/dummy';
+
 import FlyoutBlock from './flyout-block';
 
 type TFlyoutBlockGroup = {

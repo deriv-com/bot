@@ -6,7 +6,10 @@ import { Input, Text } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
 import { help_content_config } from '@/utils/help-content/help-content.config';
-import { Icon, localize, ThemedScrollbars } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
+
+import { getPlatformSettings } from '../shared';
+import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 
 import FlyoutBlockGroup from './flyout-block-group';
 import HelpBase from './help-contents';
@@ -43,7 +46,6 @@ type TFlyoutContent = {
 
 const FlyoutContent = (props: TFlyoutContent) => {
     const flyout_ref = React.useRef();
-    console.log('test flyout_ref', flyout_ref);
     const {
         flyout_content,
         active_helper,
@@ -73,9 +75,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                         <span className='flyout__content-disclaimer-text'>
                             {localize(
                                 'Indicators on the chart tab are for indicative purposes only and may vary slightly from the ones on the {{platform_name_dbot}} workspace.',
-                                // TODO: fix
-                                // { platform_name_dbot: getPlatformSettings('dbot').name }
-                                { platform_name_dbot: 'dbot' }
+                                { platform_name_dbot: getPlatformSettings('dbot').name }
                             )}
                         </span>
                     </div>
@@ -89,14 +89,15 @@ const FlyoutContent = (props: TFlyoutContent) => {
                 ) : (
                     flyout_content.map((node, index) => {
                         const tag_name = node.tagName.toUpperCase();
-
                         switch (tag_name) {
-                            case Blockly.Xml.NODE_BLOCK: {
+                            case window.Blockly.Xml.NODE_BLOCK: {
                                 const block_type = (node.getAttribute('type') || '') as string;
 
                                 return (
                                     <FlyoutBlockGroup
-                                        key={`${node.getAttribute('type')}${window.Blockly.utils.genUid()}`}
+                                        key={`${node.getAttribute(
+                                            'type'
+                                        )}${window?.Blockly?.utils?.idGenerator?.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
                                         should_hide_display_name={
@@ -114,7 +115,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                                     />
                                 );
                             }
-                            case Blockly.Xml.NODE_LABEL: {
+                            case window.Blockly.Xml.NODE_LABEL: {
                                 return (
                                     <div
                                         key={`${node.getAttribute('text')}${index}`}
@@ -124,7 +125,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                                     </div>
                                 );
                             }
-                            case Blockly.Xml.NODE_INPUT: {
+                            case window.Blockly.Xml.NODE_INPUT: {
                                 return (
                                     <Input
                                         key={`${node.getAttribute('name')}${index}`}
@@ -136,7 +137,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                                     />
                                 );
                             }
-                            case Blockly.Xml.NODE_BUTTON: {
+                            case window.Blockly.Xml.NODE_BUTTON: {
                                 const callback_key = node.getAttribute('callbackKey');
                                 const callback_id = node.getAttribute('id') as string;
 
@@ -196,6 +197,7 @@ const Flyout = observer(() => {
         selected_category,
         first_get_variable_block_index,
     } = flyout;
+
     const { pushDataLayer } = gtm;
 
     React.useEffect(() => {
@@ -209,8 +211,6 @@ const Flyout = observer(() => {
 
     const total_result = Object.keys(flyout_content).length;
     const is_empty = total_result === 0;
-
-    console.log('test flyout_content', flyout_content);
 
     return (
         is_visible && (

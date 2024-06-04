@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { minusIconDark } from '../images';
+
 import { runIrreversibleEvents } from '../../utils';
+import { minusIconDark } from '../images';
 
 window.Blockly.Blocks.text_statement = {
     required_parent_type: 'text_join',
@@ -34,7 +35,7 @@ window.Blockly.Blocks.text_statement = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -47,7 +48,7 @@ window.Blockly.Blocks.text_statement = {
             }
         }
 
-        if (event.type === window.Blockly.Events.END_DRAG) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const stack_blocks = window.Blockly.getMainWorkspace().getBlockById(event.blockId);
 
             if (this.required_parent_id && (!surround_parent || surround_parent.id !== this.required_parent_id)) {
@@ -73,7 +74,11 @@ window.Blockly.Blocks.text_statement = {
     onIconClick: window.Blockly.Blocks.lists_statement.onIconClick,
 };
 
-window.Blockly.JavaScript.text_statement = block => {
-    const code = `String(${window.Blockly.JavaScript.valueToCode(block, 'TEXT', window.Blockly.JavaScript.ORDER_ATOMIC)})`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_statement = block => {
+    const code = `String(${window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'TEXT',
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    )})`;
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { localize } from '@/utils/tmp/dummy';
 
 import { config } from '../constants/config';
@@ -85,23 +84,23 @@ export default class BlockConversion {
 
             // Bollinger Bands + MACDA have some fields we need to carry over.
             switch (block_type) {
-                case 'bb_statement':
-                case 'bba_statement': {
-                    const bb_result_list = block.getField('BBRESULT_LIST');
-                    if (bb_result_list) {
-                        bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
-                    }
-                    break;
+            case 'bb_statement':
+            case 'bba_statement': {
+                const bb_result_list = block.getField('BBRESULT_LIST');
+                if (bb_result_list) {
+                    bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
                 }
-                case 'macda_statement': {
-                    const macd_fields_list = block.getField('MACDFIELDS_LIST');
-                    if (macd_fields_list) {
-                        macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
-                    }
-                    break;
+                break;
+            }
+            case 'macda_statement': {
+                const macd_fields_list = block.getField('MACDFIELDS_LIST');
+                if (macd_fields_list) {
+                    macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
                 }
-                default:
-                    break;
+                break;
+            }
+            default:
+                break;
             }
 
             // Attach required child blocks (these are defined on each indicator block).
@@ -286,9 +285,9 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options = new window.Blockly.Options({ media: '/media/' });
+        const options = new window.window.window.Blockly.Options({ media: `${__webpack_public_path__}media/` });
         const el_injection_div = new DocumentFragment();
-        const workspace = window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
+        const workspace = window.window.window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
         return workspace;
     }
@@ -384,7 +383,7 @@ export default class BlockConversion {
             current_name = variable_name + counter;
         }
 
-        const ws_variable = window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
+        const ws_variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
 
         return ws_variable;
@@ -392,14 +391,14 @@ export default class BlockConversion {
 
     convertStrategy(strategy_node, showIncompatibleStrategyDialog) {
         // Disable events (globally) to suppress block onchange listeners from firing.
-        window.Blockly.Events.disable();
+        window.window.window.Blockly.Events.disable();
 
         // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
         // Don't convert already compatible strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
-            window.Blockly.Events.enable();
+            window.window.window.Blockly.Events.enable();
             return xml;
         }
 
@@ -413,8 +412,8 @@ export default class BlockConversion {
             if (showIncompatibleStrategyDialog) {
                 showIncompatibleStrategyDialog();
             }
-            window.Blockly.Events.enable();
-            return window.Blockly.Xml.textToDom('<xml />');
+            window.window.window.Blockly.Events.enable();
+            return window.window.window.Blockly.utils.xml.textToDom('<xml />');
         }
 
         const variable_nodes = [];
@@ -424,17 +423,17 @@ export default class BlockConversion {
             const tag_name = strategy_child_node.nodeName.toLowerCase();
 
             switch (tag_name) {
-                case 'block':
-                case 'shadow': {
-                    block_nodes.push(strategy_child_node);
-                    break;
-                }
-                case 'variables': {
-                    variable_nodes.push(...strategy_child_node.children);
-                    break;
-                }
-                default:
-                    break;
+            case 'block':
+            case 'shadow': {
+                block_nodes.push(strategy_child_node);
+                break;
+            }
+            case 'variables': {
+                variable_nodes.push(...strategy_child_node.children);
+                break;
+            }
+            default:
+                break;
             }
         });
 
@@ -444,7 +443,7 @@ export default class BlockConversion {
                 const variable_name = el_variable.textContent;
 
                 if (!this.workspace_variables[variable_id]) {
-                    const variable = window.Blockly.Variables.getOrCreateVariablePackage(
+                    const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
                         this.workspace,
                         variable_id,
                         variable_name,
@@ -507,12 +506,12 @@ export default class BlockConversion {
 
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
-            block.render();
+            // block.render();
         });
 
         this.workspace.cleanUp();
 
-        const converted_xml = window.Blockly.Xml.workspaceToDom(this.workspace);
+        const converted_xml = window.window.window.Blockly.Xml.workspaceToDom(this.workspace);
 
         if (strategy_node.hasAttribute('collection') && strategy_node.getAttribute('collection') === 'true') {
             converted_xml.setAttribute('collection', 'true');
@@ -522,7 +521,7 @@ export default class BlockConversion {
 
         this.workspace = null;
 
-        window.Blockly.Events.enable();
+        window.window.window.Blockly.Events.enable();
 
         return converted_xml;
     }
@@ -533,7 +532,8 @@ export default class BlockConversion {
         const is_old_block = Object.keys(conversions).includes(block_type);
         let block = null;
 
-        const is_collapsed = el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true';
+        const is_collapsed =
+            (el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true') || false;
         const is_immovable = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
         const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
         const is_disabled = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
@@ -574,7 +574,7 @@ export default class BlockConversion {
                 });
             }
         } else {
-            const is_legal_block = Object.keys(window.Blockly.Blocks).includes(block_type);
+            const is_legal_block = Object.keys(window.window.window.Blockly.Blocks).includes(block_type);
 
             if (is_legal_block) {
                 block = this.workspace.newBlock(block_type);
@@ -610,69 +610,67 @@ export default class BlockConversion {
             const tag_name = el_block_child.tagName.toLowerCase();
 
             switch (tag_name) {
-                case 'field': {
-                    const field_name = el_block_child.getAttribute('name');
-                    const field = block.getField(field_name);
+            case 'field': {
+                const field_name = el_block_child.getAttribute('name');
+                const field = block.getField(field_name);
 
-                    if (field) {
-                        if (field instanceof window.Blockly.FieldVariable) {
-                            const variable_id = el_block_child.getAttribute('id');
-                            const variable_name = el_block_child.innerText.trim();
-                            const variable = window.Blockly.Variables.getOrCreateVariablePackage(
-                                this.workspace,
-                                variable_id,
-                                variable_name,
-                                ''
-                            );
-                            this.workspace_variables[variable.id_] = variable_name;
-                            field.setValue(variable.id_);
-                        } else {
-                            field.setValue(el_block_child.innerText);
-                        }
+                if (field) {
+                    if (field instanceof window.window.window.Blockly.FieldVariable) {
+                        const variable_id = el_block_child.getAttribute('id');
+                        const variable_name = el_block_child.innerText.trim();
+                        const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
+                            this.workspace,
+                            variable_id,
+                            variable_name,
+                            ''
+                        );
+                        this.workspace_variables[variable.id_] = variable_name;
+                        field.setValue(variable.id_);
+                    } else {
+                        field.setValue(el_block_child.innerText);
                     }
-                    break;
                 }
-                case 'value': {
-                    this.processValueInputs(block, el_block_child);
-                    break;
-                }
-                case 'statement': {
-                    const statement_name = el_block_child.getAttribute('name');
-                    this.processStatementInputs(block, statement_name, el_block_child);
-                    break;
-                }
-                case 'next': {
-                    const closest_statement = el_block_child.closest('statement');
+                break;
+            }
+            case 'value': {
+                this.processValueInputs(block, el_block_child);
+                break;
+            }
+            case 'statement': {
+                const statement_name = el_block_child.getAttribute('name');
+                this.processStatementInputs(block, statement_name, el_block_child);
+                break;
+            }
+            case 'next': {
+                const closest_statement = el_block_child.closest('statement');
 
-                    if (closest_statement) {
-                        const statement_name = closest_statement.getAttribute('name');
-                        this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
-                    } else if (block.nextConnection) {
-                        Array.from(el_block_child.children).forEach(el_sibling_block => {
-                            const sibling_block = this.convertBlockNode(el_sibling_block);
-                            block.nextConnection.connect(sibling_block.previousConnection);
-                        });
-                    }
-                    break;
+                if (closest_statement) {
+                    const statement_name = closest_statement.getAttribute('name');
+                    this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
+                } else if (block.nextConnection) {
+                    Array.from(el_block_child.children).forEach(el_sibling_block => {
+                        const sibling_block = this.convertBlockNode(el_sibling_block);
+                        block.nextConnection.connect(sibling_block.previousConnection);
+                    });
                 }
-                case 'comment': {
-                    const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
-                    const comment_text = el_block_child.innerText;
+                break;
+            }
+            case 'comment': {
+                const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
+                const comment_text = el_block_child.innerText;
 
-                    block.comment = new window.Blockly.ScratchBlockComment(
-                        block,
-                        comment_text,
-                        null,
-                        0,
-                        0,
-                        is_minimised
-                    );
-                    block.comment.iconXY_ = { x: 0, y: 0 };
-                    block.comment.setVisible(true); // Scratch comments are always visible.
-                    break;
-                }
-                default:
-                    break;
+                block.comment = new window.window.window.Blockly.WorkspaceComment(
+                    this.workspace,
+                    comment_text,
+                    0,
+                    0,
+                    is_minimised
+                );
+                block.comment.iconXY_ = { x: 0, y: 0 };
+                break;
+            }
+            default:
+                break;
             }
         });
 

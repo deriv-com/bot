@@ -39,10 +39,18 @@ window.Blockly.Blocks.variables_set = {
     },
 };
 
-window.Blockly.JavaScript.variables_set = block => {
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || '0';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.variables_set = block => {
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || '0';
     // eslint-disable-next-line no-underscore-dangle
-    const varName = window.Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), window.Blockly.Variables.NAME_TYPE);
+    const varName = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
 
     const code = `${varName} = ${argument0};\n`;
     return code;

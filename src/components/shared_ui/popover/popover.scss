@@ -1,0 +1,94 @@
+.dc-popover {
+    &__wrapper {
+        position: relative;
+    }
+    &__container {
+        position: absolute;
+        /*rtl:ignore*/
+        left: 0;
+        top: 0;
+        width: 280px;
+
+        &-relative {
+            position: relative;
+        }
+    }
+    &__target {
+        // &__icon .info {
+        //     @extend .dc-icon--secondary;
+
+        //     &:hover {
+        //         @extend .dc-icon;
+        //     }
+        // }
+        // &__icon--disabled .info {
+        //     @extend .dc-icon--disabled;
+
+        //     &:hover {
+        //         @extend .dc-icon--disabled;
+        //     }
+        // }
+        &__icon .counter {
+            color: var(--brand-red-coral);
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1.4em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-65%);
+        }
+    }
+    &__bubble {
+        @include typeface(--small-center-normal-active, none);
+        cursor: help;
+        position: relative;
+        padding: 0.8rem;
+        max-width: 31.7rem;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        background: var(--general-active);
+        color: var(--text-prominent);
+        z-index: 1;
+
+        &__icon {
+            flex-grow: 1;
+            margin-right: 0.7em;
+            padding-top: 3px;
+        }
+        &__text {
+            flex-grow: 2;
+            direction: ltr;
+        }
+        &--error {
+            direction: ltr;
+            background-color: var(--status-danger);
+        }
+    }
+    &__trade-params {
+        @include mobile {
+            max-width: calc(100vw - 6.7rem);
+        }
+    }
+}
+
+.mobile-widget__item-popover,
+.accu-info-display__popover {
+    max-width: 28rem;
+}
+.accu-info-display__popover {
+    @include mobile {
+        max-width: 33rem;
+        margin-right: 1rem;
+    }
+}
+
+.react-tiny-popover-container {
+    &--disabled-pointer-event {
+        pointer-events: none;
+    }
+}
+
+.react-tiny-popover-cursor-option {
+    cursor: pointer;
+}

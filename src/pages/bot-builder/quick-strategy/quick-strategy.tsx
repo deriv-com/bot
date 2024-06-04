@@ -7,7 +7,7 @@ import { Modal } from '@deriv-com/ui';
 
 import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { localize, MobileFullPageModal } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
 
 import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
@@ -18,6 +18,7 @@ import Form from './form';
 import { TConfigItem, TFormData, TFormValues } from './types';
 
 import './quick-strategy.scss';
+import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 
 type TFormikWrapper = {
     children: React.ReactNode;

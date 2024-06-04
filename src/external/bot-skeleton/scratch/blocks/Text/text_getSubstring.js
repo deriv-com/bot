@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_getSubstring = {
@@ -54,6 +55,7 @@ window.Blockly.Blocks.text_getSubstring = {
                     name: 'AT2',
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -127,7 +129,8 @@ window.Blockly.Blocks.text_getSubstring = {
         }
 
         this.initSvg();
-        this.render(false);
+        //commented this line breaks the backward compatibility
+        //this.render(false);
     },
     getRequiredValueInputs() {
         const hasInput = input_name => this.getInput(input_name)?.type === window.Blockly.INPUT_VALUE;
@@ -139,8 +142,13 @@ window.Blockly.Blocks.text_getSubstring = {
     },
 };
 
-window.Blockly.JavaScript.text_getSubstring = block => {
-    const text = window.Blockly.JavaScript.valueToCode(block, 'STRING', window.Blockly.JavaScript.ORDER_FUNCTION_CALL) || "''";
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_getSubstring = block => {
+    const text =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'STRING',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || "''";
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
@@ -154,11 +162,17 @@ window.Blockly.JavaScript.text_getSubstring = block => {
     ) {
         switch (where1) {
             case 'FROM_START': {
-                at1 = window.Blockly.JavaScript.getAdjusted(block, 'AT1');
+                at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
                 break;
             }
             case 'FROM_END': {
-                at1 = window.Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, window.Blockly.JavaScript.ORDER_SUBTRACTION);
+                at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
+                    block,
+                    'AT1',
+                    1,
+                    false,
+                    window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                );
                 at1 = `${text}.length - ${at1}`;
                 break;
             }
@@ -172,11 +186,17 @@ window.Blockly.JavaScript.text_getSubstring = block => {
 
         switch (where2) {
             case 'FROM_START': {
-                at2 = window.Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
+                at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2', 1);
                 break;
             }
             case 'FROM_END': {
-                at2 = window.Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, window.Blockly.JavaScript.ORDER_SUBTRACTION);
+                at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
+                    block,
+                    'AT2',
+                    0,
+                    false,
+                    window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                );
                 at2 = `${text}.length - ${at2}`;
                 break;
             }
@@ -190,8 +210,8 @@ window.Blockly.JavaScript.text_getSubstring = block => {
 
         code = `${text}.slice(${at1}, ${at2})`;
     } else {
-        at1 = window.Blockly.JavaScript.getAdjusted(block, 'AT1');
-        at2 = window.Blockly.JavaScript.getAdjusted(block, 'AT2');
+        at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
+        at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2');
 
         const getIndex = (string_name, where, opt_at) => {
             if (where === 'FIRST') {
@@ -210,7 +230,7 @@ window.Blockly.JavaScript.text_getSubstring = block => {
             FROM_END: 'FromEnd',
         };
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = window.Blockly.JavaScript.provideFunction_(
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_(
             `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
             [
                 // eslint-disable-next-line no-underscore-dangle
@@ -234,5 +254,5 @@ window.Blockly.JavaScript.text_getSubstring = block => {
         )`;
     }
 
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

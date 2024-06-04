@@ -28,6 +28,7 @@ window.Blockly.Blocks.math_constrain = {
                     check: 'Number',
                 },
             ],
+            inputsInline: true,
             output: 'Number',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -52,11 +53,26 @@ window.Blockly.Blocks.math_constrain = {
     },
 };
 
-window.Blockly.JavaScript.math_constrain = block => {
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_COMMA) || '0';
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'LOW', window.Blockly.JavaScript.ORDER_COMMA) || '0';
-    const argument2 = window.Blockly.JavaScript.valueToCode(block, 'HIGH', window.Blockly.JavaScript.ORDER_COMMA) || '0';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_constrain = block => {
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
+    const argument1 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'LOW',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
+    const argument2 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'HIGH',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
 
     const code = `Math.min(Math.max(${argument0}, ${argument1}), ${argument2})`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

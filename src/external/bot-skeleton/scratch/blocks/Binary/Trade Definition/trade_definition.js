@@ -1,11 +1,12 @@
 import { localize } from '@/utils/tmp/dummy';
-import { defineContract } from '../../images';
-import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents } from '../../../utils';
-import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
-import { config } from '../../../../constants/config';
 
-window.Blockly.Blocks.trade_definition = {
+import { config } from '../../../../constants/config';
+import { initErrorHandlingListener, removeErrorHandlingEventListener } from '../../../../utils';
+import DBotStore from '../../../dbot-store';
+import { removeExtraInput, runIrreversibleEvents } from '../../../utils';
+import { defineContract } from '../../images';
+
+window.window.Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -19,6 +20,7 @@ window.Blockly.Blocks.trade_definition = {
             message3: '%1',
             message4: '%1 %2 %3',
             message5: '%1',
+            message6: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -45,7 +47,7 @@ window.Blockly.Blocks.trade_definition = {
             args2: [
                 {
                     type: 'field_image',
-                    src: '', // this is here to add extra padding
+                    src: ' ', // this is here to add extra padding
                     width: 4,
                     height: 25,
                 },
@@ -68,7 +70,7 @@ window.Blockly.Blocks.trade_definition = {
             args4: [
                 {
                     type: 'field_image',
-                    src: '', // this is here to add extra padding
+                    src: ' ', // this is here to add extra padding
                     width: 4,
                     height: 25,
                 },
@@ -87,11 +89,19 @@ window.Blockly.Blocks.trade_definition = {
                     name: 'SUBMARKET',
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            args6: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
+            colour: window.window.Blockly.Colours.RootBlock.colour,
+            colourSecondary: window.window.Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: window.window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Here is where you define the parameters of your contract.'),
-            category: window.Blockly.Categories.Trade_Definition,
+            category: window.window.Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -105,15 +115,18 @@ window.Blockly.Blocks.trade_definition = {
         if (event.type === 'ui' && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');
-        } else if (window.Blockly.selected === null && this.isInit) {
+        } else if (window.window.Blockly.selected === null && this.isInit) {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }
-        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
+        if (!this.workspace || this.workspace.isDragging() || window.window.Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.BLOCK_CHANGE || event.type === window.Blockly.Events.END_DRAG) {
+        if (
+            event.type === window.window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 
@@ -131,10 +144,11 @@ window.Blockly.Blocks.trade_definition = {
                 });
             }
         }
+        removeExtraInput(this);
     },
 };
 
-window.Blockly.JavaScript.trade_definition = block => {
+window.window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -163,8 +177,14 @@ window.Blockly.JavaScript.trade_definition = block => {
             ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
             : [contract_type];
 
-    const initialization = window.Blockly.JavaScript.statementToCode(block, 'INITIALIZATION');
-    const trade_options_statement = window.Blockly.JavaScript.statementToCode(block, 'SUBMARKET');
+    const initialization = window.window.Blockly.JavaScript.javascriptGenerator.statementToCode(
+        block,
+        'INITIALIZATION'
+    );
+    const trade_options_statement = window.window.Blockly.JavaScript.javascriptGenerator.statementToCode(
+        block,
+        'SUBMARKET'
+    );
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../../constants/config';
 
 window.Blockly.Blocks.balance = {
@@ -12,7 +13,8 @@ window.Blockly.Blocks.balance = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            this.render(false);
+            // kept this commented to fix backward compatibility issue
+            //this.render(false);
             return undefined;
         });
     },
@@ -45,9 +47,9 @@ window.Blockly.Blocks.balance = {
     },
 };
 
-window.Blockly.JavaScript.balance = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
     const balanceType = block.getFieldValue('BALANCE_TYPE');
 
     const code = `Bot.getBalance('${balanceType}')`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

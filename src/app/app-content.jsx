@@ -17,7 +17,6 @@ import RoutePromptDialog from '../components/route-prompt-dialog';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 
-import '@/styles/mixins.scss';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
@@ -32,9 +31,6 @@ const AppContent = () => {
             account_settings: {},
             clients_country: '',
             is_landing_company_loaded: false,
-        },
-        ui: {
-            is_dark_mode_on: false,
         },
     };
     const { common, client } = RootStore;
@@ -76,12 +72,6 @@ const AppContent = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [api_base?.api]);
-
-    //Do not remove this is for the bot-skeleton package to load blockly with the theme
-    // TODO: Need refactor
-    // React.useEffect(() => {
-    //     setColors(is_dark_mode_on);
-    // }, [is_dark_mode_on]);
 
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(client, common);

@@ -19,12 +19,12 @@ window.Blockly.Blocks.lists_setIndex = {
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(localize('as'));
 
-        // eslint-disable-next-line no-underscore-dangle
-        this.setColourFromRawValues_(
-            window.Blockly.Colours.Base.colour,
-            window.Blockly.Colours.Base.colourSecondary,
-            window.Blockly.Colours.Base.colourTertiary
-        );
+        const block_color =
+            window.Blockly.Colours.Base.colour ||
+            window.Blockly.Colours.Base.colourSecondary ||
+            window.Blockly.Colours.Base.colourTertiary;
+        this.setColour(block_color);
+
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setTooltip(
@@ -76,16 +76,27 @@ window.Blockly.Blocks.lists_setIndex = {
         this.moveInputBefore('AT', 'TO');
         this.getInput('AT').appendField(menu, 'WHERE');
         this.initSvg();
-        this.render(false);
+        // kept this commented to fix backward compatibility issue
+        //this.render(false);
     },
 };
 
-window.Blockly.JavaScript.lists_setIndex = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
     const mode = block.getFieldValue('MODE') || 'SET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
-    const value = window.Blockly.JavaScript.valueToCode(block, 'TO', window.Blockly.JavaScript.ORDER_ASSIGNMENT) || 'null';
+    const value =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TO',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+        ) || 'null';
 
-    let list = window.Blockly.JavaScript.valueToCode(block, 'LIST', window.Blockly.JavaScript.ORDER_MEMBER) || '[]';
+    let list =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'LIST',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || '[]';
 
     const cacheList = () => {
         if (list.match(/^\w+$/)) {
@@ -93,7 +104,10 @@ window.Blockly.JavaScript.lists_setIndex = block => {
         }
 
         // eslint-disable-next-line no-underscore-dangle
-        const listVar = window.Blockly.JavaScript.variableDB_.getDistinctName('tmpList', window.Blockly.Variables.NAME_TYPE);
+        const listVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'tmpList',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         const code = `var ${listVar} = ${list};\n`;
 
         list = listVar;
@@ -116,14 +130,20 @@ window.Blockly.JavaScript.lists_setIndex = block => {
             code = `${list}.push(${value});\n`;
         }
     } else if (where === 'FROM_START') {
-        const at = window.Blockly.JavaScript.getAdjusted(block, 'AT');
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         if (mode === 'SET') {
             code = `${list}[${at}] = ${value};\n`;
         } else if (mode === 'INSERT') {
             code = `${list}.splice(${at}, 0, ${value});\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = window.Blockly.JavaScript.getAdjusted(block, 'AT', 1, false, window.Blockly.JavaScript.ORDER_SUBTRACTION);
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
+            block,
+            'AT',
+            1,
+            false,
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+        );
         code = cacheList();
         if (mode === 'SET') {
             code = `${list}[${list}.length - ${at}] = ${value};\n`;
@@ -134,7 +154,10 @@ window.Blockly.JavaScript.lists_setIndex = block => {
         code = cacheList();
 
         // eslint-disable-next-line no-underscore-dangle
-        const xVar = window.Blockly.JavaScript.variableDB_.getDistinctName('tmpX', window.Blockly.Variables.NAME_TYPE);
+        const xVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'tmpX',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
 
         code += `var ${xVar} = Math.floor(Math.random() * ${list}.length);\n`;
 

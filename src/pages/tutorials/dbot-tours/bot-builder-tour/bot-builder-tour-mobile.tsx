@@ -3,9 +3,10 @@ import { observer } from 'mobx-react-lite';
 
 import { Text } from '@deriv-com/ui';
 
+import ProgressBarTracker from '@/components/shared_ui/progress-bar-tracker';
 import { useStore } from '@/hooks/useStore';
 import { getSetting } from '@/utils/settings';
-import { localize, ProgressBarTracker } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
 
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';

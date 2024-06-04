@@ -22,6 +22,7 @@ window.Blockly.Blocks.math_random_int = {
                     check: 'Number',
                 },
             ],
+            inputsInline: true,
             output: 'Number',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -45,12 +46,22 @@ window.Blockly.Blocks.math_random_int = {
     },
 };
 
-window.Blockly.JavaScript.math_random_int = block => {
-    const argument0 = window.Blockly.JavaScript.valueToCode(block, 'FROM', window.Blockly.JavaScript.ORDER_COMMA) || '0';
-    const argument1 = window.Blockly.JavaScript.valueToCode(block, 'TO', window.Blockly.JavaScript.ORDER_COMMA) || '0';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_random_int = block => {
+    const argument0 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FROM',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
+    const argument1 =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TO',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
 
     // eslint-disable-next-line no-underscore-dangle
-    const functionName = window.Blockly.JavaScript.provideFunction_('mathRandomInt', [
+    const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('mathRandomInt', [
         // eslint-disable-next-line no-underscore-dangle
         `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
             if (a > b) {
@@ -64,5 +75,5 @@ window.Blockly.JavaScript.math_random_int = block => {
     ]);
 
     const code = `${functionName}(${argument0}, ${argument1})`;
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

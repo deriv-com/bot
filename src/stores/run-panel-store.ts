@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable, reaction, runInAction } f
 
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { TStores } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 
 import { TDbot } from 'Types';
 
@@ -13,7 +14,7 @@ import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/exte
 import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
-import { localize, routes } from '@/utils/tmp/dummy';
+import { routes } from '@/utils/tmp/dummy';
 import { isSafari, mobileOSDetect } from '@/utils/tmp/os-detect';
 
 import RootStore from './root-store';

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_indexOf = {
@@ -33,6 +34,7 @@ window.Blockly.Blocks.text_indexOf = {
                     name: 'FIND',
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             colour: window.Blockly.Colours.Base.colour,
@@ -58,14 +60,24 @@ window.Blockly.Blocks.text_indexOf = {
     },
 };
 
-window.Blockly.JavaScript.text_indexOf = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
-    const substring = window.Blockly.JavaScript.valueToCode(block, 'FIND', window.Blockly.JavaScript.ORDER_NONE) || "''";
-    const text = window.Blockly.JavaScript.valueToCode(block, 'VALUE', window.Blockly.JavaScript.ORDER_MEMBER) || "''";
+    const substring =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FIND',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
+    const text =
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
 
     const code = `${text}.${functionName}(${substring})`;
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, window.Blockly.JavaScript.ORDER_ADDITION];
+        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
-    return [code, window.Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

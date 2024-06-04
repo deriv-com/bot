@@ -1,5 +1,10 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { getContractTypeOptions } from '../../../shared';
+
+window.Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
+    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
+};
 
 window.Blockly.Blocks.purchase = {
     init() {
@@ -36,7 +41,7 @@ window.Blockly.Blocks.purchase = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -46,7 +51,7 @@ window.Blockly.Blocks.purchase = {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
             }
-        } else if (event.type === window.Blockly.Events.END_DRAG && event.blockId === this.id) {
+        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             const purchase_type_list = this.getField('PURCHASE_LIST');
             const purchase_options = purchase_type_list.menuGenerator_; // eslint-disable-line
 
@@ -77,7 +82,7 @@ window.Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-window.Blockly.JavaScript.purchase = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

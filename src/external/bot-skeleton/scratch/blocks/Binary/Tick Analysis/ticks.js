@@ -49,9 +49,15 @@ window.Blockly.Blocks.ticks_string = {
     onchange: window.Blockly.Blocks.ticks.onchange,
 };
 
-window.Blockly.JavaScript.ticks = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [
+        `Bot.getTicks(${type_list.includes(parent?.type)})`,
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    ];
 };
-window.Blockly.JavaScript.ticks_string = () => ['Bot.getTicks(true)', window.Blockly.JavaScript.ORDER_ATOMIC];
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
+    'Bot.getTicks(true)',
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

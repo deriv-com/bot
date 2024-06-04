@@ -4,7 +4,8 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 
 import { Text, ToggleSwitch } from '@deriv-com/ui';
 
-import { localize, Popover } from '@/utils/tmp/dummy';
+import Popover from '@/components/shared_ui/popover';
+import { localize } from '@/utils/tmp/dummy';
 
 import { TFormData } from '../types';
 

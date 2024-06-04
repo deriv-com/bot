@@ -38,29 +38,29 @@ window.Blockly.Blocks.math_constant = {
     },
 };
 
-window.Blockly.JavaScript.math_constant = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_constant = block => {
     const constant = block.getFieldValue('CONSTANT');
 
     let code, order;
 
     if (constant === 'PI') {
         code = 'Math.PI';
-        order = window.Blockly.JavaScript.ORDER_MEMBER;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     } else if (constant === 'E') {
         code = 'Math.E';
-        order = window.Blockly.JavaScript.ORDER_MEMBER;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     } else if (constant === 'GOLDEN_RATIO') {
         code = '(1 + Math.sqrt(5)) / 2';
-        order = window.Blockly.JavaScript.ORDER_DIVISION;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION;
     } else if (constant === 'SQRT2') {
         code = 'Math.SQRT2';
-        order = window.Blockly.JavaScript.ORDER_MEMBER;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     } else if (constant === 'SQRT1_2') {
         code = 'Math.SQRT1_2';
-        order = window.Blockly.JavaScript.ORDER_MEMBER;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     } else if (constant === 'INFINITY') {
         code = 'Infinity';
-        order = window.Blockly.JavaScript.ORDER_ATOMIC;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
     }
 
     return [code, order];

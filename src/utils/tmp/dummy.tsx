@@ -17,78 +17,25 @@ export const Localize = ({ i18n_default_text = '', values = {}, components = [],
     return <div className='dummy-localize'>{content}</div>;
 };
 
+export const i18n = {
+    t: (key, obj) => localize(key, obj),
+    store: {
+        on: () => {},
+        off: () => {},
+    },
+    language: 'en',
+};
+
 export const Icon = ({ icon, size = 16 }) => {
     // Simulate placeholder icon rendering
-    return (
-        <div className='dummy-icon'>
-            <span>Icon: {icon}</span>
-            <span>Size: {size}</span>
-        </div>
-    );
+    return <div className='dummy-icon'>{icon}</div>;
 };
 
-export const StaticUrl = ({ href, className, is_document }) => {
-    // Simulate placeholder behavior
-    const displayText = is_document ? 'Document' : 'Link';
-    const target = is_document ? '_blank' : '_self'; // Assuming document opens in new tab
-
-    return (
-        <a href={href} className={className} target={target}>
-            {displayText}: {href}
-        </a>
-    );
-};
-
-export const ExpansionPanel = ({ message }) => {
-    // Simulate basic structure
-    return (
-        <div className='dummy-expansion-panel'>
-            <span className='panel-title'>Expandable Panel</span>
-            <div className='panel-content'>{message}</div>
-        </div>
-    );
-};
-
-export const ThemedScrollbars = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-scrollbars'>{children}</div>;
-};
-
-export const MobileWrapper = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-MobileWrapper'>{children}</div>;
-};
-
-export const DesktopWrapper = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-DesktopWrapper'>{children}</div>;
-};
-
-export const MobileFullPageModal = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-MobileFullPageModal'>{children}</div>;
-};
-
-export const ProgressBarTracker = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-ProgressBarTracker'>{children}</div>;
-};
-export const SelectNative = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-SelectNative'>{children}</div>;
-};
-export const Autocomplete = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-Autocomplete'>{children}</div>;
-};
 export const IconTradeTypes = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-IconTradeTypes'>{children}</div>;
 };
-export const Popover = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-IconTradeTypes'>{children}</div>;
-};
+
 export const Money = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-Money'>{children}</div>;
@@ -96,18 +43,6 @@ export const Money = ({ children }) => {
 export const DataList = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-DataList'>{children}</div>;
-};
-export const Div100vhContainer = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-Div100vhContainer'>{children}</div>;
-};
-export const PageOverlay = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-PageOverlay'>{children}</div>;
-};
-export const FadeWrapper = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-FadeWrapper'>{children}</div>;
 };
 
 export const getLanguage = () => 'en';

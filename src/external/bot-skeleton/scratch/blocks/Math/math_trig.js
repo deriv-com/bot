@@ -48,4 +48,5 @@ window.Blockly.Blocks.math_trig = {
     },
 };
 
-window.Blockly.JavaScript.math_trig = window.Blockly.JavaScript.math_single;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_trig =
+    window.Blockly.JavaScript.javascriptGenerator.forBlock.math_single;

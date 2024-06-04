@@ -1,10 +1,11 @@
-import { localize } from '@/utils/tmp/dummy';
-
 /**
  * Construct the blocks required by the flyout for the procedure category.
  * @param {!window.Blockly.Workspace} workspace The workspace containing procedures.
  * @return {!Array.<!Element>} Array of XML block elements.
  */
+
+import { localize } from '@/utils/tmp/dummy';
+
 window.Blockly.Procedures.flyoutCategory = function (workspace) {
     let xmlList = [];
 
@@ -144,26 +145,3 @@ window.Blockly.Procedures.isNameUsed = function (name, workspace, optExclude) {
  *     moved from the position at the start of the drag, in pixel coordinates.
  * @package
  */
-window.Blockly.WorkspaceDragger.prototype.drag = function (currentDragDeltaXY) {
-    if (this.workspace_.isFlyout) {
-        return;
-    }
-
-    const metrics = this.startDragMetrics_;
-    const newXY = {
-        x: this.startScrollXY_.x + currentDragDeltaXY.x,
-        y: this.startScrollXY_.y + currentDragDeltaXY.y,
-    };
-
-    // Bound the new XY based on workspace bounds.
-    let x = Math.min(newXY.x, -metrics.contentLeft);
-    let y = Math.min(newXY.y, -metrics.contentTop);
-
-    x = Math.max(x, metrics.viewWidth - metrics.contentLeft - metrics.contentWidth);
-    y = Math.max(y, metrics.viewHeight - metrics.contentTop - metrics.contentHeight);
-
-    x = -x - metrics.contentLeft;
-    y = -y - metrics.contentTop;
-
-    this.updateScroll_(x, y);
-};

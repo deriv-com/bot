@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.read_details = {
@@ -33,9 +34,9 @@ window.Blockly.Blocks.read_details = {
     restricted_parents: ['after_purchase'],
 };
 
-window.Blockly.JavaScript.read_details = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;
-    return [code, window.Blockly.JavaScript.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

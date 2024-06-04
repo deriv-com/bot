@@ -30,4 +30,4 @@ window.Blockly.Blocks.fast_ema_period = {
     },
 };
 
-window.Blockly.JavaScript.fast_ema_period = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.fast_ema_period = () => {};
