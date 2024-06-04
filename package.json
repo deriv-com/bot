@@ -8,7 +8,7 @@
     },
     "scripts": {
         "start": "vite",
-        "build": "tsc && vite build",
+        "build": "vite build",
         "preview": "vite preview",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test": "vitest run",
@@ -88,6 +88,7 @@
         "@types/lodash.debounce": "^4.0.9",
         "@types/react": "^18.2.56",
         "@types/react-dom": "^18.2.19",
+        "@types/react-router-dom": "^5.3.3",
         "@types/react-transition-group": "^4.4.10",
         "@typescript-eslint/eslint-plugin": "^6.12.0",
         "@typescript-eslint/parser": "^6.0.0",

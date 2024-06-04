@@ -1,9 +1,10 @@
 import * as BlocklyJavaScript from 'blockly/javascript';
 
+import goog from '@/utils/tmp/goog-helper';
+
 import { setColors } from './hooks/colours';
 
-const goog = await import('@/utils/tmp/goog-helper');
-window.goog = goog.default;
+window.goog = goog;
 
 export const loadBlockly = async isDarkMode => {
     const BlocklyModule = await import('blockly');
