@@ -24,7 +24,6 @@ const BotNotificationMessages = observer(() => {
             data-testid='dt_notifications_container'
         >
             {/* <Notifications /> */}
-            <div>notif</div>
         </div>
     );
 });

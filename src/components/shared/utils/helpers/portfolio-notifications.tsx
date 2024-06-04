@@ -1,4 +1,5 @@
-import { Localize, localize } from '@deriv-com/translations';
+import Money from '@/components/shared_ui/money';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 export const contractSold = (currency: string, sold_for: number | string, Money: React.ElementType) => ({
     key: 'contract_sold',
@@ -21,7 +22,7 @@ export const contractCancelled = () => ({
     message: (
         <Localize
             i18n_default_text='Contract was cancelled.'
-            // components={[ <Money key={sold_for} amount={sold_for} currency={currency} /> ]}
+            components={[<Money key={sold_for} amount={sold_for} currency={currency} />]}
         />
     ),
     type: 'contract_sold',

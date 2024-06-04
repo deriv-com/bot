@@ -1,11 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { localize } from '@deriv-com/translations';
 import { Dialog, Text } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 
 const BotStopped = observer(() => {
     const { dashboard } = useStore();
@@ -24,7 +23,7 @@ const BotStopped = observer(() => {
             onConfirm={() => location.reload()}
         >
             <div className='dc-dialog__content__header'>
-                <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
+                <Text data-testid='data-title' weight='bold' as='p' align='left' size='sm' color='prominent'>
                     {localize("You're back online")}
                 </Text>
                 <div

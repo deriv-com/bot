@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
@@ -70,7 +70,7 @@ const RecentComponent = observer(() => {
             <div className='load-strategy__recent'>
                 <div className='load-strategy__recent__files'>
                     <div className='load-strategy__title'>
-                        <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                        <Text size={is_mobile ? 'xs' : 'sm'} weight='bold'>
                             <Localize i18n_default_text='Your bots:' />
                         </Text>
                     </div>
@@ -78,7 +78,7 @@ const RecentComponent = observer(() => {
                         {HEADERS.map(({ label, className }) => {
                             return (
                                 <div className={className} key={label}>
-                                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                    <Text size={is_mobile ? 'xs' : 'sm'} weight='bold'>
                                         {label}
                                     </Text>
                                 </div>

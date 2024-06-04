@@ -2,11 +2,9 @@ import { ReactElement } from 'react';
 import ContentLoader from 'react-content-loader';
 import classNames from 'classnames';
 
-import { localize } from '@deriv-com/translations';
-
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
+import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
 import { convertDateFormat } from '@/utils/tmp/time-helper';
 
 import Popover from '../shared_ui/popover';

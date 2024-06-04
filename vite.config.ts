@@ -33,11 +33,12 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: `
-                @import "src/styles/mixins.scss";
                 @import "src/components/shared/styles/constants.scss";
+                @import "src/components/shared/styles/themes.scss";
                 @import "src/components/shared/styles/devices.scss";
                 @import "src/components/shared/styles/fonts.scss";
                 @import "src/components/shared/styles/mixins.scss";
+                @import "src/styles/mixins.scss";
             `,
             },
         },

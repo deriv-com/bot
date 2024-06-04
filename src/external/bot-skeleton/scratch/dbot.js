@@ -26,7 +26,6 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
         await loadBlockly(is_dark_mode);
-        console.log('test load Blockly done');
         const recent_files = await getSavedWorkspaces();
         api_base.init();
         this.interpreter = Interpreter();
@@ -113,7 +112,7 @@ class DBot {
                 if (!el_scratch_div) {
                     return;
                 }
-                console.log('test loading blockly start');
+
                 this.workspace = window.Blockly.inject(el_scratch_div, {
                     media: `${window.__webpack_public_path__}media/`,
                     renderer: 'zelos',
@@ -160,14 +159,14 @@ class DBot {
                 window.Blockly.getMainWorkspace().RTL = isDbotRTL();
 
                 let file_name = config.default_file_name;
-                // if (recent_files && recent_files.length) {
-                //     const latest_file = recent_files[0];
-                //     window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
-                //     window.Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
-                //     file_name = latest_file.name;
-                //     window.Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-                //     window.Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
-                // }
+                if (recent_files && recent_files.length) {
+                    const latest_file = recent_files[0];
+                    window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
+                    window.Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
+                    file_name = latest_file.name;
+                    window.Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                    window.Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
+                }
 
                 const event_group = `dbot-load${Date.now()}`;
                 window.Blockly.Events.setGroup(event_group);
@@ -175,7 +174,7 @@ class DBot {
                     window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
-                console.log('test loading domToWorkspace done', main_xml);
+                
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);

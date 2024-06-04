@@ -1,9 +1,8 @@
 import { flow } from 'mobx';
 
 import { ActiveSymbols } from '@deriv/api-types';
-import { localize } from '@deriv-com/translations';
 
-import { getLanguage } from '@/utils/tmp/dummy';
+import { getLanguage, localize } from '@/utils/tmp/dummy';
 
 import { WS } from '../../services';
 import { redirectToLogin } from '../login';

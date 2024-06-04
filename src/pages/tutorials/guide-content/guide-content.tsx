@@ -1,13 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Dialog, Text } from '@deriv-com/ui';
 
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { removeKeyValue } from '@/utils/settings';
-import { Icon } from '@/utils/tmp/dummy';
+import { Icon, Localize, localize } from '@/utils/tmp/dummy';
 
 type TGuideList = {
     content?: string;

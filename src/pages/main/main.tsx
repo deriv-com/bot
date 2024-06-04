@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Dialog } from '@deriv-com/ui';
 
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
@@ -14,6 +13,7 @@ import dbot from '@/external/bot-skeleton/scratch/dbot';
 import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 import RunPanel from '../../components/run-panel';
 import Chart from '../chart';

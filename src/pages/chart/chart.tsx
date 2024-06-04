@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
+import { ChartTitle, setSmartChartsPublicPath, SmartChart } from '@deriv/deriv-charts';
+
+import { getUrlBase } from '@/components/shared';
 import { useStore } from '@/hooks/useStore';
 
 import ToolbarWidgets from './toolbar-widgets';
-import { ChartTitle, SmartChart } from './v1';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
@@ -39,6 +42,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     };
+
+    useEffect(() => {
+        setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+    }, []);
 
     return (
         <div

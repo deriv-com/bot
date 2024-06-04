@@ -2,10 +2,15 @@ import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 
 import { TStores } from '@deriv/stores/types';
-import { localize } from '@deriv-com/translations';
 
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
+import {
+    ContentFlag,
+    isEuResidenceWithOnlyVRTC,
+    localize,
+    routes,
+    showDigitalOptionsUnavailableError,
+} from '@/utils/tmp/dummy';
 
 import RootStore from './root-store';
 
@@ -142,11 +147,9 @@ export default class AppStore {
         if (!this.dbot_store || !this.api_helpers_store) return;
 
         blockly_store.setLoading(true);
-        console.log('test calling initWorkspace');
         await DBot.initWorkspace('/', this.dbot_store, this.api_helpers_store, ui.is_mobile, false);
         blockly_store.setContainerSize();
         blockly_store.setLoading(false);
-        console.log('test calling initWorkspace end');
 
         this.registerReloadOnLanguageChange();
         this.registerCurrencyReaction.call(this);
@@ -174,8 +177,8 @@ export default class AppStore {
         DBot.terminateBot();
         DBot.terminateConnection();
         if (window.Blockly?.derivWorkspace) {
-            clearInterval(Blockly.derivWorkspace.save_workspace_interval);
-            Blockly.derivWorkspace.dispose();
+            clearInterval(window.Blockly.derivWorkspace.save_workspace_interval);
+            window.Blockly.derivWorkspace.dispose();
         }
         if (typeof this.disposeReloadOnLanguageChangeReaction === 'function') {
             this.disposeReloadOnLanguageChangeReaction();

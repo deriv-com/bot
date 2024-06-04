@@ -3,7 +3,6 @@ import { CSSTransition } from 'react-transition-group';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
 
 import Download from '@/components/download';
@@ -12,7 +11,7 @@ import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
-import { DataList, Icon } from '@/utils/tmp/dummy';
+import { DataList, Icon, localize } from '@/utils/tmp/dummy';
 
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 

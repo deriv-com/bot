@@ -1,8 +1,7 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
 
-import { localize } from '@deriv-com/translations';
-
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+import { localize } from '@/utils/tmp/dummy';
 
 const getToastPosition = () => {
     const is_RTL = isDbotRTL();

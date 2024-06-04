@@ -1,6 +1,6 @@
-import { isDesktop } from '@/components/shared';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 
-import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
+import { isDesktop } from '@/components/shared';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;

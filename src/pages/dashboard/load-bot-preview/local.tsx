@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Dialog } from '@deriv-com/ui';
 
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 import BotPreview from './bot-preview';
 

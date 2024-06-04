@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Checkbox, Dialog } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 

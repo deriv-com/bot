@@ -118,8 +118,6 @@ const AppContent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log('test main content');
-
     return !is_loading ? (
         <Loader />
     ) : (

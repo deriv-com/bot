@@ -35,11 +35,6 @@ export const IconTradeTypes = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-IconTradeTypes'>{children}</div>;
 };
-
-export const Money = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-Money'>{children}</div>;
-};
 export const DataList = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-DataList'>{children}</div>;

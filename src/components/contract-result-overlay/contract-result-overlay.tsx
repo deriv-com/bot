@@ -1,10 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
-import { Icon } from '@/utils/tmp/dummy';
+import { Icon, Localize } from '@/utils/tmp/dummy';
 
 type TContractResultOverlayProps = {
     profit: number;

@@ -1,4 +1,4 @@
-import { Localize } from '@deriv-com/translations';
+import { Localize } from '@/utils/tmp/dummy';
 
 export const helpers = {
     keep_current_contract: (

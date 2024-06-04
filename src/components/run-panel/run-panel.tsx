@@ -2,18 +2,18 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { Localize, localize } from '@deriv-com/translations';
 import { Button, Drawer, Modal, Tabs, Text } from '@deriv-com/ui';
 
 import Journal from '@/components/journal';
 import SelfExclusion from '@/components/self-exclusion';
+import Money from '@/components/shared_ui/money';
 import Summary from '@/components/summary';
 import TradeAnimation from '@/components/trade-animation';
 import Transactions from '@/components/transactions';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { popover_zindex } from '@/constants/z-indexes';
 import { useStore } from '@/hooks/useStore';
-import { Money } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@/utils/tmp/dummy';
 
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 
@@ -120,10 +120,10 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
         <Button
             id='db-run-panel__clear-button'
             className='run-panel__clear-button'
-            is_disabled={is_clear_stat_disabled}
-            text={localize('Reset')}
+            disabled={is_clear_stat_disabled}
+            label={localize('Reset')}
             onClick={onClearStatClick}
-            secondary
+            variant='outlined'
         />
     );
 
@@ -151,11 +151,11 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
         <Button
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
-            is_disabled={is_clear_stat_disabled}
-            text={localize('Reset')}
+            disabled={is_clear_stat_disabled}
+            label={localize('Reset')}
             onClick={onClearStatClick}
             has_effect
-            secondary
+            variant='outlined'
         />
     </div>
 );
