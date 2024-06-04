@@ -84,23 +84,23 @@ export default class BlockConversion {
 
             // Bollinger Bands + MACDA have some fields we need to carry over.
             switch (block_type) {
-            case 'bb_statement':
-            case 'bba_statement': {
-                const bb_result_list = block.getField('BBRESULT_LIST');
-                if (bb_result_list) {
-                    bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
+                case 'bb_statement':
+                case 'bba_statement': {
+                    const bb_result_list = block.getField('BBRESULT_LIST');
+                    if (bb_result_list) {
+                        bb_result_list.setValue(this.getFieldValue(block_node, 'BBRESULT_LIST'));
+                    }
+                    break;
                 }
-                break;
-            }
-            case 'macda_statement': {
-                const macd_fields_list = block.getField('MACDFIELDS_LIST');
-                if (macd_fields_list) {
-                    macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
+                case 'macda_statement': {
+                    const macd_fields_list = block.getField('MACDFIELDS_LIST');
+                    if (macd_fields_list) {
+                        macd_fields_list.setValue(this.getFieldValue(block_node, 'MACDFIELDS_LIST'));
+                    }
+                    break;
                 }
-                break;
-            }
-            default:
-                break;
+                default:
+                    break;
             }
 
             // Attach required child blocks (these are defined on each indicator block).
@@ -428,17 +428,17 @@ export default class BlockConversion {
             const tag_name = strategy_child_node.nodeName.toLowerCase();
 
             switch (tag_name) {
-            case 'block':
-            case 'shadow': {
-                block_nodes.push(strategy_child_node);
-                break;
-            }
-            case 'variables': {
-                variable_nodes.push(...strategy_child_node.children);
-                break;
-            }
-            default:
-                break;
+                case 'block':
+                case 'shadow': {
+                    block_nodes.push(strategy_child_node);
+                    break;
+                }
+                case 'variables': {
+                    variable_nodes.push(...strategy_child_node.children);
+                    break;
+                }
+                default:
+                    break;
             }
         });
 
@@ -615,67 +615,67 @@ export default class BlockConversion {
             const tag_name = el_block_child.tagName.toLowerCase();
 
             switch (tag_name) {
-            case 'field': {
-                const field_name = el_block_child.getAttribute('name');
-                const field = block.getField(field_name);
+                case 'field': {
+                    const field_name = el_block_child.getAttribute('name');
+                    const field = block.getField(field_name);
 
-                if (field) {
-                    if (field instanceof window.window.window.Blockly.FieldVariable) {
-                        const variable_id = el_block_child.getAttribute('id');
-                        const variable_name = el_block_child.innerText.trim();
-                        const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
-                            this.workspace,
-                            variable_id,
-                            variable_name,
-                            ''
-                        );
-                        this.workspace_variables[variable.id_] = variable_name;
-                        field.setValue(variable.id_);
-                    } else {
-                        field.setValue(el_block_child.innerText);
+                    if (field) {
+                        if (field instanceof window.window.window.Blockly.FieldVariable) {
+                            const variable_id = el_block_child.getAttribute('id');
+                            const variable_name = el_block_child.innerText.trim();
+                            const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
+                                this.workspace,
+                                variable_id,
+                                variable_name,
+                                ''
+                            );
+                            this.workspace_variables[variable.id_] = variable_name;
+                            field.setValue(variable.id_);
+                        } else {
+                            field.setValue(el_block_child.innerText);
+                        }
                     }
+                    break;
                 }
-                break;
-            }
-            case 'value': {
-                this.processValueInputs(block, el_block_child);
-                break;
-            }
-            case 'statement': {
-                const statement_name = el_block_child.getAttribute('name');
-                this.processStatementInputs(block, statement_name, el_block_child);
-                break;
-            }
-            case 'next': {
-                const closest_statement = el_block_child.closest('statement');
-
-                if (closest_statement) {
-                    const statement_name = closest_statement.getAttribute('name');
-                    this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
-                } else if (block.nextConnection) {
-                    Array.from(el_block_child.children).forEach(el_sibling_block => {
-                        const sibling_block = this.convertBlockNode(el_sibling_block);
-                        block.nextConnection.connect(sibling_block.previousConnection);
-                    });
+                case 'value': {
+                    this.processValueInputs(block, el_block_child);
+                    break;
                 }
-                break;
-            }
-            case 'comment': {
-                const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
-                const comment_text = el_block_child.innerText;
+                case 'statement': {
+                    const statement_name = el_block_child.getAttribute('name');
+                    this.processStatementInputs(block, statement_name, el_block_child);
+                    break;
+                }
+                case 'next': {
+                    const closest_statement = el_block_child.closest('statement');
 
-                block.comment = new window.window.window.Blockly.WorkspaceComment(
-                    this.workspace,
-                    comment_text,
-                    0,
-                    0,
-                    is_minimised
-                );
-                block.comment.iconXY_ = { x: 0, y: 0 };
-                break;
-            }
-            default:
-                break;
+                    if (closest_statement) {
+                        const statement_name = closest_statement.getAttribute('name');
+                        this.processStatementInputs(block, statement_name, el_block_child, block.conversion_parent);
+                    } else if (block.nextConnection) {
+                        Array.from(el_block_child.children).forEach(el_sibling_block => {
+                            const sibling_block = this.convertBlockNode(el_sibling_block);
+                            block.nextConnection.connect(sibling_block.previousConnection);
+                        });
+                    }
+                    break;
+                }
+                case 'comment': {
+                    const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
+                    const comment_text = el_block_child.innerText;
+
+                    block.comment = new window.window.window.Blockly.WorkspaceComment(
+                        this.workspace,
+                        comment_text,
+                        0,
+                        0,
+                        is_minimised
+                    );
+                    block.comment.iconXY_ = { x: 0, y: 0 };
+                    break;
+                }
+                default:
+                    break;
             }
         });
 

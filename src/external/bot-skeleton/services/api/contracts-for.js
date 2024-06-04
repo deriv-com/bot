@@ -264,15 +264,15 @@ export default class ContractsFor {
                 .reverse()
                 .forEach(default_duration => {
                     switch (default_duration[1]) {
-                    case 'm':
-                    case 'h':
-                        converted_duration *= 60;
-                        break;
-                    case 'd':
-                        converted_duration *= 24;
-                        break;
-                    default:
-                        break;
+                        case 'm':
+                        case 'h':
+                            converted_duration *= 60;
+                            break;
+                        case 'd':
+                            converted_duration *= 24;
+                            break;
+                        default:
+                            break;
                     }
                 });
 

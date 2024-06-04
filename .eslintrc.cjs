@@ -4,6 +4,7 @@ module.exports = {
         'global-require': 'off',
         'import/no-extraneous-dependencies': 'off',
         'class-methods-use-this': 'off',
+        indent: 'off',
     },
     overrides: [
         {
