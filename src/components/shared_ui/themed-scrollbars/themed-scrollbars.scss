@@ -1,0 +1,71 @@
+/** @define dc-themed-scrollbars */
+.dc-themed-scrollbars {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    scroll-behavior: smooth;
+    /* Firefox only */
+    scrollbar-color: var(--state-active) var(--general-main-1);
+    scrollbar-width: thin;
+
+    &__autohide {
+        &::-webkit-scrollbar-thumb {
+            display: none;
+        }
+        &--is-hovered {
+            &::-webkit-scrollbar-thumb {
+                display: unset;
+            }
+        }
+    }
+    &--has-horizontal {
+        overflow-x: auto;
+    }
+    &--hidden-scrollbar {
+        &::-webkit-scrollbar {
+            display: none !important;
+        }
+    }
+    &--only-horizontal {
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        &-overlay {
+            overflow-y: hidden;
+            overflow-x: overlay;
+        }
+    }
+    &-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: -3rem;
+        padding-bottom: 3rem;
+        white-space: nowrap;
+
+        & li {
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 0 3rem;
+            vertical-align: middle;
+            width: unset;
+            height: 40px;
+
+            @include mobile {
+                padding: 0 1.1rem;
+            }
+        }
+    }
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: var(--state-active);
+    }
+}

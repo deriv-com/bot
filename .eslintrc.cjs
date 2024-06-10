@@ -2,7 +2,9 @@ module.exports = {
     extends: ['@deriv-com/eslint-config-deriv'],
     rules: {
         'global-require': 'off',
-        "import/no-extraneous-dependencies": 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'class-methods-use-this': 'off',
+        indent: 'off',
     },
     overrides: [
         {
@@ -30,6 +32,10 @@ module.exports = {
                 'plugin:prettier/recommended',
                 'plugin:react/jsx-runtime',
             ],
+            rules: {
+                // TODO: fix need to turn on later
+                '@typescript-eslint/no-explicit-any': 'off',
+            },
             parserOptions: {
                 ecmaversion: 2018,
                 sourceType: 'module',

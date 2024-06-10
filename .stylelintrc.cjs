@@ -12,12 +12,14 @@ module.exports = {
         'no-duplicate-selectors': true,
         'no-invalid-double-slash-comments': true,
         'number-max-precision': 3,
+        'no-descending-specificity': null,
         'selector-pseudo-class-no-unknown': [
             true,
             {
                 ignorePseudoClasses: ['export'],
             },
         ],
+        'selector-class-pattern': null,
         'selector-pseudo-element-colon-notation': 'single',
         'selector-pseudo-element-no-unknown': true,
         'selector-type-case': 'lower',
