@@ -14,6 +14,7 @@ class APIBase {
     time_interval = null;
     has_activeSymbols = false;
     is_stopping = false;
+    active_symbols = [];
 
     async init(force_update = false) {
         if (getLoginId()) {
@@ -25,6 +26,11 @@ class APIBase {
             if (this.time_interval) clearInterval(this.time_interval);
             this.time_interval = null;
             this.getTime();
+        } else {
+            this.api = generateDerivApiInstance();
+            if (!this.has_activeSymbols) {
+                this.getActiveSymbols();
+            }
         }
     }
 
@@ -103,6 +109,7 @@ class APIBase {
             });
             this.pip_sizes = pip_sizes;
             this.toggleRunButton(false);
+            this.active_symbols = active_symbols;
         });
     };
 

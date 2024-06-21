@@ -1,4 +1,8 @@
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+
+import { Loader } from '@deriv-com/ui';
+
+import { api_base } from '@/external/bot-skeleton';
 
 import Bot from '../external/bot-skeleton/scratch/dbot';
 import RootStore from '../stores';
@@ -10,11 +14,28 @@ type TStoreProvider = {
 };
 
 const StoreProvider: React.FC<TStoreProvider> = ({ children }) => {
-    const memoizedValue = useMemo(() => {
-        return new RootStore(Bot);
-    }, []);
+    const [store, setStore] = useState<RootStore | null>(null);
+    const initializingStore = useRef(false);
 
-    return <StoreContext.Provider value={memoizedValue}>{children}</StoreContext.Provider>;
+    useEffect(() => {
+        const initializeStore = async () => {
+            await api_base.init();
+            const ws = api_base.api;
+            const rootStore = new RootStore(Bot, ws);
+            setStore(rootStore);
+        };
+
+        if (!store && !initializingStore.current) {
+            initializingStore.current = true;
+            initializeStore();
+        }
+    }, [store]);
+
+    if (!store) {
+        return <Loader />;
+    }
+
+    return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
 const useStore = () => {

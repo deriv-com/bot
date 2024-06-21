@@ -25,7 +25,6 @@ export default class AppStore {
     disposeSwitchAccountListener: unknown;
     disposeLandingCompanyChangeReaction: unknown;
     disposeResidenceChangeReaction: unknown;
-    is_dbot_initialized: boolean;
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
@@ -47,7 +46,6 @@ export default class AppStore {
         this.dbot_store = null;
         this.api_helpers_store = null;
         this.timer = null;
-        this.is_dbot_initialized = false;
     }
 
     getErrorForNonEuClients = () => ({
@@ -148,7 +146,6 @@ export default class AppStore {
 
         blockly_store.setLoading(true);
         await DBot.initWorkspace('/', this.dbot_store, this.api_helpers_store, ui.is_mobile, false);
-        this.is_dbot_initialized = true;
 
         blockly_store.setContainerSize();
         blockly_store.setLoading(false);
@@ -335,10 +332,6 @@ export default class AppStore {
             server_time: this.core.common.server_time,
             ws: this.root_store.ws,
         };
-
-        if (!this.is_dbot_initialized) {
-            this.onMount();
-        }
     };
 
     onClickOutsideBlockly = (event: Event) => {

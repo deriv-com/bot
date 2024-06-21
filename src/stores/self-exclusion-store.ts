@@ -2,6 +2,8 @@ import { action, computed, makeObservable, observable } from 'mobx';
 
 import { TStores } from '@deriv/stores/types';
 
+import { api_base } from '@/external/bot-skeleton';
+
 import RootStore from './root-store';
 
 export default class SelfExclusionStore {
@@ -64,10 +66,13 @@ export default class SelfExclusionStore {
     }
 
     async checkRestriction() {
-        const { client } = this.core;
-        await client.getSelfExclusion();
-        if (client.self_exclusion.max_losses) {
-            this.setApiMaxLosses(client.self_exclusion.max_losses);
+        if (api_base.api) {
+            api_base.api.getSelfExclusion().then(response => {
+                const { max_losses: maxLosses } = response.get_self_exclusion;
+                if (maxLosses) {
+                    this.setApiMaxLosses(maxLosses);
+                }
+            });
         }
     }
 }

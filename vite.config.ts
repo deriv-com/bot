@@ -33,15 +33,15 @@ export default defineConfig({
         preprocessorOptions: {
             scss: {
                 additionalData: `
-                @import "src/components/shared/styles/constants.scss";
-                @import "src/components/shared/styles/themes.scss";
-                @import "src/components/shared/styles/devices.scss";
-                @import "src/components/shared/styles/fonts.scss";
-                @import "src/components/shared/styles/mixins.scss";
-                @import "src/components/shared/styles/reset.scss";
-                @import "src/components/shared/styles/inline-icons.scss";
-                @import "src/components/shared/styles/google-fonts.scss";
-                @import "src/styles/mixins.scss";
+                @import "src/components/shared/styles/constants";
+                @import "src/components/shared/styles/themes";
+                @import "src/components/shared/styles/devices";
+                @import "src/components/shared/styles/fonts";
+                @import "src/components/shared/styles/mixins";
+                @import "src/components/shared/styles/reset";
+                @import "src/components/shared/styles/inline-icons";
+                @import "src/components/shared/styles/google-fonts";
+                @import "src/styles/mixins";
             `,
             },
         },

@@ -8,6 +8,7 @@
     },
     "scripts": {
         "start": "vite",
+        "start:dev": "vite-live-preview --reload --port=8443",
         "build": "vite build",
         "preview": "vite preview",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
@@ -18,7 +19,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "^1.5.3",
-        "@deriv-com/api-hooks": "^0.0.22",
+        "@deriv-com/api-hooks": "^1.1.1",
         "@deriv-com/translations": "^1.2.4",
         "@deriv-com/ui": "latest",
         "@deriv-com/utils": "latest",
@@ -111,6 +112,7 @@
         "stylelint-selector-bem-pattern": "^4.0.0",
         "ts-jest": "^29.1.2",
         "typescript": "^5.2.2",
+        "vite-live-preview": "^0.1.6",
         "vite-plugin-svgr": "^4.2.0",
         "vite-require": "^0.2.3",
         "vite-tsconfig-paths": "^4.3.2",
