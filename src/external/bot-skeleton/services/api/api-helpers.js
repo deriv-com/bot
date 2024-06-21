@@ -9,7 +9,7 @@ class ApiHelpers {
     constructor(api_helpers_store) {
         this.trading_times = new TradingTimes(api_helpers_store);
         this.contracts_for = new ContractsFor(api_helpers_store);
-        this.active_symbols = new ActiveSymbols(api_helpers_store.ws, this.trading_times);
+        this.active_symbols = new ActiveSymbols(this.trading_times);
         this.account_limits = new AccountLimits(api_helpers_store);
     }
 

@@ -16,6 +16,8 @@ class APIBase {
     is_stopping = false;
     active_symbols = [];
 
+    active_symbols_promise = null;
+
     async init(force_update = false) {
         if (getLoginId()) {
             this.toggleRunButton(true);
@@ -29,7 +31,7 @@ class APIBase {
         } else {
             this.api = generateDerivApiInstance();
             if (!this.has_activeSymbols) {
-                this.getActiveSymbols();
+                this.active_symbols_promise = this.getActiveSymbols();
             }
         }
     }
@@ -82,7 +84,7 @@ class APIBase {
                 if (this.has_activeSymbols) {
                     this.toggleRunButton(false);
                 } else {
-                    this.getActiveSymbols();
+                    this.getActiveSymbols = this.getActiveSymbols();
                 }
                 await this.subscribe();
                 this.account_info = authorize;
@@ -101,7 +103,7 @@ class APIBase {
     }
 
     getActiveSymbols = async () => {
-        doUntilDone(() => this.api.send({ active_symbols: 'brief' })).then(({ active_symbols = [] }) => {
+        await doUntilDone(() => this.api.send({ active_symbols: 'brief' })).then(({ active_symbols = [] }) => {
             const pip_sizes = {};
             if (active_symbols.length) this.has_activeSymbols = true;
             active_symbols.forEach(({ symbol, pip }) => {
