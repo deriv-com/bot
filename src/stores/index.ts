@@ -1,7 +1,5 @@
 import moment from 'moment';
 
-import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
-
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
@@ -46,9 +44,7 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    // TODO: fix
-    // ws = new WebSocket(`wss://${getSocketURL()}/websockets/v3?app_id=36300&l=EN&brand=deriv`);
-    ws = generateDerivApiInstance();
+    ws = null;
     core = {
         client: {
             loginid: '',
@@ -57,7 +53,6 @@ export default class RootStore {
             balance: 0,
             currency: 'USD',
             is_logged_in: false,
-            getSelfExclusion: () => {},
         },
         common: {
             is_socket_opened: false,
@@ -82,7 +77,8 @@ export default class RootStore {
         pushDataLayer: () => {},
     };
 
-    constructor(dbot: unknown) {
+    constructor(dbot: unknown, ws: unknown) {
+        this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, this.core);
         this.summary_card = new SummaryCardStore(this, this.core);

@@ -71,7 +71,7 @@ export default class TradingTimes {
 
     async updateTradingTimes() {
         const last_update_date = this.last_update_moment.format('YYYY-MM-DD');
-        const response = await this.ws.tradingTimes(last_update_date);
+        const response = await this.ws?.send({ trading_times: last_update_date });
 
         if (response.error) {
             return;

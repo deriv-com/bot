@@ -4,6 +4,8 @@ import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../constants/config';
 import PendingPromise from '../../utils/pending-promise';
 
+import { api_base } from './api-base';
+
 export default class ActiveSymbols {
     constructor(ws, trading_times) {
         this.active_symbols = [];
@@ -25,11 +27,12 @@ export default class ActiveSymbols {
         }
 
         this.is_initialised = true;
-
-        const { active_symbols } = await this.ws.authorized.activeSymbols();
+        const active_symbols = api_base?.active_symbols ?? [];
 
         this.active_symbols = active_symbols;
         this.processed_symbols = this.processActiveSymbols();
+
+        // TODO: fix need to look into it as the method is not present
         this.trading_times.onMarketOpenCloseChanged = changes => {
             Object.keys(changes).forEach(symbol_name => {
                 const symbol_obj = this.active_symbols[symbol_name];
