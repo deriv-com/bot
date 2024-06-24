@@ -31,16 +31,15 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         onStopBotClick,
         performSelfExclusionCheck,
     } = run_panel;
-    const { account_status } = client;
+    const { account_status, is_logged_in } = client;
     const cashier_validation = account_status?.cashier_validation;
     const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
-        performSelfExclusionCheck();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (is_logged_in) performSelfExclusionCheck();
+    }, [is_logged_in, performSelfExclusionCheck]);
 
     React.useEffect(() => {
         if (shouldDisable) {

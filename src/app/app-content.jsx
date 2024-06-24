@@ -1,8 +1,10 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
+import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { Loader } from '@deriv-com/ui';
 
+import { getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
@@ -56,6 +58,10 @@ const AppContent = () => {
             }
         }
     };
+
+    React.useEffect(() => {
+        setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
+    }, []);
 
     React.useEffect(() => {
         // Listen for proposal open contract messages to check

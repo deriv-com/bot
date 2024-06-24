@@ -8,7 +8,7 @@
     },
     "scripts": {
         "start": "vite",
-        "start:dev": "vite-live-preview --reload --port=8443",
+        "start:dev": "vite-live-preview --reload --port=8444",
         "build": "vite build",
         "preview": "vite preview",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
@@ -113,6 +113,7 @@
         "ts-jest": "^29.1.2",
         "typescript": "^5.2.2",
         "vite-live-preview": "^0.1.6",
+        "vite-plugin-static-copy": "^1.0.5",
         "vite-plugin-svgr": "^4.2.0",
         "vite-require": "^0.2.3",
         "vite-tsconfig-paths": "^4.3.2",

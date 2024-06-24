@@ -2,9 +2,8 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { ChartTitle, setSmartChartsPublicPath, SmartChart } from '@deriv/deriv-charts';
+import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 
-import { getUrlBase } from '@/components/shared';
 import { useStore } from '@/hooks/useStore';
 
 import ToolbarWidgets from './toolbar-widgets';
@@ -27,6 +26,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         wsForgetStream,
         wsSendRequest,
         wsSubscribe,
+        updateSymbol,
     } = chart_store;
     const {
         ui: { is_mobile, is_desktop },
@@ -44,8 +44,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     };
 
     useEffect(() => {
-        setSmartChartsPublicPath(getUrlBase('/js/smartcharts/'));
-    }, []);
+        updateSymbol();
+    }, [updateSymbol]);
+
+    if (!symbol) return null;
 
     return (
         <div

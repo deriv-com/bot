@@ -67,8 +67,8 @@ export default class SelfExclusionStore {
 
     async checkRestriction() {
         if (api_base.api) {
-            api_base.api.getSelfExclusion().then(response => {
-                const { max_losses: maxLosses } = response.get_self_exclusion;
+            api_base.api.getSelfExclusion().then(({ get_self_exclusion }) => {
+                const { max_losses: maxLosses } = get_self_exclusion;
                 if (maxLosses) {
                     this.setApiMaxLosses(maxLosses);
                 }

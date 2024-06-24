@@ -27,7 +27,7 @@ export default class ActiveSymbols {
 
         this.is_initialised = true;
 
-        if (api_base.has_activeSymbols) {
+        if (api_base.has_active_symbols) {
             this.active_symbols = api_base?.active_symbols ?? [];
         } else {
             await api_base.active_symbols_promise;
