@@ -35,6 +35,10 @@ export default defineConfig({
                     src: 'node_modules/@deriv/deriv-charts/dist/*',
                     dest: 'js/smartcharts',
                 },
+                {
+                    src: 'node_modules/@deriv/deriv-charts/dist/chart/assets/*',
+                    dest: 'assets',
+                },
             ],
         }),
     ],

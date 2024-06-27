@@ -1,20 +1,13 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import {
-    ActiveSymbolsRequest,
-    ServerTimeRequest,
-    TicksHistoryRequest,
-    TicksStreamRequest,
-    TradingTimesRequest,
-} from '@deriv/api-types';
-
 import { LocalStore } from '@/components/shared';
-import { ServerTime } from '@/external/bot-skeleton';
 
 import RootStore from './root-store';
 
-export const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
-let WS: RootStore['ws'];
+type TSubscription = {
+    id: string | null;
+    subscriber: null | { unsubscribe: () => void };
+};
 
 export default class ChartStore {
     root_store: RootStore;
@@ -34,7 +27,6 @@ export default class ChartStore {
         });
 
         this.root_store = root_store;
-        WS = root_store.ws;
         const { run_panel } = root_store;
 
         reaction(
@@ -44,6 +36,11 @@ export default class ChartStore {
 
         this.restoreFromStorage();
     }
+
+    subscription: TSubscription = {
+        id: null,
+        subscriber: null,
+    };
 
     symbol: string | undefined;
     is_chart_loading: boolean | undefined;
@@ -124,42 +121,6 @@ export default class ChartStore {
         } catch {
             LocalStore.remove('bot.chart_props');
         }
-    };
-
-    // #region WS
-    wsSubscribe = (req: TicksStreamRequest, callback: () => void) => {
-        if (req.subscribe === 1) {
-            const key = JSON.stringify(req);
-            const subscriber = WS?.subscribeTicksHistory(req, callback);
-            g_subscribers_map[key] = subscriber;
-        }
-    };
-
-    wsForget = (req: TicksHistoryRequest) => {
-        const key = JSON.stringify(req);
-        if (g_subscribers_map[key]) {
-            g_subscribers_map[key]?.unsubscribe();
-            delete g_subscribers_map[key];
-        }
-    };
-
-    wsForgetStream = (stream_id: string) => {
-        WS?.forgetStream(stream_id);
-    };
-
-    wsSendRequest = (req: TradingTimesRequest | ActiveSymbolsRequest | ServerTimeRequest) => {
-        if ('time' in req && req.time) {
-            return ServerTime.timePromise().then(() => {
-                return {
-                    msg_type: 'time',
-                    time: ServerTime.get().unix(),
-                };
-            });
-        }
-        if ('active_symbols' in req && req.active_symbols) {
-            return WS?.activeSymbols();
-        }
-        if (WS?.storage.send) return WS?.storage.send(req);
     };
 
     getMarketsOrder = (active_symbols: { market: string; display_name: string }[]) => {
