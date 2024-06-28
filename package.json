@@ -8,7 +8,7 @@
     },
     "scripts": {
         "start": "vite",
-        "start:dev": "vite-live-preview --reload --port=8443",
+        "start:dev": "vite-live-preview --reload --port=8444",
         "build": "vite build",
         "preview": "vite preview",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",

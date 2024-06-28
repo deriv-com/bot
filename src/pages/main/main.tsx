@@ -22,7 +22,6 @@ import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
 import Tutorial from '../tutorials';
-import { tour_list } from '../tutorials/dbot-tours/utils';
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useStore();
@@ -33,7 +32,6 @@ const AppWrapper = observer(() => {
         is_trading_view_modal_visible,
         setActiveTab,
         setWebSocketState,
-        setActiveTour,
         setTourDialogVisibility,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
@@ -43,18 +41,16 @@ const AppWrapper = observer(() => {
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
-    const init_render = React.useRef(true);
-    const { ui } = useStore();
-    const { url_hashed_values, is_mobile } = ui;
-    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+    // const { ui } = useStore();
+   // const { url_hashed_values, is_mobile } = ui;
+    //const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
-    let tab_value: number | string = active_tab;
-    const GetHashedValue = (tab: number) => {
-        tab_value = url_hashed_values?.split('#')[1];
-        if (!tab_value) return tab;
-        return Number(hash.indexOf(String(tab_value)));
-    };
-    const active_hash_tab = GetHashedValue(active_tab);
+    //let tab_value: number | string = active_tab;
+    // const GetHashedValue = (tab: number) => {
+    //     tab_value = url_hashed_values?.split('#')[1];
+    //     if (!tab_value) return tab;
+    //     return Number(hash.indexOf(String(tab_value)));
+    // };
 
     const checkAndHandleConnection = () => {
         const api_status = api_base.getConnectionStatus();
@@ -77,16 +73,16 @@ const AppWrapper = observer(() => {
             setTourDialogVisibility(false);
         }
 
-        if (init_render.current) {
-            setActiveTab(Number(active_hash_tab));
-            if (is_mobile) handleTabChange(Number(active_hash_tab));
-            init_render.current = false;
-        } else {
-            window.location.hash = hash[active_tab] || hash[0];
-        }
-        if (tour_list[active_tab] !== active_tour) {
-            setActiveTour('');
-        }
+        // if (init_render.current) {
+        //     //setActiveTab(Number(active_hash_tab));
+        //     if (is_mobile) handleTabChange(Number(active_hash_tab));
+        //     init_render.current = false;
+        // } else {
+        //     window.location.hash = hash[active_tab] || hash[0];
+        // }
+        // if (tour_list[active_tab] !== active_tour) {
+        //     setActiveTour('');
+        // }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab]);
 

@@ -56,15 +56,6 @@ const LocalComponent = observer(() => {
                     >
                         {!is_mobile && <Localize i18n_default_text='Preview' />}
                     </div>
-
-                    {!is_mobile && (
-                        <>
-                            <div className='load-strategy__preview-workspace'>
-                                <BotPreview id_ref={el_ref} />
-                            </div>
-                            <div className='load-strategy__button-group'>{renderOpenButton()}</div>
-                        </>
-                    )}
                     <MobileWrapper>
                         <Dialog
                             is_visible={has_mobile_preview_loaded}

@@ -29,8 +29,9 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children }) => {
             initializingStore.current = true;
             initializeStore();
         }
-    }, [store]);
 
+    }, [store]);
+    
     if (!store) {
         return <Loader />;
     }

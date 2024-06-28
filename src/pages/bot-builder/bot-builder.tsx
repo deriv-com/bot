@@ -11,7 +11,7 @@ import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 
 import LoadModal from '../../components/load-modal';
-import SaveModal from '../dashboard/load-bot-preview/save-modal';
+import SaveModal from '../dashboard/common/save-modal';
 import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
 
 import QuickStrategy1 from './quick-strategy';

@@ -15,8 +15,8 @@ import { Icon, localize } from '@/utils/tmp/dummy';
 
 import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 
-import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
+import GoogleDrive from './common/google-drive';
+import Recent from './common/recent';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
