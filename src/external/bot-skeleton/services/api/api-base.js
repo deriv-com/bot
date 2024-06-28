@@ -2,6 +2,7 @@ import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
+import chart_api from './chart-api';
 
 class APIBase {
     api;
@@ -12,26 +13,28 @@ class APIBase {
     is_running = false;
     subscriptions = [];
     time_interval = null;
-    has_activeSymbols = false;
+    has_active_symbols = false;
     is_stopping = false;
     active_symbols = [];
 
+    active_symbols_promise = null;
+
     async init(force_update = false) {
-        if (getLoginId()) {
-            this.toggleRunButton(true);
-            if (force_update) this.terminate();
-            this.api = generateDerivApiInstance();
-            this.initEventListeners();
-            await this.authorizeAndSubscribe();
-            if (this.time_interval) clearInterval(this.time_interval);
-            this.time_interval = null;
-            this.getTime();
-        } else {
-            this.api = generateDerivApiInstance();
-            if (!this.has_activeSymbols) {
-                this.getActiveSymbols();
-            }
+        this.toggleRunButton(true);
+        if (force_update) this.terminate();
+        this.api = generateDerivApiInstance();
+        if (!this.has_active_symbols) {
+            this.active_symbols_promise = this.getActiveSymbols();
         }
+        this.initEventListeners();
+        if (this.time_interval) clearInterval(this.time_interval);
+        this.time_interval = null;
+        this.getTime();
+
+        if (getLoginId()) {
+            await this.authorizeAndSubscribe();
+        }
+        chart_api.init();
     }
 
     getConnectionStatus() {
@@ -79,10 +82,10 @@ class APIBase {
             this.api.authorize(this.token);
             try {
                 const { authorize } = await this.api.expectResponse('authorize');
-                if (this.has_activeSymbols) {
+                if (this.has_active_symbols) {
                     this.toggleRunButton(false);
                 } else {
-                    this.getActiveSymbols();
+                    this.active_symbols_promise = this.getActiveSymbols();
                 }
                 await this.subscribe();
                 this.account_info = authorize;
@@ -101,16 +104,19 @@ class APIBase {
     }
 
     getActiveSymbols = async () => {
-        doUntilDone(() => this.api.send({ active_symbols: 'brief' })).then(({ active_symbols = [] }) => {
-            const pip_sizes = {};
-            if (active_symbols.length) this.has_activeSymbols = true;
-            active_symbols.forEach(({ symbol, pip }) => {
-                pip_sizes[symbol] = +(+pip).toExponential().substring(3);
-            });
-            this.pip_sizes = pip_sizes;
-            this.toggleRunButton(false);
-            this.active_symbols = active_symbols;
-        });
+        await doUntilDone(() => this.api.send({ active_symbols: 'brief' })).then(
+            ({ active_symbols = [], error = {} }) => {
+                const pip_sizes = {};
+                if (active_symbols.length) this.has_active_symbols = true;
+                active_symbols.forEach(({ symbol, pip }) => {
+                    pip_sizes[symbol] = +(+pip).toExponential().substring(3);
+                });
+                this.pip_sizes = pip_sizes;
+                this.toggleRunButton(false);
+                this.active_symbols = active_symbols;
+                return active_symbols || error;
+            }
+        );
     };
 
     toggleRunButton = toggle => {

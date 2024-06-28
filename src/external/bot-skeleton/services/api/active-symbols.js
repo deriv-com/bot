@@ -7,7 +7,7 @@ import PendingPromise from '../../utils/pending-promise';
 import { api_base } from './api-base';
 
 export default class ActiveSymbols {
-    constructor(ws, trading_times) {
+    constructor(trading_times) {
         this.active_symbols = [];
         this.disabled_symbols = config.DISABLED_SYMBOLS;
         this.disabled_submarkets = config.DISABLED_SUBMARKETS;
@@ -15,7 +15,6 @@ export default class ActiveSymbols {
         this.is_initialised = false;
         this.processed_symbols = {};
         this.trading_times = trading_times;
-        this.ws = ws;
     }
 
     async retrieveActiveSymbols(is_forced_update = false) {
@@ -27,9 +26,14 @@ export default class ActiveSymbols {
         }
 
         this.is_initialised = true;
-        const active_symbols = api_base?.active_symbols ?? [];
 
-        this.active_symbols = active_symbols;
+        if (api_base.has_active_symbols) {
+            this.active_symbols = api_base?.active_symbols ?? [];
+        } else {
+            await api_base.active_symbols_promise;
+            this.active_symbols = api_base?.active_symbols ?? [];
+        }
+
         this.processed_symbols = this.processActiveSymbols();
 
         // TODO: fix need to look into it as the method is not present

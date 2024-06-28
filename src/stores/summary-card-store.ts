@@ -7,6 +7,7 @@ import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@/compo
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { getValidationRules, TValidationRuleIndex, TValidationRules } from '@/constants/contract';
 import { contract_stages } from '@/constants/contract-stage';
+import { api_base } from '@/external/bot-skeleton';
 import { getContractUpdateConfig } from '@/utils/multiplier';
 import Validator from '@/utils/tmp/validator';
 
@@ -212,7 +213,7 @@ export default class SummaryCardStore {
         const limit_order = this.getLimitOrder();
 
         if (this.contract_info?.contract_id) {
-            this.root_store.ws.contractUpdate(this.contract_info?.contract_id, limit_order).then(response => {
+            api_base.api.contractUpdate(this.contract_info?.contract_id, limit_order).then(response => {
                 if (response.error) {
                     this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
                     return;

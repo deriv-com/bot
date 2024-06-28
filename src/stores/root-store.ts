@@ -43,7 +43,6 @@ export default class RootStore {
     public data_collection_store: DataCollectionStore;
 
     core = {};
-    ws = null;
 
     constructor(dbot: unknown) {
         this.dbot = dbot;

@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
 import { viteRequire } from 'vite-require';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -28,6 +29,18 @@ export default defineConfig({
                 }
             },
         },
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'node_modules/@deriv/deriv-charts/dist/*',
+                    dest: 'js/smartcharts',
+                },
+                {
+                    src: 'node_modules/@deriv/deriv-charts/dist/chart/assets/*',
+                    dest: 'assets',
+                },
+            ],
+        }),
     ],
     css: {
         preprocessorOptions: {

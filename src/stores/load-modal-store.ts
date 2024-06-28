@@ -163,7 +163,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     get selected_strategy(): TStrategy {
         return (
-            this.dashboard_strategies.find((ws: { id: string }) => ws.id === this.selected_strategy_id) ??
+            this.dashboard_strategies.find((workspace: { id: string }) => workspace.id === this.selected_strategy_id) ??
             this.dashboard_strategies[0]
         );
     }

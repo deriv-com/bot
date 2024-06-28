@@ -1,6 +1,8 @@
 import { config } from '../../constants/config';
 import PendingPromise from '../../utils/pending-promise';
 
+import { api_base } from './api-base';
+
 export default class ContractsFor {
     constructor({ ws, server_time }) {
         this.cache_age_in_min = 10;
@@ -196,7 +198,7 @@ export default class ContractsFor {
             }
 
             this.retrieving_contracts_for[symbol] = new PendingPromise();
-            const response = await this.ws.send({ contracts_for: symbol });
+            const response = await api_base.api.send({ contracts_for: symbol });
 
             if (response.error) {
                 return [];
