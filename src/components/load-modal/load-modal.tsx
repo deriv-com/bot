@@ -6,7 +6,7 @@ import { tabs_title } from '@/constants/load-modal';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 
-import GoogleDrive from '../../pages/dashboard/common/google-drive';
+import GoogleDrive from '../../pages/dashboard/common/google-dialog/google-drive';
 import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';
 
 import Local from './local';

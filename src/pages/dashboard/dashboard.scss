@@ -14,7 +14,7 @@ $spacing-medium: 3rem;
     outline: none;
     border-radius: 2.4rem;
 }
-.bot-dashboard{
+.bot-dashboard {
     position: relative;
 }
 .dashboard {
@@ -28,17 +28,35 @@ $spacing-medium: 3rem;
             width: 90%;
         }
         margin: 0 auto;
-        max-height: 40rem;
-        overflow: auto;
         &__table {
             width: 100%;
+            display: block;
             &__title {
+                // display: block;
+                // &:nth-child(1) {
+                //     width: 41%;
+                // }
+                // &:nth-child(2) {
+                //     width: 21%;
+                // }
+                // &:nth-child(3) {
+                //     width: 20%;
+                // }
+                // &:nth-child(4) {
+                //     width: 20%;
+                // }
+
                 font-size: 1.4rem;
                 font-weight: bold;
-                border-bottom: 1px solid var(--border-divider);
-                margin-bottom: 1.6rem;
+                padding-bottom: 1.6rem;
+            }
+            &__body {
+                display: block;
+                max-height: 35rem;
+                overflow: auto;
             }
             &__row {
+                border-top: 1px solid var(--border-divider);
                 border-bottom: 1px solid var(--border-divider);
                 &__bot_name,
                 &__last_modified,
@@ -47,8 +65,17 @@ $spacing-medium: 3rem;
                     padding: 0.8rem 0;
                     font-size: 14px;
                 }
+
+                &__bot_name {
+                    width: 40%;
+                }
+                &__last_modified,
+                &__status {
+                    width: 20%;
+                }
                 &__actions {
                     display: flex;
+
                     &--item {
                         margin-inline-end: 1.6rem;
                         cursor: pointer;

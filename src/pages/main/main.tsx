@@ -20,7 +20,7 @@ import RunPanel from '../../components/run-panel';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
-import RunStrategy from '../dashboard/run-strategy';
+import RunStrategy from './common/run-strategy';
 import Tutorial from '../tutorials';
 
 const AppWrapper = observer(() => {

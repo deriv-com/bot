@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Flyout from '@/components/flyout';
 import { useStore } from '@/hooks/useStore';
 
-import StopBotModal from '../dashboard/common/stop-bot-modal';
+import StopBotModal from '../dashboard/common/stop-bot-dialog/stop-bot-modal';
 
 import Toolbar from './toolbar';
 import Toolbox from './toolbox';
