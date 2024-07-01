@@ -12,15 +12,15 @@ export const STRATEGY = {
 export const MENU_DESKTOP = [
     {
         type: STRATEGY.EDIT,
-        icon: 'IcEdit',
+        icon: '/ic-open.svg',
     },
     {
         type: STRATEGY.SAVE,
-        icon: 'IcSave',
+        icon: '/ic-save.svg',
     },
     {
         type: STRATEGY.DELETE,
-        icon: 'IcDelete',
+        icon: '/ic-delete.svg',
     },
 ];
 

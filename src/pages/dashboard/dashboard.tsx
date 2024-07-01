@@ -1,97 +1,35 @@
 import React from 'react';
-import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import DeleteDialog from './common/delete-dialog/delete-dialog';
+import SaveModal from './common/save-modal-dialog/save-modal';
+import DashboardQuickActions from './dashboard-quick-actions';
+import DashboardBotList from './dashboard-bot-list';
 
-import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
-
-import Local from './load-bot-preview/local';
-import Cards from './cards';
-import InfoPanel from './info-panel';
-import UserGuide from './user-guide';
-
-type TMobileIconGuide = {
-    handleTabChange: (active_number: number) => void;
-};
-
-const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
-    const { ui } = useStore();
-    const { load_modal, dashboard } = useStore();
-    const { dashboard_strategies } = load_modal;
-    const { setActiveTabTutorial, active_tab, active_tour } = dashboard;
-    const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { is_mobile } = ui;
-
+const Dashboard = observer(() => {
+    const onClickUserGuide = () => {};
+    const { load_modal } = useStore();
+    const { setDashboardStrategies } = load_modal;
     return (
         <React.Fragment>
-            <div
-                className={classNames('tab__dashboard', {
-                    'tab__dashboard--tour-active': active_tour,
-                })}
-            >
-                <div className='tab__dashboard__content'>
-                    <UserGuide
-                        is_mobile={is_mobile}
-                        handleTabChange={handleTabChange}
-                        setActiveTabTutorial={setActiveTabTutorial}
-                    />
-                    <div className='quick-panel'>
-                        <div
-                            className={classNames('tab__dashboard__header', {
-                                'tab__dashboard__header--listed': !is_mobile && has_dashboard_strategies,
-                            })}
-                        >
-                            {!has_dashboard_strategies && (
-                                <Text
-                                    className='title'
-                                    as='h2'
-                                    color='prominent'
-                                    size={is_mobile ? 's' : 'sm'}
-                                    line_height='xxl'
-                                    weight='bold'
-                                >
-                                    {localize('Load or build your bot')}
-                                </Text>
-                            )}
-                            <Text
-                                as='p'
-                                color='prominent'
-                                line_height='s'
-                                size={is_mobile ? 'xxs' : 's'}
-                                className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
-                            >
-                                {localize(
-                                    'Import a bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
-                                )}
-                            </Text>
-                        </div>
-                        <div
-                            className={classNames('tab__dashboard__centered', {
-                                'tab__dashboard__centered--listed': !is_mobile && has_dashboard_strategies,
-                                'tab__dashboard__centered--not-listed': !has_dashboard_strategies,
-                            })}
-                        >
-                            <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
-                        </div>
-                        {is_mobile && <Local />}
-                    </div>
-                    <div className={classNames('preview-panel', { 'preview-panel--active': has_dashboard_strategies })}>
-                        {has_dashboard_strategies && !is_mobile && (
-                            <div className='tab__dashboard__preview'>
-                                <Local />
-                            </div>
-                        )}
-                    </div>
+            <div className='dashboard'>
+                <div className='dashboard__header'>
+                    <button className='dashboard__user-guide-button' onClick={onClickUserGuide}>
+                        <img src='/ic-user-guide.svg' alt='My SVG' />
+                        User Guide
+                    </button>
                 </div>
+                <div className='dashboard__description'>
+                    Import a bot from your computer or Google Drive, build it from scratch, or start with a quick
+                    strategy.
+                </div>
+                <DashboardQuickActions />
+                <DashboardBotList />
+                <DeleteDialog setStrategies={setDashboardStrategies} />
+                <SaveModal />
             </div>
-            <InfoPanel />
-            {active_tab === 0 && <OnboardTourHandler is_mobile={is_mobile} />}
         </React.Fragment>
     );
 });
 
-export default DashboardComponent;
+export default Dashboard;

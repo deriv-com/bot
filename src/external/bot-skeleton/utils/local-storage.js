@@ -3,6 +3,10 @@ import LZString from 'lz-string';
 
 import { save_types } from '../constants/save-type';
 import DBotStore from '../scratch/dbot-store';
+// import { checkTargetForNewValues } from 'framer-motion';
+
+window.localForage = localForage;
+window.LZString = LZString;
 /**
  * Save workspace to localStorage
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
@@ -48,6 +52,7 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
         workspaces.pop();
     }
     updateListStrategies(workspaces);
+    //console.log(workspaces);
     localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
 };
 

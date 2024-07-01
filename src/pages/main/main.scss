@@ -23,7 +23,6 @@
         width: 100%;
 
         &--active {
-            //css for onboard tour overlay
             &:before {
                 content: '';
                 position: fixed;
@@ -304,9 +303,7 @@
         }
     }
     &__run-strategy-wrapper {
-        @include desktop {
-            position: absolute;
-        }
+
 
         inset-inline-end: 1.6rem;
         top: 1.6rem;
