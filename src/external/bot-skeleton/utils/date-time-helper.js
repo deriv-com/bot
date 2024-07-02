@@ -3,10 +3,9 @@
 export const timeSince = timestamp => {
     const now = new Date();
     const secondPast = (now.getTime() - timestamp) / 1000;
-
+    // TODO: kept commented so we can apply localize function after translations fixed
     //console.log(secondPast)
     if (secondPast < 60) {
-
         return `${parseInt(secondPast)}s ago`;
         //return localize('{{secondPast}}s ago', { secondPast: parseInt(secondPast) });
     }

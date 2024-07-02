@@ -1,12 +1,9 @@
+/* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
-
-// import Icon from '../icon/icon';
-// import Button from '../button/button';
 import Text from '../text';
-// import { useOnClickOutside } from '../../hooks';
 
 type TDialog = {
     cancel_button_text?: string;
@@ -149,6 +146,7 @@ const Dialog = ({
                             {has_close_icon && (
                                 <div onClick={handleClose} className='dc-dialog__header--close'>
                                     <img src='icons/ic-cross.svg' />
+                                    {/* TODO: need to fix this component by importing the Icon in shared UI */}
                                     {/* <Icon icon='IcCross' /> */}
                                 </div>
                             )}
@@ -163,6 +161,7 @@ const Dialog = ({
                     )}
                     <div className='dc-dialog__footer'>
                         {!!onCancel && (
+                            //TODO: need to fix this component by importing the button in shared UI
                             // <Button
                             //     className='dc-dialog__button'
                             //     has_effect
@@ -176,6 +175,7 @@ const Dialog = ({
                             </button>
                         )}
                         {!!confirm_button_text && (
+                            //TODO: need to fix this component by importing the button in shared UI
                             // <Button
                             //     className='dc-dialog__button'
                             //     has_effect

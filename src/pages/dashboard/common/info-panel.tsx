@@ -36,7 +36,7 @@ const InfoPanel = observer(() => {
 
     const handleClose = () => {
         setInfoPanelVisibility(false);
-        localStorage.removeItem('dbot_should_show_info');
+        localStorage.setItem('dbot_should_show_info', JSON.stringify(Date.now()));
     };
 
     const renderInfo = () => (

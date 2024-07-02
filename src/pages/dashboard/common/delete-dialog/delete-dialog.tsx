@@ -1,11 +1,9 @@
+/* eslint-disable simple-import-sort/imports */
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { observer } from 'mobx-react-lite';
-
 import { Text } from '@deriv-com/ui';
-
 import { TStrategy } from 'Types';
-
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
@@ -66,15 +64,15 @@ const DeleteDialog = observer(() => {
     return (
         <div>
             <Dialog
-                title="Delete bot"
+                title='Delete bot'
                 is_visible={is_delete_modal_open}
-                confirm_button_text="Yes, delete"
+                confirm_button_text='Yes, delete'
                 onConfirm={() => {
                     removeBotStrategy(selected_strategy_id);
                     onToggleDeleteDialog(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_DELETE);
                 }}
-                cancel_button_text="No"
+                cancel_button_text='No'
                 onCancel={() => {
                     onToggleDeleteDialog(false);
                 }}

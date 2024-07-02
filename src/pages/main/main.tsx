@@ -1,9 +1,8 @@
+/* eslint-disable simple-import-sort/imports */
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
 import { Dialog } from '@deriv-com/ui';
-
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Tabs from '@/components/shared_ui/tabs/tabs';
@@ -15,7 +14,6 @@ import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
 import RunPanel from '../../components/run-panel';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
@@ -41,8 +39,9 @@ const AppWrapper = observer(() => {
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
+    // TODO: need to check this
     // const { ui } = useStore();
-   // const { url_hashed_values, is_mobile } = ui;
+    // const { url_hashed_values, is_mobile } = ui;
     //const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
     //let tab_value: number | string = active_tab;
@@ -73,6 +72,7 @@ const AppWrapper = observer(() => {
             setTourDialogVisibility(false);
         }
 
+        // TODO: need to check this
         // if (init_render.current) {
         //     //setActiveTab(Number(active_hash_tab));
         //     if (is_mobile) handleTabChange(Number(active_hash_tab));
