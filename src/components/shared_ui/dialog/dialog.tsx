@@ -1,7 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+
 // import Icon from '../icon/icon';
 // import Button from '../button/button';
 import Text from '../text';
@@ -147,7 +148,7 @@ const Dialog = ({
                             )}
                             {has_close_icon && (
                                 <div onClick={handleClose} className='dc-dialog__header--close'>
-                                    <img src='/ic-cross.svg'/>
+                                    <img src='icons/ic-cross.svg' />
                                     {/* <Icon icon='IcCross' /> */}
                                 </div>
                             )}

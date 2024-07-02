@@ -1,12 +1,12 @@
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+
 import { isMobileOs } from '@/components/shared';
 import { DBOT_TABS } from '@/constants/bot-contents';
-import { MENU_DESKTOP, STRATEGY } from '@/constants/dashboard';
+import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '@/constants/dashboard';
 import { getSavedWorkspaces, timeSince } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-
 
 const DashboardBotList = observer(() => {
     const { load_modal, dashboard, save_modal } = useStore();
@@ -96,12 +96,12 @@ const DashboardBotList = observer(() => {
         <div className='dashboard__botlist'>
             <div className='dashboard__botlist__header'>Your Bots</div>
             <table className='dashboard__botlist__table'>
-                <thead>
-                    <tr>
-                        <th className='dashboard__botlist__table__title'>Bot Name</th>
-                        <th className='dashboard__botlist__table__title'>Last Modified</th>
-                        <th className='dashboard__botlist__table__title'>Status</th>
-                        <th className='dashboard__botlist__table__title'></th>
+                <thead className='dashboard__botlist__table__header'>
+                    <tr className='dashboard__botlist__table__header__row'>
+                        <td className='dashboard__botlist__table__title'>Bot Name</td>
+                        <td className='dashboard__botlist__table__title'>Last Modified</td>
+                        <td className='dashboard__botlist__table__title'>Status</td>
+                        <td className='dashboard__botlist__table__title' />
                     </tr>
                 </thead>
                 <tbody className='dashboard__botlist__table__body'>
@@ -116,13 +116,32 @@ const DashboardBotList = observer(() => {
                                 {MENU_DESKTOP.map(item => (
                                     <div
                                         key={item.type}
-                                        className='dashboard__botlist__table__row__actions--item'
+                                        className='desktop dashboard__botlist__table__row__actions--item'
                                         onClick={e => {
                                             e.stopPropagation();
                                             viewRecentStrategy(item.type, workspace);
                                         }}
                                     >
                                         <img src={item.icon} alt={item.type} />
+                                    </div>
+                                ))}
+                                <button className='mobile dashboard__botlist__mobile'>
+                                    <img src='/ic-menu-dots.svg' />
+                                </button>
+                                {CONTEXT_MENU_MOBILE.map(item => (
+                                    <div
+                                        key={item.type}
+                                        className='mobile bot-list__item__responsive__menu'
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            viewRecentStrategy(item.type, workspace);
+                                        }}
+                                    >
+                                        <div>
+                                            {/* <Icon icon={item.icon} /> */}
+                                            <img src={item.icon} alt={item.type} />
+                                        </div>
+                                        {item.label}
                                     </div>
                                 ))}
                             </td>
