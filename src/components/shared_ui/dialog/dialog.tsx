@@ -1,8 +1,8 @@
-/* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
+
 import Text from '../text';
 
 type TDialog = {
