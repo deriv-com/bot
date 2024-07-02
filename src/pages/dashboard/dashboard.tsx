@@ -21,6 +21,7 @@ const Dashboard = observer(() => {
                         User Guide
                     </button>
                 </div>
+                <div className='dashboard__title'>Load or build your bot</div>
                 <div className='dashboard__description'>
                     Import a bot from your computer or Google Drive, build it from scratch, or start with a quick
                     strategy.

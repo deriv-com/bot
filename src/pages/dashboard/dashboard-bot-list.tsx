@@ -91,7 +91,7 @@ const DashboardBotList = observer(() => {
         }
     };
 
-    if (!dashboard_strategies) return null;
+    if (dashboard_strategies.length === 0) return null;
     return (
         <div className='dashboard__botlist'>
             <div className='dashboard__botlist__header'>Your Bots</div>
