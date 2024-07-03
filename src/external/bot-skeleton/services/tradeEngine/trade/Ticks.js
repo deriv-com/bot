@@ -1,8 +1,7 @@
 /* eslint-disable no-promise-executor-return */
-import { getLast } from 'binary-utils';
-
 import { localize } from '@/utils/tmp/dummy';
 
+import { getLast } from '../../../utils/binary-utils';
 import { observer as globalObserver } from '../../../utils/observer';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
