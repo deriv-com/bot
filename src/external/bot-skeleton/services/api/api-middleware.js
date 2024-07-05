@@ -29,8 +29,11 @@ class APIMiddleware {
     };
 
     // eslint-disable-next-line no-unused-vars, default-param-last
-    log = (measures = [], is_bot_running) => {
-        // TODO: fix this
+    // TODO: fix this
+    log = (
+        measures = []
+        // is_bot_running
+    ) => {
         if (window.is_datadog_logging_enabled && measures && measures.length) {
             // measures.forEach(measure => {
             //     datadogLogs.logger.info(measure.name, {
@@ -77,7 +80,7 @@ class APIMiddleware {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
-                if (import.meta.env.DATADOG_CLIENT_TOKEN_LOGS) {
+                if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
                     this.log(measure, is_bot_running, req_type);
                 }
             }

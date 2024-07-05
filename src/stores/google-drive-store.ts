@@ -1,10 +1,8 @@
 import { action, makeObservable, observable } from 'mobx';
-
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
 import { getLanguage, localize } from '@/utils/tmp/dummy';
-
 import RootStore from './root-store';
 
 export type TErrorWithStatus = Error & { status?: number };
@@ -87,9 +85,9 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
     setKey = () => {
         const { SCOPE, DISCOVERY_DOCS } = config.GOOGLE_DRIVE;
-        this.client_id = import.meta.env.GD_CLIENT_ID;
-        this.app_id = import.meta.env.GD_APP_ID;
-        this.api_key = import.meta.env.GD_API_KEY;
+        this.client_id = process.env.GD_CLIENT_ID;
+        this.app_id = process.env.GD_APP_ID;
+        this.api_key = process.env.GD_API_KEY;
         this.scope = SCOPE;
         this.discovery_docs = DISCOVERY_DOCS;
     };

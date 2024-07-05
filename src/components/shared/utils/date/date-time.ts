@@ -1,5 +1,4 @@
 import moment from 'moment';
-
 import { getLanguage, localize } from '@/utils/tmp/dummy';
 
 type TExtendedMoment = typeof moment & {
@@ -19,12 +18,7 @@ export const initMoment = (lang: string) => {
     let locale = lang.toLowerCase().replace('_', '-');
     if (hasEnMomentLocale.includes(lang)) locale = 'en-gb';
     // TODO: Fix
-    return import(
-        /* @vite-ignore */
-        `moment/locale/${locale}`
-    )
-        .then(() => moment.locale(locale))
-        .catch(() => moment);
+    return import(`moment/locale/${locale}`).then(() => moment.locale(locale)).catch(() => moment);
 };
 
 /**

@@ -1,6 +1,9 @@
 module.exports = {
     plugins: ['stylelint-no-unsupported-browser-features'],
     rules: {
+        'scss/at-mixin-pattern': null,
+        'scss/no-global-function-names': null,
+        'scss/dollar-variable-pattern': null,
         'color-named': 'never',
         'color-no-invalid-hex': true,
         'declaration-block-no-duplicate-properties': [true, { ignore: ['consecutive-duplicates'] }],

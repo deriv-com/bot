@@ -1,10 +1,10 @@
-@import './themes.scss';
-@import './devices.scss';
-@import './fonts.scss';
+@import './themes';
+@import './devices';
+@import './fonts';
 
-/*------------------------------------*
+/* ------------------------------------*
  *  # SASS Mixins and Functions
- *------------------------------------*/
+ *------------------------------------ */
 
 /*
  * SASS interpolation
@@ -13,12 +13,13 @@
 @function calc-interpolation($min-screen, $min-value, $max-screen, $max-value) {
     $a: ($max-value - $min-value) / ($max-screen - $min-screen);
     $b: $min-value - $a * $min-screen;
-
     $sign: '+';
-    @if ($b < 0) {
+
+    @if $b < 0 {
         $sign: '-';
         $b: abs($b);
     }
+
     @return calc(#{$a * 100}vw #{$sign} #{$b});
 }
 
@@ -27,11 +28,13 @@
         @each $property in $properties {
             #{$property}: $min-value;
         }
+
         @media screen and (min-width: $min-screen) {
             @each $property in $properties {
                 #{$property}: calc-interpolation($min-screen, $min-value, $max-screen, $max-value);
             }
         }
+
         @media screen and (min-width: $max-screen) {
             @each $property in $properties {
                 #{$property}: $max-value;
@@ -51,11 +54,13 @@
  */
 @function em($px, $base: $BASE_FONT_SIZE) {
     $list: ();
+
     @if length($px) != 1 {
         @for $i from 1 through length($px) {
             $val_em: (nth($px, $i) / $base) * 1em;
             $list: append($list, $val_em, space);
         }
+
         @return $list;
     } @else {
         @return ($px / $base) * 1em;
@@ -81,6 +86,7 @@
  */
 @function generate-typefaces() {
     $typeface_list: ();
+
     @each $fontsize_name, $size in $FONT_SIZES {
         @each $textalign_name, $text_align in $TEXT_ALIGN {
             @each $color_name, $color in $FONT_COLORS {
@@ -95,6 +101,7 @@
             }
         }
     }
+
     // @debug $typeface_list; /* uncomment to debug */
     @return $typeface_list;
 }
@@ -108,18 +115,23 @@
     @if $size {
         font-size: $size;
     }
+
     @if $colour {
         color: $colour;
     }
+
     @if $weight {
         font-weight: $weight;
     }
+
     @if $tt {
         text-transform: $tt;
     }
+
     @if $align {
         text-align: $align;
     }
+
     @if $size == 1.6rem {
         line-height: map-get($map: $LINEHEIGHTS, $key: 'large');
     } @else if $size == 1.4rem {
@@ -146,11 +158,11 @@
         $map: $TYPEFACES_LIST,
         $key: $var,
     );
-
     $size: nth($typeface_config, 1); // font-size
     $align: nth($typeface_config, 2); // text-align
     $weight: nth($typeface_config, 3); // font-weight
     $color: nth($typeface_config, 4); // color
+
     @include setTypeface($size, $align, $weight, $color, $tt);
 }
 
@@ -165,7 +177,7 @@
     border: 0;
     cursor: pointer;
     transition: box-shadow 0.2s;
-    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 0 rgb(0 0 0 / 0%);
 
     &:hover {
         box-shadow: 0 0 0 0.5em var(--state-hover);
@@ -181,6 +193,7 @@
         .color#{$i}-fill {
             fill: nth($colors, $i);
         }
+
         /* postcss-bem-linter: ignore */
         .color#{$i}-stroke {
             stroke: nth($colors, $i);
@@ -216,18 +229,22 @@
     &:before {
         background: $color;
     }
+
     &:after,
     &[data-tooltip-pos='top']:after {
         border-top-color: $color;
     }
+
     &[data-tooltip-pos='right']:after {
         border-top-color: transparent;
         border-right-color: $color;
     }
+
     &[data-tooltip-pos='left']:after {
         border-top-color: transparent;
         border-left-color: $color;
     }
+
     &[data-tooltip-pos='bottom']:after {
         border-top-color: transparent;
         border-bottom-color: $color;
@@ -244,20 +261,42 @@
     &:before {
         background: $color;
     }
+
     &:after,
     &[data-tooltip-pos='top']:after {
         border-top-color: $color;
     }
+
     &[data-tooltip-pos='right']:after {
         border-top-color: transparent;
         border-right-color: $color;
     }
+
     &[data-tooltip-pos='left']:after {
         border-top-color: transparent;
         border-left-color: $color;
     }
+
     &[data-tooltip-pos='bottom']:after {
         border-top-color: transparent;
         border-bottom-color: $color;
+    }
+}
+
+@mixin flex-center($justify-content: center, $align-items: center) {
+    display: flex;
+    align-items: $align-items;
+    justify-content: $justify-content;
+    @content;
+}
+
+/*
+ * Check if the page is in RTL mode
+ * Usage example:
+   @include is-RTL { left: 0 };
+ */
+@mixin is-RTL() {
+    html[dir='rtl'] & {
+        @content;
     }
 }
