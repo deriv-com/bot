@@ -1,3 +1,5 @@
+import { memo, SyntheticEvent } from 'react';
+
 export const localize = (str: unknown, obj: unknown = {}) => `${str} ${JSON.stringify(obj)}`;
 
 export const Localize = ({ i18n_default_text = '', values = {}, components = [] }) => {
@@ -26,10 +28,27 @@ export const i18n = {
     language: 'en',
 };
 
-export const Icon = ({ icon }) => {
-    // Simulate placeholder icon rendering
-    return <div className='dummy-icon'>{icon}</div>;
+type TIconComponent = {
+    icon: string;
+    className?: string;
+    onClick?: () => void;
 };
+
+const IconComponent: React.FC<TIconComponent> = ({ icon, ...rest }) => {
+    const onError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+        // eslint-disable-next-line no-console
+        console.info(`${icon} not found, redirecting to fallback`);
+        (e.target as HTMLImageElement).src = '/assets/icons/IcDashboard.svg';
+    };
+
+    return (
+        <div className='dummy-icon' {...rest}>
+            <img src={`/assets/icons/${icon}.svg`} alt={icon} onError={onError} />
+        </div>
+    );
+};
+
+export const Icon = memo(IconComponent);
 
 export const IconTradeTypes = ({ children }) => {
     // Simulate scrollbars

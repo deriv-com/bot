@@ -1,3 +1,5 @@
+@import '../../styles/mixins';
+
 .bot-dashboard {
     position: relative;
     height: calc(100vh - 8.4rem);
@@ -18,11 +20,14 @@
     .run-panel__container {
         height: var(--tab-content-height) !important;
         position: sticky;
+
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
+
         @include is-RTL {
             transform: translateX(calc(-367px));
         }
+
         transition: all 0.4s;
         margin-top: 1rem;
 
@@ -81,6 +86,7 @@
             background: var(--general-section-6);
         }
     }
+
     &-info-panel {
         &__close-action {
             position: absolute;
@@ -121,30 +127,36 @@
                 width: 100%;
             }
         }
+
         &__header {
-            padding: 1.6rem;
-            margin-top: 4.8rem;
             &--listed {
-                margin-top: 0.6rem;
+                margin-bottom: 0.8rem;
             }
+
             @include mobile {
                 height: auto;
                 margin-top: 0;
             }
+
             .title {
                 text-align: center;
                 height: 7.2;
+
                 @include mobile {
                     height: auto;
                 }
             }
+
             .subtitle {
                 text-align: center;
                 margin-top: 1.6rem;
+
                 &__has-list {
+                    text-align: center;
                     margin-top: 0;
-                    text-align: start;
+
                     @include mobile {
+                        text-align: start;
                         width: 85%;
                     }
                 }
@@ -154,7 +166,6 @@
         &__content {
             display: flex;
             align-items: flex-start;
-
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
@@ -162,21 +173,26 @@
             position: relative;
 
             @include desktop {
-                padding: 1.6rem 0 0;
+                padding: 80px 216px 0;
             }
 
             @include mobile {
                 height: calc(100vh - 19rem);
                 align-items: flex-start;
+                padding: 1.6rem;
             }
+
             .quick-panel {
                 flex: 1 1 44%;
             }
+
             .preview-panel {
                 display: none;
                 flex: 1 1 56%;
+
                 &--active {
                     display: block;
+
                     @include mobile {
                         display: none;
                     }
@@ -186,40 +202,13 @@
 
         &__mobile-container {
             @include flex-center;
+
             margin: 1.4rem 0;
             column-gap: 1rem;
             height: 3.2rem;
 
             &--minimized {
                 height: 3.6rem;
-            }
-        }
-
-        &__centered {
-            @include flex-center;
-            flex-direction: column;
-
-            @include tablet {
-                width: 100%;
-            }
-
-            @include mobile {
-                width: 100%;
-                padding: 0 1rem;
-            }
-
-            &--not-listed {
-                @include desktop {
-                    width: 100%;
-                    margin-top: 4.8rem;
-                }
-            }
-
-            &--listed {
-                align-items: initial;
-                justify-content: flex-start;
-                padding: 0.4rem 2.4rem;
-                height: 100%;
             }
         }
 
@@ -242,7 +231,9 @@
                     border: none;
                     height: 4rem;
                     padding: 1rem;
+
                     @include flex-center;
+
                     cursor: pointer;
 
                     @include mobile {
@@ -278,7 +269,9 @@
                     border: none;
                     height: 4rem;
                     padding: 1rem;
+
                     @include flex-center;
+
                     cursor: pointer;
                 }
 
@@ -317,19 +310,17 @@
         }
 
         &__table {
-            @include mobile-tablet-mix {
-                width: calc(100% - 9.3rem);
-            }
-
             &--minimized {
                 width: 100%;
             }
 
             &__tiles {
                 @include flex-center(center, flex-start);
+
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
+                padding: 3.2rem;
 
                 @include mobile {
                     flex-wrap: wrap;
@@ -342,6 +333,7 @@
                         display: flex;
                         justify-content: space-around;
                         flex-flow: unset;
+                        padding: 2.4rem 0 1.6rem;
                     }
                 }
             }
@@ -354,8 +346,9 @@
 
             &__block {
                 @include flex-center;
+
                 flex-direction: column;
-                padding-inline-end: 2.4rem;
+                padding-inline-end: 4rem;
 
                 @include mobile {
                     padding: 1rem;
@@ -369,7 +362,7 @@
                     width: 9.1rem;
                     word-wrap: break-word;
                     text-align: center;
-                    height: 4.2rem;
+
                     @include mobile {
                         height: auto;
                     }
@@ -382,9 +375,6 @@
                         width: 8rem;
                         text-align: center;
                     }
-                }
-                &:nth-last-child(2) {
-                    padding-inline: 0;
                 }
             }
 
@@ -408,11 +398,17 @@
 
 .user-guide {
     position: absolute;
-    inset-inline-end: 1.6rem;
+    inset-inline-end: 2.4rem;
     top: 1.8rem;
     z-index: 1;
+
+    @include mobile {
+        inset-inline-end: 1.6rem;
+    }
+
     &__button {
         @include flex-center;
+
         padding: 0.8rem 1.4rem;
         border: none;
         outline: none;
@@ -426,18 +422,22 @@
             text-align: center;
             padding: 0;
         }
+
         &:hover {
             cursor: pointer;
         }
     }
+
     &__icon {
         height: 24px;
         width: 24px;
+
         @include mobile {
             height: 16px;
             width: 16px;
         }
     }
+
     &__label {
         margin-inline-start: 0.4rem;
     }

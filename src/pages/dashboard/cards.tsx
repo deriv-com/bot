@@ -15,8 +15,8 @@ import { Icon, localize } from '@/utils/tmp/dummy';
 
 import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 
+import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -50,7 +50,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         rudderStackSendQsOpenEventFromDashboard();
     };
 
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
 
     const openGoogleDriveDialog = () => {
@@ -72,7 +71,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         },
         {
             type: 'google-drive',
-            icon: 'IcGoogleDriveDbot',
+            icon: 'IcGoogleDrive',
             content: localize('Google Drive'),
             method: openGoogleDriveDialog,
         },
@@ -86,7 +85,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         },
         {
             type: 'quick-strategy',
-            icon: 'IcQuickStrategy',
+            icon: 'IcBlockly',
             content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
@@ -142,7 +141,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         accept='application/xml, text/xml'
                         hidden
                         onChange={e => {
-                            setIsFileSupported(handleFileChange(e, false));
+                            handleFileChange(e, false);
                             loadFileFromLocal();
                             setFileLoaded(true);
                             setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
@@ -178,7 +177,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         </MobileFullPageModal>
                     </MobileWrapper>
                 </div>
-                <Recent is_file_supported={is_file_supported} />
+                <DashboardBotList />
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps
