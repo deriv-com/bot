@@ -31,9 +31,9 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIcon
                 <Text
                     as='p'
                     align='center'
-                    size='xxs'
+                    size='xs'
                     color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
-                    line_height='s'
+                    LineHeight='sm'
                     className='save-type__radio-text'
                 >
                     {localize(text)}

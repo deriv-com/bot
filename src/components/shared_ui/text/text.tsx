@@ -6,7 +6,7 @@ import { isEmptyObject } from '@/components/shared';
 type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     align?: string;
     weight?: string;
-    line_height?: string;
+    lineHeight?: string;
     styles?: CSSProperties;
     size?: string;
 };
@@ -17,7 +17,7 @@ const Text = ({
     color = 'general',
     align = 'left',
     weight = 'normal',
-    line_height = 'm',
+    lineHeight = 'm',
     as,
     className,
     styles,
@@ -26,7 +26,7 @@ const Text = ({
     const class_styles = {
         '--text-size': `var(--text-size-${size})`,
         '--text-color': `var(--text-${color})`,
-        '--text-lh': `var(--text-lh-${line_height})`,
+        '--text-lh': `var(--text-lh-${lineHeight})`,
         '--text-weight': `var(--text-weight-${weight})`,
         '--text-align': `var(--text-align-${align})`,
     };
@@ -39,7 +39,7 @@ const Text = ({
             setStyle(class_styles);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [size, color, line_height, weight, align]);
+    }, [size, color, lineHeight, weight, align]);
     const class_names = classNames('dc-text', className);
     return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
 };

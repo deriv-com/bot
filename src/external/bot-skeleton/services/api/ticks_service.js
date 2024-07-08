@@ -1,7 +1,7 @@
 /* eslint-disable no-confusing-arrow */
-import { getLast, historyToTicks } from 'binary-utils';
 import { Map } from 'immutable';
 
+import { getLast, historyToTicks } from '../../utils/binary-utils';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 

@@ -12,9 +12,6 @@ import { Icon } from '@/utils/tmp/dummy';
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
     const { dashboard } = useStore();
     const {
         active_tour,
@@ -42,14 +39,14 @@ const InfoPanel = observer(() => {
     const renderInfo = () => (
         <div className='db-info-panel'>
             <div data-testid='close-icon' className='db-info-panel__close-action' onClick={handleClose}>
-                <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
+                <Icon width='1rem' height='1rem' icon='IcClose' />
             </div>
 
             {SIDEBAR_INTRO.map(sidebar_item => {
                 const { label, content, link } = sidebar_item;
                 return (
                     <div key={`${label}-${content}`}>
-                        <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold' as='h1'>
+                        <Text color='prominent' lineHeight='6xl' size='lg' weight='bold' as='h1'>
                             {label}
                         </Text>
                         {content.map(text => (
@@ -59,10 +56,10 @@ const InfoPanel = observer(() => {
                                     'db-info-panel__content': link,
                                 })}
                                 color='prominent'
-                                line_height='xl'
+                                lineHeight='3xl'
                                 as='p'
                                 onClick={() => switchTab(link, label, text.faq_id)}
-                                size={is_mobile ? 'xxs' : 's'}
+                                size='sm'
                             >
                                 {text.data}
                             </Text>

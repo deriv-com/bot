@@ -11,6 +11,7 @@
     width: 100%;
     height: calc(100vh - 9rem);
     padding: 1.6rem;
+
     @include mobile {
         height: calc(100vh - 6rem);
         padding: 0;
@@ -27,10 +28,10 @@
                 content: '';
                 position: fixed;
                 left: 0;
-                top: 0px;
+                top: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.72);
+                background: rgb(0 0 0 / 72%);
                 opacity: 0.7;
                 z-index: 100;
             }
@@ -51,8 +52,7 @@
                 justify-content: start;
 
                 @include mobile {
-                    overflow-x: auto;
-                    overflow-y: hidden;
+                    overflow: auto hidden;
 
                     &::-webkit-scrollbar {
                         display: none;
@@ -88,6 +88,7 @@
 
                     &--no-result {
                         @include flex-center;
+
                         flex-direction: column;
                         justify-content: flex-start;
                         height: 100vh;
@@ -96,9 +97,11 @@
                         svg {
                             margin-bottom: 2.4rem;
                         }
+
                         h1 {
                             margin-bottom: 0.8rem;
                         }
+
                         span {
                             word-break: break-word;
                             text-align: center;
@@ -125,6 +128,7 @@
                 height: 4.8rem;
                 padding: 0 2.4rem;
                 width: auto;
+
                 @include flex-center;
 
                 svg {
@@ -135,6 +139,7 @@
 
                     @include mobile {
                         margin-inline-end: 0.2rem;
+
                         // gave this -ve margin becaues we cannot
                         // overwrite the default core padding which
                         // will make the icon bigger
@@ -243,13 +248,14 @@
         }
 
         &--expanded {
-            width: calc(100vw - 39.8rem);
+            width: calc(100vw - 41.4rem);
         }
 
         &--modal {
             width: 40rem;
         }
     }
+
     &__toolbox {
         position: absolute;
         top: 0;
@@ -302,9 +308,8 @@
             }
         }
     }
+
     &__run-strategy-wrapper {
-
-
         inset-inline-end: 1.6rem;
         top: 1.6rem;
         z-index: 2;
@@ -401,7 +406,7 @@
     }
 
     &__steps {
-        @media (max-height: 730px) {
+        @media (height <= 730px) {
             max-height: 40vh;
             overflow-y: auto;
         }
@@ -451,7 +456,7 @@
 .joyride-content {
     font-size: 1.4rem;
 
-    @media (max-height: 790px) {
+    @media (height <= 790px) {
         max-height: 46vh;
         overflow-y: auto;
     }
@@ -507,6 +512,7 @@
 
 .dbot-slider {
     @include flex-center(flex-start);
+
     flex-direction: column;
     position: fixed;
     left: 0;
@@ -629,7 +635,9 @@
             &__progress-bar {
                 width: 50%;
                 margin-bottom: unset;
+
                 @include flex-center(flex-start);
+
                 margin-inline-start: 1rem;
 
                 .progress-bar-circle {
@@ -666,8 +674,8 @@
 }
 
 .dbot-tour-blink {
-    -webkit-animation: blink 1.25s infinite;
-    -moz-animation: blink 1.25s ease-in infinite;
+    animation: blink 1.25s infinite;
+    animation: blink 1.25s ease-in infinite;
     animation: blink 1.25s ease-in infinite;
     border-radius: $BORDER-RADIUS * 12.5;
     height: 2.5rem !important;

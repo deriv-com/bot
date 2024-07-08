@@ -8,6 +8,7 @@ import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '@/constants/dashboa
 import { getSavedWorkspaces, timeSince } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
+import { Icon } from '@/utils/tmp/dummy';
 
 const DashboardBotList = observer(() => {
     const { load_modal, dashboard, save_modal } = useStore();
@@ -100,7 +101,7 @@ const DashboardBotList = observer(() => {
                     className='mobile dashboard__botlist__mobile'
                     onClick={() => setDropdownActive(!dropdown_active)}
                 >
-                    <img src='icons/ic-menu-dots.svg' />
+                    <Icon icon='IcMenuDots' />
                 </button>
                 <div
                     className={classNames('mobile bot-list__item__responsive__menu', {
@@ -116,7 +117,7 @@ const DashboardBotList = observer(() => {
                                 viewRecentStrategy(item.type, workspace);
                             }}
                         >
-                            <img style={{ width: '1.6rem' }} src={item.icon} alt={item.type} />
+                            <Icon style={{ width: '1.6rem' }} icon={item.icon} />
                             {item.label}
                         </div>
                     ))}
@@ -135,7 +136,7 @@ const DashboardBotList = observer(() => {
                     viewRecentStrategy(item.type, workspace);
                 }}
             >
-                <img src={item.icon} alt={item.type} />
+                <Icon icon={item.icon} />
             </div>
         ));
     };

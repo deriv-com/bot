@@ -46,28 +46,28 @@ const StopBotModalContent = ({
             >
                 {is_running && is_multiplier ? (
                     <>
-                        <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
+                        <Text as='p' LineHeight='sm' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
-                            <Text weight='bold' as='span' line_height='s' size='xs'>
+                            <Text weight='bold' as='span' LineHeight='sm' size='xs'>
                                 <Localize i18n_default_text='Reports' />
                             </Text>
                             <Localize i18n_default_text='page.' />
                         </Text>
-                        <Text as='p' line_height='s' size='xs'>
+                        <Text as='p' LineHeight='sm' size='xs'>
                             <Localize i18n_default_text='The Quick Strategy you just created will be loaded to the workspace.' />
                         </Text>
                     </>
                 ) : (
                     <>
-                        <Text as='p' line_height='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
+                        <Text as='p' LineHeight='sm' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Stopping the current bot will load the Quick Strategy you just created to the workspace.' />
                         </Text>
-                        <Text as='p' line_height='s' size='xs'>
+                        <Text as='p' LineHeight='sm' size='xs'>
                             <Localize i18n_default_text='Any open contracts can be viewed on the ' />
-                            <Text weight='bold' as='span' line_height='s' size='xs'>
+                            <Text weight='bold' as='span' LineHeight='sm' size='xs'>
                                 <Localize i18n_default_text='Reports' />
                             </Text>
-                            <Text as='span' line_height='s' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
+                            <Text as='span' LineHeight='sm' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
                                 <Localize i18n_default_text='page.' />
                             </Text>
                         </Text>

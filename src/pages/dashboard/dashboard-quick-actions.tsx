@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
+import { Icon } from '@/utils/tmp/dummy';
 
 const DashboardQuickActions = observer(() => {
     const { dashboard, load_modal } = useStore();
@@ -23,19 +24,19 @@ const DashboardQuickActions = observer(() => {
     const quick_actions = [
         {
             type: 'my-computer',
-            icon: <img src='icons/ic-my-computer.svg' alt='My computer' />,
+            icon: <Icon icon='IcMyComputer' />,
             content: 'My Computer',
             onClickHandler: () => openFileLoader(),
         },
         {
             type: 'google-drive',
-            icon: <img src='icons/ic-google-drive.svg' alt='Google Drive' />,
+            icon: <Icon icon='IcGoogleDrive' />,
             content: 'Google Drive',
             onClickHandler: () => openGoogleDriveDialog(),
         },
         {
             type: 'bot-builder',
-            icon: <img src='icons/ic-bot-builder.svg' alt='Bot Builder' />,
+            icon: <Icon icon='IcBotBuilder' />,
             content: 'Bot Builder',
             onClickHandler: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
@@ -43,7 +44,7 @@ const DashboardQuickActions = observer(() => {
         },
         {
             type: 'quick-strategy',
-            icon: <img src='icons/ic-quick-strategy.svg' alt='Quick strategy' />,
+            icon: <Icon icon='IcQuickStrategy' />,
             content: 'Quick strategy',
             onClickHandler: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);

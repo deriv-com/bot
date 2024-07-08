@@ -73,7 +73,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
 
     const button_props = React.useMemo(() => {
         if (is_stop_button_visible) {
-            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcBotStop' };
+            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcStop' };
         }
         return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
     }, [is_stop_button_visible]);
