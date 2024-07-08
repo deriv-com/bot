@@ -7,7 +7,7 @@ type TCurrencyBadgeProps = {
 };
 
 const CurrencyBadge = ({ currency }: TCurrencyBadgeProps) => (
-    <Text className='dc-currency-badge' color='colored-background' line_height='unset' size='xxxs' weight='bold'>
+    <Text className='dc-currency-badge' color='colored-background' lineHeight='unset' size='xxxs' weight='bold'>
         {getCurrencyDisplayCode(currency)}
     </Text>
 );

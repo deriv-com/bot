@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
+import { localize } from '@deriv-com/translations';
 import { Dialog, Text } from '@deriv-com/ui';
 
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
@@ -11,7 +12,7 @@ import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { Icon } from '@/utils/tmp/dummy';
 
 import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 
@@ -129,7 +130,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                         method();
                                     }}
                                 />
-                                <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
+                                <Text color='prominent' size='sm'>
                                     {content}
                                 </Text>
                             </div>

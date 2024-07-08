@@ -26,7 +26,7 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
         <Text
             as='p'
             size={is_mobile ? 'xs' : 'sm'}
-            line_height={is_mobile ? 'xl' : 'xxl'}
+            lineHeight={is_mobile ? 'xl' : '2xl'}
             className='faq__description'
             weight='normal'
             key={content}
@@ -101,7 +101,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
             header: (
                 <Text
                     as='p'
-                    line_height='xl'
+                    lineHeight='xl'
                     className='faq__title'
                     weight='bold'
                     key={title}
@@ -124,7 +124,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                         <>
                             <Text
                                 as='p'
-                                line_height='xl'
+                                lineHeight='xl'
                                 className='faq__wrapper__header'
                                 weight='bold'
                                 size={is_mobile ? 'xs' : 'sm'}

@@ -136,7 +136,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     };
 
     const is_active_mobile = selected_strategy_id === workspace.id && is_dropdown_visible;
-    const text_size = is_desktop ? 'xs' : 'xxs';
+    const text_size = 'xs';
 
     return (
         <div
@@ -156,13 +156,13 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         >
             <div className='bot-list__item__label'>
                 <div className='text-wrapper' title={workspace.name}>
-                    <Text align='left' as='p' size={text_size} line_height='l'>
+                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
                         {workspace.name}
                     </Text>
                 </div>
             </div>
             <div className='bot-list__item__time-stamp'>
-                <Text align='left' as='p' size={text_size} line_height='l'>
+                <Text align='left' as='p' size={text_size} LineHeight='lg'>
                     {timeSince(workspace.timestamp)}
                 </Text>
             </div>
@@ -174,7 +174,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     })}
                 />
                 <div className='bot-list__item__load-type__icon--saved'>
-                    <Text align='left' as='p' size={text_size} line_height='l'>
+                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
                         {getSaveType(workspace.save_type)}
                     </Text>
                 </div>

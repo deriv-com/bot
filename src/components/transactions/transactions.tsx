@@ -200,13 +200,13 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                                 weight='bold'
                                                 align='center'
                                                 color='less-prominent'
-                                                line_height='xxs'
+                                                lineHeight='xs'
                                                 className='transactions-empty__header'
                                             >
                                                 {localize('There are no transactions to display')}
                                             </Text>
                                             <div className='transactions-empty__message'>
-                                                <Text size='xxs' color='less-prominent'>
+                                                <Text size='xs' color='less-prominent'>
                                                     {localize('Here are the possible reasons:')}
                                                 </Text>
                                                 <ul className='transactions-empty__list'>

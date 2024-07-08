@@ -66,28 +66,28 @@ const Journal = observer(() => {
                                     weight='bold'
                                     align='center'
                                     color='less-prominent'
-                                    line_height='xxs'
+                                    lineHeight='xs'
                                     className='journal-empty__header'
                                 >
                                     {localize('There are no messages to display')}
                                 </Text>
                                 <div className='journal-empty__message'>
-                                    <Text size='xxs' color='less-prominent'>
+                                    <Text size='xs' color='less-prominent'>
                                         {localize('Here are the possible reasons:')}
                                     </Text>
                                     <ul className='journal-empty__list'>
                                         <li>
-                                            <Text size='xxs' color='less-prominent'>
+                                            <Text size='xs' color='less-prominent'>
                                                 {localize('The bot is not running')}
                                             </Text>
                                         </li>
                                         <li>
-                                            <Text size='xxs' color='less-prominent'>
+                                            <Text size='xs' color='less-prominent'>
                                                 {localize('The stats are cleared')}
                                             </Text>
                                         </li>
                                         <li>
-                                            <Text size='xxs' color='less-prominent'>
+                                            <Text size='xs' color='less-prominent'>
                                                 {localize('All messages are filtered out')}
                                             </Text>
                                         </li>

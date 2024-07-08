@@ -58,7 +58,7 @@ const SaveModalForm = ({
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
-                            <Text size='xs' line_height='l'>
+                            <Text size='xs' LineHeight='lg'>
                                 {localize(
                                     'Enter your bot name, choose to save on your computer or Google Drive, and hit '
                                 )}
@@ -126,7 +126,7 @@ const SaveModalForm = ({
                                             onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
                                             defaultChecked={save_as_collection}
                                             label={
-                                                <Text size='xs' line_height='s' weight='bold'>
+                                                <Text size='xs' LineHeight='sm' weight='bold'>
                                                     <Localize i18n_default_text='Save as collection' />
                                                 </Text>
                                             }
