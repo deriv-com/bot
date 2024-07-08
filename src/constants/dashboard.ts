@@ -27,22 +27,22 @@ export const MENU_DESKTOP = [
 export const CONTEXT_MENU_MOBILE = [
     {
         type: STRATEGY.PREVIEW_LIST,
-        icon: 'IcPreview',
+        icon: 'icons/ic-preview.svg',
         label: 'Preview',
     },
     {
         type: STRATEGY.EDIT,
-        icon: 'IcEdit',
+        icon: 'icons/ic-edit.svg',
         label: 'Edit',
     },
     {
         type: STRATEGY.SAVE,
-        icon: 'IcSave',
+        icon: 'icons/ic-save.svg',
         label: 'Save',
     },
     {
         type: STRATEGY.DELETE,
-        icon: 'IcDelete',
+        icon: 'icons/ic-delete.svg',
         label: 'Delete',
     },
 ];
