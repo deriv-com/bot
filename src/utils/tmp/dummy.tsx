@@ -32,6 +32,10 @@ type TIconComponent = {
     icon: string;
     className?: string;
     onClick?: () => void;
+    size?: number;
+    height?: number | string;
+    width?: number | string;
+    id?: string;
 };
 
 const IconComponent: React.FC<TIconComponent> = ({ icon, ...rest }) => {

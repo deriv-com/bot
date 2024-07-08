@@ -51,7 +51,7 @@ const QuickStrategyGuidesDetail = observer(
                                             align='center'
                                             weight='bold'
                                             color='prominent'
-                                            line_height='s'
+                                            LineHeight='sm'
                                             size={text_size}
                                         >
                                             {type}
@@ -64,7 +64,7 @@ const QuickStrategyGuidesDetail = observer(
                                                     <Text
                                                         align='center'
                                                         color='prominent'
-                                                        line_height='s'
+                                                        LineHeight='sm'
                                                         size={text_size}
                                                         className='tutorials-quick-strategy__placeholder__content__text'
                                                     >
@@ -88,7 +88,7 @@ const QuickStrategyGuidesDetail = observer(
                             <Text
                                 className='tutorials-quick-strategy__breadcrumb__clickable'
                                 color='prominent'
-                                line_height='s'
+                                LineHeight='sm'
                                 size={text_size}
                                 as='div'
                                 onClick={() => {
@@ -97,11 +97,11 @@ const QuickStrategyGuidesDetail = observer(
                             >
                                 <Localize i18n_default_text={'Quick strategy guides >'} />
                             </Text>
-                            <Text color='less-prominent' line_height='s' size={text_size} as='div'>
+                            <Text color='less-prominent' LineHeight='sm' size={text_size} as='div'>
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>
-                        <Text color='prominent' line_height='s' size={text_size} weight='bold' as='div'>
+                        <Text color='prominent' LineHeight='sm' size={text_size} weight='bold' as='div'>
                             <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                         </Text>
                         <StrategyTabContent tutorial_selected_strategy={tutorial_selected_strategy} />

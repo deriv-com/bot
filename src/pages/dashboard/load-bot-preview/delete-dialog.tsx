@@ -82,13 +82,13 @@ const DeleteDialog = observer(() => {
                 has_close_icon
             >
                 <div>
-                    <Text color='prominent' line_height='s' size='xs'>
+                    <Text color='prominent' LineHeight='sm' size='xs'>
                         {localize('Your bot will be permanently deleted when you hit ')}
                         <strong>{localize('Yes, delete.')}</strong>
                     </Text>
                 </div>
                 <div>
-                    <Text color='prominent' line_height='xl' size='xs'>
+                    <Text color='prominent' lineHeight='xl' size='xs'>
                         {localize('Are you sure you want to delete it?')}
                     </Text>
                 </div>

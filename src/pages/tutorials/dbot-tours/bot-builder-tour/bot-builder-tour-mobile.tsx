@@ -63,7 +63,7 @@ const BotBuilderTourMobile = observer(() => {
                         </Text>
                     </div>
                     <div className='dbot-slider__content'>
-                        <Text as='span' line_height='s' size='xxs'>
+                        <Text as='span' LineHeight='sm' size='xs'>
                             {content_data?.content}
                         </Text>
                     </div>

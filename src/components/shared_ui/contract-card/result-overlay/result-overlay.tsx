@@ -89,7 +89,7 @@ const ResultOverlay = ({
                         <Text
                             weight='bold'
                             size='s'
-                            line_height='xxl'
+                            lineHeight='2xl'
                             color={is_contract_won ? 'profit-success' : 'loss-danger'}
                         >
                             <Money amount={payout_info} currency={currency} has_sign show_currency />

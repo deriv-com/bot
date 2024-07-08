@@ -23,7 +23,7 @@ const QuickStrategyGuides = () => {
                     className='tutorials-quick-strategy__title'
                     weight='bold'
                     color='prominent'
-                    line_height='s'
+                    LineHeight='sm'
                     size={is_mobile ? 'xs' : 's'}
                     as='div'
                 >
