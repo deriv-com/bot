@@ -1,8 +1,7 @@
 import * as constants from '../constants';
-
 import signal from '.';
 
-let state;
+let state: { scope: string; proposalsReady: boolean } | undefined;
 
 describe('signal reducers', () => {
     it('initial state', () => {

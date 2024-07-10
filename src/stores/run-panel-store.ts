@@ -1,10 +1,4 @@
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
-
-import { Buy, ProposalOpenContract } from '@deriv/api-types';
-import { TStores } from '@deriv/stores/types';
-
-import { TDbot } from 'Types';
-
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
 import { isSafari, mobileOSDetect } from '@/components/shared';
@@ -15,7 +9,9 @@ import { journalError, switch_account_notification } from '@/utils/bot-notificat
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
 import { localize, routes } from '@/utils/tmp/dummy';
-
+import { Buy, ProposalOpenContract } from '@deriv/api-types';
+import { TStores } from '@deriv/stores/types';
+import { TDbot } from 'Types';
 import RootStore from './root-store';
 
 export type TContractState = {
@@ -437,6 +433,7 @@ export default class RunPanelStore {
 
     registerReactions = () => {
         const { client, common, notifications } = this.core;
+        // eslint-disable-next-line prefer-const
         let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {

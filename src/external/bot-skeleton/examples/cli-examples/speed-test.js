@@ -8,6 +8,7 @@ window.Bot.init(token, {
     contractTypes: ['CALL', 'PUT'],
 });
 
+// eslint-disable-next-line no-constant-condition
 while (true) {
     window.Bot.start({
         amount: 1,
