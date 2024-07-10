@@ -114,7 +114,7 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                 <Button
                     id='download__container__view-detail-button'
                     className='download__container__view-detail-button'
-                    // disabled={!transaction_list?.length}
+                    disabled={!transaction_list?.length}
                     onClick={() => {
                         toggleTransactionDetailsModal(true);
                     }}
