@@ -1,10 +1,5 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
-import { TStores } from '@deriv/stores/types';
-
-import { TStrategy } from 'Types';
-
 import { clearInjectionDiv, tabs_title } from '@/constants/load-modal';
 import {
     config,
@@ -16,7 +11,8 @@ import {
 } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { localize } from '@/utils/tmp/dummy';
-
+import { TStores } from '@deriv/stores/types';
+import { TStrategy } from 'Types';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -254,7 +250,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     refreshStrategiesTheme = async () => {
         if (this.recent_workspace) {
-            (this.recent_workspace as any).RTL = isDbotRTL();
+            this.recent_workspace.RTL = isDbotRTL();
         }
         await load({
             block_string: this.selected_strategy?.xml,
@@ -427,7 +423,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         if (!this.recent_workspace?.rendered) {
             this.recent_workspace = window.Blockly.inject(ref, {
-                media: `${__webpack_public_path__}media/`,
+                media: `${__webpack_public_path__}assets/media/`,
                 zoom: {
                     wheel: true,
                     startScale: config.workspaces.previewWorkspaceStartScale,
@@ -525,7 +521,7 @@ export default class LoadModalStore implements ILoadModalStore {
             const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
-                    media: `${__webpack_public_path__}media/`, // eslint-disable-line
+                    media: `${__webpack_public_path__}assets/media/`, // eslint-disable-line
                     zoom: {
                         wheel: false,
                         startScale: config.workspaces.previewWorkspaceStartScale,
@@ -535,7 +531,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {
-                    (load_options.workspace as any).RTL = isDbotRTL();
+                    load_options.workspace.RTL = isDbotRTL();
                 }
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;

@@ -17,6 +17,10 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
+    env: {
+        browser: true,
+        node: true,
+    },
     mode: IS_RELEASE ? 'production' : 'development',
     devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
     target: 'web',
@@ -119,12 +123,13 @@ module.exports = {
             patterns: [
                 { from: 'node_modules/@deriv/deriv-charts/dist/*', to: 'js/smartcharts/[name][ext]' },
                 { from: 'node_modules/@deriv/deriv-charts/dist/chart/assets/*', to: 'assets/[name][ext]' },
+                { from: path.join(__dirname, 'public'), to: '' },
             ],
         }),
     ],
     devServer: {
         static: {
-            directory: path.join(__dirname, 'dist'),
+            directory: path.join(__dirname, 'public'),
         },
         compress: true,
         port: 8444,

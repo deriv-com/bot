@@ -21,6 +21,10 @@ module.exports = {
         window: true,
         performance: true,
         process: true,
+        document: true,
+        console: true,
+        DocumentFragment: true,
+        Event: true,
     },
     extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
     settings: {

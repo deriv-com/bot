@@ -38,12 +38,12 @@ const IconComponent: React.FC<TIconComponent> = ({ icon, ...rest }) => {
     const onError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
         // eslint-disable-next-line no-console
         console.info(`${icon} not found, redirecting to fallback`, e);
-        // (e.target as HTMLImageElement).src = '/assets/icons/IcDashboard.svg';
+        (e.target as HTMLImageElement).src = 'assets/icons/IcDashboard.svg';
     };
 
     return (
         <div className='dummy-icon' {...rest}>
-            <img src={`/assets/icons/${icon}.svg`} alt={icon} onError={onError} />
+            <img src={`assets/icons/${icon}.svg`} alt={icon} onError={onError} />
         </div>
     );
 };

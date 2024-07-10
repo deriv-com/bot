@@ -1,9 +1,7 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
-
 import { config } from '@/external/bot-skeleton';
 import { help_content_config } from '@/utils/help-content/help-content.config';
 import * as help_strings from '@/utils/help-content/help-strings';
-
 import RootStore from './root-store';
 
 export default class FlyoutHelpStore {
@@ -36,7 +34,7 @@ export default class FlyoutHelpStore {
 
     options = {
         // TODO: fix
-        media: `media/`,
+        media: `assets/media/`,
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,

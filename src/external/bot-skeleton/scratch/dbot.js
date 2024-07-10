@@ -6,7 +6,6 @@ import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { compareXml, observer as globalObserver } from '../utils';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { isDbotRTL } from '../utils/workspace';
-
 import main_xml from './xml/main.xml';
 import { loadBlockly } from './blockly';
 import DBotStore from './dbot-store';
@@ -29,6 +28,7 @@ class DBot {
         const recent_files = await getSavedWorkspaces();
 
         this.interpreter = Interpreter();
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const that = this;
         window.Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
             if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
@@ -114,7 +114,7 @@ class DBot {
                 }
 
                 this.workspace = window.Blockly.inject(el_scratch_div, {
-                    media: `${window.__webpack_public_path__}media/`,
+                    media: `${window.__webpack_public_path__}assets/media/`,
                     renderer: 'zelos',
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },

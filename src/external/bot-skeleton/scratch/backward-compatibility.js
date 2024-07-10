@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
 
@@ -285,7 +284,9 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options = new window.window.window.Blockly.Options({ media: `${window.__webpack_public_path__}media/` });
+        const options = new window.window.window.Blockly.Options({
+            media: `${window.__webpack_public_path__}assets/media/`,
+        });
         const el_injection_div = new DocumentFragment();
         const workspace = window.window.window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 

@@ -1,13 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import { action, computed, makeObservable, observable } from 'mobx';
-
 import { config } from '@/external/bot-skeleton';
 import GTM from '@/utils/gtm';
-
 import RootStore from './root-store';
 
 export interface IFlyoutStore {
-    block_listeners: any[];
+    block_listeners: unknown[];
     block_workspaces: Element[];
     flyout_min_width: number;
     options: {
@@ -35,7 +33,7 @@ export interface IFlyoutStore {
     setIsSearchFlyout: (is_search: boolean) => void;
     setSelectedCategory: (selected_category: Element | null) => void;
     getSelectedCategory: () => Element | null;
-    onClickOutsideFlyout: (event: any) => void;
+    onClickOutsideFlyout: (event: unknown) => void;
     refreshCategory: () => void;
     variables_blocks_count: number;
     first_get_variable_block_index: number;
@@ -49,7 +47,7 @@ export default class FlyoutStore implements IFlyoutStore {
     flyout_min_width = 440;
     options = {
         renderer: 'zelos',
-        media: `${window.__webpack_public_path__}media/`,
+        media: `${window.__webpack_public_path__}assets/media/`,
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
