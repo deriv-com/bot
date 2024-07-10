@@ -153,11 +153,12 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
             disabled={is_clear_stat_disabled}
-            label={localize('Reset')}
             onClick={onClearStatClick}
             has_effect
             variant='outlined'
-        />
+        >
+            <span>{localize('Reset')}</span>
+        </Button>
     </div>
 );
 
