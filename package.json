@@ -8,8 +8,8 @@
     "scripts": {
         "start": "webpack serve --open --config webpack.config.js",
         "build": "webpack --config webpack.config.js",
-        "test:lint": "prettier --log-level silent --write . && eslint --quiet \"./src/**/*.?(js|jsx|ts|tsx)\"",
-        "test:fix": "prettier --log-level silent --write . && eslint --fix --quiet \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "test:fix": "prettier --log-level silent --write . && eslint --fix \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test": "jest",
         "coverage": "jest --coverage",
         "prepare": "husky install"

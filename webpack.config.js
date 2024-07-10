@@ -17,10 +17,6 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: 'auto',
     },
-    env: {
-        browser: true,
-        node: true,
-    },
     mode: IS_RELEASE ? 'production' : 'development',
     devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
     target: 'web',
