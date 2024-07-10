@@ -17,7 +17,7 @@ module.exports = {
         goog: false,
         google: false,
         gapi: false,
-        __webpack_public_path__: false,
+        __webpack_public_path__: true,
         window: true,
         performance: true,
         process: true,
@@ -26,16 +26,18 @@ module.exports = {
         DocumentFragment: true,
         Event: true,
     },
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+    extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
     settings: {
         'import/resolver': {
             webpack: { config: webpackConfig },
         },
     },
-    plugins: ['simple-import-sort', '@typescript-eslint'],
+    plugins: ['react', '@typescript-eslint', 'react-hooks', 'simple-import-sort', '@typescript-eslint'],
     rules: {
         'simple-import-sort/imports': 'warn',
         'simple-import-sort/exports': 'warn',
+        'react-hooks/exhaustive-deps': 'warn',
+        'react/react-in-jsx-scope': 'warn',
     },
     overrides: [
         {

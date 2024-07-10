@@ -8,7 +8,7 @@
     "scripts": {
         "start": "webpack serve --open --config webpack.config.js",
         "build": "webpack --config webpack.config.js",
-        "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
+        "test:lint": "prettier --log-level silent --write . && eslint --quiet \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:fix": "prettier --log-level silent --write . && eslint --fix --quiet \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test": "jest",
         "coverage": "jest --coverage",
@@ -96,7 +96,7 @@
         "css-loader": "^7.1.2",
         "eslint": "^8.56.0",
         "eslint-plugin-prettier": "^5.0.0",
-        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-hooks": "^4.6.2",
         "eslint-plugin-react-refresh": "^0.4.5",
         "html-webpack-plugin": "^5.6.0",
         "husky": "^7.0.0",

@@ -1,15 +1,12 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
-
-import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
-import { Loader } from '@deriv-com/ui';
-
 import { getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import GTM from '@/utils/gtm';
-
+import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
+import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
 import BotNotificationMessages from '../components/bot-notification-messages';
@@ -18,7 +15,6 @@ import NetworkToastPopup from '../components/network-toast-popup';
 import RoutePromptDialog from '../components/route-prompt-dialog';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
-
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
