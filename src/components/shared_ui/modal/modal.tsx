@@ -1,12 +1,15 @@
 import React from 'react';
-import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Body from './modal-body';
-import Footer from './modal-footer';
-import Text from '../text/text';
+import classNames from 'classnames';
+
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { Icon } from '@/utils/tmp/dummy';
+
+import Text from '../text/text';
+
+import Body from './modal-body';
+import Footer from './modal-footer';
 
 interface IClickEvent extends MouseEvent {
     path?: HTMLElement[];

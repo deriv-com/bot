@@ -1,8 +1,11 @@
-import classNames from 'classnames';
 import React from 'react';
-import ButtonLoading from './button_loading';
-import Text from '../text';
+import classNames from 'classnames';
+
 import { Icon } from '@/utils/tmp/dummy';
+
+import Text from '../text';
+
+import ButtonLoading from './button_loading';
 
 export type TButtonCommonProps = {
     alternate: boolean;

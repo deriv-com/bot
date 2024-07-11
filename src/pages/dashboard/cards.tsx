@@ -4,12 +4,13 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
 import { localize } from '@deriv-com/translations';
-import Dialog from '@/components/shared_ui/dialog';
 
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import Dialog from '@/components/shared_ui/dialog';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
@@ -18,7 +19,6 @@ import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-st
 
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
-import Text from '@/components/shared_ui/text';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;

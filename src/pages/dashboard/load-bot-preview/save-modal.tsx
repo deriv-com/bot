@@ -5,7 +5,10 @@ import { observer } from 'mobx-react-lite';
 
 import { Text } from '@deriv-com/ui';
 
+import Button from '@/components/shared_ui/button';
+import Input from '@/components/shared_ui/input';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
+import Modal from '@/components/shared_ui/modal';
 import RadioGroup from '@/components/shared_ui/radio-group';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
@@ -13,9 +16,6 @@ import { useStore } from '@/hooks/useStore';
 import { Icon, localize } from '@/utils/tmp/dummy';
 
 import IconRadio from './icon-radio';
-import Modal from '@/components/shared_ui/modal';
-import Button from '@/components/shared_ui/button';
-import Input from '@/components/shared_ui/input';
 
 type TSaveModalForm = {
     bot_name: string;

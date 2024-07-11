@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import Text from '../text/text';
 
 export type TLoadingProps = React.HTMLProps<HTMLDivElement> & {
