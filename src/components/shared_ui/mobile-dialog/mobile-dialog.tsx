@@ -1,10 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
-
 import Div100vhContainer from '../div100vh-container';
 import Text from '../text/text';
 import ThemedScrollbars from '../themed-scrollbars';

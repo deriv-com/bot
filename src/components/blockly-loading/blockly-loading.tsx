@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-
 import { Loader } from '@deriv-com/ui';
 
 // import { useDBotStore } from '@/hooks/useStore';

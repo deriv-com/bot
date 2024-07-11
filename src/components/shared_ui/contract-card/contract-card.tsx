@@ -1,10 +1,7 @@
 import React from 'react';
-
 import { getTotalProfit } from '@/components/shared/utils/contract';
-
 import DesktopWrapper from '../desktop-wrapper';
 import { TGetCardLables, TGetContractPath } from '../types';
-
 import ContractCardBody from './contract-card-items/contract-card-body';
 import ContractCardFooter from './contract-card-items/contract-card-footer';
 import ContractCardHeader from './contract-card-items/contract-card-header';

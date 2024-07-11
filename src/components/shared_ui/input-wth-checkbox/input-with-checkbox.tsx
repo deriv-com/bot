@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { getDecimalPlaces, isDesktop, isMobile } from '@/components/shared';
-
 import Checkbox from '../checkbox';
 import InputField from '../input-field';
 import Popover from '../popover';

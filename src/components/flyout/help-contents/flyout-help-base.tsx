@@ -1,14 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Button, Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { help_content_config, help_content_types } from '@/utils/help-content/help-content.config';
 import { Icon, localize } from '@/utils/tmp/dummy';
-
+import { Button, Text } from '@deriv-com/ui';
 import FlyoutBlock from '../flyout-block';
-
 import FlyoutImage from './flyout-img';
 import FlyoutText from './flyout-text';
 import FlyoutVideo from './flyout-video';

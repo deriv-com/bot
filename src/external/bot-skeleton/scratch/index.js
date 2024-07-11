@@ -2,9 +2,9 @@ import './index.scss';
 
 export {
     load,
+    runGroupedEvents,
+    runIrreversibleEvents,
     save,
     scrollWorkspace,
     updateWorkspaceName,
-    runGroupedEvents,
-    runIrreversibleEvents,
 } from './utils/index';

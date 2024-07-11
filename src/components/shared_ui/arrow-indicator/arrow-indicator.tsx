@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Icon } from '@/utils/tmp/dummy';
 
 type TArrowIndicatorProps = {

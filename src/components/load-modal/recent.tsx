@@ -1,10 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
 import { Icon, Localize } from '@/utils/tmp/dummy';
-
 import RecentWorkspace from './recent-workspace';
 import WorkspaceControl from './workspace-control';
 

@@ -1,10 +1,8 @@
 import { GetSettings, ProfitTable, ResidenceList, Statement } from '@deriv/api-types';
-
 import { getContractTypeFeatureFlag, IDV_ERROR_STATUS, ONFIDO_ERROR_STATUS, STATUS_CODES } from '../constants';
 import { TContractInfo } from '../contract';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
 import { LocalStore } from '../storage';
-
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 

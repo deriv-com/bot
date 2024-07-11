@@ -1,12 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Button } from '@deriv-com/ui';
-
 import StaticUrl from '@/components/shared_ui/static-url';
 import { useStore } from '@/hooks/useStore';
 import { Icon, Localize, localize } from '@/utils/tmp/dummy';
+import { Button } from '@deriv-com/ui';
 
 const GoogleDrive = observer(() => {
     const { ui, google_drive, load_modal } = useStore();

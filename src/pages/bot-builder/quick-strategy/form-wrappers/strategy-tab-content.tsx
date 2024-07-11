@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
-
 import { STRATEGIES } from '../config';
 import { TDescription, TDescriptionItem } from '../types';
-
 import AccordionStrategyGroup from './accordion-strategy-group';
-
 import './strategy-accordion.scss';
 
 type TStrategyDescription = Partial<{

@@ -1,17 +1,13 @@
 import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
-
-import { TStores } from '@deriv/stores/types';
-
 import { formatDate } from '@/components/shared';
 import { LogTypes, MessageTypes } from '@/external/bot-skeleton';
 import { config } from '@/external/bot-skeleton/constants/config';
 import { localize } from '@/utils/tmp/dummy';
-
+import { TStores } from '@deriv/stores/types';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 import { getSetting, storeSetting } from '../utils/settings';
-
 import RootStore from './root-store';
 
 type TExtra = {

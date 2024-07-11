@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { runIrreversibleEvents } from '../../utils';
 import { minusIconDark } from '../images';
 

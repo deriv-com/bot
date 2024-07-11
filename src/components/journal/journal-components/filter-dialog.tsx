@@ -1,9 +1,6 @@
 import React from 'react';
-
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-
 import { TFilterDialogProps } from '../journal.types';
-
 import Filters from './filters';
 
 const FilterDialog = ({

@@ -1,9 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-
-import { Loader } from '@deriv-com/ui';
-
 import { api_base } from '@/external/bot-skeleton';
-
+import { Loader } from '@deriv-com/ui';
 import Bot from '../external/bot-skeleton/scratch/dbot';
 import RootStore from '../stores';
 

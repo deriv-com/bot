@@ -1,14 +1,10 @@
 import { observer } from 'mobx-react-lite';
-
-import { Modal, Tabs } from '@deriv-com/ui';
-
 import { tabs_title } from '@/constants/load-modal';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-
+import { Modal, Tabs } from '@deriv-com/ui';
 import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';
-
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';

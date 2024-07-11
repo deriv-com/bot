@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
-
 import StopBotModalContent from '../stop-bot-modal-content';
 
 const StopBotModal = observer(() => {

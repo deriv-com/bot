@@ -1,14 +1,11 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Modal, Text } from '@deriv-com/ui';
-
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Modal, Text } from '@deriv-com/ui';
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {

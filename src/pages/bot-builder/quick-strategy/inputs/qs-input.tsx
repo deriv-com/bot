@@ -2,11 +2,9 @@ import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
-
-import { Input } from '@deriv-com/ui';
-
 import Popover from '@/components/shared_ui/popover';
 import { useStore } from '@/hooks/useStore';
+import { Input } from '@deriv-com/ui';
 
 type TQSInput = {
     name: string;

@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { minusIconDark, plusIconDark } from '../images';
 
 window.Blockly.Blocks.controls_if = {

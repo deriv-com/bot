@@ -1,7 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-
 import { TStores } from '@deriv/stores/types';
-
 import RootStore from './root-store';
 
 export interface IRoutePromptDialogStore {

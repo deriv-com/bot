@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { initMoment } from '../date';
 import { routes } from '../routes';
 

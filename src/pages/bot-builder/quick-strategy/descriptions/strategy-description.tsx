@@ -1,10 +1,7 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
-
+import { Text } from '@deriv-com/ui';
 import { TStrategyDescription } from '../types';
 
 const StrategyDescription = observer(({ item, font_size }: TStrategyDescription) => {

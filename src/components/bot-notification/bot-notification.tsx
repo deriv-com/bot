@@ -1,6 +1,5 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-
 import { notification_style, TAction, TNotificationContent, TNotificationStyle } from './bot-notification-utils';
 
 export const NotificationContent: React.FC<TNotificationContent> = ({ message, primary_action, closeToast }) => {

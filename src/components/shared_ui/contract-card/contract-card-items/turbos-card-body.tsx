@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { addComma, getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@/components/shared';
-
 import ArrowIndicator from '../../arrow-indicator';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-
 import ContractCardItem from './contract-card-item';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 import ToggleCardDialog from './toggle-card-dialog';

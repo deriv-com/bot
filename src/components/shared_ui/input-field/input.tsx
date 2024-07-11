@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { getCurrencyDisplayCode } from '@/components/shared';
-
 import Text from '../text';
 
 export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';

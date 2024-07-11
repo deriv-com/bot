@@ -1,10 +1,7 @@
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
-
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
-
 import SummaryCard from './summary-card';
 
 type TSummary = {

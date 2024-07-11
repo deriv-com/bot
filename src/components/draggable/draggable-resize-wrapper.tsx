@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import debounce from 'debounce';
-
 import Draggable from './draggable';
 
 type DraggableResizeWrapperProps = {

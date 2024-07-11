@@ -1,7 +1,5 @@
 import { sequence } from '@/components/shared';
-
 import { stddev, takeLast } from '../utils/math';
-
 import { simpleMovingAverage } from './simple-moving-average';
 
 /**

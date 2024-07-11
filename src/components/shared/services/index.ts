@@ -1,2 +1,2 @@
-export * from './ws-methods';
 export * from './performance-metrics-methods';
+export * from './ws-methods';

@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { getTimePercentage } from '@/components/shared';
-
 import CircularProgress from '../circular-progress';
 import RemainingTime from '../remaining-time';
 import Text from '../text';
 import { TGetCardLables } from '../types';
-
 import ProgressTicksMobile from './progress-ticks-mobile';
 
 type TProgressSliderMobileProps = {

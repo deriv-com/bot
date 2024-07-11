@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
 import OnboardingTourDesktop from './onboarding-tour-desktop';
 import OnboardingTourMobile from './onboarding-tour-mobile';
 

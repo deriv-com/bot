@@ -1,14 +1,11 @@
 import { ReactElement } from 'react';
-import ContentLoader from 'react-content-loader';
 import classNames from 'classnames';
-
+import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
-
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
-
 import { TTransaction } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-mobile';

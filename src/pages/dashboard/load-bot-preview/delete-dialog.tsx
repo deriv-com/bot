@@ -1,15 +1,12 @@
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { observer } from 'mobx-react-lite';
-
-import { Dialog, Text } from '@deriv-com/ui';
-
-import { TStrategy } from 'Types';
-
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
+import { Dialog, Text } from '@deriv-com/ui';
+import { TStrategy } from 'Types';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useStore();

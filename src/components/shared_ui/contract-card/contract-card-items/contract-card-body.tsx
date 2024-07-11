@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import {
     getCurrentTick,
     getDisplayStatus,
@@ -8,7 +7,6 @@ import {
     getTotalProfit,
     isCryptocurrency,
 } from '@/components/shared';
-
 import ArrowIndicator from '../../arrow-indicator';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -16,7 +14,6 @@ import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import ProgressSliderMobile from '../../progress-slider-mobile';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-
 import AccumulatorCardBody from './accumulator-card-body';
 import ContractCardItem from './contract-card-item';
 import { TGeneralContractCardBodyProps } from './contract-update-form';

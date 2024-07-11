@@ -1,8 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-
 import { formatDuration, getDiffDuration } from '@/components/shared';
-
 import { TGetCardLables } from '../types';
 
 type TRemainingTimeProps = {

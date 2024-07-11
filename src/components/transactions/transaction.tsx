@@ -1,14 +1,12 @@
 import React from 'react';
-import ContentLoader from 'react-content-loader';
 import classNames from 'classnames';
-
+import ContentLoader from 'react-content-loader';
 import Money from '@/components/shared_ui/money';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
-
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 

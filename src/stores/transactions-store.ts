@@ -1,15 +1,11 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
-import { ProposalOpenContract } from '@deriv/api-types';
-import { TPortfolioPosition, TStores } from '@deriv/stores/types';
-
 import { formatDate, isEnded } from '@/components/shared';
 import { LogTypes } from '@/external/bot-skeleton';
-
+import { ProposalOpenContract } from '@deriv/api-types';
+import { TPortfolioPosition, TStores } from '@deriv/stores/types';
 import { TContractInfo } from '../components/summary/summary-card.types';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
-
 import RootStore from './root-store';
 
 type TTransaction = {

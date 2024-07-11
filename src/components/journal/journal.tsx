@@ -1,12 +1,9 @@
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
 import { DataList, Icon, localize } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 

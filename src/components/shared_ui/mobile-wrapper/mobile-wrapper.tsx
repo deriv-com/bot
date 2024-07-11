@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { isMobile } from '@/components/shared/utils/screen';
 
 type TMobileWrapper = {

@@ -1,10 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
-
 import { TItem } from '../types/common.types';
-
 import ArrayRenderer from './array-renderer';
 
 type TExpansionPanel = {

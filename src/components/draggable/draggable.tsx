@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
 import { Icon } from '@/utils/tmp/dummy';
-
 import {
     calculateHeight,
     calculateWidth,
@@ -11,7 +9,6 @@ import {
     SAFETY_MARGIN,
     TDraggableProps,
 } from './draggable-utils';
-
 import './draggable.scss';
 
 const Draggable: React.FC<TDraggableProps> = ({

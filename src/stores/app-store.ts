@@ -1,8 +1,5 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
-
-import { TStores } from '@deriv/stores/types';
-
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
 import {
     ContentFlag,
@@ -11,7 +8,7 @@ import {
     routes,
     showDigitalOptionsUnavailableError,
 } from '@/utils/tmp/dummy';
-
+import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
 
 export default class AppStore {

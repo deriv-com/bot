@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { CFD_PLATFORMS } from '../platform';
 
 export interface AvailableAccount {

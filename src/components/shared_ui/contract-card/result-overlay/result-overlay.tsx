@@ -1,10 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
-
 import Money from '../../money';
 import Text from '../../text';
 import { TGetCardLables, TGetContractPath } from '../../types';

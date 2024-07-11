@@ -1,14 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
+import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-
-import { useStore } from '@/hooks/useStore';
-
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
-
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import UserGuide from './user-guide';

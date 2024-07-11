@@ -1,5 +1,4 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
-
 import Text from '../text';
 
 type TCurrencyBadgeProps = {

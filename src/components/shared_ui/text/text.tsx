@@ -1,6 +1,5 @@
 import React, { CSSProperties, HTMLProps } from 'react';
 import classNames from 'classnames';
-
 import { isEmptyObject } from '@/components/shared';
 
 type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {

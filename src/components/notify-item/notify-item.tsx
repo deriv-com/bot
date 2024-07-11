@@ -1,7 +1,5 @@
-import { Button } from '@deriv-com/ui';
-
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Button } from '@deriv-com/ui';
 import ExpansionPanel from '../shared_ui/expansion-panel';
 
 export const getIcon = (type: string) => {

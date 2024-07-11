@@ -1,18 +1,14 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import React from 'react';
-
 import { isDesktop, isMobile } from '@/components/shared';
 import { Icon } from '@/utils/tmp/dummy';
-
 import DesktopWrapper from '../../desktop-wrapper';
 import Div100vhContainer from '../../div100vh-container';
 import MobileDialog from '../../mobile-dialog';
 import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
-
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
-
 import './sass/contract-card-dialog.scss';
 
 export type TToggleCardDialogProps = Pick<

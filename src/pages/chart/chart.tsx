@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
+import chart_api from '@/external/bot-skeleton/services/api/chart-api';
+import { useStore } from '@/hooks/useStore';
 import {
     ActiveSymbolsRequest,
     ServerTimeRequest,
@@ -10,12 +11,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-
-import chart_api from '@/external/bot-skeleton/services/api/chart-api';
-import { useStore } from '@/hooks/useStore';
-
 import ToolbarWidgets from './toolbar-widgets';
-
 import '@deriv/deriv-charts/dist/smartcharts.css';
 
 type TSubscription = {

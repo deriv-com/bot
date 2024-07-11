@@ -1,15 +1,12 @@
 import { ReactElement } from 'react';
-import ContentLoader from 'react-content-loader';
 import classNames from 'classnames';
-
+import ContentLoader from 'react-content-loader';
 import { transaction_elements } from '@/constants/transactions';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
-
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
-
 import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-desktop';

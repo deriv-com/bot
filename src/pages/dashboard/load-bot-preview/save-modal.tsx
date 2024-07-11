@@ -2,16 +2,13 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-
-import { Button, Input, Modal, Text } from '@deriv-com/ui';
-
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import RadioGroup from '@/components/shared_ui/radio-group';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Icon, localize } from '@/utils/tmp/dummy';
-
+import { Button, Input, Modal, Text } from '@deriv-com/ui';
 import IconRadio from './icon-radio';
 
 type TSaveModalForm = {

@@ -1,5 +1,4 @@
 import { Analytics, TEvents } from '@deriv-com/analytics';
-
 import { ACTION, form_name, type TFormStrategy, type TSelectedStrategy } from './constants';
 import { getRsStrategyType, getSubpageName, getTradeParameterData } from './utils';
 

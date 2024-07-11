@@ -1,9 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { getUUID } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
+import { Text } from '@deriv-com/ui';
 
 type TTourSteps = {
     content: string[] | React.ReactElement[];

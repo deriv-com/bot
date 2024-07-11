@@ -1,12 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Tabs } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Tabs } from '@deriv-com/ui';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 

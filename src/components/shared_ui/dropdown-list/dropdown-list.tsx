@@ -1,10 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { ResidenceList } from '@deriv/api-types';
-
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 
 export type TItem =

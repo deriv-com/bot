@@ -1,11 +1,8 @@
 import { observer } from 'mobx-react-lite';
-
-import { Dialog, Text } from '@deriv-com/ui';
-
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
+import { Dialog, Text } from '@deriv-com/ui';
 import {
     getBotBuilderTourHeader,
     getTourDialogAction,

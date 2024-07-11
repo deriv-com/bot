@@ -1,9 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { isLookBacksContract, isSmartTraderContract, isVanillaContract } from '@/components/shared';
 import { IconTradeTypes } from '@/utils/tmp/dummy';
-
 import { TGetContractTypeDisplay } from '../../types';
 
 export type TContractTypeCellProps = {

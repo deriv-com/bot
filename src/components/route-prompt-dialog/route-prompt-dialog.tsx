@@ -1,10 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Dialog } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
+import { Dialog } from '@deriv-com/ui';
 
 const RoutePromptDialog = observer(() => {
     const { route_prompt_dialog } = useStore();

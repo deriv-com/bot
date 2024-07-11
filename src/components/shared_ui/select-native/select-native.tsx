@@ -1,10 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
-import { Text } from '@deriv-com/ui';
-
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import Field from '../field/field';
 
 type TSelectNative = {

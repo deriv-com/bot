@@ -1,13 +1,9 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useConstructor } from '@/hooks/use-constructor';
-
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
-
 import Tab from './tab';
-
 import './tabs.scss';
 
 // TODO: Remove this declaration after changing label to data-label in Tabs component

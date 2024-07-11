@@ -1,8 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-
-import { Button } from '@deriv-com/ui';
-
 import {
     getCancellationPrice,
     getContractUpdateConfig,
@@ -14,7 +11,7 @@ import {
 } from '@/components/shared';
 import { TContractInfo, TContractStore } from '@/components/shared/contract/contract-types';
 import { Localize } from '@/utils/tmp/dummy';
-
+import { Button } from '@deriv-com/ui';
 import ArrowIndicator from '../../arrow-indicator';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import MobileWrapper from '../../mobile-wrapper';

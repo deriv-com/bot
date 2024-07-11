@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { Text } from '@deriv-com/ui';
-
 import Autocomplete from '@/components/shared_ui/autocomplete';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { TItem } from '@deriv/components/src/components/dropdown-list';
+import { Text } from '@deriv-com/ui';
 import { TFormData } from '../types';
 
 type TSymbol = {

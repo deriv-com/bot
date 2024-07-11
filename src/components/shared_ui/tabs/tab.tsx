@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
-
 import Counter from '../counter';
 
 type TTabProps = {

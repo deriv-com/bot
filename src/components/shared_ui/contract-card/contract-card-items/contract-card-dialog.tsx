@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-
 import './sass/contract-card-dialog.scss';
 
 export type TContractCardDialogProps = {

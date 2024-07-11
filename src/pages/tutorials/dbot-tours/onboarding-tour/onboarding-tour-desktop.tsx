@@ -1,9 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
 import { getSetting } from '@/utils/settings';
-
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourStartDialog from '../common/tour-start-dialog';
 import { DBOT_ONBOARDING } from '../tour-content';

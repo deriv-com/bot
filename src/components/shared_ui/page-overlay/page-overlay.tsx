@@ -1,8 +1,7 @@
 import React, { MouseEventHandler } from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
 
 type TPageOverlay = {

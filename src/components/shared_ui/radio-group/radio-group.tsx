@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from 'react';
 import classNames from 'classnames';
-
 import Text from '../text';
 
 type TItem = React.HTMLAttributes<HTMLDivElement> & {

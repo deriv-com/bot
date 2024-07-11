@@ -1,10 +1,7 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Button, Text } from '@deriv-com/ui';
-
+import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { contract_stages } from '@/constants/contract-stage';
@@ -12,9 +9,8 @@ import { transaction_elements } from '@/constants/transactions';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
 import { DataList, Icon, localize } from '@/utils/tmp/dummy';
-
+import { Button, Text } from '@deriv-com/ui';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
-
 import Transaction from './transaction';
 
 type TTransactions = {

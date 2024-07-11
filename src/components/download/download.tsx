@@ -1,11 +1,8 @@
 import { observer } from 'mobx-react-lite';
-
-import { Button } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from '@/utils/download';
 import { Icon, localize } from '@/utils/tmp/dummy';
-
+import { Button } from '@deriv-com/ui';
 import Popover from '../shared_ui/popover';
 
 type TDownloadProps = {

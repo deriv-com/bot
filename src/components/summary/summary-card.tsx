@@ -1,13 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { getCardLabels, getContractTypeDisplay } from '@/components/shared';
 import ContractCard from '@/components/shared_ui/contract-card';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
+import { Text } from '@deriv-com/ui';
 
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
     const { summary_card, run_panel } = useStore();

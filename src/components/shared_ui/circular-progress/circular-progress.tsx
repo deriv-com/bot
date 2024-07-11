@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-
 import { Icon } from '@/utils/tmp/dummy';
 
 type TCircularProgressProps = {

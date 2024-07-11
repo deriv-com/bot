@@ -1,6 +1,5 @@
 import { getCurrentProductionDomain } from '../config/config';
 import { routes } from '../routes';
-
 import { deriv_urls } from './constants';
 import { getPlatformFromUrl } from './helpers';
 
