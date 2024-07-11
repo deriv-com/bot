@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 
-import { Button, Input, Modal, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import RadioGroup from '@/components/shared_ui/radio-group';
@@ -13,6 +13,9 @@ import { useStore } from '@/hooks/useStore';
 import { Icon, localize } from '@/utils/tmp/dummy';
 
 import IconRadio from './icon-radio';
+import Modal from '@/components/shared_ui/modal';
+import Button from '@/components/shared_ui/button';
+import Input from '@/components/shared_ui/input';
 
 type TSaveModalForm = {
     bot_name: string;

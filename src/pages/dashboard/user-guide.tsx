@@ -22,7 +22,7 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
                 }}
                 data-testid='btn-user-guide'
             >
-                <Icon className='user-guide__icon' icon='IcMapTripFold' />
+                <Icon className='user-guide__icon' icon='IcUserGuide' />
                 {!is_mobile && (
                     <Text size='sm' className='user-guide__label'>
                         {localize('User Guide')}

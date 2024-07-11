@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
 import { localize } from '@deriv-com/translations';
-import { Dialog, Text } from '@deriv-com/ui';
+import Dialog from '@/components/shared_ui/dialog';
 
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
@@ -18,6 +18,7 @@ import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-st
 
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
+import Text from '@/components/shared_ui/text';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -130,7 +131,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                         method();
                                     }}
                                 />
-                                <Text color='prominent' size='sm'>
+                                <Text color='prominent' size='xs'>
                                     {content}
                                 </Text>
                             </div>

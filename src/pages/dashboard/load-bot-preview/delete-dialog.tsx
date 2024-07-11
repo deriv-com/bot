@@ -1,15 +1,14 @@
+/* eslint-disable simple-import-sort/imports */
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { observer } from 'mobx-react-lite';
-
-import { Dialog, Text } from '@deriv-com/ui';
-
+import { Text } from '@deriv-com/ui';
 import { TStrategy } from 'Types';
-
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import './delete-dialog.scss';
+import Dialog from '@/components/shared_ui/dialog';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useStore();
@@ -65,15 +64,15 @@ const DeleteDialog = observer(() => {
     return (
         <div>
             <Dialog
-                title={localize('Delete bot')}
+                title='Delete bot'
                 is_visible={is_delete_modal_open}
-                confirm_button_text={localize('Yes, delete')}
+                confirm_button_text='Yes, delete'
                 onConfirm={() => {
                     removeBotStrategy(selected_strategy_id);
                     onToggleDeleteDialog(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_DELETE);
                 }}
-                cancel_button_text={localize('No')}
+                cancel_button_text='No'
                 onCancel={() => {
                     onToggleDeleteDialog(false);
                 }}
@@ -82,14 +81,14 @@ const DeleteDialog = observer(() => {
                 has_close_icon
             >
                 <div>
-                    <Text color='prominent' LineHeight='sm' size='xs'>
-                        {localize('Your bot will be permanently deleted when you hit ')}
-                        <strong>{localize('Yes, delete.')}</strong>
+                    <Text color='prominent' line_height='s' size='xs'>
+                        Your bot will be permanently deleted when you hit
+                        <strong> Yes, delete.</strong>
                     </Text>
                 </div>
                 <div>
-                    <Text color='prominent' lineHeight='xl' size='xs'>
-                        {localize('Are you sure you want to delete it?')}
+                    <Text color='prominent' line_height='xl' size='xs'>
+                        Are you sure you want to delete it?
                     </Text>
                 </div>
             </Dialog>
