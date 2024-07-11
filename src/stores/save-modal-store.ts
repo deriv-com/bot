@@ -59,10 +59,9 @@ export default class SaveModalStore implements ISaveModalStore {
     bot_name = '';
 
     toggleSaveModal = (): void => {
-        // console.log(this.is_save_modal_open)
-        // if (!this.is_save_modal_open) {
-        //     this.setButtonStatus(button_status.NORMAL);
-        // }
+        if (!this.is_save_modal_open) {
+            this.setButtonStatus(button_status.NORMAL);
+        }
 
         this.is_save_modal_open = !this.is_save_modal_open;
     };
