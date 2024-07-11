@@ -1,5 +1,5 @@
 import { act, render } from '@testing-library/react';
-import Bot from '../app';
+import Bot from '../App';
 
 jest.mock('@deriv-com/translations', () => ({
     ...jest.requireActual('@deriv-com/translations'),
