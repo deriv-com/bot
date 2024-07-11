@@ -53,41 +53,41 @@ const Journal = observer(() => {
                 ) : (
                     <>
                         {contract_stage >= contract_stages.STARTING &&
-                        !!Object.keys(checked_filters as TCheckedFilters).length &&
-                        !unfiltered_messages_length &&
-                        is_stop_button_visible ? (
+                            !!Object.keys(checked_filters as TCheckedFilters).length &&
+                            !unfiltered_messages_length &&
+                            is_stop_button_visible ? (
                             <JournalLoader is_mobile={is_mobile} />
                         ) : (
                             <div className='journal-empty'>
                                 <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
                                 <Text
                                     as='h4'
-                                    size='xs'
+                                    size='sm'
                                     weight='bold'
                                     align='center'
                                     color='less-prominent'
-                                    lineHeight='xs'
+                                    lineHeight='sm'
                                     className='journal-empty__header'
                                 >
                                     {localize('There are no messages to display')}
                                 </Text>
                                 <div className='journal-empty__message'>
-                                    <Text size='xs' color='less-prominent'>
+                                    <Text size='xs' lineHeight='3xl' color='less-prominent'>
                                         {localize('Here are the possible reasons:')}
                                     </Text>
                                     <ul className='journal-empty__list'>
                                         <li>
-                                            <Text size='xs' color='less-prominent'>
+                                            <Text size='xs' lineHeight='3xl' color='less-prominent'>
                                                 {localize('The bot is not running')}
                                             </Text>
                                         </li>
                                         <li>
-                                            <Text size='xs' color='less-prominent'>
+                                            <Text size='xs' lineHeight='3xl' color='less-prominent'>
                                                 {localize('The stats are cleared')}
                                             </Text>
                                         </li>
                                         <li>
-                                            <Text size='xs' color='less-prominent'>
+                                            <Text size='xs' lineHeight='3xl' color='less-prominent'>
                                                 {localize('All messages are filtered out')}
                                             </Text>
                                         </li>
