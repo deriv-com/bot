@@ -34,9 +34,10 @@ module.exports = {
         'simple-import-sort/imports': 'warn',
         'simple-import-sort/exports': 'warn',
         'react-hooks/exhaustive-deps': 'warn',
-        'react/react-in-jsx-scope': 'warn',
-        '@typescript-eslint/no-explicit-any': 'warn',
+        'react/react-in-jsx-scope': 'off',
+        'react/jsx-uses-react': 'off',
         'react/prop-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'warn',
         '@typescript-eslint/no-var-requires': 'off',
     },
     overrides: [

@@ -23,14 +23,6 @@ module.exports = {
     module: {
         rules: [
             {
-                // https://github.com/webpack/webpack/issues/11467
-                test: /\.m?js/,
-                include: /node_modules/,
-                resolve: {
-                    fullySpecified: false,
-                },
-            },
-            {
                 test: /\.(s*)css$/,
                 use: [
                     'css-hot-loader',
@@ -77,9 +69,6 @@ module.exports = {
                 test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-                options: {
-                    rootMode: 'upward',
-                },
             },
             {
                 test: /\.xml$/,
@@ -128,7 +117,7 @@ module.exports = {
             directory: path.join(__dirname, 'public'),
         },
         compress: true,
-        port: 8444,
+        port: 8443,
         hot: true,
     },
 };

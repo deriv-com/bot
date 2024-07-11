@@ -1,8 +1,6 @@
 import { findValueByKeyRecursively, formatTime, getRoundedNumber, isEmptyObject } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
-
 import { observer as globalObserver } from '../../../utils/observer';
-
 import { error as logError } from './broadcast';
 
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
@@ -136,7 +134,7 @@ const getBackoffDelayInMs = (error, delay_index) => {
     const max_delay = 15;
     const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
 
-    if (error.error.code === 'RateLimit') {
+    if (error?.error?.code === 'RateLimit') {
         logError(
             localize('You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})', {
                 message_type: error.msg_type,
@@ -144,13 +142,13 @@ const getBackoffDelayInMs = (error, delay_index) => {
                 request: error.echo_req.req_id,
             })
         );
-    } else if (error.error.code === 'DisconnectError') {
+    } else if (error?.error?.code === 'DisconnectError') {
         logError(
             localize('You are disconnected, retrying in {{ delay }}s', {
                 delay: next_delay_in_seconds,
             })
         );
-    } else if (error.error.code === 'MarketIsClosed') {
+    } else if (error?.error?.code === 'MarketIsClosed') {
         logError(localize('This market is presently closed.'));
     } else {
         logError(
@@ -189,7 +187,7 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'MarketIsClosed',
     ];
     updateErrorMessage(error);
-    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.error.code);
+    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error?.error?.code);
 
     return !is_ignorable_error;
 };
@@ -209,7 +207,7 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     return;
                 }
                 recoverFn(
-                    error.error.code,
+                    error?.error?.code,
                     () =>
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
