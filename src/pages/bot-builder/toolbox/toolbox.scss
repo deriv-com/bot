@@ -7,6 +7,7 @@
     padding: 0.8rem;
     background: var(--general-main-1);
     z-index: 1;
+
     $toolbox: &;
     $category-text-spacing: 10px;
 
@@ -33,8 +34,15 @@
         padding: 1.3rem 0.8rem;
         height: 6rem;
 
+        & .deriv-input__container {
+            width: 100%;
+        }
+
         &-field {
             margin-bottom: 0 !important;
+            border-radius: 8px;
+            height: 3.2rem;
+            padding: 0.6rem 0.8rem;
 
             input::-ms-clear {
                 display: none;
@@ -180,6 +188,7 @@
             &:hover {
                 background-color: var(--general-hover);
             }
+
             &--active {
                 background-color: var(--general-hover);
             }

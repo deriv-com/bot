@@ -21,14 +21,14 @@ const TourSteps = observer(
                 <div className='onboard'>
                     {show_actions && (
                         <div className='onboard__header'>
-                            <Text color='less-prominent' line_height='l'>
+                            <Text color='less-prominent' LineHeight='lg'>
                                 {step_index}/6
                             </Text>
                         </div>
                     )}
                     <div className='onboard__steps'>
                         <div className='onboard__label'>
-                            <Text as='p' line_height='l' weight='bold'>
+                            <Text as='p' LineHeight='lg' weight='bold'>
                                 {label}
                             </Text>
                         </div>
@@ -54,7 +54,7 @@ const TourSteps = observer(
                                         content_data
                                     ) : (
                                         <div className='onboard__content__block' key={`onboard--${getUUID()}`}>
-                                            <Text align='left' as='p' size='xs' line_height='l'>
+                                            <Text align='left' as='p' size='xs' LineHeight='lg'>
                                                 {content_data}
                                             </Text>
                                         </div>

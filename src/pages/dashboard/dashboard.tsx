@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
+import { localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
 
@@ -45,22 +45,15 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                             })}
                         >
                             {!has_dashboard_strategies && (
-                                <Text
-                                    className='title'
-                                    as='h2'
-                                    color='prominent'
-                                    size={is_mobile ? 's' : 'sm'}
-                                    line_height='xxl'
-                                    weight='bold'
-                                >
+                                <Text className='title' as='h2' color='prominent' size='lg' weight='bold'>
                                     {localize('Load or build your bot')}
                                 </Text>
                             )}
                             <Text
                                 as='p'
                                 color='prominent'
-                                line_height='s'
-                                size={is_mobile ? 'xxs' : 's'}
+                                LineHeight='sm'
+                                size='md'
                                 className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                             >
                                 {localize(

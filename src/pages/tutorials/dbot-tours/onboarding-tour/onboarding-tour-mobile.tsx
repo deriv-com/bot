@@ -66,7 +66,7 @@ const OnboardingTourMobile = observer(() => {
                     <Text
                         color='less-prominent'
                         weight='less-prominent'
-                        line_height='s'
+                        LineHeight='sm'
                         size='xxs'
                         data-testid='dbot-onboard-slider__navbar'
                     >{`${tour_step_key - 1}/7`}</Text>
@@ -87,7 +87,7 @@ const OnboardingTourMobile = observer(() => {
                     align='center'
                     className='dbot-slider__title'
                     as='span'
-                    line_height='s'
+                    LineHeight='sm'
                     size='xs'
                 >
                     {localize(header)}
@@ -123,7 +123,7 @@ const OnboardingTourMobile = observer(() => {
                                 color='prominent'
                                 className='dbot-slider__content'
                                 as='div'
-                                line_height='s'
+                                LineHeight='sm'
                                 size='xxs'
                             >
                                 {data}

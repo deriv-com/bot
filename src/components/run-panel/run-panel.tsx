@@ -2,12 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
-import { Button, Modal, Tabs, Text } from '@deriv-com/ui';
+import { Button, Modal, Text } from '@deriv-com/ui';
 
 import Journal from '@/components/journal';
 import SelfExclusion from '@/components/self-exclusion';
 import Drawer from '@/components/shared_ui/drawer';
 import Money from '@/components/shared_ui/money';
+import Tabs from '@/components/shared_ui/tabs';
 import Summary from '@/components/summary';
 import TradeAnimation from '@/components/trade-animation';
 import Transactions from '@/components/transactions';
@@ -153,11 +154,14 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
             id='db-run-panel__clear-button'
             className='run-panel__footer-button'
             disabled={is_clear_stat_disabled}
-            label={localize('Reset')}
             onClick={onClearStatClick}
-            has_effect
             variant='outlined'
-        />
+            color='black'
+            size='sm'
+            textSize='sm'
+        >
+            <span>{localize('Reset')}</span>
+        </Button>
     </div>
 );
 
