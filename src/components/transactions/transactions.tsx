@@ -114,14 +114,18 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                 <Button
                     id='download__container__view-detail-button'
                     className='download__container__view-detail-button'
-                    is_disabled={!transaction_list?.length}
-                    text={localize('View Detail')}
+                    disabled={!transaction_list?.length}
                     onClick={() => {
                         toggleTransactionDetailsModal(true);
                     }}
-                    secondary
                     icon={<Icon icon='IcDbotViewDetail' size={18} />}
-                />
+                    variant='outlined'
+                    color='black'
+                    size='sm'
+                    textSize='sm'
+                >
+                    {localize('View Detail')}
+                </Button>
             </div>
             <div className='transactions__header'>
                 <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>

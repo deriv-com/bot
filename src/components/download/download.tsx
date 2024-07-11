@@ -97,15 +97,19 @@ const Download = observer(({ tab }: TDownloadProps) => {
         >
             <Button
                 id='download-button'
-                is_disabled={disabled}
+                disabled={disabled}
                 className='download__button'
                 icon={
                     <Icon icon='IcDbotDownload' color={disabled ? 'disabled' : undefined} className='download__icon' />
                 }
-                text={localize('Download')}
                 onClick={clickFunction}
-                secondary
-            />
+                variant='outlined'
+                color='black'
+                size='sm'
+                textSize='sm'
+            >
+                {localize('Download')}
+            </Button>
         </Popover>
     );
 });
