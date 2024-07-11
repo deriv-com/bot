@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
 
-import Text from '../text';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { Icon } from '@/utils/tmp/dummy';
+
 import Button from '../button';
+import Text from '../text';
 
 type TDialog = {
     cancel_button_text?: string;
@@ -31,7 +33,7 @@ type TDialog = {
 
 const Dialog = ({
     disableApp,
-    // dismissable,
+    dismissable,
     enableApp,
     is_closed_on_cancel = true,
     is_closed_on_confirm = true,
@@ -98,14 +100,14 @@ const Dialog = ({
         }
     };
 
-    // const validateClickOutside = () => !!dismissable || !!(has_close_icon && is_visible && is_closed_on_cancel);
+    const validateClickOutside = () => !!dismissable || !!(has_close_icon && is_visible && is_closed_on_cancel);
 
-    // useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
+    useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
 
     const content_classes = classNames('dc-dialog__content', {
         'dc-dialog__content--centered': is_content_centered,
     });
-    //
+
     const is_text =
         typeof children === 'string' ||
         (React.isValidElement(children) && typeof children?.props?.i18n_default_text === 'string');
