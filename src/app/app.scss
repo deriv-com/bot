@@ -1,6 +1,6 @@
 .bot {
     --bot-content-height: calc(100vh - 140px);
-    --bot-content-width: calc(100vw - 366px); //run-panel is open by default
+    --bot-content-width: calc(100vw - 366px);
     --drawer-content-height: calc(100vh - 394px);
     --drawer-content-height-no-stat: calc(100vh - 233px);
     --drawer-scroll-height: calc(100vh - 365px);
@@ -14,4 +14,25 @@
     &-dashboard {
         background: var(--general-section-1);
     }
+}
+
+.modal-root {
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.72);
+    right: 0;
+    opacity: 0;
+    z-index: -1;
+}
+.modal-root:not(:empty) {
+    display: flex;
+    opacity: 1;
+    z-index: 10;
 }

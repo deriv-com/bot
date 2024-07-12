@@ -433,6 +433,7 @@
         width: 24px;
 
         @include mobile {
+            display: flex;
             height: 16px;
             width: 16px;
         }

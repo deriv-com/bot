@@ -3,9 +3,12 @@ import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 
-import { Button, Input, Modal, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 
+import Button from '@/components/shared_ui/button';
+import Input from '@/components/shared_ui/input';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
+import Modal from '@/components/shared_ui/modal';
 import RadioGroup from '@/components/shared_ui/radio-group';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
