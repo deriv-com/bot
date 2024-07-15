@@ -297,7 +297,7 @@ window.Blockly.Css.CONTENT = [
 
     '.blocklyDraggable {',
     /* backup for browsers (e.g. IE11) that don't support grab */
-    'cursor: url("<<<PATH>>>/handopen.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handopen.cur"), auto;',
     'cursor: grab;',
     'cursor: -webkit-grab;',
     'cursor: -moz-grab;',
@@ -305,7 +305,7 @@ window.Blockly.Css.CONTENT = [
 
     '.blocklyDragging {',
     /* backup for browsers (e.g. IE11) that don't support grabbing */
-    'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
     'cursor: grabbing;',
     'cursor: -webkit-grabbing;',
     'cursor: -moz-grabbing;',
@@ -314,7 +314,7 @@ window.Blockly.Css.CONTENT = [
     https://bugzilla.mozilla.org/show_bug.cgi?id=771241 */
     '.blocklyDraggable:active {',
     /* backup for browsers (e.g. IE11) that don't support grabbing */
-    'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
     'cursor: grabbing;',
     'cursor: -webkit-grabbing;',
     'cursor: -moz-grabbing;',
@@ -324,14 +324,14 @@ window.Blockly.Css.CONTENT = [
    */
     '.blocklyBlockDragSurface .blocklyDraggable {',
     /* backup for browsers (e.g. IE11) that don't support grabbing */
-    'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
     'cursor: grabbing;',
     'cursor: -webkit-grabbing;',
     'cursor: -moz-grabbing;',
     '}',
 
     '.blocklyDragging.blocklyDraggingDelete {',
-    'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
     '}',
 
     '.blocklyDragging.blocklyDraggingMouseThrough {',
@@ -339,11 +339,11 @@ window.Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyToolboxDelete {',
-    'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
     '}',
 
     '.blocklyToolboxGrab {',
-    'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handclosed.cur"), auto;',
     'cursor: grabbing;',
     'cursor: -webkit-grabbing;',
     '}',
@@ -744,7 +744,7 @@ window.Blockly.Css.CONTENT = [
     /* Override the default Closure URL. */
     '.blocklyWidgetDiv .goog-option-selected .goog-menuitem-checkbox,',
     '.blocklyWidgetDiv .goog-option-selected .goog-menuitem-icon {',
-    'background: url(<<<PATH>>>/sprites.png) no-repeat -48px -16px !important;',
+    // 'background: url(<<<PATH>>>/sprites.png) no-repeat -48px -16px !important;',
     '}',
 
     /* Category tree in Toolbox. */
@@ -807,7 +807,7 @@ window.Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyTreeIcon {',
-    'background-image: url(<<<PATH>>>/sprites.png);',
+    // 'background-image: url(<<<PATH>>>/sprites.png);',
     'height: 16px;',
     'vertical-align: middle;',
     'width: 16px;',
@@ -851,7 +851,7 @@ window.Blockly.Css.CONTENT = [
     '}',
 
     '.blocklyToolboxDelete .blocklyTreeLabel {',
-    'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
+    // 'cursor: url("<<<PATH>>>/handdelete.cur"), auto;',
     '}',
 
     '.blocklyTreeSelected .blocklyTreeLabel {',
@@ -1091,7 +1091,7 @@ window.Blockly.Css.CONTENT = [
     '.blocklyDropDownDiv .goog-option-selected .goog-menuitem-checkbox,',
     '.blocklyDropDownDiv .goog-option-selected .goog-menuitem-icon {',
     /* Client apps may override the URL at which they serve the sprite. */
-    'background: url(<<<PATH>>>/sprites.png) no-repeat -48px -16px !important;',
+    // 'background: url(<<<PATH>>>/sprites.png) no-repeat -48px -16px !important;',
     'position: static;' /* Scroll with the menu. */,
     'float: left;',
     'margin-left: -24px;',
