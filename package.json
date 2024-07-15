@@ -6,10 +6,10 @@
         "node": "18.x"
     },
     "scripts": {
-        "start": "rsbuild dev",
-        "build": "rsbuild build",
-        "start:wp": "webpack serve --open --config webpack.config.js",
-        "build:wp": "webpack --config webpack.config.js",
+        "start:rs": "rsbuild dev",
+        "build:rs": "rsbuild build",
+        "start": "webpack serve --open --config webpack.config.js",
+        "build": "webpack --config webpack.config.js",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:fix": "prettier --log-level silent --write . && eslint --fix \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test": "jest",

@@ -36,12 +36,15 @@ module.exports = {
                     },
                     {
                         loader: 'sass-loader',
-                        options: { sourceMap: !IS_RELEASE },
-                    },
-                    {
-                        loader: 'sass-resources-loader',
                         options: {
-                            resources: require(path.resolve(__dirname, 'src/components/shared/styles/index.js')),
+                            sourceMap: !IS_RELEASE,
+                            additionalData: `
+                                                    @import "${path.resolve(__dirname, 'src/components/shared/styles/constants.scss')}";
+                                                    @import "${path.resolve(__dirname, 'src/components/shared/styles/mixins.scss')}";
+                                                    @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
+                                                    @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
+                                                    @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
+                                                `,
                         },
                     },
                 ],
