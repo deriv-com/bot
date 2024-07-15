@@ -2,14 +2,20 @@ import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 const path = require('path');
-const IS_RELEASE =
-    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 export default defineConfig({
     plugins: [
         pluginSass({
             sassLoaderOptions: {
                 sourceMap: true,
+                // additionalData: `@import url('@/components/shared/styles/constants.scss');`,
+                additionalData: `
+                @import "${path.resolve(__dirname, 'src/components/shared/styles/constants.scss')}";
+                @import "${path.resolve(__dirname, 'src/components/shared/styles/mixins.scss')}";
+                @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
+                @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
+                @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
+                `,
             },
         }),
         pluginReact(),
@@ -50,23 +56,6 @@ export default defineConfig({
             resolve: {},
             module: {
                 rules: [
-                    {
-                        test: /\.(s*)css$/,
-                        use: [
-                            {
-                                loader: 'sass-loader',
-                                options: { sourceMap: !IS_RELEASE },
-                            },
-                            {
-                                loader: 'sass-resources-loader',
-                                options: {
-                                    resources: require(
-                                        path.resolve(__dirname, 'src/components/shared/styles/index.js')
-                                    ),
-                                },
-                            },
-                        ],
-                    },
                     {
                         test: /\.xml$/,
                         exclude: /node_modules/,

@@ -300,3 +300,10 @@
         @content;
     }
 }
+
+/* RTL Language Mixin */
+@mixin rtl {
+    [dir='rtl'] & {
+        @content;
+    }
+}
