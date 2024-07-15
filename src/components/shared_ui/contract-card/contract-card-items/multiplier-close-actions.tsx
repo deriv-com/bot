@@ -1,11 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
-import { Button } from '@deriv-com/ui';
-
 import { isValidToCancel } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/src/utils/contract/contract-types';
-
+import { Button } from '@deriv-com/ui';
 import RemainingTime from '../../remaining-time';
 import { TGetCardLables } from '../../types';
 

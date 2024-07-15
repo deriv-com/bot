@@ -41,13 +41,13 @@ type TIconComponent = {
 const IconComponent: React.FC<TIconComponent> = ({ icon, ...rest }) => {
     const onError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
         // eslint-disable-next-line no-console
-        console.info(`${icon} not found, redirecting to fallback`);
-        (e.target as HTMLImageElement).src = '/assets/icons/IcDashboard.svg';
+        console.info(`${icon} not found, redirecting to fallback`, e);
+        (e.target as HTMLImageElement).src = 'assets/icons/IcDashboard.svg';
     };
 
     return (
         <div className='dummy-icon' {...rest}>
-            <img src={`/assets/icons/${icon}.svg`} alt={icon} onError={onError} />
+            <img src={`assets/icons/${icon}.svg`} alt={icon} onError={onError} />
         </div>
     );
 };
@@ -118,7 +118,7 @@ const eu_countries = [
 // check if client is from EU
 export const isEuCountry = (country: string) => eu_countries.includes(country);
 
-export const isEuResidenceWithOnlyVRTC = (accounts: TAccounts[]) => {
+export const isEuResidenceWithOnlyVRTC = (accounts: any[]) => {
     return (
         accounts?.length === 1 &&
         accounts.every(acc => isEuCountry(acc.residence ?? '') && acc.landing_company_shortcode === 'virtual')
@@ -126,8 +126,8 @@ export const isEuResidenceWithOnlyVRTC = (accounts: TAccounts[]) => {
 };
 
 export const showDigitalOptionsUnavailableError = (
-    showError: (t: TShowError) => void,
-    message: TMessage,
+    showError: (t: any) => void,
+    message: any,
     redirectOnClick?: (() => void) | null,
     should_redirect?: boolean,
     should_clear_error_on_click = true

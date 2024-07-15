@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { LogTypes } from '../../../../../constants/messages';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';

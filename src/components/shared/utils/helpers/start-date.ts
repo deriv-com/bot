@@ -1,7 +1,5 @@
 import moment from 'moment';
-
 import { ContractsFor } from '@deriv/api-types';
-
 import { toMoment } from '../date';
 
 type TConfig = {

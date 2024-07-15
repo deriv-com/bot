@@ -1,8 +1,6 @@
 import fromEntries from 'object.fromentries';
-
 import { EMPLOYMENT_VALUES } from '../constants';
 import { TEmploymentStatus } from '../types';
-
 import { getPreBuildDVRs, TInitPreBuildDVRs, TOptions } from './declarative-validation-rules';
 
 type TConfig = {

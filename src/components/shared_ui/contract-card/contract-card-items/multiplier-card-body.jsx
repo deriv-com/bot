@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-
 import {
     getCancellationPrice,
     getLimitOrderAmount,
@@ -10,10 +9,8 @@ import {
     isValidToCancel,
     isValidToSell,
 } from '@/components/shared';
-
 import ArrowIndicator from '../../arrow-indicator';
 import Money from '../../money';
-
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 

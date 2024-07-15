@@ -1,11 +1,8 @@
 import React, { KeyboardEvent } from 'react';
-
-import { Accordion, Text } from '@deriv-com/ui';
-
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize } from '@/utils/tmp/dummy';
-
+import { Accordion, Text } from '@deriv-com/ui';
 import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {

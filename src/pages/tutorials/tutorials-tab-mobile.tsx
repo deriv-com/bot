@@ -1,11 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
 import SelectNative from '@/components/shared_ui/select-native';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 

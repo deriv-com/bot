@@ -1,9 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-
-import { TStores } from '@deriv/stores/types';
-
 import { api_base } from '@/external/bot-skeleton';
-
+import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
 
 export default class SelfExclusionStore {

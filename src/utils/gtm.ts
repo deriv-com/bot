@@ -1,11 +1,8 @@
 import { reaction } from 'mobx';
-
+import { TStatistics } from '@/components/transaction-details/transaction-details.types';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { TCoreStores, TStores } from '@deriv/stores/types';
-
 import RootStore from 'Stores/root-store';
-
-import { TStatistics } from '@/components/transaction-details/transaction-details.types';
 
 type TGTM = {
     core: {

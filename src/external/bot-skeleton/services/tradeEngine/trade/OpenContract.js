@@ -1,8 +1,6 @@
 import { getRoundedNumber } from '@/components/shared';
-
 import { api_base } from '../../api/api-base';
 import { contract as broadcastContract, contractStatus } from '../utils/broadcast';
-
 import { openContractReceived, sell } from './state/actions';
 
 export default Engine =>

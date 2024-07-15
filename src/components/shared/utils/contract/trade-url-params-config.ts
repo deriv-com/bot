@@ -1,5 +1,4 @@
 import { ActiveSymbols } from '@deriv/api-types';
-
 import { TTextValueStrings, TTradeTypesCategories } from '../constants/contract';
 import { routes } from '../routes';
 

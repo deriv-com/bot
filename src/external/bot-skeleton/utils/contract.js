@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { config } from '../constants/config';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.

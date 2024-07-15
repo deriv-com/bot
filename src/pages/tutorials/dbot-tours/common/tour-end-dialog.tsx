@@ -1,9 +1,7 @@
 import { observer } from 'mobx-react-lite';
-
-import { Dialog, Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
+import { Dialog, Text } from '@deriv-com/ui';
 
 const TourEndDialog = observer(() => {
     const { ui } = useStore();

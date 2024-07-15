@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-
 import { getPropertyValue, isEmptyObject } from '../object/object';
 import { deriv_urls } from '../url/constants';
 

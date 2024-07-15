@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-
 import Text from '../text';
 import { TGetCardLables } from '../types';
 

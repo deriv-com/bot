@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { TransitionGroup } from 'react-transition-group';
 import {
     AutoSizer as _AutoSizer,
@@ -12,13 +13,9 @@ import {
     ListRowProps,
 } from 'react-virtualized';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
-import classNames from 'classnames';
-
 import { isDesktop, isForwardStartingBuyTransaction, isMobile } from '@/components/shared';
-
 import ThemedScrollbars from '../themed-scrollbars';
 import { TPassThrough, TRow, TTableRowItem } from '../types/common.types';
-
 import DataListCell from './data-list-cell';
 import DataListRow, { TRowRenderer } from './data-list-row';
 
@@ -147,6 +144,7 @@ const DataList = React.memo(
         };
 
         const handleScroll = (ev: Partial<React.UIEvent<HTMLDivElement>>) => {
+            // eslint-disable-next-line prefer-const
             let timeout;
 
             clearTimeout(timeout);

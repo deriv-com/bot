@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Localize } from '@/utils/tmp/dummy';
 
 type TIDVErrorStatus = Readonly<{

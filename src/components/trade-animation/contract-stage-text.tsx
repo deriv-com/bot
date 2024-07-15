@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { contract_stages } from '@/constants/contract-stage';
 import { Localize } from '@/utils/tmp/dummy';
 

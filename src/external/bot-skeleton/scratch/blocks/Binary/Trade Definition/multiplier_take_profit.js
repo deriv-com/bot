@@ -1,6 +1,5 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
-
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.multiplier_take_profit = {

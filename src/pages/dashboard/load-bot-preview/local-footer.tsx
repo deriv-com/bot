@@ -1,11 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Button } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-
+import { Button } from '@deriv-com/ui';
 import './index.scss';
 
 const LocalFooter = observer(() => {

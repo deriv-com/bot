@@ -116,7 +116,7 @@ window.Blockly.Block.getDimensions = function (block_node) {
     }
 
     const options = new window.Blockly.Options({
-        media: `${window.__webpack_public_path__}media/`,
+        media: `${window.__webpack_public_path__}assets/media/`,
         renderer: 'zelos',
         theme: window.Blockly.Themes.zelos_renderer,
     });

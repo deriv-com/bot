@@ -1,13 +1,10 @@
-import JSInterpreter from '@deriv/js-interpreter';
-
 import { isMultiplierContract } from '@/components/shared';
 import cloneThorough from '@/utils/clone';
-
+import JSInterpreter from '@deriv/js-interpreter';
 import { unrecoverable_errors } from '../../../constants/messages';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
 import Interface from '../Interface';
-
 import { createScope } from './cliTools';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {

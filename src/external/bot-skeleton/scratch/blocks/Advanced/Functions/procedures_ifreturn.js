@@ -80,6 +80,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
         let legal = false;
 
         // Is the block nested in a procedure?
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         let block = this;
         do {
             if (this.FUNCTION_TYPES.indexOf(block.type) !== -1) {

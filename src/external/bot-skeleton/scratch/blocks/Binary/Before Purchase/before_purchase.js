@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { removeExtraInput } from '../../../utils';
 import { purchase } from '../../images';
 

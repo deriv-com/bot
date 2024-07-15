@@ -1,8 +1,6 @@
 import { memo } from 'react';
-
-import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
-
 import { isDesktop } from '@/components/shared';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;

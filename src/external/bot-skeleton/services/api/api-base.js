@@ -1,6 +1,5 @@
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
-
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 import chart_api from './chart-api';
 

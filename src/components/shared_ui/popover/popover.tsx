@@ -1,12 +1,9 @@
 import React, { RefObject } from 'react';
-import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import classNames from 'classnames';
-
-import { Text, useDevice } from '@deriv-com/ui';
-
+import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import { useHover, useHoverCallback } from '@/hooks/use-hover';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Text, useDevice } from '@deriv-com/ui';
 import { TPopoverProps } from '../types';
 
 const Popover = ({

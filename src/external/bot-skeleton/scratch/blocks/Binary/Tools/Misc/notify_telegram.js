@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { emptyTextValidator } from '../../../../utils';
 
 window.Blockly.Blocks.notify_telegram = {

@@ -1,5 +1,4 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
-
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { localize } from '@/utils/tmp/dummy';
 

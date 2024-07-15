@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '../../hooks/useStore';
 
 const Dashboard = observer(() => {

@@ -1,13 +1,9 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-
-import { Text } from '@deriv-com/ui';
-
 import Download from '@/components/download';
 import { Icon, Localize } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import { TJournalToolsProps } from '../journal.types';
-
 import FilterDialog from './filter-dialog';
 
 const JournalTools = ({

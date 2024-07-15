@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { getStaticUrl, setUrlLanguage } from '@/components/shared/utils/url';
 import { getLanguage } from '@/utils/tmp/dummy';
 

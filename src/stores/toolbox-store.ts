@@ -1,10 +1,7 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
-
-import { TStores } from '@deriv/stores/types';
-
 import { scrollWorkspace } from '@/external/bot-skeleton';
 import { localize } from '@/utils/tmp/dummy';
-
+import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
 
 export default class ToolboxStore {

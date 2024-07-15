@@ -1,13 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import ProgressBarTracker from '@/components/shared_ui/progress-bar-tracker';
 import { useStore } from '@/hooks/useStore';
 import { getSetting } from '@/utils/settings';
 import { localize } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';
 import { BOT_BUILDER_MOBILE } from '../tour-content';

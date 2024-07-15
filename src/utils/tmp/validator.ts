@@ -1,5 +1,4 @@
 import { getPreBuildDVRs } from '@/components/shared';
-
 import Errors from './errors';
 
 type TRule<T extends object> = string | Array<string | TRuleOptions<T>>;

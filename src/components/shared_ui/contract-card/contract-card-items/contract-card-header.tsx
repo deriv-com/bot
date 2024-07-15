@@ -1,9 +1,6 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
-
-import { Button } from '@deriv-com/ui';
-
+import { CSSTransition } from 'react-transition-group';
 import {
     getCurrentTick,
     getGrowthRatePercentage,
@@ -18,13 +15,12 @@ import {
 } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/src/utils/contract/contract-types';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Button } from '@deriv-com/ui';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ProgressSlider from '../../progress-slider';
 import Text from '../../text';
 import { TGetCardLables, TGetContractTypeDisplay } from '../../types/common.types';
-
 import ContractTypeCell from './contract-type-cell';
 import TickCounterBar from './tick-counter-bar';
 

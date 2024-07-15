@@ -1,12 +1,8 @@
+import { getImageLocation, getUrlBase } from '../../../public-path';
 import React from 'react';
-
-import { Text } from '@deriv-com/ui';
-
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, Localize, localize } from '@/utils/tmp/dummy';
-
-import { getImageLocation, getUrlBase } from '../../../public-path';
-
+import { Text } from '@deriv-com/ui';
 import TourSteps from './common/tour-steps';
 
 type TJoyrideConfig = Record<

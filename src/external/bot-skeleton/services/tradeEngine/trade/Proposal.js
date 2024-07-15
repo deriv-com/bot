@@ -1,8 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { api_base } from '../../api/api-base';
 import { doUntilDone, tradeOptionToProposal } from '../utils/helpers';
-
 import { clearProposals, proposalsReady } from './state/actions';
 
 export default Engine =>
@@ -74,7 +72,7 @@ export default Engine =>
                         // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
                         // the other is valid. We will error on Purchase rather than here.
 
-                        if (error.error.code === 'ContractBuyValidationError') {
+                        if (error?.error?.code === 'ContractBuyValidationError') {
                             this.data.proposals.push({
                                 ...error.error.echo_req,
                                 ...error.echo_req.passthrough,

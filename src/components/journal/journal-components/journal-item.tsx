@@ -1,12 +1,9 @@
-import { CSSTransition } from 'react-transition-group';
 import classnames from 'classnames';
-
+import { CSSTransition } from 'react-transition-group';
 import { MessageTypes } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
-
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
-
 import DateItem from './date-item';
 import FormatMessage from './format-message';
 

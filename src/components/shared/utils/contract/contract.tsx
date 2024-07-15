@@ -1,12 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-
 import { Localize } from '@/utils/tmp/dummy';
-
 import { unique } from '../object';
 import { isForwardStarting } from '../shortcode';
 import { capitalizeFirstLetter } from '../string/string_util';
-
 import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
 
 type TGetAccuBarriersDTraderTimeout = (params: {

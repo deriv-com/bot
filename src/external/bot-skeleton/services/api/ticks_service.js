@@ -1,10 +1,8 @@
 /* eslint-disable no-confusing-arrow */
 import { Map } from 'immutable';
-
 import { getLast, historyToTicks } from '../../utils/binary-utils';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
-
 import { api_base } from './api-base';
 
 const parseTick = tick => ({

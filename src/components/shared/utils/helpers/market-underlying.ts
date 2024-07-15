@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { getContractConfig, getMarketNamesMap } from '../constants/contract';
 import { TContractOptions } from '../contract/contract-types';
 

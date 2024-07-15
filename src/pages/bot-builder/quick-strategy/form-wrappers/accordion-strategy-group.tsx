@@ -1,8 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
-
 import Accordion from '../../../tutorials/dbot-tours/common/accordion';
 import StrategyDescription from '../descriptions/strategy-description';
 import { TDescription, TDescriptionItem } from '../types';

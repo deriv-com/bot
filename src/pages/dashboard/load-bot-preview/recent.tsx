@@ -1,17 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import SaveModal from './save-modal';
-
 import './index.scss';
 
 type THeader = {

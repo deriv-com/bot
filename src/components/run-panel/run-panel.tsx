@@ -1,9 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Button, Modal, Text } from '@deriv-com/ui';
-
 import Journal from '@/components/journal';
 import SelfExclusion from '@/components/self-exclusion';
 import Drawer from '@/components/shared_ui/drawer';
@@ -16,7 +13,7 @@ import { DBOT_TABS } from '@/constants/bot-contents';
 import { popover_zindex } from '@/constants/z-indexes';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
+import { Button, Modal, Text } from '@deriv-com/ui';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 
 type TStatisticsTile = {

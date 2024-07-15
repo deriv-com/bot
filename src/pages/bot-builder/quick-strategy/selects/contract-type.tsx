@@ -2,14 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
-
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { Text } from '@deriv-com/ui';
-
 import Autocomplete from '@/components/shared_ui/autocomplete';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-
+import { TItem } from '@deriv/components/src/components/dropdown-list';
+import { Text } from '@deriv-com/ui';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 
 type TContractTypes = {

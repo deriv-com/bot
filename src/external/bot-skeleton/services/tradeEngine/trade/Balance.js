@@ -1,5 +1,4 @@
 import { getFormattedText } from '@/components/shared';
-
 import DBotStore from '../../../scratch/dbot-store';
 import { api_base } from '../../api/api-base';
 import { info } from '../utils/broadcast';

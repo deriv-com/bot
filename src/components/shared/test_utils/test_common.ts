@@ -1,6 +1,4 @@
-/* eslint-disable import/no-import-module-exports */
 import { JSDOM } from 'jsdom';
-
 import { reset } from '../utils/url/url';
 
 const jsdom = new JSDOM();

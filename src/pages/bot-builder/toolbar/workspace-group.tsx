@@ -1,9 +1,7 @@
 import { observer } from 'mobx-react-lite';
-
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-
 import ToolbarIcon from './toolbar-icon';
 
 const WorkspaceGroup = observer(() => {

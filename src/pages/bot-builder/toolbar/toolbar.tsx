@@ -1,13 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Dialog } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
+import { Dialog } from '@deriv-com/ui';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
-
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 

@@ -1,9 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
 import FAQContent from './faq-content';

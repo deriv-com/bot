@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { config } from '../../../../../constants/config';
 
 // This block is a remnant of a very old Binary Bot version.

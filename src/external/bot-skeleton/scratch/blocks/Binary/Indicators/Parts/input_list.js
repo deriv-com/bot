@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.input_list = {

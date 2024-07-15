@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.read_details = {

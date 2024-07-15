@@ -1,6 +1,5 @@
 import React, { RefObject, UIEventHandler } from 'react';
 import classNames from 'classnames';
-
 import { useHover } from '@/hooks/use-hover';
 
 type TThemedScrollbars = {

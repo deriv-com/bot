@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Dialog } from '@deriv-com/ui';
-
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Tabs from '@/components/shared_ui/tabs/tabs';
@@ -15,7 +12,7 @@ import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-
+import { Dialog } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';

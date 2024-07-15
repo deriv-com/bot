@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 

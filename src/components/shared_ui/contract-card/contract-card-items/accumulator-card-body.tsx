@@ -1,17 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-
-import { ContractUpdate } from '@deriv/api-types';
-
 import { getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@/components/shared';
-
+import { ContractUpdate } from '@deriv/api-types';
 import ArrowIndicator from '../../arrow-indicator';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { TGetCardLables } from '../../types/common.types';
 import { TToastConfig } from '../../types/contract.types';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 

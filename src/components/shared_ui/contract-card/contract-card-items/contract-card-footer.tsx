@@ -1,14 +1,11 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import classNames from 'classnames';
-
+import { CSSTransition } from 'react-transition-group';
 import { hasContractEntered, isOpen, isValidToCancel, isValidToSell, useNewRowTransition } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/src/utils/contract/contract-types';
 import { Localize } from '@/utils/tmp/dummy';
-
 import Text from '../../text';
 import { TGetCardLables } from '../../types';
-
 import ContractCardSell from './contract-card-sell';
 import MultiplierCloseActions from './multiplier-close-actions';
 

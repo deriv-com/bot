@@ -1,7 +1,6 @@
 import { useAuthData } from '@deriv-com/api-hooks';
 import { Button } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
-
 import './header.scss';
 
 export const Header = () => {

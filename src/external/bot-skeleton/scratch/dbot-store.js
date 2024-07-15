@@ -1,5 +1,4 @@
 import { reaction } from 'mobx';
-
 import { api_base } from '../services/api/api-base';
 
 class DBotStoreInterface {

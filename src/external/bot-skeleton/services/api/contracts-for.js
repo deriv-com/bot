@@ -1,6 +1,5 @@
 import { config } from '../../constants/config';
 import PendingPromise from '../../utils/pending-promise';
-
 import { api_base } from './api-base';
 
 export default class ContractsFor {

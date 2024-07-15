@@ -1,7 +1,5 @@
 import moment from 'moment';
-
 import { AccountListResponse, TickSpotData, WebsiteStatus } from '@deriv/api-types';
-
 import { getSupportedContracts } from '../constants/contract';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';

@@ -1,5 +1,4 @@
 import moment from 'moment';
-
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';

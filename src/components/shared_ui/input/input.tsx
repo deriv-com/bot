@@ -1,8 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Text } from '@deriv-com/ui';
-
 import Field from '../field';
 
 export type TInputProps = {

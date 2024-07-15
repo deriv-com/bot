@@ -1,9 +1,7 @@
 import React from 'react';
-
-import { Text } from '@deriv-com/ui';
-
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { Icon, localize } from '@/utils/tmp/dummy';
+import { Text } from '@deriv-com/ui';
 
 type TUserGuide = {
     is_mobile?: boolean;

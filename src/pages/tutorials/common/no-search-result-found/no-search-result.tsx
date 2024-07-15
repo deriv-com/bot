@@ -1,9 +1,7 @@
 import { observer } from 'mobx-react-lite';
-
-import { Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { Icon, Localize } from '@/utils/tmp/dummy';
+import { Text } from '@deriv-com/ui';
 
 const NoSearchResult = observer(() => {
     const { dashboard } = useStore();

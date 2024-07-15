@@ -1,5 +1,4 @@
 import { sequence } from '@/components/shared';
-
 import { sum, takeLast } from '../utils/math';
 
 /**

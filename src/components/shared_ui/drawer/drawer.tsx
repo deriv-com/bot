@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { isTabletDrawer } from '@/components/shared';
 import { Icon } from '@/utils/tmp/dummy';
 

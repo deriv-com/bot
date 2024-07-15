@@ -1,12 +1,10 @@
 import React from 'react';
 import debounce from 'debounce';
 import { observer } from 'mobx-react-lite';
-
-import { Analytics } from '@deriv-com/analytics';
-
 import { DEBOUNCE_INTERVAL_TIME } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
+import { Analytics } from '@deriv-com/analytics';
 
 type TSearchInput = {
     faq_value: string;

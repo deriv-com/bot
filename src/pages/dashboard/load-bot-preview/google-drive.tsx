@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
 import Button from '@/components/shared_ui/button';
 import StaticUrl from '@/components/shared_ui/static-url';
 import { useStore } from '@/hooks/useStore';

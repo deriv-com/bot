@@ -1,5 +1,4 @@
 import TradeEngine from '../trade';
-
 import getBotInterface from './BotInterface';
 import getTicksInterface from './TicksInterface';
 import getToolsInterface from './ToolsInterface';

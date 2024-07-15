@@ -116,9 +116,9 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black.jpeg` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/is_candle_black.jpeg` },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/is_candle_black_1.jpeg` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/is_candle_black_1.jpeg` },
             { type: TEXT },
         ],
         ohlc_values_in_list: [
@@ -146,9 +146,9 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/create_variable.jpg` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/create_variable.jpg` },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/set_variable.png` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/set_variable.png` },
         ],
         // =============== Time blocks ============
         epoch: [
@@ -206,14 +206,14 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/sma_formula.png` },
+            { type: IMAGE, width: '60%', url: `${__webpack_public_path__}assets/media/sma_formula.png` },
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_1.png` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/sma_chart_1.png` },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_chart_2.png` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/sma_chart_2.png` },
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
@@ -229,7 +229,7 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array_explanation.jpeg` },
+            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}assets/media/sma_array_explanation.jpeg` },
         ],
         // =============== Root blocks ============
         trade_definition: [
@@ -293,7 +293,7 @@ export const help_content_config = public_path => {
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/logic.png` },
+            { type: IMAGE, width: '40%', url: `${__webpack_public_path__}assets/media/logic.png` },
         ],
         // =============== Loops ============
         controls_whileUntil: [

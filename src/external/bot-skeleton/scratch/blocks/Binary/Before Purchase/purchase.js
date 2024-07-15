@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { getContractTypeOptions } from '../../../shared';
 
 window.Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {

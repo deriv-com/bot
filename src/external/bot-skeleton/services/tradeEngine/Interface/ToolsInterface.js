@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import getCandleInterface from './CandleInterface';
 import getIndicatorsInterface from './IndicatorsInterface';
 import getMiscInterface from './MiscInterface';

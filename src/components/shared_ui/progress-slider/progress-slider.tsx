@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-
 import { getTimePercentage } from '@/components/shared';
-
 import RemainingTime from '../remaining-time';
 import Text from '../text';
 import { TGetCardLables } from '../types';
-
 import ProgressTicks from './progress-ticks';
 
 type TProgressSliderProps = {

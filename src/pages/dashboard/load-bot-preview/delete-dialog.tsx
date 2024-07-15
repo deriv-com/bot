@@ -10,6 +10,7 @@ import { useStore } from '@/hooks/useStore';
 import './delete-dialog.scss';
 import Dialog from '@/components/shared_ui/dialog';
 
+
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useStore();
     const {

@@ -1,8 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { getTotalProfit } from '../contract';
 import { TContractStore } from '../contract/contract-types';
-
 import { getBuyPrice } from './logic';
 
 type TOptions = {

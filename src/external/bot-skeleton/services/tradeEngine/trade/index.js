@@ -1,14 +1,11 @@
 import { applyMiddleware, createStore } from 'redux';
 import { thunk } from 'redux-thunk';
-
 import { localize } from '@/utils/tmp/dummy';
-
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
 import { checkBlocksForProposalRequest, doUntilDone } from '../utils/helpers';
 import { expectInitArg } from '../utils/sanitize';
-
 import { proposalsReady, start } from './state/actions';
 import * as constants from './state/constants';
 import rootReducer from './state/reducers';

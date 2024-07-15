@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { plusIconDark } from '../../images';
 
 window.Blockly.Blocks.procedures_defreturn = {

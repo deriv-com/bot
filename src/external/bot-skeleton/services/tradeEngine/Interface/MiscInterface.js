@@ -1,5 +1,4 @@
 import { localize } from '@/utils/tmp/dummy';
-
 import { observer as globalObserver } from '../../../utils/observer';
 import { notify } from '../utils/broadcast';
 

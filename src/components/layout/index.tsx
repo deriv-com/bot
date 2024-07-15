@@ -1,11 +1,9 @@
+import React from 'react';
 import clsx from 'clsx';
-
 import { useDevice } from '@deriv-com/ui';
-
 import Footer from './footer';
 import { Header } from './header';
 import Body from './main-body';
-
 import './layout.scss';
 
 type TLayoutProps = {

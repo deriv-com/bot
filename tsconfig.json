@@ -12,18 +12,15 @@
         "isolatedModules": true,
         "noEmit": true,
         "jsx": "react-jsx",
-
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
-        "types": ["vitest/globals"],
         "allowJs": true,
         "baseUrl": "./src",
         "paths": {
             "@/*": ["./*"]
         }
     },
-    "include": ["src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+    "include": ["src"]
 }

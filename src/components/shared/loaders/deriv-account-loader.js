@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const resolve = require('path').resolve;
 const existsSync = require('fs').existsSync;
 /* Using this loader you can import components from @deriv/components without having to manually

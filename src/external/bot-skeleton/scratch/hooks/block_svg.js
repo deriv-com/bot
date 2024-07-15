@@ -1,7 +1,5 @@
 import debounce from 'debounce';
-
 import { localize } from '@/utils/tmp/dummy';
-
 import DBotStore from '../dbot-store';
 
 window.Blockly.BlockSvg.prototype.addSelect = function () {

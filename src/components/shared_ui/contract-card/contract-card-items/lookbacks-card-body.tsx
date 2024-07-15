@@ -1,14 +1,11 @@
 import React from 'react';
-
 import { CONTRACT_TYPES, getCardLabels, getDisplayStatus, isCryptocurrency } from '@/components/shared';
 import { Localize } from '@/utils/tmp/dummy';
-
 import ArrowIndicator from '../../arrow-indicator';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import Text from '../../text';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-
 import ContractCardItem from './contract-card-item';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 

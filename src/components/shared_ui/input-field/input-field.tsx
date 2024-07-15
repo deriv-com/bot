@@ -1,11 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { getCurrencyDisplayCode, isCryptocurrency } from '@/components/shared';
-
 import Text from '../text';
 import Tooltip from '../tooltip';
-
 import IncrementButtons, { TButtonType } from './increment-buttons';
 import Input, { TInputMode } from './input';
 

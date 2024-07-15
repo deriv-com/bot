@@ -1,16 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-
-import { Input, Text } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { help_content_config } from '@/utils/help-content/help-content.config';
 import { Icon, localize } from '@/utils/tmp/dummy';
-
+import { Input, Text } from '@deriv-com/ui';
 import { getPlatformSettings } from '../shared';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
-
 import FlyoutBlockGroup from './flyout-block-group';
 import HelpBase from './help-contents';
 

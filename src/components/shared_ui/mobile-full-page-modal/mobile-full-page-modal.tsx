@@ -1,10 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
-
-import { Text } from '@deriv-com/ui';
-
 import { Icon } from '@/utils/tmp/dummy';
-
+import { Text } from '@deriv-com/ui';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay';

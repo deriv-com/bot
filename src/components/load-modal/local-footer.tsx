@@ -1,11 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-
-import { Button } from '@deriv-com/ui';
-
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
+import { Button } from '@deriv-com/ui';
 
 const LocalFooter = observer(() => {
     const { ui } = useStore();

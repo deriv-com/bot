@@ -1,5 +1,4 @@
 import { Checkbox } from '@deriv-com/ui';
-
 import { TFiltersProps } from '../journal.types';
 
 const Filters = ({

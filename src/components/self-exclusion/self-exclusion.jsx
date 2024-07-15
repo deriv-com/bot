@@ -3,12 +3,9 @@ import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-
-import { Button, Input, Modal } from '@deriv-com/ui';
-
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-
+import { Button, Input, Modal } from '@deriv-com/ui';
 import Div100vhContainer from '../shared_ui/div100vh-container';
 import FadeWrapper from '../shared_ui/fade-wrapper';
 import MobileWrapper from '../shared_ui/mobile-wrapper';
