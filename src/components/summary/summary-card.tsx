@@ -95,7 +95,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
                 </ContractCard>
             )}
             {!is_contract_loading && !contract_info && (
-                <Text as='p' LineHeight='sm' size='xs'>
+                <Text as='p' LineHeight='md' size='sm' weight='lighter'>
                     {localize('When you’re ready to trade, hit ')}
                     <strong>{localize('Run')}</strong>
                     {localize('. You’ll be able to track your bot’s performance here.')}

@@ -8,6 +8,11 @@
         width: 100%;
     }
 
+    .deriv-text {
+        font-weight: lighter;
+        text-align: center;
+    }
+
     &--inactive {
         color: var(--text-general);
         font-size: 14px;

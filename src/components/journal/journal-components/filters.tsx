@@ -15,12 +15,11 @@ const Filters = ({
             return (
                 <Checkbox
                     key={item.id}
-                    classNameLabel={classNameLabel}
-                    value={hasFilter}
-                    defaultChecked={hasFilter}
+                    labelClassName={classNameLabel}
+                    checked={hasFilter}
                     label={item.label}
                     onChange={() => filterMessage(!hasFilter, item.id)}
-                />
+                    name={item.id} />
             );
         })}
     </div>

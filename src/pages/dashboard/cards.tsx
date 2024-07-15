@@ -4,8 +4,10 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import Dialog from '@/components/shared_ui/dialog';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
@@ -126,7 +128,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                         method();
                                     }}
                                 />
-                                <Text color='prominent' size='sm'>
+                                <Text color='prominent' size='xs'>
                                     {content}
                                 </Text>
                             </div>
