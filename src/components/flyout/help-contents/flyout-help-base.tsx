@@ -24,7 +24,7 @@ const HelpBase = observer(() => {
     } = flyout_help;
     const { is_search_flyout } = flyout;
 
-    const block_help_component = help_string && help_content_config(__webpack_public_path__)[block_type];
+    const block_help_component = help_string && help_content_config(window.__webpack_public_path__)[block_type];
     let text_count = 0;
 
     return (

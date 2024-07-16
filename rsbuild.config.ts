@@ -8,13 +8,12 @@ export default defineConfig({
         pluginSass({
             sassLoaderOptions: {
                 sourceMap: true,
-                // additionalData: `@import url('@/components/shared/styles/constants.scss');`,
                 additionalData: `
-                @import "${path.resolve(__dirname, 'src/components/shared/styles/constants.scss')}";
-                @import "${path.resolve(__dirname, 'src/components/shared/styles/mixins.scss')}";
-                @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
-                @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
-                @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/constants.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/mixins.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
                 `,
             },
         }),
@@ -49,6 +48,9 @@ export default defineConfig({
             { from: 'node_modules/@deriv/deriv-charts/dist/chart/assets/*', to: 'assets/[name][ext]' },
             { from: path.join(__dirname, 'public') },
         ],
+    },
+    html: {
+        template: './index.html',
     },
     tools: {
         rspack: {

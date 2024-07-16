@@ -102,7 +102,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                                                 : false
                                         }
                                         onInfoClick={
-                                            help_content_config(__webpack_public_path__)[block_type] &&
+                                            help_content_config(window.__webpack_public_path__)[block_type] &&
                                             (is_search_flyout
                                                 ? () => setHelpContent(node)
                                                 : () => initFlyoutHelp(node, block_type))

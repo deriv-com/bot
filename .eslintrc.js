@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.config');
+// const rsbuildConfig = require('./rsbuild.config.ts');
 
 module.exports = {
     parser: '@typescript-eslint/parser',
@@ -25,9 +25,9 @@ module.exports = {
     },
     extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
     settings: {
-        'import/resolver': {
-            webpack: { config: webpackConfig },
-        },
+        // 'import/resolver': {
+        //     rspack: { config: rsbuildConfig },
+        // },
     },
     plugins: ['react', 'react-hooks', 'simple-import-sort', '@typescript-eslint'],
     rules: {
@@ -82,5 +82,5 @@ module.exports = {
             },
         },
     ],
-    ignorePatterns: ['node_modules/', 'dist/', '**/webpack.config.js'],
+    ignorePatterns: ['node_modules/', 'dist/'],
 };
