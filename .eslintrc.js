@@ -1,5 +1,3 @@
-// const rsbuildConfig = require('./rsbuild.config.ts');
-
 module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -24,11 +22,6 @@ module.exports = {
         __webpack_public_path__: 'readonly',
     },
     extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
-    settings: {
-        // 'import/resolver': {
-        //     rspack: { config: rsbuildConfig },
-        // },
-    },
     plugins: ['react', 'react-hooks', 'simple-import-sort', '@typescript-eslint'],
     rules: {
         'simple-import-sort/imports': 'warn',
