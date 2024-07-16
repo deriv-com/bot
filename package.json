@@ -6,8 +6,10 @@
         "node": "18.x"
     },
     "scripts": {
-        "start": "webpack serve --open --config webpack.config.js",
-        "build": "webpack --config webpack.config.js",
+        "start": "rsbuild dev",
+        "build": "rsbuild build",
+        "start:webpack": "webpack serve --open --config webpack.config.js",
+        "build:webpack": "webpack --config webpack.config.js",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test:fix": "prettier --log-level silent --write . && eslint --fix \"./src/**/*.?(js|jsx|ts|tsx)\"",
         "test": "jest",
@@ -80,6 +82,9 @@
         "@commitlint/config-conventional": "^17.1.0",
         "@deriv-com/eslint-config-deriv": "^2.1.0-beta.3",
         "@jest/globals": "^29.7.0",
+        "@rsbuild/core": "^1.0.1-beta.0",
+        "@rsbuild/plugin-react": "^1.0.1-beta.1",
+        "@rsbuild/plugin-sass": "^1.0.1-beta.1",
         "@testing-library/dom": "^10.3.1",
         "@testing-library/react": "^16.0.0",
         "@types/jest": "^29.5.12",

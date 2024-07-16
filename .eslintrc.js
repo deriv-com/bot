@@ -1,5 +1,3 @@
-const webpackConfig = require('./webpack.config');
-
 module.exports = {
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -24,11 +22,6 @@ module.exports = {
         __webpack_public_path__: 'readonly',
     },
     extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
-    settings: {
-        'import/resolver': {
-            webpack: { config: webpackConfig },
-        },
-    },
     plugins: ['react', 'react-hooks', 'simple-import-sort', '@typescript-eslint'],
     rules: {
         'simple-import-sort/imports': 'warn',
@@ -82,5 +75,5 @@ module.exports = {
             },
         },
     ],
-    ignorePatterns: ['node_modules/', 'dist/', '**/webpack.config.js'],
+    ignorePatterns: ['node_modules/', 'dist/'],
 };

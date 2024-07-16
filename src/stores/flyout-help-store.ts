@@ -201,7 +201,7 @@ export default class FlyoutHelpStore {
     setExamples(block_type) {
         const { toolbox } = this.root_store;
         const all_examples = [...toolbox.toolbox_examples.childNodes];
-        const help_content = help_content_config(__webpack_public_path__)[block_type];
+        const help_content = help_content_config(window.__webpack_public_path__)[block_type];
         const examples_ids = help_content.filter(el => el.type === 'example').map(example => example.example_id);
         const examples = examples_ids.map(id => all_examples.find(example => example.id === id));
 

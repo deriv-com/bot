@@ -423,7 +423,7 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         if (!this.recent_workspace?.rendered) {
             this.recent_workspace = window.Blockly.inject(ref, {
-                media: `${__webpack_public_path__}assets/media/`,
+                media: `${window.__webpack_public_path__}assets/media/`,
                 zoom: {
                     wheel: true,
                     startScale: config.workspaces.previewWorkspaceStartScale,
