@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { useConstructor } from '@/hooks/use-constructor';
+import { useConstructor } from '@/hooks/useConstructor';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Tab from './tab';
 import './tabs.scss';
