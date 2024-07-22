@@ -1,3 +1,6 @@
+import '@testing-library/jest-dom/jest-globals';
+import '@testing-library/jest-dom';
+
 let originalLocalStorage: Storage;
 const localStorageMock: Storage = {
     clear() {

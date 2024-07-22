@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useHover } from '@/hooks/use-hover';
+import { useHover } from '@/hooks/useHover';
 import { Icon } from '@/utils/tmp/dummy';
 
 type TTooltip = {
