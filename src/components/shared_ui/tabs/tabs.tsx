@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useConstructor } from '@/hooks/useConstructor';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Tab from './tab';
@@ -14,7 +13,7 @@ declare module 'react' {
     }
 }
 
-type TTabsProps = RouteComponentProps & {
+type TTabsProps = {
     active_icon_color?: string;
     active_index?: number;
     background_color?: string;
@@ -234,4 +233,4 @@ const Tabs = ({
     );
 };
 
-export default withRouter(Tabs);
+export default Tabs;

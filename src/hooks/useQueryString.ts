@@ -1,72 +1,102 @@
-import { StringParam, useQueryParams } from 'use-query-params';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 /**
- * A hook that uses `use-query-params` to sync URL params to the React lifecycle
- * You can use this hook to conditionally render tabs, forms or other screens based on what the current URL parameters are.
- * For instance, `/my-profile?tab=Stats`:
- * - calling this hook returns `queryString` which is an object that has a key of `tab` and value of `Stats`
- * - You can use this to conditionally render the `Stats` tab screen by checking if `queryString.tab === 'Stats'`
+ * A hook that leverages React Router v6 to sync URL params with the React component lifecycle.
+ * You can use this hook to conditionally render tabs, forms, or other screens based on the current URL parameters.
  *
- * This avoids props drilling for passing boolean screen setters into its child components to switch between different screens/tabs.
+ * For instance, `/my-profile?tab=Stats`:
+ * - Calling this hook returns `queryString`, which is an object containing the key `tab` with the value `Stats`.
+ * - You can then conditionally render the `Stats` tab screen by checking if `queryString.tab === 'Stats'`.
+ *
+ * This avoids the need for prop drilling to pass boolean screen setters into child components for switching between different screens/tabs.
  *
  * @example
- * // Call the hook and render the tab based on `?=tab...`
- * const { queryString } = useQueryString()
+ * // Call the hook and render the tab based on `?tab=...`
+ * const { queryString } = useQueryString();
  *
  * if (queryString.tab === 'Stats') {
- *      // Show Stats component
+ *     // Show Stats component
  * }
+ *
+ * @returns {object} An object containing:
+ * - `deleteQueryString`: A function to remove a specific query parameter from the URL.
+ * - `queryString`: An object representing the current URL query parameters.
+ * - `setQueryString`: A function to add or update query parameters in the URL.
+ *
+ * @example
+ * // Deleting a query parameter
+ * const { deleteQueryString } = useQueryString();
+ * deleteQueryString('tab'); // Removes the 'tab' query parameter from the URL
+ *
+ * @example
+ * // Setting a query parameter
+ * const { setQueryString } = useQueryString();
+ * setQueryString({ tab: 'Payment methods', modal: 'NicknameModal' });
+ * // Updates the URL to include `tab=Payment+methods&modal=NicknameModal`
  */
-function useQueryString() {
-    const [query, setQuery] = useQueryParams({
-        advertId: StringParam,
-        formAction: StringParam,
-        modal: StringParam,
-        paymentMethodId: StringParam,
-        tab: StringParam,
-    });
 
-    /**
-     * Removes the query string from the URL search string.
-     * The rest of the query strings will be preserved.
-     *
-     * @param key - The search name to delete from the search string
-     *
-     * @example
-     * // Deletes the search name `tab` from the URL search string.
-     * // /my-profile?tab=Stats&modal=NicknameModal` -> /my-profile?modal=NicknameModal`
-     * deleteQueryString('tab')
-     */
-    function deleteQueryString(key: keyof typeof query) {
-        setQuery(
+interface QueryParams {
+    advertId: string;
+    formAction: string;
+    modal: string;
+    paymentMethodId: string;
+    tab: string;
+}
+
+function useQueryString() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // Parse the query string into an object
+    function getQueryParams(): Partial<QueryParams> {
+        const searchParams = new URLSearchParams(location.search);
+        const params: Partial<QueryParams> = {};
+        searchParams.forEach((value, key) => {
+            params[key as keyof QueryParams] = value;
+        });
+        return params;
+    }
+
+    // Update the query string in the URL
+    function setQueryParams(newParams: Partial<QueryParams>) {
+        const searchParams = new URLSearchParams(location.search);
+
+        Object.entries(newParams).forEach(([key, value]) => {
+            if (value === undefined) {
+                searchParams.delete(key);
+            } else {
+                searchParams.set(key, value);
+            }
+        });
+
+        navigate(
             {
-                [key]: undefined,
+                search: searchParams.toString(),
             },
-            'pushIn'
+            { replace: true }
         );
     }
 
-    /**
-     * Add or replace a query string from the URL search string.
-     * The rest of the query strings will not be replaced unless specified in the argument.
-     *
-     * @param queryStrings - An object with the key as the search name, and value as the search value
-     *
-     * @example
-     * // Set a new query string 'modal' and replace the current query string 'tab' with 'Payment methods'
-     * // /my-profile?tab=Stats ->  /my-profile?tab=Payment+methods&modal=NicknameModal`
-     * setQueryString({
-     *      modal: 'NicknameModal',
-     *      tab: 'Payment methods'
-     * })
-     */
-    function setQueryString(queryStrings: Parameters<typeof setQuery>[0]) {
-        setQuery(queryStrings, 'pushIn');
+    // Function to delete a specific query parameter
+    function deleteQueryString(key: keyof QueryParams) {
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.delete(key);
+        navigate(
+            {
+                search: searchParams.toString(),
+            },
+            { replace: true }
+        );
+    }
+
+    // Function to set multiple query parameters at once
+    function setQueryString(queryStrings: Partial<QueryParams>) {
+        setQueryParams(queryStrings);
     }
 
     return {
         deleteQueryString,
-        queryString: query,
+        queryString: getQueryParams(),
         setQueryString,
     };
 }
