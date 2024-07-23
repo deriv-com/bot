@@ -7,12 +7,12 @@ import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
 import { save_types } from '@/external/bot-skeleton/constants/save-type';
+import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
 import { Icon } from '@/utils/tmp/dummy';
 import { Text } from '@deriv-com/ui';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
-import { useComponentVisibility } from '../../../hooks';
 import './index.scss';
 
 type TRecentWorkspace = {

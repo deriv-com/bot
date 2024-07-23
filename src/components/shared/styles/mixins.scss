@@ -307,3 +307,9 @@
         @content;
     }
 }
+
+@mixin mobile-or-tablet-screen {
+    @media (max-width: #{$min-desktop-width - 1}) {
+        @content;
+    }
+}

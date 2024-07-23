@@ -1,4 +1,80 @@
-.footer {
-    padding: 20px;
-    border-top: 1px solid;
+.app-footer {
+    height: 3.6rem;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0 1rem;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-top: 1px solid #f2f3f4;
+    box-shadow: 0 1px 0 0 #f2f3f4 inset;
+    background: #fff;
+
+    &__icon {
+        padding: 0.8rem;
+
+        @include mobile-or-tablet-screen {
+            padding: 0;
+        }
+    }
+
+    &__vertical-line {
+        width: 0.1rem;
+        height: 1.6rem;
+        background-color: #f2f3f4;
+        margin: 0 0.8rem;
+    }
+
+    &__language {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem;
+
+        & span {
+            margin-left: 0.4rem;
+        }
+    }
+
+    &__network-status {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 100%;
+
+        &-online {
+            background-color: #4bb4b3;
+        }
+
+        &-offline {
+            background-color: #ff444f;
+        }
+
+        &-blinking {
+            animation: blink 1s infinite alternate;
+        }
+
+        @include mobile-or-tablet-screen {
+            margin-left: 1.2rem;
+        }
+    }
+
+    &__endpoint {
+        margin-right: 2rem;
+
+        &-text {
+            color: #377cfc;
+            text-decoration: underline;
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
 }

@@ -1,6 +1,6 @@
 import React, { RefObject, UIEventHandler } from 'react';
 import classNames from 'classnames';
-import { useHover } from '@/hooks/use-hover';
+import { useHover } from '@/hooks/useHover';
 
 type TThemedScrollbars = {
     autohide?: boolean;
