@@ -84,4 +84,4 @@ jobs:
                 VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
                 ENVIRONMENT: Preview
                 VERCEL_SCOPE: deriv
-                ALIAS_DOMAIN_URL: 'staging-bot-dr.binary.sx'
+                ALIAS_DOMAIN_URL: 'staging-dbot-dr.binary.sx'
