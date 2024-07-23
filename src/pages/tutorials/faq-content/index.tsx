@@ -1,8 +1,9 @@
 import React, { KeyboardEvent } from 'react';
+import Accordion from '@/components/shared_ui/accordion';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize } from '@/utils/tmp/dummy';
-import { Accordion, Text } from '@deriv-com/ui';
 import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {
@@ -22,8 +23,8 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
     return (
         <Text
             as='p'
-            size={is_mobile ? 'xs' : 'sm'}
-            lineHeight={is_mobile ? 'xl' : '2xl'}
+            size={is_mobile ? 'xs' : 's'}
+            lineHeight={is_mobile ? 'xl' : 'xxl'}
             className='faq__description'
             weight='normal'
             key={content}
@@ -43,7 +44,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
 
 const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { dashboard } = useStore();
     const { faq_title, setFaqTitle } = dashboard;
 
@@ -102,13 +103,13 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                     className='faq__title'
                     weight='bold'
                     key={title}
-                    size={is_mobile ? 'xs' : 'sm'}
+                    size={is_desktop ? 's' : 'xs'}
                 >
                     {title}
                 </Text>
             ),
             content: description?.map((item, index) => (
-                <FAQ {...item} is_mobile={is_mobile} key={`faq-description-item-${item?.content}-${index}`} />
+                <FAQ {...item} is_mobile={!is_desktop} key={`faq-description-item-${item?.content}-${index}`} />
             )),
         }));
     };
@@ -124,7 +125,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                                 lineHeight='xl'
                                 className='faq__wrapper__header'
                                 weight='bold'
-                                size={is_mobile ? 'xs' : 'sm'}
+                                size={is_desktop ? 's' : 'xs'}
                             >
                                 <Localize i18n_default_text='FAQ' />
                             </Text>

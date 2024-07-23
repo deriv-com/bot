@@ -1,13 +1,13 @@
 import React from 'react';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 import QuickStrategyGuidesDetail from './quick-strategy-guides-details';
 import './index.scss';
 
 const QuickStrategyGuides = () => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { dashboard } = useStore();
     const { quick_strategy_tab_content } = dashboard;
     const [tutorial_selected_strategy, setTutorialSelectedStrategy] = React.useState('');
@@ -19,8 +19,8 @@ const QuickStrategyGuides = () => {
                     className='tutorials-quick-strategy__title'
                     weight='bold'
                     color='prominent'
-                    LineHeight='sm'
-                    size={is_mobile ? 'xs' : 's'}
+                    lineHeight='s'
+                    size={is_desktop ? 's' : 'xs'}
                     as='div'
                 >
                     {localize('Quick strategy guides')}
