@@ -75,3 +75,13 @@ jobs:
                     echo "Deployment to Cloudflare Pages failed."
                     exit 1
                   fi
+
+            - name: Upload to vercel
+              uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
+              with:
+                VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+                VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+                ENVIRONMENT: Preview
+                VERCEL_SCOPE: deriv
+                ALIAS_DOMAIN_URL: 'staging-dbot-dr.binary.sx'
