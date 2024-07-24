@@ -12,6 +12,8 @@ class ChartAPI {
 
         // eslint-disable-next-line no-console
         console.info('Initializing chart API');
+        // eslint-disable-next-line no-console
+        console.info('Initializing chart API 1');
     };
 
     getTime() {
