@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useDevice } from '@deriv-com/ui';
 import Footer from './footer';
-import { Header } from './header';
+import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
 
@@ -15,7 +15,7 @@ const Layout: React.FC<TLayoutProps> = ({ children }) => {
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            <Header />
+            <AppHeader />
             <Body>{children}</Body>
             <Footer />
         </div>

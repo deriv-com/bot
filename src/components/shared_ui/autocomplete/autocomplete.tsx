@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { getSearchNotFoundOption } from '@/components/shared/utils/constants';
 import { getPosition } from '@/components/shared/utils/dom';
 import { getEnglishCharacters, matchStringByChar } from '@/components/shared/utils/string';
-import { useBlockScroll } from '@/hooks/use-blockscroll';
+import { useBlockScroll } from '@/hooks/useBlockscroll';
 import { Icon } from '@/utils/tmp/dummy';
 import DropdownList, { TItem } from '../dropdown-list';
 import Input from '../input';

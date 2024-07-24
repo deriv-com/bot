@@ -1,7 +1,3 @@
-/** Need to add new breakpoints for mixins */
-$max-mobile-width: 600px;
-$min-desktop-width: 1280px;
-
 @mixin mobile-screen {
     @media (max-width: #{$max-mobile-width}) {
         @content;
@@ -20,12 +16,6 @@ $min-desktop-width: 1280px;
     }
 }
 
-@mixin mobile-or-tablet-screen {
-    @media (max-width: #{$min-desktop-width - 1}) {
-        @content;
-    }
-}
-
 @mixin tablet-or-desktop-screen {
     @media (min-width: #{$max-mobile-width + 1}) {
         @content;
@@ -40,7 +30,9 @@ $min-desktop-width: 1280px;
         position: relative;
         overflow: hidden;
         border-radius: 8px;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition:
+            transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
+            opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: #fff;
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
 
@@ -201,13 +193,12 @@ $min-desktop-width: 1280px;
                 margin: 0.8rem;
             }
         }
-        
+
         &--is-title-centered {
             justify-content: flex-end;
             position: relative;
 
             .dc-modal-header__title {
-                
                 @include mobile {
                     position: absolute;
                 }
@@ -215,24 +206,23 @@ $min-desktop-width: 1280px;
                 justify-content: center;
                 width: 100%;
             }
-            
+
             .dc-modal-header__close {
                 z-index: 1;
             }
         }
 
+        // stylelint-disable media-feature-range-notation
         // fix for safari bug with header being truncated
         @media not all and (min-resolution: 0.001dpcm) {
-
             // stylelint-disable-line
             @supports (-webkit-appearance: none) {
                 /* postcss-bem-linter: ignore */
                 min-height: 4.8rem;
             }
-            
         }
     }
-    
+
     /** @define dc-modal-body */
     &-body {
         &:first-child {
@@ -254,6 +244,7 @@ $min-desktop-width: 1280px;
             padding: 0.8rem 2.4rem;
         }
     }
+
     /** @define dc-modal-footer; weak */
     &-footer {
         display: flex;
@@ -268,7 +259,7 @@ $min-desktop-width: 1280px;
                 margin: 0;
             }
         }
-        
+
         &--separator {
             border-top: 2px solid var(--general-section-1);
         }
