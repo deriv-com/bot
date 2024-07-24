@@ -14,6 +14,7 @@ export default defineConfig({
                     @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
                     @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
                     @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
+                    @import "${path.resolve(__dirname, 'src/components/shared/styles/themes.scss')}";
                 `,
             },
         }),

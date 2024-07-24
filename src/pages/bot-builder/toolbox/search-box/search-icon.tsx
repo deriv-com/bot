@@ -10,7 +10,7 @@ type TSearchIcon = {
 const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon) => {
     if (!search) return <Icon icon='IcSearch' />;
     if (is_search_loading) return <div className='loader' data-testid='loader' />;
-    return <Icon icon='IcCloseCircle' onClick={onClick} color='secondary' />;
+    return <Icon icon='IcDbotClose' onClick={onClick} color='secondary' />;
 });
 
 export default SearchIcon;

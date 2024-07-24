@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import ProgressBarTracker from '@/components/shared_ui/progress-bar-tracker';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { getSetting } from '@/utils/settings';
 import { Icon, localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 import TourButton from '../common/tour-button';
 import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../tour-content';
 
@@ -63,7 +63,7 @@ const OnboardingTourMobile = observer(() => {
                     <Text
                         color='less-prominent'
                         weight='less-prominent'
-                        LineHeight='sm'
+                        lineHeight='s'
                         size='xxs'
                         data-testid='dbot-onboard-slider__navbar'
                     >{`${tour_step_key - 1}/7`}</Text>
@@ -84,7 +84,7 @@ const OnboardingTourMobile = observer(() => {
                     align='center'
                     className='dbot-slider__title'
                     as='span'
-                    LineHeight='sm'
+                    lineHeight='s'
                     size='xs'
                 >
                     {localize(header)}
@@ -120,7 +120,7 @@ const OnboardingTourMobile = observer(() => {
                                 color='prominent'
                                 className='dbot-slider__content'
                                 as='div'
-                                LineHeight='sm'
+                                lineHeight='s'
                                 size='xxs'
                             >
                                 {data}
