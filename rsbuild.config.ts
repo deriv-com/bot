@@ -1,6 +1,7 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
+
 const path = require('path');
 
 export default defineConfig({
@@ -51,6 +52,9 @@ export default defineConfig({
     },
     html: {
         template: './index.html',
+    },
+    server: {
+        port: 8443,
     },
     tools: {
         rspack: {
