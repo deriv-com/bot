@@ -62,10 +62,6 @@ jobs:
                   message: ${{steps.generate_action_url.outputs.comment}}
                   recreate: true
 
-            - name: Create npmrc file
-              shell: bash
-              run: echo "@deriv-com:registry=https://npm.pkg.github.com" >> .npmrc
-
             - name: Get cached dependencies
               id: cache-npm
               uses: actions/cache/restore@e12d46a63a90f2fae62d114769bbf2a179198b5c
@@ -115,10 +111,9 @@ jobs:
                   branch=$(echo "$HEAD_BRANCH" | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
                   cf_preview_url=$(wrangler pages deploy $directory --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$branch > log.txt 2>&1; echo $?)
                   echo "------"
-                  preview_url=https://$branch.$CLOUDFLARE_PROJECT_NAME.pages.dev
                   cat log.txt
                   if grep -q "Deployment complete" log.txt; then
-                    echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+                    echo "preview_url=$cf_preview_url" >> "$GITHUB_OUTPUT"
                     echo $preview_url > .pr/PREVIEW_URL
                   else
                     echo "Deployment to Cloudflare Pages failed."
