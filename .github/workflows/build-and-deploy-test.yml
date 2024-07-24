@@ -20,8 +20,6 @@ jobs:
     build_to_cloudflare_pages:
         timeout-minutes: 30
         runs-on: ubuntu-latest
-        outputs:
-            preview_url: ${{ steps.publish-to-pages.outputs.preview_url }}
         steps:
             - name: Verify user
               uses: 'deriv-com/shared-actions/.github/actions/verify_user_in_organization@v1'
@@ -113,9 +111,10 @@ jobs:
                   branch=$(echo "$HEAD_BRANCH" | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
                   cf_preview_url=$(wrangler pages deploy $directory --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$branch > log.txt 2>&1; echo $?)
                   echo "------"
+                  preview_url=https://$branch.$CLOUDFLARE_PROJECT_NAME.pages.dev
                   cat log.txt
                   if grep -q "Deployment complete" log.txt; then
-                    echo "preview_url=$cf_preview_url" >> "$GITHUB_OUTPUT"
+                    echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
                     echo $preview_url > .pr/PREVIEW_URL
                   else
                     echo "Deployment to Cloudflare Pages failed."
