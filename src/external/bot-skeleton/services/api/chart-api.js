@@ -9,9 +9,6 @@ class ChartAPI {
             await this.api.authorize(getToken().token);
         }
         this.getTime();
-
-        // eslint-disable-next-line no-console
-        console.info('Initializing chart API');
     };
 
     getTime() {
