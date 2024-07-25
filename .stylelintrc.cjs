@@ -8,6 +8,7 @@ module.exports = {
         'color-no-invalid-hex': true,
         'declaration-block-no-duplicate-properties': [true, { ignore: ['consecutive-duplicates'] }],
         'declaration-block-no-shorthand-property-overrides': true,
+        'declaration-block-no-redundant-longhand-properties': null,
         'font-family-name-quotes': 'always-unless-keyword',
         'function-calc-no-unspaced-operator': true,
         'function-name-case': 'lower',
@@ -16,6 +17,7 @@ module.exports = {
         'no-invalid-double-slash-comments': true,
         'number-max-precision': 3,
         'no-descending-specificity': null,
+        'no-invalid-position-at-import-rule': null,
         'selector-pseudo-class-no-unknown': [
             true,
             {
@@ -23,6 +25,7 @@ module.exports = {
             },
         ],
         'selector-class-pattern': null,
+        'selector-id-pattern': null,
         'selector-pseudo-element-colon-notation': 'single',
         'selector-pseudo-element-no-unknown': true,
         'selector-type-case': 'lower',
@@ -32,6 +35,9 @@ module.exports = {
         'time-min-milliseconds': 100,
         'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'svh', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
         'value-keyword-case': 'lower',
+        'scss/at-extend-no-missing-placeholder': null,
+        'scss/percent-placeholder-pattern': null,
+        'custom-property-pattern': null,
     },
     extends: ['stylelint-config-standard-scss'],
     ignoreFiles: ['packages/*/dist/**/*.css'],

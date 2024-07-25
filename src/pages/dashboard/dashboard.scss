@@ -1,3 +1,5 @@
+@use 'components/shared/styles/mixins' as *;
+
 .bot-dashboard {
     position: relative;
     height: calc(100vh - 8.4rem);

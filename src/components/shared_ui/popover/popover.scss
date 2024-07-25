@@ -1,10 +1,14 @@
+@use 'components/shared/styles/mixins' as *;
+
 .dc-popover {
     &__wrapper {
         position: relative;
     }
+
     &__container {
         position: absolute;
-        /*rtl:ignore*/
+
+        /* rtl:ignore */
         left: 0;
         top: 0;
         width: 280px;
@@ -13,6 +17,7 @@
             position: relative;
         }
     }
+
     &__target {
         // &__icon .info {
         //     @extend .dc-icon--secondary;
@@ -38,8 +43,10 @@
             transform: translateY(-65%);
         }
     }
+
     &__bubble {
         @include typeface(--small-center-normal-active, none);
+
         cursor: help;
         position: relative;
         padding: 0.8rem;
@@ -56,15 +63,18 @@
             margin-right: 0.7em;
             padding-top: 3px;
         }
+
         &__text {
             flex-grow: 2;
             direction: ltr;
         }
+
         &--error {
             direction: ltr;
             background-color: var(--status-danger);
         }
     }
+
     &__trade-params {
         @include mobile {
             max-width: calc(100vw - 6.7rem);
@@ -76,6 +86,7 @@
 .accu-info-display__popover {
     max-width: 28rem;
 }
+
 .accu-info-display__popover {
     @include mobile {
         max-width: 33rem;

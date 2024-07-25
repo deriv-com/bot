@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 /** @define dc-contract-card-dialog; weak */
 .dc-contract-card-dialog {
     position: fixed;

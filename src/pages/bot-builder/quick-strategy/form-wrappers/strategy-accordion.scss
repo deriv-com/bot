@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/devices' as *;
+
 .dbot-accordion {
     width: 100%;
 
@@ -9,7 +12,6 @@
         background-color: transparent;
         border: none;
         outline: none;
-
         padding-left: 0;
 
         @include mobile {

@@ -1,3 +1,5 @@
+@use 'components/shared/styles/constants' as *;
+
 .dc-select-native {
     width: 100%;
     position: relative;
@@ -10,6 +12,7 @@
             width: 40px;
         }
     }
+
     &__container {
         border: 1px solid var(--border-normal);
         border-radius: $BORDER_RADIUS;
@@ -19,6 +22,7 @@
         &:hover:not(.dc-input--disabled) {
             border-color: var(--border-hover);
         }
+
         &:focus-within {
             border-color: var(--brand-secondary);
 
@@ -26,26 +30,32 @@
                 border-color: var(--brand-secondary);
             }
         }
+
         &--error {
             border-color: var(--brand-red-coral) !important;
         }
+
         &--disabled {
             border-color: var(--general-disabled);
         }
     }
+
     &__wrapper {
         height: 38px;
 
         .dc-input {
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
     }
+
     &__arrow {
         position: absolute;
         right: 1.3rem;
         top: 1.3rem;
+
         --fill-color1: var(--text-less-prominent);
     }
+
     &__display {
         height: 38px;
         width: 100%;
@@ -67,6 +77,7 @@
             line-height: 3.8rem;
         }
     }
+
     &__placeholder {
         position: absolute;
         left: 1.1rem;
@@ -90,6 +101,7 @@
             color: var(--text-general);
             max-width: 100%;
         }
+
         &--hide-top-placeholder {
             transform: translate(0, -1.8rem) scale(0.75);
             color: var(--text-general);
@@ -97,6 +109,7 @@
             display: none;
         }
     }
+
     &__picker {
         opacity: 0;
         width: 100%;
@@ -105,25 +118,31 @@
         top: 0;
         position: absolute;
     }
+
     &--disabled {
         .dc-select-native__display-text {
             color: var(--text-less-prominent);
         }
+
         .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
             color: var(--text-less-prominent);
         }
+
         .dc-icon {
             --fill-color1: var(--text-less-prominent);
         }
     }
+
     &--error {
         .dc-select-native__placeholder {
             color: var(--brand-red-coral);
         }
     }
+
     &__hint {
         margin-left: 1.2rem;
     }
+
     &__suffix-icon {
         position: absolute;
         left: 11px;
