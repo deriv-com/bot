@@ -1,7 +1,10 @@
+@use 'components/shared/styles/constants' as *;
+
 @keyframes fade-in {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -33,6 +36,7 @@
             animation: fade-in 0.3s;
         }
     }
+
     &__content {
         overflow: auto;
         height: calc(100% - 64px);
@@ -40,6 +44,7 @@
         .dc-themed-scrollbars {
             padding: 5px 25px;
         }
+
         &-disclaimer {
             display: flex;
             justify-content: space-around;
@@ -54,11 +59,13 @@
                 color: $color-black-1;
                 width: 324px;
             }
+
             &-icon {
                 padding-top: 0.8rem;
             }
         }
     }
+
     &__block-workspace {
         &--top {
             margin-bottom: $default-margin;
@@ -66,23 +73,27 @@
 
         &--center {
             margin-top: 0.6em;
+
             .injectionDiv {
                 height: 100%;
             }
         }
+
         &__header {
             display: flex;
         }
     }
+
     &__button {
         &-new {
             width: 20%;
             height: 4rem !important;
             font-size: var(--text-size-xs);
             font-weight: bold;
-            border-top-left-radius: 0rem !important;
-            border-bottom-left-radius: 0rem !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
         }
+
         &-add {
             color: var(--general-main-1);
 
@@ -90,6 +101,7 @@
                 display: none !important;
             }
         }
+
         &-back {
             padding: 0 15px;
             align-self: center;
@@ -99,10 +111,12 @@
             svg {
                 vertical-align: middle;
             }
+
             &:focus {
                 outline: none;
             }
         }
+
         &-next,
         &-previous {
             margin-inline-start: 1em;
@@ -111,6 +125,7 @@
             display: flex;
         }
     }
+
     &__item {
         line-height: 1.3em;
         font-size: var(--text-size-xs);
@@ -118,21 +133,25 @@
         &:not(:last-of-type) {
             margin-bottom: 30px;
         }
+
         &-header {
             display: flex;
             margin-top: $default-margin;
             margin-bottom: 10px;
         }
+
         &-buttons {
             margin-inline-start: auto;
             align-self: center;
         }
+
         &-info {
             cursor: pointer;
             font-weight: bold;
             display: block;
             color: $COLOR_RED;
         }
+
         &-description {
             font-size: var(--text-size-xs);
             margin-bottom: 1em;
@@ -140,16 +159,19 @@
             color: var(--text-general);
         }
     }
+
     &__image {
         width: 100%;
         height: auto;
         border-radius: 0.5em;
     }
+
     &__video {
         width: 100%;
         height: 20vh;
         border-radius: 0.5em;
     }
+
     &__help {
         padding: 0;
         height: 100%;
@@ -160,6 +182,7 @@
             display: flex;
             background-color: var(--general-section-1);
         }
+
         &-content {
             padding: 1.5em;
             font-size: 0.8em;
@@ -170,9 +193,11 @@
                 margin-bottom: 0.8em;
             }
         }
+
         &-title {
             align-self: center;
         }
+
         &-footer {
             display: flex;
             justify-content: flex-end;
@@ -180,6 +205,7 @@
             border-top: solid 0.1em var(--general-section-1);
         }
     }
+
     &__search {
         padding: 0;
         visibility: visible;
@@ -194,6 +220,7 @@
                 align-self: center;
             }
         }
+
         &-empty {
             padding: 25px 0;
         }
@@ -201,6 +228,7 @@
             height: calc(100% - 60px);
         }
     }
+
     &__normal {
         visibility: visible;
 
@@ -208,15 +236,17 @@
             height: 100%;
         }
     }
+
     &__input {
         width: 80% !important;
         height: 4rem;
-        border-top-right-radius: 0rem !important;
-        border-bottom-right-radius: 0rem !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
         border: solid 1px $color-grey-5 !important;
         display: inline-block !important;
         margin-top: 3.3rem;
     }
+
     &__hr {
         height: 2px;
         width: 100%;

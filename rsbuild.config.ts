@@ -1,6 +1,7 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
+
 const path = require('path');
 
 export default defineConfig({
@@ -8,15 +9,12 @@ export default defineConfig({
         pluginSass({
             sassLoaderOptions: {
                 sourceMap: true,
-                additionalData: `
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/constants.scss')}";
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/mixins.scss')}";
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/fonts.scss')}";
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/inline-icons.scss')}";
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/devices.scss')}";
-                    @import "${path.resolve(__dirname, 'src/components/shared/styles/themes.scss')}";
-                `,
+                sassOptions: {
+                    includePaths: [path.resolve(__dirname, 'src')],
+                },
+                // additionalData: `@use "${path.resolve(__dirname, 'src/components/shared/styles')}" as *;`,
             },
+            exclude: /node_modules/,
         }),
         pluginReact(),
     ],
@@ -52,6 +50,13 @@ export default defineConfig({
     },
     html: {
         template: './index.html',
+    },
+    server: {
+        port: 8443,
+        compress: true,
+    },
+    dev: {
+        hmr: true,
     },
     tools: {
         rspack: {

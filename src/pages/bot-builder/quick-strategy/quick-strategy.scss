@@ -1,3 +1,5 @@
+@use 'components/shared/styles/mixins' as *;
+
 .qs {
     --sidebar-width: 24rem;
     --footer-height: 7.2rem;
@@ -10,12 +12,13 @@
     --input-action-width: 4.6rem;
     --group-outer-padding: 1.6rem;
 
-    @include mobile() {
+    @include mobile {
         --select-height: 4rem;
         --input-height: 3.4rem;
         --footer-height: 4.2rem;
         --input-action-height: 3rem;
         --input-action-width: 3rem;
+
         width: 100%;
     }
 
@@ -26,10 +29,12 @@
 
     &__head {
         @include flex-center(space-between);
+
         border-bottom: 1px solid var(--border-divider);
 
         &__title {
             @extend .x-center;
+
             padding: 0 2.4rem;
             height: var(--header-height);
             background-color: var(--general-section-1);
@@ -50,11 +55,11 @@
     &__body {
         display: flex;
 
-        @include desktop() {
+        @include desktop {
             height: 72rem;
         }
 
-        @include mobile() {
+        @include mobile {
             display: block;
         }
 
@@ -100,28 +105,30 @@
             position: relative;
             padding: 0.8rem;
 
-            @include mobile() {
+            @include mobile {
                 width: 100%;
                 padding: 0;
             }
 
             &__head {
                 @include flex-center;
+
                 padding-bottom: 1rem;
 
-                @include mobile() {
+                @include mobile {
                     padding: 0 1.6rem 1.6rem;
                     margin-top: 1.6rem;
                 }
 
                 &__tabs {
                     @extend .x-center;
+
                     background-color: var(--general-section-1);
                     padding: 0.4rem;
                     border-radius: 0.6rem;
                     height: 4rem;
 
-                    @include mobile() {
+                    @include mobile {
                         width: 100%;
                     }
 
@@ -133,7 +140,7 @@
                         border-radius: 0.4rem;
                         user-select: none;
 
-                        @include mobile() {
+                        @include mobile {
                             min-width: auto;
                             width: 50%;
                         }
@@ -174,7 +181,7 @@
             &__form {
                 padding: 0 2.4rem;
 
-                @include mobile() {
+                @include mobile {
                     padding: 0 1.6rem;
                 }
 
@@ -195,7 +202,9 @@
             &__footer {
                 height: var(--footer-height);
                 border-top: 1px solid var(--border-divider);
+
                 @include flex-center(flex-end);
+
                 padding: 1.6rem 2.4rem;
                 background-color: var(--general-main-1);
 
@@ -213,17 +222,18 @@
     &__form {
         &__container {
             min-height: 10rem;
+
             // to overwrite the height of the ThemedScrollbar
             max-height: calc(100vh - 23rem) !important;
 
-            @include desktop() {
+            @include desktop {
                 height: calc(100vh - 16rem) !important;
             }
 
             margin-bottom: 1rem;
             overflow-y: auto;
 
-            @include mobile() {
+            @include mobile {
                 margin-bottom: 0;
                 max-height: calc(100% - 12.2rem) !important;
             }
@@ -231,7 +241,7 @@
             &--no-footer {
                 max-height: 100% !important;
 
-                @include mobile() {
+                @include mobile {
                     max-height: calc(100% - 8rem) !important;
                 }
             }
@@ -354,7 +364,7 @@
                 display: flex;
                 flex-direction: row-reverse;
 
-                @include mobile() {
+                @include mobile {
                     top: -2.8rem;
                     right: 4rem;
                 }
@@ -383,7 +393,7 @@
                 height: 2.4rem;
                 width: 2.4rem;
 
-                @include mobile() {
+                @include mobile {
                     top: 50%;
                     left: 0;
                     transform: translateY(-50%);
@@ -477,6 +487,7 @@
 
     .seddle-actions {
         @include flex-center;
+
         position: absolute;
         background: transparent;
         border: none;
@@ -516,10 +527,11 @@
 
             &__leading-icon {
                 @extend .seddle-actions;
+
                 left: 0.3rem;
                 color: var(--text-general);
 
-                @include mobile() {
+                @include mobile {
                     left: 0.2rem;
                 }
 
@@ -535,10 +547,11 @@
 
             &__trailing-icon {
                 @extend .seddle-actions;
+
                 right: 0.3rem;
                 color: var(--text-general);
 
-                @include mobile() {
+                @include mobile {
                     right: 0.2rem;
                 }
 
@@ -570,6 +583,7 @@
 
     &__input-label {
         @extend .x-center;
+
         height: var(--input-height);
 
         &__wrapper {
@@ -582,6 +596,7 @@
 
         &__container {
             @extend .x-center;
+
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
 
@@ -597,7 +612,7 @@
             .dc-toggle-switch__label {
                 width: 4.6rem;
                 padding: 0 0.2rem;
-                background: var(--core-color-opacity-black-200, rgba(0, 0, 0, 0.16));
+                background: var(--core-color-opacity-black-200, rgb(0 0 0 / 16%));
                 margin-right: 0;
             }
         }

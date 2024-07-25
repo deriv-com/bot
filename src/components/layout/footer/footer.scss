@@ -1,3 +1,5 @@
+@use 'components/shared/styles/mixins' as *;
+
 .app-footer {
     height: 3.6rem;
     display: flex;

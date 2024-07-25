@@ -1,8 +1,12 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 .summary {
     display: flex;
     align-items: center;
     flex-direction: column;
     background-color: var(--general-section-2);
+
     @include desktop {
         height: inherit;
     }
@@ -34,14 +38,18 @@
         &-title {
             height: 18px;
             margin-bottom: 4px;
+
             @include typeface(--small-center-bold-black, none);
         }
+
         &-content {
             height: 18px;
             margin-bottom: 4px;
+
             @include typeface(--small-center-normal-black, none);
         }
     }
+
     &__amount {
         @include typeface(--small-center-normal-black, none);
 
@@ -49,6 +57,7 @@
             font-weight: bold;
             color: var(--text-profit-success);
         }
+
         &--negative {
             font-weight: bold;
             color: var(--text-loss-danger);

@@ -1,16 +1,20 @@
+@use 'components/shared/styles/mixins' as *;
+
 #id-charts--disabled {
     color: var(--fill-normal-1);
-    stroke-opacity: 30%;
+    stroke-opacity: 0.3;
     pointer-events: none;
 }
 
 .chart-modal-dialog {
     --modal-height: calc(100% - 54px);
+
     height: var(--modal-height);
     max-height: var(--modal-height);
     padding: 0 0.8rem;
     z-index: 999;
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+
     @include flex-center;
 
     .dashboard__chart-wrapper--modal {

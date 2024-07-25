@@ -83,7 +83,7 @@
         "@commitlint/config-conventional": "^17.1.0",
         "@deriv-com/eslint-config-deriv": "^2.1.0-beta.3",
         "@jest/globals": "^29.7.0",
-        "@rsbuild/core": "^1.0.1-beta.0",
+        "@rsbuild/core": "^1.0.1-beta.1",
         "@rsbuild/plugin-react": "^1.0.1-beta.1",
         "@rsbuild/plugin-sass": "^1.0.1-beta.1",
         "@testing-library/dom": "^10.3.1",

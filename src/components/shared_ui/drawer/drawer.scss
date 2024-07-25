@@ -1,3 +1,5 @@
+@use 'components/shared/styles/devices' as *;
+
 /** @define dc-drawer */
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .dc-drawer {
@@ -13,6 +15,7 @@
         flex-direction: row-reverse;
         right: calc(100vw - 16px);
     }
+
     &--right {
         display: flex;
         flex-direction: row;
@@ -24,6 +27,7 @@
         height: calc(100% - 10.1rem) !important;
         top: calc(100% - 9.8rem) !important;
     }
+
     &__container {
         display: flex;
         flex-direction: column;
@@ -33,6 +37,7 @@
         &--left {
             padding-right: $toggler-width;
         }
+
         &--right {
             padding-left: $toggler-width;
         }
@@ -41,16 +46,19 @@
             height: calc(100% - 3.6rem);
         }
     }
+
     &__header {
         border-bottom: 1px solid var(--general-section-1);
         line-height: 40px;
         font-weight: 700;
         font-size: 1.6em;
     }
+
     &__content {
         flex-grow: 1;
         overflow: auto;
     }
+
     &__footer {
         background-color: var(--general-main-2);
         border-top: 1px solid var(--general-section-1);
@@ -59,6 +67,7 @@
         font-size: 1.6em;
         align-items: center;
     }
+
     &__toggle {
         align-items: center;
         border-left: 1px solid var(--border-disabled);
@@ -78,11 +87,14 @@
             background-color: var(--general-main-1);
             border-top: solid 1px var(--general-section-1);
         }
+
         &-icon {
             transition: 0.25s ease;
+
             &--left {
                 transform: rotate(0);
             }
+
             &--right {
                 transform: rotate(180deg);
             }
@@ -93,10 +105,12 @@
                 transform: rotate(0);
             }
         }
+
         &--open > &-icon {
             &--left {
                 transform: rotate(180deg);
             }
+
             &--right {
                 transform: rotate(0);
             }
@@ -106,6 +120,7 @@
             }
         }
     }
+
     &--open {
         @include mobile {
             transform: translateY(calc(-100% + 3.6rem));

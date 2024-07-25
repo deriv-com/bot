@@ -15,18 +15,22 @@
     &-active {
         @include colorIcon(var(--text-prominent), none);
     }
+
     &.disabled,
     &-disabled {
         @include colorIcon(var(--text-disabled), none);
     }
+
     &.white,
     &-white {
         @include colorIcon(var(--text-prominent));
     }
+
     &.border_hover_color,
     &-border_hover_color {
         @include colorIcon(var(--text-prominent));
     }
+
     &.secondary,
     &-secondary {
         @include colorIcon(var(--text-less-prominent));

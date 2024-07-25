@@ -1,6 +1,6 @@
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
-import { generateDerivApiInstance, getLoginId, getToken } from './appId';
+import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
 import chart_api from './chart-api';
 
 class APIBase {
@@ -30,7 +30,7 @@ class APIBase {
         this.time_interval = null;
         this.getTime();
 
-        if (getLoginId()) {
+        if (V2GetActiveToken()) {
             await this.authorizeAndSubscribe();
         }
         chart_api.init();
@@ -74,24 +74,32 @@ class APIBase {
     };
 
     async authorizeAndSubscribe() {
-        const { token, account_id } = getToken();
+        const token = V2GetActiveToken();
         if (token) {
             this.token = token;
-            this.account_id = account_id;
-            this.api.authorize(this.token);
+            this.account_id = V2GetActiveClientId();
             try {
-                const { authorize } = await this.api.expectResponse('authorize');
+                const { authorize, error } = await this.api.authorize(this.token);
+                console.log(authorize, error, 'authorize authorize');
+                if (error) return error;
+
                 if (this.has_active_symbols) {
                     this.toggleRunButton(false);
                 } else {
                     this.active_symbols_promise = this.getActiveSymbols();
                 }
-                await this.subscribe();
                 this.account_info = authorize;
+                this.subscribe();
+                this.getSelfExclusion();
             } catch (e) {
                 globalObserver.emit('Error', e);
             }
         }
+    }
+
+    async getSelfExclusion() {
+        const data = await this.api.getSelfExclusion();
+        console.log(data, 'data data');
     }
 
     async subscribe() {

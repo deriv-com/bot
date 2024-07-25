@@ -1,3 +1,5 @@
+@use 'components/shared/styles/devices' as *;
+
 .Toastify {
     &__toast {
         background: var(--icon-black-plus);

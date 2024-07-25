@@ -1,3 +1,5 @@
+@use 'components/shared/styles/mixins' as *;
+
 .tutorials-wrap {
     %no-search {
         display: flex;

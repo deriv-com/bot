@@ -18,7 +18,6 @@ $FONT_SIZES: (
     'xxsmall' 0.8rem,
     'xxxsmall' 0.6rem
 );
-
 $FONT_COLORS: (
     'active' var(--text-colored-background),
     'prominent' var(--text-prominent),
@@ -28,11 +27,8 @@ $FONT_COLORS: (
     'green' var(--text-profit-success),
     'red' var(--text-loss-danger)
 );
-
 $FONT_WEIGHTS: ('bold' 700, 'semibold' 500, 'normal' 400, 'light' 300);
-
 $TEXT_ALIGN: ('center' center, 'left' start, 'right' end);
-
 $LINEHEIGHTS: (
     'large': 1.75,
     'medium': 1.5,
@@ -47,6 +43,7 @@ $LINEHEIGHTS: (
  */
 @function generate-typefaces() {
     $typeface_list: ();
+
     @each $fontsize_name, $size in $FONT_SIZES {
         @each $textalign_name, $text_align in $TEXT_ALIGN {
             @each $color_name, $color in $FONT_COLORS {
@@ -61,6 +58,7 @@ $LINEHEIGHTS: (
             }
         }
     }
+
     // @debug $typeface_list; /* uncomment to debug */
     @return $typeface_list;
 }

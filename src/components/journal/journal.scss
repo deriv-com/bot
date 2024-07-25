@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 /**
  * @define journal
  */
@@ -11,15 +14,19 @@
         &__header {
             padding: 0.8rem;
         }
+
         &__icon {
             align-self: center;
         }
+
         &__message {
             margin: 0 auto;
+
             & .dc-text {
                 line-height: var(--text-lh-xxl);
             }
         }
+
         &__list {
             list-style-type: disc;
             margin-left: 20px;
@@ -30,18 +37,21 @@
             }
         }
     }
+
     &__item {
         padding: 16px;
 
         &-list {
             height: calc(100% - 7.2rem);
         }
+
         &-content {
             > * {
                 width: 100%;
             }
         }
     }
+
     &__data-list {
         .ReactVirtualized__Grid__innerScrollContainer {
             > div:nth-child(even) {
@@ -49,6 +59,7 @@
             }
         }
     }
+
     &-tools {
         &__container {
             display: flex;
@@ -59,6 +70,7 @@
 
             &-filter {
                 @include flex-center(flex-end);
+
                 cursor: pointer;
                 flex: 1;
 
@@ -72,6 +84,7 @@
             }
         }
     }
+
     &__text {
         font-size: var(--text-size-xxs);
         line-height: 1.5;
@@ -82,33 +95,41 @@
         &-date {
             display: inline;
         }
+
         &-datetime {
             color: var(--text-less-prominent);
             font-size: var(--text-size--xxxs);
             margin-top: 6px;
         }
+
         &--error {
             color: var(--status-danger);
         }
+
         &--warn {
             color: var(--status-warning);
         }
+
         &--info {
             color: var(--status-info);
         }
+
         &--success {
             color: var(--status-success);
         }
+
         &--bold {
             font-weight: bold;
         }
     }
+
     &__loader {
         width: 350px;
         height: 9.2rem;
 
         &--mobile {
             @extend .journal__loader;
+
             width: 100vw;
         }
     }
@@ -133,16 +154,19 @@
         opacity: 1;
         transform: translate3d(0, 0, 0);
     }
+
     &--enter,
     &--exit {
         opacity: 0;
         transform: translate3d(0, -20px, 0);
     }
+
     &__input {
         .input-wrapper__input {
             border: 1px solid var(--border-normal);
         }
     }
+
     &__button {
         margin-top: 0.8rem;
 

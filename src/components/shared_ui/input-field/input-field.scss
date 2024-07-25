@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 /** @define dc-input-field; weak */
 .dc-input-field {
     margin: 0.8rem 0 0;
@@ -5,12 +8,14 @@
 
     &__label {
         @include typeface(--paragraph-left-normal-black);
+
         color: var(--text-general);
         margin-bottom: 0.2rem;
         display: inline-block;
         text-align: center;
         width: 100%;
     }
+
     & .inline-icon {
         position: absolute;
         top: 8px;
@@ -18,6 +23,7 @@
         z-index: 1;
         cursor: pointer;
     }
+
     &__helper {
         @include typeface(--small-left-light-grey);
     }
@@ -34,6 +40,7 @@ button.dc-input-wrapper {
             display: none;
         }
     }
+
     &__button {
         position: absolute !important;
         z-index: 1;
@@ -53,10 +60,12 @@ button.dc-input-wrapper {
             /* rtl:ignore */
             right: 2px;
         }
+
         &--decrement {
             /* rtl:ignore */
             left: 2px;
         }
+
         &:hover {
             background: var(--state-hover);
             cursor: pointer;
@@ -65,19 +74,23 @@ button.dc-input-wrapper {
                 @extend .input-hover;
             }
         }
+
         &:disabled:hover {
             cursor: not-allowed;
             background: transparent;
         }
     }
+
     &__icon {
         // TODO: fix check if necessary
         // @extend %inline-icon;
     }
+
     &--disabled {
         pointer-events: none;
         color: var(--text-disabled);
     }
+
     &--inline {
         display: flex;
         justify-content: space-between;
@@ -88,6 +101,7 @@ button.dc-input-wrapper {
 /** @define input */
 .input {
     @include typeface(--paragraph-center-normal-black);
+
     list-style: none;
     position: relative;
     display: inline-block;
@@ -117,14 +131,17 @@ button.dc-input-wrapper {
             box-shadow: none;
             border-color: var(--brand-red-coral);
         }
+
         &:hover {
             border-color: var(--border-hover);
         }
+
         &:focus {
             border-radius: 0;
             box-shadow: none;
             border-color: var(--border-active);
         }
+
         &:checked {
             background: var(--brand-red-coral);
             border-color: var(--brand-red-coral);
@@ -132,18 +149,22 @@ button.dc-input-wrapper {
             &:after {
                 display: inline-block;
             }
+
             &:hover {
                 border-color: var(--brand-red-coral);
             }
         }
+
         &::-ms-check {
             // IE/EDGE support
             background: transparent;
             border-color: transparent;
             color: $COLOR_WHITE;
         }
+
         &:after {
             @include typeface(--small-left-normal-active);
+
             content: 'L';
             transform: scaleX(-1) rotate(-40deg);
             position: absolute;
@@ -152,19 +173,24 @@ button.dc-input-wrapper {
             display: none;
         }
     }
+
     &:not([type='range']) {
         touch-action: manipulation;
     }
+
     &[readonly] {
         cursor: pointer;
     }
+
     &::placeholder {
         border-color: var(--border-normal);
     }
+
     &:hover,
     &-hover {
         border-color: var(--border-hover);
     }
+
     &:active,
     &:focus {
         outline: 0;
@@ -172,14 +198,17 @@ button.dc-input-wrapper {
         border-color: var(--border-active);
         color: var(--text-prominent);
     }
+
     &--has-inline-prefix {
         padding-right: 40px !important;
         border-radius: $BORDER_RADIUS !important;
     }
+
     &--error {
         color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
     }
+
     &:disabled {
         color: var(--text-disabled);
     }

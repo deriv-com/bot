@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 /** @define barspinner */
 .barspinner {
     margin: auto;
@@ -11,8 +14,10 @@
         height: 60%;
         width: 0.6rem;
         display: inline-block;
+
         @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
+
     &--dark .barspinner__rect {
         background-color: var(--brand-secondary);
     }
@@ -24,6 +29,7 @@
     100% {
         transform: scaleY(1);
     }
+
     20% {
         transform: scaleY(2);
     }
@@ -46,10 +52,12 @@
         @include desktop {
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
         }
+
         @include mobile {
             height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
         }
     }
+
     &__barspinner {
         margin: 5rem auto;
 
