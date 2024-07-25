@@ -17,6 +17,7 @@ module.exports = {
         'no-invalid-double-slash-comments': true,
         'number-max-precision': 3,
         'no-descending-specificity': null,
+        'no-invalid-position-at-import-rule': null,
         'selector-pseudo-class-no-unknown': [
             true,
             {
@@ -35,6 +36,7 @@ module.exports = {
         'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'svh', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
         'value-keyword-case': 'lower',
         'scss/at-extend-no-missing-placeholder': null,
+        'scss/percent-placeholder-pattern': null,
         'custom-property-pattern': null,
     },
     extends: ['stylelint-config-standard-scss'],
