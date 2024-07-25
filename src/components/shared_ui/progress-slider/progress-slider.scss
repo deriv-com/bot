@@ -1,3 +1,5 @@
+@use 'components/shared/styles/constants' as *;
+
 /** @define dc-progress-slider */
 // Progress Slider
 .dc-progress-slider {
@@ -12,6 +14,7 @@
         border-bottom: 1px solid var(--general-section-6);
         margin: 0.4rem 0 0.8rem;
     }
+
     &__track {
         background: var(--text-disabled);
         position: relative;
@@ -20,6 +23,7 @@
         width: 100%;
         border-radius: #{$BORDER_RADIUS * 2};
     }
+
     &__ticks {
         position: relative;
 
@@ -32,6 +36,7 @@
             flex-direction: row;
             justify-content: space-evenly;
         }
+
         &-step {
             height: 6px;
             width: 100%;
@@ -51,31 +56,38 @@
                 width: 100%;
                 background-color: var(--brand-secondary);
             }
+
             &--marked:before {
                 transform: scale3d(1, 1, 1);
             }
+
             &:first-child {
                 margin-left: 0;
             }
+
             &:last-child {
                 margin-right: 0;
             }
+
             &:first-child,
             &:first-child:before {
                 border-top-left-radius: $BORDER_RADIUS;
                 border-bottom-left-radius: $BORDER_RADIUS;
             }
+
             &:last-child,
             &:last-child:before {
                 border-top-right-radius: $BORDER_RADIUS;
                 border-bottom-right-radius: $BORDER_RADIUS;
             }
         }
+
         &-caption {
             display: flex;
             justify-content: space-between;
         }
     }
+
     &__line {
         background: var(--state-hover);
         position: absolute;
@@ -89,16 +101,20 @@
         &--ticks {
             height: 2px;
         }
+
         &--green {
             background: var(--status-success) !important;
         }
+
         &--yellow {
             background: var(--status-warning) !important;
         }
+
         &--red {
             background: var(--status-danger) !important;
         }
     }
+
     &__infinite-loader {
         position: relative;
         height: 4px;
@@ -123,37 +139,45 @@
                 bottom: 0;
                 will-change: left, right;
             }
+
             &:before {
                 animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
             }
+
             &:after {
                 animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
                 animation-delay: 1.15s;
             }
         }
+
         @keyframes indeterminate {
             0% {
                 left: -35%;
                 right: 100%;
             }
+
             60% {
                 left: 100%;
                 right: -90%;
             }
+
             100% {
                 left: 100%;
                 right: -90%;
             }
         }
+
         @keyframes indeterminate-short {
             0% {
                 left: -200%;
                 right: 100%;
             }
+
             60% {
                 left: 107%;
                 right: -8%;
             }
+
             100% {
                 left: 107%;
                 right: -8%;

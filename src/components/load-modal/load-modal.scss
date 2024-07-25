@@ -1,3 +1,5 @@
+@use 'components/shared/styles/mixins' as *;
+
 #modal_root {
     .load-strategy {
         &__recent {
@@ -13,6 +15,7 @@
 
             &__empty {
                 @include flex-center;
+
                 align-items: center;
                 flex-direction: column;
 
@@ -116,6 +119,7 @@
 
                 &-location {
                     @include flex-center(flex-start);
+
                     width: 100%;
                     word-break: break-word;
                     color: var(--text-general);

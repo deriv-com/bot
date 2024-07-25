@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/devices' as *;
+
 @keyframes animate-progress {
     0% {
         width: 0%;
@@ -187,6 +190,7 @@
                         animation: animate-circle 0.8s infinite;
                         animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
                         background-color: var(--status-success);
+
                         // transform: translate(-50%, -50%);
                         // z-index: 1;
                     }

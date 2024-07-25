@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/devices' as *;
+
 #scratch_div {
     position: relative;
     width: calc(100vw - 3.2rem);

@@ -1,6 +1,9 @@
-@import './google-drive';
-@import './delete-dialog';
-@import './save-modal';
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
+// @import './google-drive';
+// @import './delete-dialog';
+// @import './save-modal';
 
 .load-strategy {
     &__wrapper {
@@ -479,6 +482,7 @@
             img {
                 width: 1.6rem;
             }
+
             @include mobile {
                 padding: 0;
             }

@@ -1,3 +1,5 @@
+@use 'components/shared/styles/devices' as *;
+
 /** @define dc-result */
 .dc-result {
     &__content {
@@ -7,6 +9,7 @@
         flex-direction: column;
         gap: 0.4rem;
     }
+
     &__caption {
         text-transform: capitalize;
         font-size: 1.4em;
@@ -20,9 +23,11 @@
         &--won {
             color: var(--text-profit-success);
         }
+
         &--lost {
             color: var(--text-loss-danger);
         }
+
         &-wrapper {
             cursor: pointer;
             width: 100%;
@@ -35,14 +40,17 @@
             justify-content: center;
             align-items: center;
         }
+
         @include mobile {
             pointer-events: none;
         }
     }
+
     &__close-btn {
         position: absolute;
         top: 2px;
-        /*rtl:ignore*/
+
+        /* rtl:ignore */
         right: 8px;
         cursor: pointer;
         visibility: visible;
@@ -54,6 +62,7 @@
             color: var(--text-general);
         }
     }
+
     &__positions-overlay {
         max-width: 218px;
     }

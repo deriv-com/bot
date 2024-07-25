@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 .dc-modal {
     $save-modal: 'modal--save';
 
@@ -38,7 +41,7 @@ div.radio-group {
     &__save-type {
         display: flex;
         justify-content: center;
-        margin: 8% 0px;
+        margin: 8% 0;
 
         .dc-radio {
             &-group {
@@ -146,8 +149,8 @@ div.radio-group {
 
         & .modal__footer {
             position: fixed;
-            bottom: 0px;
-            left: 0px;
+            bottom: 0;
+            left: 0;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;

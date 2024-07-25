@@ -1,8 +1,10 @@
+@use 'components/shared/styles/devices' as *;
+
 .loss-threshold-warning-dialog {
     &__body-text {
         font-size: 1.5rem;
         line-height: 18px;
-        margin: 12px 0px;
+        margin: 12px 0;
         margin-bottom: 22px;
         color: var(--text-general);
     }
@@ -13,6 +15,7 @@
                 max-width: 90%;
             }
         }
+
         &__footer {
             @include mobile {
                 display: flex;
@@ -20,11 +23,13 @@
                 flex-wrap: unset;
             }
         }
+
         &__button:not(:last-child) {
             @include mobile {
                 margin-right: 6px;
             }
         }
+
         &__button {
             @include mobile {
                 margin-left: 6px;

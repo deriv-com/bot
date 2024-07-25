@@ -1,3 +1,5 @@
+@use 'components/shared/styles/devices' as *;
+
 .tutorials-quick-strategy {
     &__title {
         margin-bottom: 1.6rem;
@@ -91,6 +93,7 @@
             &.formula {
                 width: unset;
                 margin: 1.5rem 0.5rem;
+
                 img {
                     height: 100%;
                     width: auto;

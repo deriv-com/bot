@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 .dc-contract-card {
     box-sizing: border-box;
     border-radius: $BORDER_RADIUS;

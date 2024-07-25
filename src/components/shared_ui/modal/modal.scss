@@ -1,3 +1,6 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 @mixin mobile-screen {
     @media (max-width: #{$max-mobile-width}) {
         @content;

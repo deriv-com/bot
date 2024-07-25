@@ -1,7 +1,11 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
 @keyframes animate-fade-in {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -22,6 +26,7 @@
     z-index: 2;
     background-color: var(--overlay-inside-dialog);
     animation: animate-fade-in 0.3s;
+
     @include flex-center;
 
     &:hover {
@@ -31,14 +36,17 @@
             opacity: 0;
         }
     }
+
     &-caption {
         display: flex;
         align-items: center;
         transition: opacity 0.25s linear;
     }
+
     &-icon {
         margin-left: 10px;
     }
+
     &--won {
         background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
 
@@ -46,6 +54,7 @@
             color: var(--text-profit-success);
         }
     }
+
     &--lost {
         background-image: $COLOR_LIGHT_RED_GRADIENT; // TODO: Update when gradients are added.
 
