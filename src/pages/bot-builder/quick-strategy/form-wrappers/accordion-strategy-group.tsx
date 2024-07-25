@@ -13,20 +13,20 @@ type TAccordionStrategyGroupProps = {
 };
 
 type TDescriptionContent = {
-    item: TDescriptionItem[];
+    item: TDescriptionItem[] | string;
     font_size: string;
 };
 
-const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
-    const content_data: TDescriptionItem[] = Array.isArray(item) ? item : (item as TDescriptionItem[]).slice(1);
-
+export const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
+    const content_data: TDescriptionItem[] | string = Array.isArray(item) ? item : item.slice(1);
     return (
         <>
-            {content_data?.map(item => (
-                <React.Fragment key={item.id}>
-                    <StrategyDescription item={item} font_size={font_size} />
-                </React.Fragment>
-            ))}
+            {Array.isArray(content_data) &&
+                content_data?.map(item => (
+                    <React.Fragment key={item.id}>
+                        <StrategyDescription item={item} font_size={font_size} />
+                    </React.Fragment>
+                ))}
         </>
     );
 };
@@ -39,11 +39,11 @@ const AccordionStrategyGroup = observer(
         setExpandedSubtitlesStorage,
     }: TAccordionStrategyGroupProps) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { is_desktop } = ui;
         const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
         const font_size: string = React.useMemo<string>(
-            () => (is_mobile ? 'xs' : desktop_font_size),
-            [is_mobile, desktop_font_size]
+            () => (is_desktop ? desktop_font_size : 'xs'),
+            [is_desktop, desktop_font_size]
         );
 
         return (

@@ -2,17 +2,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
-import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
-import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
-import { localize } from '@deriv-com/translations';
-import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { Icon, localize } from '@/utils/tmp/dummy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -30,34 +25,22 @@ type TCardArray = {
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useStore();
-    const {
-        onCloseDialog,
-        dialog_options,
-        is_dialog_open,
-        setActiveTab,
-        setFileLoaded,
-        setPreviewOnPopup,
-        setOpenSettings,
-        showVideoDialog,
-    } = dashboard;
-    const { handleFileChange, loadFileFromLocal } = load_modal;
+    const { toggleLoadModal, setActiveTabIndex } = load_modal;
+    const { ui } = useStore();
+    const { is_desktop } = ui;
+    const { onCloseDialog, dialog_options, is_dialog_open, setActiveTab, setPreviewOnPopup } = dashboard;
     const { setFormVisibility } = quick_strategy;
 
-    const sendToRudderStackOnQuickStrategyIconClick = () => {
-        // send to rs if quick strategy is opened from dashbaord
-        rudderStackSendQsOpenEventFromDashboard();
-    };
-
-    const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-
     const openGoogleDriveDialog = () => {
-        showVideoDialog({
-            type: 'google',
-        });
+        toggleLoadModal();
+        setActiveTabIndex(is_mobile ? 1 : 2);
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
 
     const openFileLoader = () => {
-        file_input_ref?.current?.click();
+        toggleLoadModal();
+        setActiveTabIndex(is_mobile ? 0 : 1);
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
 
     const actions: TCardArray[] = [
@@ -69,7 +52,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         },
         {
             type: 'google-drive',
-            icon: 'IcGoogleDrive',
+            icon: 'IcGoogleDriveDbot',
             content: localize('Google Drive'),
             method: openGoogleDriveDialog,
         },
@@ -83,12 +66,11 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         },
         {
             type: 'quick-strategy',
-            icon: 'IcBlockly',
+            icon: 'IcQuickStrategy',
             content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
-                sendToRudderStackOnQuickStrategyIconClick();
             },
         },
     ];
@@ -127,25 +109,14 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                         method();
                                     }}
                                 />
-                                <Text color='prominent' size='xs'>
+                                <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}
                                 </Text>
                             </div>
                         );
                     })}
-                    <input
-                        type='file'
-                        ref={file_input_ref}
-                        accept='application/xml, text/xml'
-                        hidden
-                        onChange={e => {
-                            handleFileChange(e, false);
-                            loadFileFromLocal();
-                            setFileLoaded(true);
-                            setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
-                        }}
-                    />
-                    <DesktopWrapper>
+
+                    {is_desktop ? (
                         <Dialog
                             title={dialog_options.title}
                             is_visible={is_dialog_open}
@@ -156,8 +127,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         >
                             <GoogleDrive />
                         </Dialog>
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <MobileFullPageModal
                             is_modal_open={is_dialog_open}
                             className='load-strategy__wrapper'
@@ -173,7 +143,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                 <GoogleDrive />
                             </div>
                         </MobileFullPageModal>
-                    </MobileWrapper>
+                    )}
                 </div>
                 <DashboardBotList />
             </div>

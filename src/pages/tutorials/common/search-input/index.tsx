@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { DEBOUNCE_INTERVAL_TIME } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-import { Analytics } from '@deriv-com/analytics';
 
 type TSearchInput = {
     faq_value: string;
@@ -23,12 +22,6 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
             value => {
                 filterTuotrialTab(value);
                 setActiveTabTutorial(3);
-                Analytics.trackEvent('ce_bot_form', {
-                    action: 'search',
-                    form_name: 'ce_bot_form',
-                    subpage_name: 'tutorials',
-                    search_term: value,
-                });
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }

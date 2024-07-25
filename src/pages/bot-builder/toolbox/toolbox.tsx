@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { Icon, localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';

@@ -1,4 +1,4 @@
-import { Text } from '@deriv-com/ui';
+import Text from '@/components/shared_ui/text';
 
 type TTourButton = {
     type?: string;
@@ -10,7 +10,7 @@ const TourButton = ({ label, type = 'default', ...props }: TTourButton) => {
     if (!label) return null;
     return (
         <button className={type} {...props}>
-            <Text color='prominent' align='center' weight='bold' as='span' LineHeight='sm' size='xs'>
+            <Text color='prominent' align='center' weight='bold' as='span' lineHeight='s' size='xs'>
                 {label}
             </Text>
         </button>

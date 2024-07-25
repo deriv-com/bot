@@ -1,9 +1,9 @@
 import { KeyboardEvent } from 'react';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
 import { Icon, Localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
@@ -22,8 +22,15 @@ type TQuickStrategyGuides = {
 const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
-        const text_size = is_mobile ? 'xs' : 'sm';
+        const { is_desktop } = ui;
+        const text_size = is_desktop ? 's' : 'xs';
+
+        const scrollToTop = () => {
+            const qs_guide = document.querySelector('.tutorials-mobile__qs-guide');
+            if (qs_guide) {
+                qs_guide.scrollTop = 0;
+            }
+        };
 
         return (
             <>
@@ -33,7 +40,10 @@ const QuickStrategyGuidesDetail = observer(
                             <div
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}
-                                onClick={() => setTutorialSelectedStrategy(qs_name)}
+                                onClick={() => {
+                                    setTutorialSelectedStrategy(qs_name);
+                                    scrollToTop();
+                                }}
                                 tabIndex={index}
                                 data-testid={'dt_quick_strategy_guides_details'}
                                 onKeyDown={(e: KeyboardEvent) => {
@@ -48,7 +58,7 @@ const QuickStrategyGuidesDetail = observer(
                                             align='center'
                                             weight='bold'
                                             color='prominent'
-                                            LineHeight='sm'
+                                            lineHeight='s'
                                             size={text_size}
                                         >
                                             {type}
@@ -61,7 +71,7 @@ const QuickStrategyGuidesDetail = observer(
                                                     <Text
                                                         align='center'
                                                         color='prominent'
-                                                        LineHeight='sm'
+                                                        lineHeight='s'
                                                         size={text_size}
                                                         className='tutorials-quick-strategy__placeholder__content__text'
                                                     >
@@ -85,7 +95,7 @@ const QuickStrategyGuidesDetail = observer(
                             <Text
                                 className='tutorials-quick-strategy__breadcrumb__clickable'
                                 color='prominent'
-                                LineHeight='sm'
+                                lineHeight='s'
                                 size={text_size}
                                 as='div'
                                 onClick={() => {
@@ -94,11 +104,11 @@ const QuickStrategyGuidesDetail = observer(
                             >
                                 <Localize i18n_default_text={'Quick strategy guides >'} />
                             </Text>
-                            <Text color='less-prominent' LineHeight='sm' size={text_size} as='div'>
+                            <Text color='less-prominent' lineHeight='s' size={text_size} as='div'>
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>
-                        <Text color='prominent' LineHeight='sm' size={text_size} weight='bold' as='div'>
+                        <Text color='prominent' lineHeight='s' size={text_size} weight='bold' as='div'>
                             <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                         </Text>
                         <StrategyTabContent tutorial_selected_strategy={tutorial_selected_strategy} />

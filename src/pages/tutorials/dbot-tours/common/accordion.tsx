@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { Icon, localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 
 type TContentData = {
     header: string;

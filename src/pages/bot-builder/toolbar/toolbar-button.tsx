@@ -1,5 +1,5 @@
+import Button from '@/components/shared_ui/button';
 import Popover from '@/components/shared_ui/popover';
-import { Button } from '@deriv-com/ui';
 
 type TToolbarButton = {
     popover_message?: string;
