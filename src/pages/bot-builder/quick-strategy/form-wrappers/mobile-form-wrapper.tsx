@@ -2,11 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
+import Button from '@/components/shared_ui/button';
 import SelectNative from '@/components/shared_ui/select-native';
+import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-import { Button, Text } from '@deriv-com/ui';
 import {
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,

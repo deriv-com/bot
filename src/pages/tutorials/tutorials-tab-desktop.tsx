@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import Tabs from '@/components/shared_ui/tabs';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-import { Tabs } from '@deriv-com/ui';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 
@@ -33,7 +33,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     }, [active_tab_tutorials]);
 
     return (
-        <div className='dc-tabs__wrapper'>
+        <div className='dc-tabs__wrapper' data-testid='tutorials-tab-desktop'>
             <div className='dc-tabs__wrapper__group'>
                 <Icon
                     className='search-icon'

@@ -1,11 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { Icon } from '@/utils/tmp/dummy';
-
 import Button from '../button';
 import Text from '../text';
 

@@ -13,6 +13,6 @@ export function setBotPublicPath(path: string) {
     window.__webpack_public_path__ = path; // eslint-disable-line no-global-assign
 }
 
-export const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
+export const getImageLocation = (image_name: string) => `assets/images/${image_name}`;
 
 setBotPublicPath(getUrlBase('/'));

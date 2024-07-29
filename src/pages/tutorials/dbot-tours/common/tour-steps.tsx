@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { getUUID } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
-import { Text } from '@deriv-com/ui';
 
 type TTourSteps = {
     content: string[] | React.ReactElement[];
@@ -19,14 +19,14 @@ const TourSteps = observer(
                 <div className='onboard'>
                     {show_actions && (
                         <div className='onboard__header'>
-                            <Text color='less-prominent' LineHeight='lg'>
+                            <Text color='less-prominent' lineHeight='l'>
                                 {step_index}/6
                             </Text>
                         </div>
                     )}
                     <div className='onboard__steps'>
                         <div className='onboard__label'>
-                            <Text as='p' LineHeight='lg' weight='bold'>
+                            <Text as='p' lineHeight='l' weight='bold'>
                                 {label}
                             </Text>
                         </div>
@@ -52,7 +52,7 @@ const TourSteps = observer(
                                         content_data
                                     ) : (
                                         <div className='onboard__content__block' key={`onboard--${getUUID()}`}>
-                                            <Text align='left' as='p' size='xs' LineHeight='lg'>
+                                            <Text align='left' as='p' size='xs' lineHeight='l'>
                                                 {content_data}
                                             </Text>
                                         </div>
