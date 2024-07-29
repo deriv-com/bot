@@ -5,7 +5,7 @@ type TMainBodyProps = {
 };
 
 const MainBody: React.FC<TMainBodyProps> = ({ children }) => {
-    return <div className='main-body theme theme--light'>{children}</div>;
+    return <div className='main-body'>{children}</div>;
 };
 
 export default MainBody;
