@@ -8,6 +8,8 @@
     "scripts": {
         "start": "rsbuild dev",
         "build": "rsbuild build",
+        "watch": "rsbuild build --watch",
+        "serve": "live-server --port=8443 --host=localhost dist",
         "start:webpack": "webpack serve --open --config webpack.config.js",
         "build:webpack": "webpack --config webpack.config.js",
         "test:lint": "prettier --log-level silent --write . && eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
@@ -116,6 +118,7 @@
         "jest-environment-jsdom": "^29.7.0",
         "jest-transform-stub": "^2.0.0",
         "lint-staged": "^10.4.0",
+        "live-server": "^1.2.2",
         "mini-css-extract-plugin": "^2.9.0",
         "postcss": "^8.4.38",
         "prettier": "^3.1.0",

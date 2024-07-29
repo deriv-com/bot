@@ -2,11 +2,11 @@ import useModalManager from '@/hooks/useModalManager';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
 import { DesktopLanguagesModal } from '@deriv-com/ui';
+import FullScreen from './FullScreen';
 // import AccountLimits from './AccountLimits';
 // import ChangeTheme from './ChangeTheme';
 // import Deriv from './Deriv';
 // import Endpoint from './Endpoint';
-// import FullScreen from './FullScreen';
 // import HelpCentre from './HelpCentre';
 // import LanguageSettings from './LanguageSettings';
 // import Livechat from './Livechat';
@@ -28,7 +28,7 @@ const Footer = () => {
 
     return (
         <footer className='app-footer'>
-            {/* <FullScreen /> */}
+            <FullScreen />
             {/* <LanguageSettings openLanguageSettingModal={openLanguageSettingModal} /> */}
             {/* <HelpCentre /> */}
             <div className='app-footer__vertical-line' />

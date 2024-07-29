@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
 import { PlatformSwitcher } from '../PlatformSwitcher';
 import { MobileMenuConfig } from './MobileMenuConfig';
@@ -7,18 +8,20 @@ export const MenuContent = () => {
     const textSize = isDesktop ? 'sm' : 'md';
 
     return (
-        <div className='flex flex-col h-full'>
-            <div className='flex items-center justify-center h-28 border-b border-[#f2f3f4]'>
+        <div className='mobile-menu__content'>
+            <div className='mobile-menu__content__platform'>
                 <PlatformSwitcher />
             </div>
 
-            <div className='relative h-full pt-4'>
+            <div className='mobile-menu__content__items'>
                 {MobileMenuConfig().map((item, index) => {
                     const removeBorderBottom = item.find(({ removeBorderBottom }) => removeBorderBottom);
 
                     return (
                         <div
-                            className={!removeBorderBottom ? 'border-b border-[#f2f3f4]' : ''}
+                            className={clsx('mobile-menu__content__items--padding', {
+                                'mobile-menu__content__items--bottom-border': !removeBorderBottom,
+                            })}
                             data-testid='dt_menu_item'
                             key={index}
                         >
@@ -27,12 +30,16 @@ export const MenuContent = () => {
                                     return (
                                         <MenuItem
                                             as='a'
-                                            className='h-[5.6rem]'
+                                            className='mobile-menu__content__items__item'
                                             disableHover
                                             href={href}
                                             key={label}
                                             leftComponent={
-                                                <LeftComponent className='mr-[1.6rem]' height={16} width={16} />
+                                                <LeftComponent
+                                                    className='mobile-menu__content__items--right-margin'
+                                                    height={16}
+                                                    width={16}
+                                                />
                                             }
                                             target={target}
                                         >
@@ -43,16 +50,19 @@ export const MenuContent = () => {
                                 return (
                                     <MenuItem
                                         as='button'
-                                        className='w-full h-[5.6rem]'
+                                        className='mobile-menu__content__items__item'
                                         disableHover
                                         key={label}
-                                        leftComponent={<LeftComponent className='mr-[1.6rem]' iconSize='xs' />}
+                                        leftComponent={
+                                            <LeftComponent
+                                                className='mobile-menu__content__items--right-margin'
+                                                iconSize='xs'
+                                            />
+                                        }
                                         onClick={onClick}
                                         rightComponent={RightComponent}
                                     >
-                                        <Text className='mr-auto' size={textSize}>
-                                            {label}
-                                        </Text>
+                                        <Text size={textSize}>{label}</Text>
                                     </MenuItem>
                                 );
                             })}

@@ -18,13 +18,13 @@ export const MenuHeader = ({ hideLanguageSetting, openLanguageSetting }: TMenuHe
     );
 
     return (
-        <div className='flex items-center justify-between w-full pr-[1.6rem] pl-[0.4rem]'>
+        <div className='mobile-menu__header'>
             <Text size={isDesktop ? 'md' : 'lg'} weight='bold'>
                 {localize('Menu')}
             </Text>
 
             {!hideLanguageSetting && (
-                <button className='flex items-center' onClick={openLanguageSetting}>
+                <button className='mobile-menu__header__language items-center' onClick={openLanguageSetting}>
                     {countryIcon}
                     <Text className='ml-[0.4rem]' size={isDesktop ? 'xs' : 'sm'} weight='bold'>
                         {currentLang}

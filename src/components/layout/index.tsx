@@ -17,7 +17,7 @@ const Layout: React.FC<TLayoutProps> = ({ children }) => {
         <div className={clsx('layout', { responsive: isDesktop })}>
             <AppHeader />
             <Body>{children}</Body>
-            <Footer />
+            {isDesktop && <Footer />}
         </div>
     );
 };

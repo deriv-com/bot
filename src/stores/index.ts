@@ -51,7 +51,7 @@ export default class RootStore {
             account_settings: { country_code: 'bd' },
             balance: 0,
             currency: 'USD',
-            is_logged_in: false,
+            is_logged_in: true,
         },
         common: {
             is_socket_opened: false,
@@ -76,7 +76,7 @@ export default class RootStore {
         pushDataLayer: () => {},
     };
 
-    constructor(dbot: unknown, ws: unknown) {
+    constructor(dbot: unknown, ws: any) {
         this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, this.core);

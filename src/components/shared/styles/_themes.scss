@@ -44,28 +44,12 @@
     // Brand secondary colors
     --brand-secondary: #{$color-green};
 
-    // Wallet gradient background
-    --wallet-airtm: #{$gradient-airtm};
-    --wallet-banxa: #{$gradient-banxa};
-    --wallet-bitcoin: #{$gradient-bitcoin};
-    --wallet-credit: #{$gradient-credit};
-    --wallet-dp2p: #{$gradient-dp2p};
-    --wallet-fasapay: #{$gradient-fasapay};
-    --wallet-jeton: #{$gradient-jeton};
-    --wallet-mastercard: #{$gradient-mastercard};
-    --wallet-neteller: #{$gradient-neteller};
-    --wallet-paylivre: #{$gradient-paylivre};
-    --wallet-paysafe: #{$gradient-paysafe};
-    --wallet-perfectmoney: #{gradient-perfectmoney};
-    --wallet-skrill: #{$gradient-skrill};
-    --wallet-sticpay: #{$gradient-sticpay};
-    --wallet-virtual: #{$gradient-virtual};
-    --wallet-visa: #{$gradient-visa};
-    --wallet-webmoney: #{$gradient-webmoney};
-
     // App Cards gradient background
     --app-card-virtual: #{$gradient-virtual};
     --app-card-virtual-swap-free: #{$gradient-virtual-swap-free};
+
+    // Opacity
+    --tw-border-opacity: 1;
 
     .theme--light {
         // General
@@ -179,21 +163,6 @@
         --dashboard-swap-free: #{$gradient-color-black-3};
         --dashboard-app: #{$gradient-color-black-4};
 
-        // Payment methods
-        --payment-skrill: #{$gradient-color-purple};
-        --payment-visa: #{$gradient-color-blue};
-        --payment-mastercard: #{$gradient-color-orange};
-        --payment-credit-and-debit: #{$gradient-color-black-2};
-        --payment-bitcoin: #{$gradient-color-orange-2};
-        --payment-usd-coin: #{$gradient-color-blue-2};
-        --payment-neteller: #{$gradient-color-green-3};
-        --payment-webmoney: #{$gradient-color-blue-3};
-        --payment-jeton: #{$gradient-color-orange-3};
-        --payment-sticpay: #{$gradient-color-orange-4};
-        --payment-airtm: #{$gradient-color-blue-4};
-        --payment-dp2p: #{$gradient-color-red-3};
-        --payment-deriv: #{$gradient-color-red-4};
-
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
@@ -220,18 +189,6 @@
 
         // TradersHub Banner
         --traders-hub-banner-border-color: #{$color-grey-4};
-
-        // wallets
-        --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
-        --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};
-        --wallets-banner-border-color: #{$color-grey-4};
-        --wallets-banner-dot-color: #{$color-grey-6};
-        --wallets-banner-active-dot-color: #{$color-red};
-        --wallets-card-active-gradient-background: #{$gradient-color-black-5};
-        --wallet-demo-bg-color: #{$wallet-demo-bg-color};
-        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
-        --wallet-eu-disclaimer: #{$color-grey-4};
-        --wallet-box-shadow: #{$wallet-box-shadow};
 
         // Demo view
         --demo-text-color-1: #{$color-grey};
@@ -287,6 +244,8 @@
         --purchase-section-2: #{$color-red-3};
         --purchase-disabled-main: #{$color-black-4};
         --purchase-disabled-section: #{$color-black};
+
+        // Buttons
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
@@ -298,6 +257,7 @@
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-black-8};
         --button-toggle-alternate: #{$color-black-8};
+        --button-get-started-bg: #{$color-white};
 
         // Overlay
         --overlay-outside-dialog: #{$alpha-color-black-1};
@@ -373,18 +333,6 @@
 
         // TradersHub Banner
         --traders-hub-banner-border-color: #{$color-black-5};
-
-        // wallets
-        --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
-        --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};
-        --wallets-banner-border-color: #{$color-grey-4};
-        --wallets-banner-dot-color: #{$color-grey-6};
-        --wallets-banner-active-dot-color: #{$color-red};
-        --wallets-card-active-gradient-background: #{$gradient-color-white-2};
-        --wallet-demo-bg-color: #{$wallet-dark-demo-bg-color};
-        --wallet-demo-divider-color: #{$color-black-8};
-        --wallet-eu-disclaimer: #{$color-grey-4};
-        --wallet-box-shadow: #{$wallet-box-shadow};
 
         // Demo view
         --demo-text-color-1: #{$color-black-1};
