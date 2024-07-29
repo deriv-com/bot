@@ -72,6 +72,24 @@
     }
 }
 
+.languages-modal__body {
+    padding-inline: 1.6rem;
+
+    &-button {
+        height: 8.8rem;
+        width: 13.3rem;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 0.8rem;
+    }
+
+    &-selected {
+        border-radius: 4px;
+        border: 1px solid var(--brand-blue, $color-green);
+    }
+}
+
 @keyframes blink {
     0% {
         opacity: 1;

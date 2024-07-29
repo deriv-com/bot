@@ -4,3 +4,4 @@ export const ACCOUNT_LIMITS = `${URLConstants.derivAppProduction}/account/accoun
 export const DERIV_COM = URLConstants.derivComProduction;
 export const HELP_CENTRE = `${URLConstants.derivComProduction}/help-centre/`;
 export const RESPONSIBLE = `${URLConstants.derivComProduction}/responsible/`;
+export const ENDPOINT = '/endpoint';
