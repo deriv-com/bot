@@ -18,6 +18,7 @@ import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
 import TransactionsStore from './transactions-store';
+import UiStore from './ui-store';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
@@ -43,6 +44,8 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
+    public ui: UiStore;
+
     ws = null;
     core = {
         client: {
@@ -60,18 +63,11 @@ export default class RootStore {
             ws: this.ws,
         },
         ui: {
-            is_mobile: false,
-            is_desktop: true,
-            is_chart_layout_default: true,
-            is_dark_mode_on: false,
-            isAuthorized: false, // unused
-            url_hashed_values: '',
-            setPromptHandler: () => {},
+            // check ui-store.ts
         },
     };
     common = this.core.common;
     client = this.core.client;
-    ui = this.core.ui;
     gtm = {
         pushDataLayer: () => {},
     };
@@ -95,6 +91,7 @@ export default class RootStore {
         this.route_prompt_dialog = new RoutePromptDialogStore(this, this.core);
         this.self_exclusion = new SelfExclusionStore(this, this.core);
         this.dashboard = new DashboardStore(this, this.core);
+        this.ui = new UiStore();
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

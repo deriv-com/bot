@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '@/hooks/useStore';
 import { LegacyThemeDarkIcon, LegacyThemeLightIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 
-const ChangeTheme = () => {
+const ChangeTheme = observer(() => {
+    const { ui } = useStore();
+    const { setDarkMode, is_dark_mode_on } = ui;
     const { localize } = useTranslations();
-    const [current_theme, setCurrentTheme] = useState(localStorage.getItem('theme') ?? 'light');
 
     const toggleTheme = () => {
         const body = document.querySelector('body');
@@ -14,27 +16,25 @@ const ChangeTheme = () => {
             localStorage.setItem('theme', 'light');
             body.classList.remove('theme--dark');
             body.classList.add('theme--light');
-            setCurrentTheme('light');
+            setDarkMode(false);
         } else {
             localStorage.setItem('theme', 'dark');
             body.classList.remove('theme--light');
             body.classList.add('theme--dark');
-            setCurrentTheme('dark');
+            setDarkMode(true);
         }
     };
 
     return (
-        // TODO need to add theme logic
-        // TODO update the component's tests after adding the logic
         <Tooltip
             as='button'
             className='app-footer__icon'
             tooltipContent={localize('Change theme')}
             onClick={toggleTheme}
         >
-            {current_theme === 'light' ? <LegacyThemeLightIcon iconSize='xs' /> : <LegacyThemeDarkIcon iconSize='xs' />}
+            {!is_dark_mode_on ? <LegacyThemeLightIcon iconSize='xs' /> : <LegacyThemeDarkIcon iconSize='xs' />}
         </Tooltip>
     );
-};
+});
 
 export default ChangeTheme;

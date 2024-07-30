@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { useStore } from '@/hooks/useStore';
+import { useDevice } from '@deriv-com/ui';
 import './main-body.scss';
 
 type TMainBodyProps = {
@@ -7,6 +9,9 @@ type TMainBodyProps = {
 
 const MainBody: React.FC<TMainBodyProps> = ({ children }) => {
     const current_theme = localStorage.getItem('theme') ?? 'light';
+    const { ui } = useStore();
+    const { setDevice } = ui;
+    const { isDesktop, isMobile, isTablet } = useDevice();
 
     useEffect(() => {
         const body = document.querySelector('body');
@@ -19,6 +24,16 @@ const MainBody: React.FC<TMainBodyProps> = ({ children }) => {
             body.classList.add('theme--dark');
         }
     }, [current_theme]);
+
+    useEffect(() => {
+        if (isMobile) {
+            setDevice('mobile');
+        } else if (isTablet) {
+            setDevice('tablet');
+        } else {
+            setDevice('desktop');
+        }
+    }, [isDesktop, isMobile, isTablet, setDevice]);
 
     return <div className='main-body'>{children}</div>;
 };
