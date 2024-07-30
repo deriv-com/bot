@@ -1,14 +1,18 @@
+import clsx from 'clsx';
 import { useActiveAccount } from '@/hooks/api/account';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
 import { Button, Header, Text, useDevice, Wrapper } from '@deriv-com/ui';
+import { Tooltip } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
+import { AccountSwitcher } from './AccountSwitcher';
 import { MenuItems } from './MenuItems';
 import { MobileMenu } from './MobileMenu';
+import { Notifications } from './Notifications';
 import { PlatformSwitcher } from './PlatformSwitcher';
-// import { AccountsInfoLoader } from './SkeletonLoader';
+import { AccountsInfoLoader } from './SkeletonLoader';
 import './header.scss';
 
 const AppHeader = () => {
@@ -19,7 +23,7 @@ const AppHeader = () => {
     const { getOauthURL } = URLUtils;
 
     const renderAccountSection = () => {
-        if (!activeAccount || !isAuthorized) {
+        if (!isAuthorized) {
             return (
                 <Button
                     size='sm'
@@ -29,30 +33,28 @@ const AppHeader = () => {
                         window.location.href = getOauthURL();
                     }}
                 >
-                    Login
+                    {localize('Login')}
                 </Button>
             );
-        }
-
-        if (activeLoginid) {
+        } else if (isAuthorized && !activeAccount) {
+            return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
+        } else if (activeLoginid) {
             return (
                 <>
-                    {/* <Notifications /> */}
+                    <Notifications />
                     {isDesktop && (
-                        // <TooltipMenuIcon
-                        //     as='a'
-                        //     className='pr-3 border-r-[0.1rem] h-[3.2rem]'
-                        //     disableHover
-                        //     href='https://app.deriv.com/account/personal-details'
-                        //     tooltipContent={localize('Manage account settings')}
-                        //     tooltipPosition='bottom'
-                        // >
-                        <StandaloneCircleUserRegularIcon />
-                        // </TooltipMenuIcon>
+                        <Tooltip
+                            as='a'
+                            href='https://app.deriv.com/account/personal-details'
+                            tooltipContent={localize('Manage account settings')}
+                            tooltipPosition='bottom'
+                            className='app-header__account-settings'
+                        >
+                            <StandaloneCircleUserRegularIcon className='app-header__profile_icon' />
+                        </Tooltip>
                     )}
-                    {/* <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} /> */}
-                    {/* <AccountSwitcher account={activeAccount!} /> */}
-                    <Button className='mr-6' onClick={logout} size='md'>
+                    <AccountSwitcher account={activeAccount!} />
+                    <Button onClick={logout} size='md'>
                         <Text size='sm' weight='bold'>
                             {localize('Logout')}
                         </Text>
@@ -63,7 +65,12 @@ const AppHeader = () => {
     };
 
     return (
-        <Header className={!isDesktop ? 'h-[40px]' : ''}>
+        <Header
+            className={clsx('app-header', {
+                'app-header--desktop': isDesktop,
+                'app-header--mobile': !isDesktop,
+            })}
+        >
             <Wrapper variant='left'>
                 <AppLogo />
                 <MobileMenu />

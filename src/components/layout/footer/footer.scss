@@ -1,3 +1,4 @@
+@use 'components/shared/styles/constants' as *;
 @use 'components/shared/styles/mixins' as *;
 
 .app-footer {
@@ -10,12 +11,17 @@
     bottom: 0;
     right: 0;
     left: 0;
-    border-top: 1px solid #f2f3f4;
-    box-shadow: 0 1px 0 0 #f2f3f4 inset;
-    background: #fff;
+    border-top: 1px solid var(--general-section-1);
+    box-shadow: 0 1px 0 0 var(--general-section-1) inset;
+    background: var(--general-main-1);
 
     &__icon {
         padding: 0.8rem;
+
+        svg > g > path,
+        svg > path {
+            fill: var(--text-prominent);
+        }
 
         @include mobile-or-tablet-screen {
             padding: 0;
@@ -25,7 +31,7 @@
     &__vertical-line {
         width: 0.1rem;
         height: 1.6rem;
-        background-color: #f2f3f4;
+        background-color: var(--general-section-1);
         margin: 0 0.8rem;
     }
 
@@ -35,7 +41,7 @@
         padding: 0.8rem;
 
         & span {
-            margin-left: 0.4rem;
+            margin-inline-start: 0.4rem;
         }
     }
 
@@ -45,11 +51,11 @@
         border-radius: 100%;
 
         &-online {
-            background-color: #4bb4b3;
+            background-color: $color-green-1;
         }
 
         &-offline {
-            background-color: #ff444f;
+            background-color: $color-red;
         }
 
         &-blinking {
@@ -57,16 +63,34 @@
         }
 
         @include mobile-or-tablet-screen {
-            margin-left: 1.2rem;
+            margin-inline-start: 1.2rem;
         }
     }
 
     &__endpoint {
-        margin-right: 2rem;
+        margin-inline-end: 2rem;
 
         &-text {
-            color: #377cfc;
+            color: $color-blue;
             text-decoration: underline;
+        }
+    }
+}
+
+.languages-modal__body {
+    padding-inline: 1.6rem;
+
+    &-button {
+        height: 8.8rem;
+        width: 13.3rem;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 0.8rem;
+
+        &-selected {
+            border-radius: 4px;
+            border: 1px solid var(--brand-blue, $color-green);
         }
     }
 }

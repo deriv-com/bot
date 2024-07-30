@@ -1,22 +1,22 @@
-import { LegacyWhatsappIcon } from '@deriv/quill-icons';
+import { HELP_CENTRE } from '@/utils/constants';
+import { LegacyHelpCentreIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
-import { URLConstants } from '@deriv-com/utils';
 
-const WhatsApp = () => {
+const HelpCentre = () => {
     const { localize } = useTranslations();
 
     return (
         <Tooltip
             as='a'
             className='app-footer__icon'
-            href={URLConstants.whatsApp}
+            href={HELP_CENTRE}
             target='_blank'
-            tooltipContent={localize('WhatsApp')}
+            tooltipContent={localize('Help centre')}
         >
-            <LegacyWhatsappIcon iconSize='xs' />
+            <LegacyHelpCentreIcon iconSize='xs' />
         </Tooltip>
     );
 };
 
-export default WhatsApp;
+export default HelpCentre;

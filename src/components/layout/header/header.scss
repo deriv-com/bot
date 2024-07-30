@@ -1,4 +1,38 @@
-.header {
-    padding: 20px;
-    border-bottom: 1px solid;
+@use 'components/shared/styles/constants' as *;
+
+.app-header {
+    padding-inline-end: 20px;
+
+    &__account-settings {
+        padding-inline-end: 0.75rem;
+        border-inline-end: 0.1rem solid var(--general-section-1);
+        height: 3.2rem;
+    }
+
+    &__account-settings,
+    .notifications__wrapper,
+    &__menu {
+        svg > path,
+        svg > g > path {
+            fill: var(--text-prominent);
+        }
+    }
+}
+
+.languages-modal {
+    background: var(--general-section-1);
+
+    .deriv-modal__header {
+        border-bottom: 2px solid var(--general-section-5);
+    }
+
+    .deriv-modal__close-icon {
+        path {
+            fill: var(--text-prominent);
+        }
+    }
+
+    .deriv-text {
+        color: var(--text-prominent) !important;
+    }
 }

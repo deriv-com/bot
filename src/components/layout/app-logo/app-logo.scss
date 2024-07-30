@@ -1,8 +1,10 @@
-.app-header__logo {
-    padding-left: 1.2rem;
-    padding-right: 2rem;
-    border-right: 1px solid #f2f3f4;
-    height: 32px;
-    display: flex;
-    align-items: center;
+.app-header {
+    &__logo {
+        padding-inline-start: 1.2rem;
+        padding-inline-end: 2rem;
+        border-inline-end: 1px solid var(--general-section-1);
+        height: 32px;
+        display: flex;
+        align-items: center;
+    }
 }

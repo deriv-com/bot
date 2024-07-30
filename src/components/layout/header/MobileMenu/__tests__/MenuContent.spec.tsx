@@ -96,10 +96,4 @@ describe('MenuContent Component', () => {
         const text = screen.getByText('Home');
         expect(text).toHaveClass('derivs-text__size--sm');
     });
-
-    it('applies conditional border styles based on configuration', () => {
-        render(<MenuContent />);
-        expect(screen.getAllByTestId('dt_menu_item')[0]).toHaveClass('border-b');
-        expect(screen.getAllByTestId('dt_menu_item')[1]).not.toHaveClass('border-b');
-    });
 });

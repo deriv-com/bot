@@ -9,6 +9,7 @@ import { BackButton } from './BackButton';
 import { MenuContent } from './MenuContent';
 import { MenuHeader } from './MenuHeader';
 import { ToggleButton } from './ToggleButton';
+import './mobile-menu.scss';
 
 const MobileMenu = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -24,8 +25,10 @@ const MobileMenu = () => {
 
     if (isDesktop) return null;
     return (
-        <>
-            <ToggleButton onClick={openDrawer} />
+        <div className='mobile-menu'>
+            <div className='mobile-menu__toggle'>
+                <ToggleButton onClick={openDrawer} />
+            </div>
 
             <Drawer isOpen={isDrawerOpen} onCloseDrawer={closeDrawer} width='29.5rem'>
                 <Drawer.Header onCloseDrawer={closeDrawer}>
@@ -38,7 +41,9 @@ const MobileMenu = () => {
                 <Drawer.Content>
                     {isLanguageSettingVisible ? (
                         <>
-                            <BackButton buttonText={localize('Language')} onClick={hideModal} />
+                            <div className='mobile-menu__back-btn'>
+                                <BackButton buttonText={localize('Language')} onClick={hideModal} />
+                            </div>
 
                             <MobileLanguagesDrawer
                                 isOpen
@@ -46,7 +51,7 @@ const MobileMenu = () => {
                                 onClose={hideModal}
                                 onLanguageSwitch={switchLanguage}
                                 selectedLanguage={currentLang}
-                                wrapperClassName='px-[0.8rem]'
+                                wrapperClassName='mobile-menu__language-drawer'
                             />
                         </>
                     ) : (
@@ -54,12 +59,12 @@ const MobileMenu = () => {
                     )}
                 </Drawer.Content>
 
-                <Drawer.Footer className='justify-center h-16'>
+                <Drawer.Footer className='mobile-menu__footer'>
                     <ServerTime />
                     <NetworkStatus />
                 </Drawer.Footer>
             </Drawer>
-        </>
+        </div>
     );
 };
 
