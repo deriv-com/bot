@@ -26,11 +26,14 @@ export const MenuContent = () => {
                             key={index}
                         >
                             {item.map(({ LeftComponent, RightComponent, as, href, label, onClick, target }) => {
+                                const is_deriv_logo = label === 'Deriv.com';
                                 if (as === 'a') {
                                     return (
                                         <MenuItem
                                             as='a'
-                                            className='mobile-menu__content__items__item'
+                                            className={clsx('mobile-menu__content__items__item', {
+                                                'mobile-menu__content__items__icons': !is_deriv_logo,
+                                            })}
                                             disableHover
                                             href={href}
                                             key={label}
@@ -50,7 +53,9 @@ export const MenuContent = () => {
                                 return (
                                     <MenuItem
                                         as='button'
-                                        className='mobile-menu__content__items__item'
+                                        className={clsx('mobile-menu__content__items__item', {
+                                            'mobile-menu__content__items__icons': !is_deriv_logo,
+                                        })}
                                         disableHover
                                         key={label}
                                         leftComponent={

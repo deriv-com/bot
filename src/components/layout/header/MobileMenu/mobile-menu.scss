@@ -4,7 +4,7 @@
     &__toggle {
         padding-inline-start: 1rem;
         padding-inline-end: 1rem;
-        border-inline-end: 1px solid rgb(242 243 244 / var(--tw-border-opacity));
+        border-inline-end: 1px solid var(--general-section-1);
         display: flex;
         height: 100%;
         cursor: pointer;
@@ -39,7 +39,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid rgb(242 243 244 / var(--tw-border-opacity));
+            border-bottom: 1px solid var(--general-section-1);
             height: 7rem;
             cursor: pointer;
         }
@@ -55,7 +55,7 @@
             }
 
             &--bottom-border {
-                border-bottom: 1px solid rgb(242 243 244 / var(--tw-border-opacity));
+                border-bottom: 1px solid var(--general-section-1);
             }
 
             &__item {
@@ -65,6 +65,13 @@
 
             &--right-margin {
                 margin-inline-end: 1.6rem;
+            }
+
+            &__icons {
+                g > path,
+                path {
+                    fill: var(--text-prominent);
+                }
             }
         }
     }
@@ -85,6 +92,10 @@
             flex-direction: column;
             padding: 8px;
 
+            .deriv-text {
+                color: var(--text-prominent) !important;
+            }
+
             &-selected {
                 border: 1px solid var(--brand-blue, var(--brand-secondary));
                 border-radius: 4px;
@@ -101,6 +112,19 @@
 
         span {
             margin-inline-start: 1.6rem;
+        }
+    }
+
+    .deriv-drawer__container {
+        background: var(--general-section-1);
+    }
+
+    &__toggle,
+    &__back-btn,
+    .deriv-drawer__header__close-btn {
+        button > svg > path,
+        svg > path {
+            fill: var(--text-prominent);
         }
     }
 }

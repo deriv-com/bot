@@ -18,6 +18,11 @@
     &__icon {
         padding: 0.8rem;
 
+        svg > g > path,
+        svg > path {
+            fill: var(--text-prominent);
+        }
+
         @include mobile-or-tablet-screen {
             padding: 0;
         }
@@ -82,11 +87,11 @@
         align-items: center;
         flex-direction: column;
         padding: 0.8rem;
-    }
 
-    &-selected {
-        border-radius: 4px;
-        border: 1px solid var(--brand-blue, $color-green);
+        &-selected {
+            border-radius: 4px;
+            border: 1px solid var(--brand-blue, $color-green);
+        }
     }
 }
 
