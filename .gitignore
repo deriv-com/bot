@@ -18,7 +18,9 @@ key.pem
 cert.pem
 
 .env
-.env.local
+.env.*
+*.env
+
 *.secret
 nx-cloud.env
 test-results/
