@@ -101,7 +101,7 @@ jobs:
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TEST_LINK_TOKEN }}
                   CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_TEST_LINK_ACCOUNT_ID }}
-                  CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+                  CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_TEST_LINK_PROJECT_NAME }}
                   HEAD_BRANCH: ${{ github.head_ref }}
               run: |
                   echo "Installing Wrangler CLI"
