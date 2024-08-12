@@ -64,7 +64,6 @@ jobs:
                   cat log.txt
                   if grep -q "Deployment complete" log.txt; then
                     echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
-                    echo $preview_url > .pr/PREVIEW_URL
                   else
                     echo "Deployment to Cloudflare Pages failed."
                     exit 1
