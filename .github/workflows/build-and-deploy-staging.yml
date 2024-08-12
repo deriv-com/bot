@@ -56,11 +56,11 @@ jobs:
                   npm i -g wrangler
                   echo "Deploying build to Cloudflare Pages"
                   directory='dist/'
-                  projectName=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+                  projectName=$CLOUDFLARE_PROJECT_NAME
                   branch=$(echo "$HEAD_BRANCH" | head -c 20 | sed 's/[\/_\.]/-/g; s/[^a-zA-Z0-9]$/1/')
-                  cf_preview_url=$(wrangler pages deploy $directory --project-name=$CLOUDFLARE_PROJECT_NAME --branch=$branch > log.txt 2>&1; echo $?)
+                  cf_preview_url=$(wrangler pages deploy $directory --project-name=$projectName --branch=$branch > log.txt 2>&1; echo $?)
                   echo "------"
-                  preview_url=https://$branch.$CLOUDFLARE_PROJECT_NAME.pages.dev
+                  preview_url=https://$branch.$projectName.pages.dev
                   cat log.txt
                   if grep -q "Deployment complete" log.txt; then
                     echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
