@@ -3,7 +3,7 @@ name: Build staging and Deploy to Cloudflare Pages
 on:
     push:
         branches:
-            - 'main'
+            - 'master'
 
 concurrency:
     group: cloudflare-pages-build-staging
