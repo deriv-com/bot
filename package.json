@@ -26,7 +26,7 @@
         "@deriv-com/utils": "latest",
         "@deriv/deriv-charts": "^2.1.23",
         "@deriv/js-interpreter": "^3.0.0",
-        "@deriv/quill-icons": "~1.22.10",
+        "@deriv/quill-icons": "~1.23.10",
         "@svgr/core": "^8.1.0",
         "@tanstack/react-query": "^5.29.2",
         "blockly": "^10.4.3",

@@ -16,7 +16,7 @@ const GoogleDrive = observer(() => {
         <div className='load-strategy__container' data-testid='dt_google_drive'>
             <div className='load-strategy__google-drive'>
                 <Icon
-                    icon={'IcGoogleDrive'}
+                    icon='IcGoogleDrive'
                     className={classnames('load-strategy__google-drive-icon', {
                         'load-strategy__google-drive-icon--disabled': !is_authorised,
                     })}

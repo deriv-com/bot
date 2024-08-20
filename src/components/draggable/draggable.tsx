@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import {
     calculateHeight,
     calculateWidth,
@@ -221,7 +221,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                         data-testid='dt_react_draggable-close-modal'
                         onClick={onClose}
                     >
-                        <Icon icon='IcCross' />
+                        <LegacyClose1pxIcon height='20px' width='20px' />
                     </div>
                 </div>
                 <span className='draggable-content__body' id='draggable-content-body'>

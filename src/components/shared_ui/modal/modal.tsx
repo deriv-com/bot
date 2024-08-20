@@ -1,13 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import { Icon } from '@/utils/tmp/dummy';
-
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import Text from '../text/text';
-
 import Body from './modal-body';
 import Footer from './modal-footer';
 
@@ -208,7 +206,12 @@ const ModalElement = ({
                     )}
                     {has_close_icon && (
                         <div onClick={toggleModal} className='dc-modal-header__close' role='button'>
-                            <Icon icon='IcCross' color={close_icon_color} data_testid='dt_modal_close_icon' />
+                            <LegacyClose1pxIcon
+                                height='20px'
+                                width='20px'
+                                color={close_icon_color}
+                                data-testid='dt_modal_close_icon'
+                            />
                         </div>
                     )}
                 </div>

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { Icon, Localize, localize } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
@@ -31,10 +32,11 @@ const LocalComponent = observer(() => {
                     <div className='load-strategy__preview-workspace'>
                         <div id='load-strategy__blockly-container' style={{ height: '100%' }}>
                             <div className='load-strategy__local-preview-close'>
-                                <Icon
-                                    data_testid='dt_load-strategy__local-preview-close'
-                                    icon='IcCross'
+                                <LegacyClose1pxIcon
                                     onClick={() => setLoadedLocalFile(null)}
+                                    data-testid='dt_load-strategy__local-preview-close'
+                                    height='20px'
+                                    width='20px'
                                 />
                             </div>
                             <WorkspaceControl />
