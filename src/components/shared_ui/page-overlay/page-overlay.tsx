@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 
 type TPageOverlay = {
     header?: React.ReactNode;
@@ -56,7 +57,7 @@ const PageOverlay = ({
                                     window.history.back
                                 }
                             >
-                                <Icon icon='IcCross' />
+                                <LegacyClose1pxIcon height='20px' width='20px' />
                             </div>
                         )}
                     </div>

@@ -4,7 +4,8 @@ import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import {
     rudderStackSendQsEditStrategyEvent,
@@ -90,7 +91,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                                 }
                             }}
                         >
-                            <Icon icon='IcCross' />
+                            <LegacyClose1pxIcon height='20px' width='20px' />
                         </span>
                     </div>
                 </div>

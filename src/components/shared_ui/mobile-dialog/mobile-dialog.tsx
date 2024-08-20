@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import Div100vhContainer from '../div100vh-container';
 import Text from '../text/text';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -137,7 +137,11 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                                     className='icons dc-btn-close dc-mobile-dialog__close-btn'
                                     onClick={props.onClose}
                                 >
-                                    <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
+                                    <LegacyClose1pxIcon
+                                        className='dc-mobile-dialog__close-btn-icon'
+                                        height='20px'
+                                        width='20px'
+                                    />
                                 </div>
                             )}
                         </div>

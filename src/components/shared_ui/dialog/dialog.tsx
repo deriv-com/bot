@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import Button from '../button';
 import Text from '../text';
 
@@ -147,7 +147,7 @@ const Dialog = ({
                             )}
                             {has_close_icon && (
                                 <div onClick={handleClose} className='dc-dialog__header--close'>
-                                    <Icon icon='IcCross' />
+                                    <LegacyClose1pxIcon height='20px' width='20px' />
                                 </div>
                             )}
                         </div>

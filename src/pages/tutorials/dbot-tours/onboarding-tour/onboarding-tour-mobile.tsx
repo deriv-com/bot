@@ -5,7 +5,8 @@ import ProgressBarTracker from '@/components/shared_ui/progress-bar-tracker';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { getSetting } from '@/utils/settings';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import TourButton from '../common/tour-button';
 import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../tour-content';
 
@@ -68,9 +69,10 @@ const OnboardingTourMobile = observer(() => {
                         data-testid='dbot-onboard-slider__navbar'
                     >{`${tour_step_key - 1}/7`}</Text>
                     <span onClick={onCloseTour}>
-                        <Icon
-                            icon='IcCross'
-                            data_testid='exit-onboard-tour'
+                        <LegacyClose1pxIcon
+                            height='20px'
+                            width='20px'
+                            data-testid='exit-onboard-tour'
                             className='db-contract-card__result-icon'
                             color='secondary'
                         />

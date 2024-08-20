@@ -1,8 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
-import { Dialog, Text } from '@deriv-com/ui';
+import { localize } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
+import Dialog from './shared_ui/dialog';
 
 const BotStopped = observer(() => {
     const { dashboard } = useStore();
@@ -34,7 +36,7 @@ const BotStopped = observer(() => {
                     }}
                     tabIndex={0}
                 >
-                    <Icon icon='IcCross' />
+                    <LegacyClose1pxIcon height='20px' width='20px' />
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>

@@ -7,7 +7,14 @@ import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import {
+    DerivLightBotBuilderIcon,
+    DerivLightGoogleDriveIcon,
+    DerivLightLocalDeviceIcon,
+    DerivLightMyComputerIcon,
+    DerivLightQuickStrategyIcon,
+} from '@deriv/quill-icons';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -46,19 +53,23 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     const actions: TCardArray[] = [
         {
             type: 'my-computer',
-            icon: is_mobile ? 'IcLocal' : 'IcMyComputer',
+            icon: is_mobile ? (
+                <DerivLightLocalDeviceIcon height='48px' width='48px' />
+            ) : (
+                <DerivLightMyComputerIcon height='48px' width='48px' />
+            ),
             content: is_mobile ? localize('Local') : localize('My computer'),
             method: openFileLoader,
         },
         {
             type: 'google-drive',
-            icon: 'IcGoogleDriveDbot',
+            icon: <DerivLightGoogleDriveIcon height='48px' width='48px' />,
             content: localize('Google Drive'),
             method: openGoogleDriveDialog,
         },
         {
             type: 'bot-builder',
-            icon: 'IcBotBuilder',
+            icon: <DerivLightBotBuilderIcon height='48px' width='48px' />,
             content: localize('Bot Builder'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
@@ -66,7 +77,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         },
         {
             type: 'quick-strategy',
-            icon: 'IcQuickStrategy',
+            icon: <DerivLightQuickStrategyIcon height='48px' width='48px' />,
             content: localize('Quick strategy'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
@@ -97,7 +108,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     'tab__dashboard__table__block--minimized': has_dashboard_strategies && is_mobile,
                                 })}
                             >
-                                <Icon
+                                <div
                                     className={classNames('tab__dashboard__table__images', {
                                         'tab__dashboard__table__images--minimized': has_dashboard_strategies,
                                     })}
@@ -108,7 +119,9 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     onClick={() => {
                                         method();
                                     }}
-                                />
+                                >
+                                    {icon}
+                                </div>
                                 <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}
                                 </Text>

@@ -82,13 +82,31 @@
     &__icon {
         cursor: pointer;
         border: none;
-        margin: auto 1.2rem;
+        margin: auto 0.8rem;
         height: 1.6rem;
         width: 1.6rem;
         fill: var(--text-prominent);
 
         @include mobile {
             margin: 1.2rem;
+        }
+
+        &.undo {
+            svg {
+                transform: scaleX(-1) rotate(180deg);
+            }
+        }
+
+        &.redo {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+
+        &--disabled {
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.5;
         }
     }
 

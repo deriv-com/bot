@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv-com/ui';
 import Button from '@/components/shared_ui/button';
 import Input from '@/components/shared_ui/input';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
@@ -11,7 +10,9 @@ import RadioGroup from '@/components/shared_ui/radio-group';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { DerivLightGoogleDriveIcon, DerivLightLocalDeviceIcon, DerivLightMyComputerIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
@@ -95,7 +96,13 @@ const SaveModalForm = ({
                                         label={
                                             <IconRadio
                                                 text={localize('Local')}
-                                                icon={<Icon icon={is_mobile ? 'IcLocal' : 'IcMyComputer'} size={48} />}
+                                                icon={
+                                                    is_mobile ? (
+                                                        <DerivLightLocalDeviceIcon height='48px' width='48px' />
+                                                    ) : (
+                                                        <DerivLightMyComputerIcon height='48px' width='48px' />
+                                                    )
+                                                }
                                             />
                                         }
                                         value={save_types.LOCAL}
@@ -105,7 +112,7 @@ const SaveModalForm = ({
                                         label={
                                             <IconRadio
                                                 text={'Google Drive'}
-                                                icon={<Icon icon={'IcGoogleDrive'} size={48} />}
+                                                icon={<DerivLightGoogleDriveIcon height='48px' width='48px' />}
                                                 google_drive_connected={is_authorised}
                                                 onDriveConnect={onDriveConnect}
                                             />
@@ -118,29 +125,6 @@ const SaveModalForm = ({
                                     />
                                 </RadioGroup>
                             </div>
-                            {/* removed this from the save modal popup because it is not there in the design */}
-                            {/* <>
-                                <Field name='save_as_collection'>
-                                    {({ field }) => (
-                                        <Checkbox
-                                            onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
-                                            defaultChecked={save_as_collection}
-                                            label={
-                                                <Text size='xs' LineHeight='sm' weight='bold'>
-                                                    <Localize i18n_default_text='Save as collection' />
-                                                </Text>
-                                            }
-                                            classNameLabel='save-type__checkbox-text'
-                                            {...field}
-                                        />
-                                    )}
-                                </Field>
-                                <div className='save-type__checkbox-description'>
-                                    {localize(
-                                        'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
-                                    )}
-                                </div>
-                            </> */}
                         </div>
                         <div
                             className={classNames('modal__footer', {
@@ -169,6 +153,7 @@ const SaveModalForm = ({
         }}
     </Formik>
 );
+
 const SaveModal = observer(() => {
     const { save_modal, google_drive, dashboard, load_modal } = useStore();
     const { ui } = useStore();
