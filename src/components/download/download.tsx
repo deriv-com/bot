@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from '@/utils/download';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import Popover from '../shared_ui/popover';
 
@@ -96,16 +97,13 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 id='download-button'
                 disabled={disabled}
                 className='download__button'
-                icon={
-                    <Icon icon='IcDbotDownload' color={disabled ? 'disabled' : undefined} className='download__icon' />
-                }
                 onClick={clickFunction}
                 variant='outlined'
                 color='black'
                 size='sm'
                 textSize='sm'
             >
-                {localize('Download')}
+                <Localize i18n_default_text='Download' />
             </Button>
         </Popover>
     );

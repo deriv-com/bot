@@ -1,5 +1,5 @@
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@/components/shared';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';

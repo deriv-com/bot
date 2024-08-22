@@ -1,5 +1,5 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 
 window.Blockly.Blocks.multiplier_stop_loss = {

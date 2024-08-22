@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Tabs from '@/components/shared_ui/tabs';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedSearchCaptionRegularIcon, LegacyCloseCircle1pxBlackIcon } from '@deriv/quill-icons';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 
@@ -35,12 +35,11 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     return (
         <div className='dc-tabs__wrapper' data-testid='tutorials-tab-desktop'>
             <div className='dc-tabs__wrapper__group'>
-                <Icon
+                <LabelPairedSearchCaptionRegularIcon
+                    height='20px'
+                    width='20px'
                     className='search-icon'
-                    data_testid='id-test-search'
-                    width='1.6rem'
-                    height='1.6rem'
-                    icon='IcSearch'
+                    data-testid='id-test-search'
                 />
                 <SearchInput
                     faq_value={faq_search_value}
@@ -48,12 +47,11 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     prev_active_tutorials={prev_active_tutorials}
                 />
                 {search && (
-                    <Icon
+                    <LegacyCloseCircle1pxBlackIcon
+                        height='18px'
+                        width='18px'
                         className='close-icon'
-                        data_testid='id-test-close'
-                        width='1.6rem'
-                        height='1.6rem'
-                        icon='IcDbotClose'
+                        data-testid='id-test-close'
                         onClick={onCloseHandleSearch}
                     />
                 )}

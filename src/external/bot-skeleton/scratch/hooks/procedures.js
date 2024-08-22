@@ -4,7 +4,7 @@
  * @return {!Array.<!Element>} Array of XML block elements.
  */
 
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 window.Blockly.Procedures.flyoutCategory = function (workspace) {
     let xmlList = [];

@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
+import { localize } from '@deriv-com/translations';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
@@ -153,9 +153,7 @@ const Toolbox = observer(() => {
                                                                     }}
                                                                 >
                                                                     <Text size='xxs'>
-                                                                        {localize(
-                                                                            subCategory.getAttribute('name') as string
-                                                                        )}
+                                                                        {subCategory.getAttribute('name') as string}
                                                                     </Text>
                                                                 </div>
                                                             );

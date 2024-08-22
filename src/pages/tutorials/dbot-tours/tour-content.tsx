@@ -2,7 +2,8 @@ import { getImageLocation } from '../../../public-path';
 import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, Localize, localize } from '@/utils/tmp/dummy';
+import { LabelPairedCircleCheckCaptionRegularIcon } from '@deriv/quill-icons';
+import { Localize, localize } from '@deriv-com/translations';
 import TourSteps from './common/tour-steps';
 
 type TJoyrideConfig = Record<
@@ -281,7 +282,7 @@ const Step4 = ({ show_label = false }) => (
             </ul>
             <div className='joyride-content__left joyride-content__with-icon'>
                 <div className='joyride-content__with-icon__left'>
-                    <Icon icon='IcCheckmarkCircle' className='db-contract-card__result-icon' color='green' />
+                    <LabelPairedCircleCheckCaptionRegularIcon className='db-contract-card__result-icon' color='green' />
                 </div>
                 <div className='joyride-content__with-icon__right'>
                     <Localize

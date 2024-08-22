@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import { runIrreversibleEvents } from '../../../utils';
 
