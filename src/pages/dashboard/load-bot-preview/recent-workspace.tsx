@@ -11,8 +11,8 @@ import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
 import {
-    LabelPairedFileCaptionRegularIcon,
     LabelPairedFloppyDiskCaptionRegularIcon,
+    LabelPairedPageCircleArrowRightCaptionRegularIcon,
     LabelPairedTrashCaptionRegularIcon,
     LegacyMenuDots1pxIcon,
 } from '@deriv/quill-icons';
@@ -21,25 +21,10 @@ import { Text } from '@deriv-com/ui';
 import { STRATEGY } from '../../../constants/dashboard';
 import './recent-workspace.scss';
 
-export const MENU_DESKTOP = [
-    {
-        type: STRATEGY.OPEN,
-        icon: <LabelPairedFileCaptionRegularIcon height='24px' width='24px' />,
-    },
-    {
-        type: STRATEGY.SAVE,
-        icon: <LabelPairedFloppyDiskCaptionRegularIcon height='24px' width='24px' />,
-    },
-    {
-        type: STRATEGY.DELETE,
-        icon: <LabelPairedTrashCaptionRegularIcon height='24px' width='24px' />,
-    },
-];
-
 export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
-        icon: <LabelPairedFileCaptionRegularIcon height='24px' width='24px' />,
+        icon: <LabelPairedPageCircleArrowRightCaptionRegularIcon height='24px' width='24px' />,
         label: <Localize i18n_default_text='Open' />,
     },
     {
