@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedMinusCaptionRegularIcon, LabelPairedPlusCaptionRegularIcon } from '@deriv/quill-icons';
 
 type TWorkspaceControlProps = {
     mockZoomInOut?: (is_zoom_in: boolean) => void;
@@ -12,21 +12,19 @@ const WorkspaceControl = observer(({ mockZoomInOut }: TWorkspaceControlProps) =>
 
     return (
         <div className='load-strategy__preview-workspace-controls'>
-            <Icon
-                icon={'IcAddRounded'}
+            <LabelPairedPlusCaptionRegularIcon
                 className='load-strategy__preview-workspace-icon'
                 onClick={() => {
                     mockZoomInOut ? mockZoomInOut(true) : onZoomInOutClick(true);
                 }}
-                data_testid='zoom-in'
+                data-testid='zoom-in'
             />
-            <Icon
-                icon={'IcMinusRounded'}
+            <LabelPairedMinusCaptionRegularIcon
                 className='load-strategy__preview-workspace-icon'
                 onClick={() => {
                     mockZoomInOut ? mockZoomInOut(false) : onZoomInOutClick(false);
                 }}
-                data_testid='zoom-out'
+                data-testid='zoom-out'
             />
         </div>
     );

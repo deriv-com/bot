@@ -4,7 +4,8 @@ import { observer } from 'mobx-react-lite';
 import ContractResultOverlay from '@/components/contract-result-overlay';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { LabelPairedPlayCaptionFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import { rudderStackSendRunBotEvent } from '../../pages/bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 import CircularWrapper from './circular-wrapper';
@@ -69,9 +70,17 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
 
     const button_props = React.useMemo(() => {
         if (is_stop_button_visible) {
-            return { id: 'db-animation__stop-button', text: localize('Stop'), icon: 'IcStop' };
+            return {
+                id: 'db-animation__stop-button',
+                text: <Localize i18n_default_text='Stop' />,
+                icon: <LabelPairedSquareLgFillIcon height='26px' width='26px' fill='#fff' />,
+            };
         }
-        return { id: 'db-animation__run-button', text: localize('Run'), icon: 'IcPlay' };
+        return {
+            id: 'db-animation__run-button',
+            text: <Localize i18n_default_text='Run' />,
+            icon: <LabelPairedPlayCaptionFillIcon height='26px' width='26px' fill='#fff' />,
+        };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
     return (
@@ -80,8 +89,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 is_disabled={is_disabled && !is_unavailable_for_payment_agent}
                 className='animation__button'
                 id={button_props.id}
-                text={button_props.text}
-                icon={<Icon icon={button_props.icon} color='active' />}
+                icon={button_props.icon}
                 onClick={() => {
                     setShouldDisable(true);
                     if (is_stop_button_visible) {
@@ -93,7 +101,9 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}
-            />
+            >
+                {button_props.text}
+            </Button>
             <div
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,

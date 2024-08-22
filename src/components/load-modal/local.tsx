@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
-import { Icon, Localize, localize } from '@/utils/tmp/dummy';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { DerivLightLocalDeviceIcon, DerivLightMyComputerIcon, LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Button } from '@deriv-com/ui';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
@@ -71,10 +71,14 @@ const LocalComponent = observer(() => {
                     }}
                 >
                     {is_mobile ? (
-                        <Icon icon='IcLocal' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                        <DerivLightLocalDeviceIcon height='96px' width='96px' className='load-strategy__local-icon' />
                     ) : (
                         <React.Fragment>
-                            <Icon icon='IcPc' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                            <DerivLightMyComputerIcon
+                                height='128px'
+                                width='128px'
+                                className='load-strategy__local-icon'
+                            />
                             <div className='load-strategy__local-title'>
                                 <Localize i18n_default_text='Drag your XML file here' />
                             </div>
@@ -84,17 +88,15 @@ const LocalComponent = observer(() => {
                         </React.Fragment>
                     )}
                     <Button
-                        text={
-                            is_file_supported
-                                ? localize('Select an XML file from your device')
-                                : localize('Please upload an XML file')
-                        }
                         data-testid='dt_load-strategy__local-upload'
                         onClick={() => file_input_ref?.current?.click()}
-                        has_effect
-                        primary
-                        large
-                    />
+                    >
+                        {is_file_supported ? (
+                            <Localize i18n_default_text='Select an XML file from your device' />
+                        ) : (
+                            <Localize i18n_default_text='Please upload an XML file' />
+                        )}
+                    </Button>
                 </div>
             </div>
         </div>

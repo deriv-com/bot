@@ -8,7 +8,9 @@ import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
-import { DataList, Icon, localize } from '@/utils/tmp/dummy';
+import { DataList, Icon } from '@/utils/tmp/dummy';
+import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 import Transaction from './transaction';
@@ -120,16 +122,18 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                     size='sm'
                     textSize='sm'
                 >
-                    {localize('View Detail')}
+                    <Localize i18n_default_text='View Detail' />
                 </Button>
             </div>
             <div className='transactions__header'>
-                <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
+                <span className='transactions__header-column transactions__header-type'>
+                    <Localize i18n_default_text='Type' />
+                </span>
                 <span className='transactions__header-column transactions__header-spot'>
-                    {localize('Entry/Exit spot')}
+                    <Localize i18n_default_text='Entry/Exit spot' />
                 </span>
                 <span className='transactions__header-column transactions__header-profit'>
-                    {localize('Buy price and P/L')}
+                    <Localize i18n_default_text='Buy price and P/L' />
                 </span>
             </div>
             <div
@@ -187,10 +191,10 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                     <div className='transactions-empty-box'>
                                         <div className='transactions-empty'>
                                             <div className='transactions-empty__icon-box'>
-                                                <Icon
-                                                    icon='IcBox'
+                                                <DerivLightEmptyCardboardBoxIcon
+                                                    height='64px'
+                                                    width='64px'
                                                     className='transactions-empty__icon'
-                                                    size={64}
                                                     color='secondary'
                                                 />
                                             </div>
@@ -203,15 +207,23 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                                 lineHeight='sm'
                                                 className='transactions-empty__header'
                                             >
-                                                {localize('There are no transactions to display')}
+                                                <Localize i18n_default_text='There are no transactions to display' />
                                             </Text>
                                             <div className='transactions-empty__message'>
                                                 <Text size='xs' color='less-prominent' lineHeight='3xl'>
-                                                    {localize('Here are the possible reasons:')}
+                                                    <Localize i18n_default_text='Here are the possible reasons:' />
                                                 </Text>
                                                 <ul className='transactions-empty__list'>
-                                                    <li>{localize('The bot is not running')}</li>
-                                                    <li>{localize('The stats are cleared')}</li>
+                                                    <li>
+                                                        <Text size='xs' color='less-prominent' lineHeight='3xl'>
+                                                            <Localize i18n_default_text='The bot is not running' />
+                                                        </Text>
+                                                    </li>
+                                                    <li>
+                                                        <Text size='xs' color='less-prominent' lineHeight='3xl'>
+                                                            <Localize i18n_default_text='The stats are cleared' />
+                                                        </Text>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>

@@ -3,15 +3,29 @@ import { observer } from 'mobx-react-lite';
 import { timeSince } from '@/external/bot-skeleton';
 import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { DerivLightGoogleDriveIcon, DerivLightMyComputerIcon, LegacyReportsIcon } from '@deriv/quill-icons';
 
 type TRecentWorkspaceProps = {
     workspace: { [key: string]: any };
 };
 
+type TIcons = {
+    [key: string]: React.ReactElement;
+};
+
+export const getRecentFileIcon = (save_type: string, class_name: string = ''): React.ReactElement => {
+    if (!save_type && typeof save_type !== 'string') return <LegacyReportsIcon height='14px' width='14px' />;
+    const icons: TIcons = {
+        [save_types.UNSAVED]: <LegacyReportsIcon height='14px' width='14px' />,
+        [save_types.LOCAL]: <DerivLightMyComputerIcon height='14px' width='24px' />,
+        [save_types.GOOGLE_DRIVE]: <DerivLightGoogleDriveIcon className={class_name} height='14px' width='14px' />,
+    };
+    return icons[save_type as string] as React.ReactElement;
+};
+
 const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
     const { load_modal } = useStore();
-    const { getRecentFileIcon, getSaveType, previewRecentStrategy, selected_strategy_id } = load_modal;
+    const { getSaveType, previewRecentStrategy, selected_strategy_id } = load_modal;
 
     return (
         <div
@@ -29,12 +43,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
                 <div className='load-strategy__recent-item-time'>{timeSince(workspace.timestamp)}</div>
             </div>
             <div className='load-strategy__recent-item-location'>
-                <Icon
-                    icon={getRecentFileIcon(workspace.save_type)}
-                    className={classnames({
-                        'load-strategy__recent-icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
-                    })}
-                />
+                {getRecentFileIcon(workspace.save_type, 'load-strategy__recent-icon--active')}
                 <div className='load-strategy__recent-item-saved'>{getSaveType(workspace.save_type)}</div>
             </div>
         </div>

@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { help_content_config } from '@/utils/help-content/help-content.config';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons';
 import { Input, Text } from '@deriv-com/ui';
 import { getPlatformSettings } from '../shared';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
@@ -62,10 +63,10 @@ const FlyoutContent = (props: TFlyoutContent) => {
                 {selected_category?.getAttribute('id') === 'indicators' && (
                     <div className='flyout__content-disclaimer'>
                         <span className='flyout__content-disclaimer-icon'>
-                            <Icon
-                                icon='IcBlackWarning'
-                                custom_color='#000000'
+                            <LabelPairedCircleExclamationCaptionFillIcon
                                 className='flyout__content-disclaimer__warning-icon'
+                                height='24px'
+                                width='24px'
                             />
                         </span>
                         <span className='flyout__content-disclaimer-text'>

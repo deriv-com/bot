@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 import { Button } from '@deriv-com/ui';
-import './index.scss';
+import './recent-workspace.scss';
 
 const LocalFooter = observer(() => {
     const { ui } = useStore();
