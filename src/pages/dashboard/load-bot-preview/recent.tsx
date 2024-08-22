@@ -8,7 +8,7 @@ import { Text } from '@deriv-com/ui';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import SaveModal from './save-modal';
-import './index.scss';
+import './recent-workspace.scss';
 
 type THeader = {
     label: string;

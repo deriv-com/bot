@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import SelectNative from '@/components/shared_ui/select-native';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 
@@ -80,11 +81,10 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                 })}
                 data-testid={showSearchBar ? 'id-search-visible' : 'id-search-hidden'}
             >
-                <Icon
+                <LabelPairedArrowLeftCaptionFillIcon
                     onClick={onClickBackButton}
-                    data_testid='id-arrow-left-bold'
+                    data-testid='id-arrow-left-bold'
                     className='arrow-left-bold'
-                    icon='IcArrowLeftBold'
                 />
                 <SearchInput
                     faq_value={faq_search_value}

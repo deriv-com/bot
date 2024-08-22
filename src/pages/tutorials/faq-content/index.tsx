@@ -64,6 +64,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
 
     React.useEffect(() => {
         handleAccordionOpen();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
@@ -134,12 +135,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                                 onClick={handleAccordionClick}
                                 onKeyDown={handleKeyboardEvent}
                             >
-                                <Accordion
-                                    className='faq__wrapper__content'
-                                    list={getList()}
-                                    icon_close=''
-                                    icon_open=''
-                                />
+                                <Accordion className='faq__wrapper__content' list={getList()} />
                             </div>
                         </>
                     )}

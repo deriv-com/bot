@@ -1,19 +1,19 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { getRecentFileIcon } from '@/components/load-modal/recent-workspace';
 import { isDesktop } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
-import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
 import { Icon } from '@/utils/tmp/dummy';
 import { Text } from '@deriv-com/ui';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
-import './index.scss';
+import './recent-workspace.scss';
 
 type TRecentWorkspace = {
     index: number;
@@ -29,7 +29,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
         dashboard_strategies = [],
-        getRecentFileIcon,
         getSaveType,
         getSelectedStrategyID,
         loadFileFromRecent,
@@ -163,12 +162,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 </Text>
             </div>
             <div className='bot-list__item__load-type'>
-                <Icon
-                    icon={getRecentFileIcon(workspace.save_type)}
-                    className={classnames({
-                        'bot-list__item__load-type__icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
-                    })}
-                />
+                {getRecentFileIcon(workspace.save_type, 'bot-list__item__load-type__icon--active')}
                 <div className='bot-list__item__load-type__icon--saved'>
                     <Text align='left' as='p' size={text_size} LineHeight='lg'>
                         {getSaveType(workspace.save_type)}

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@/utils/tmp/dummy';
+import { LabelPairedCircleCheckMdRegularIcon, LabelPairedCircleXmarkMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 
 type TContractResultOverlayProps = {
@@ -21,12 +22,12 @@ const ContractResultOverlay = ({ profit }: TContractResultOverlayProps) => {
                 {has_won_contract ? (
                     <React.Fragment>
                         <Localize i18n_default_text='Won' />
-                        <Icon icon='IcCheckmarkCircle' className='db-contract-card__result-icon' color='green' />
+                        <LabelPairedCircleCheckMdRegularIcon className='db-contract-card__result-icon' color='green' />
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
                         <Localize i18n_default_text='Lost' />
-                        <Icon icon='IcCrossCircle' className='db-contract-card__result-icon' color='red' />
+                        <LabelPairedCircleXmarkMdRegularIcon className='db-contract-card__result-icon' color='red' />
                     </React.Fragment>
                 )}
             </Text>
