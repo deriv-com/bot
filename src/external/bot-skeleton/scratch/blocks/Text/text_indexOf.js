@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { emptyTextValidator } from '../../utils';
 
 window.Blockly.Blocks.text_indexOf = {

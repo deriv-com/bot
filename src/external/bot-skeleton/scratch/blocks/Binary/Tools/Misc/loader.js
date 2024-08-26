@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { LogTypes } from '../../../../../constants/messages';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';

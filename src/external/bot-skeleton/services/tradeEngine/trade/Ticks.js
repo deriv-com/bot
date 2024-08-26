@@ -1,5 +1,5 @@
 /* eslint-disable no-promise-executor-return */
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { getLast } from '../../../utils/binary-utils';
 import { observer as globalObserver } from '../../../utils/observer';
 import { getDirection, getLastDigit } from '../utils/helpers';

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { Localize } from '@/utils/tmp/dummy';
+import { LabelPairedPlusLgFillIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import FlyoutBlock from './flyout-block';
 
@@ -23,11 +24,14 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 id={`db-flyout__add--${block_type}`}
                 data-testid={`dt_flyout__add_${block_type}`}
                 className='flyout__button-add flyout__button-add--hide'
-                has_effect
-                is_plus
                 onClick={() => window.Blockly.derivWorkspace.addBlockNode(block_node)}
                 type='button'
-            />
+                variant='outlined'
+                color='black'
+                size='sm'
+            >
+                <LabelPairedPlusLgFillIcon height='24px' width='24px' />
+            </Button>
         </div>
     );
 

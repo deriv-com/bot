@@ -1,6 +1,6 @@
 import { applyMiddleware, createStore } from 'redux';
 import { thunk } from 'redux-thunk';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';

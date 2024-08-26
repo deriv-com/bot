@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedSearchCaptionRegularIcon, LegacyCloseCircle1pxBlackIcon } from '@deriv/quill-icons';
 
 type TSearchIcon = {
     search: string;
@@ -8,9 +8,9 @@ type TSearchIcon = {
 };
 
 const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon) => {
-    if (!search) return <Icon icon='IcSearch' />;
+    if (!search) return <LabelPairedSearchCaptionRegularIcon height='20px' width='20px' />;
     if (is_search_loading) return <div className='loader' data-testid='loader' />;
-    return <Icon icon='IcDbotClose' onClick={onClick} color='secondary' />;
+    return <LegacyCloseCircle1pxBlackIcon onClick={onClick} height='18px' width='18px' />;
 });
 
 export default SearchIcon;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { Icon, localize } from '@/utils/tmp/dummy';
+import { LabelPairedMinusCaptionRegularIcon, LabelPairedPlusCaptionRegularIcon } from '@deriv/quill-icons';
 
 type TContentData = {
     header: string;
@@ -71,12 +71,19 @@ const Accordion = ({
                         })}
                     >
                         <Text as='span' size={font_size} weight='bold'>
-                            {localize(header)}
+                            {header}
                         </Text>
                     </div>
                     {no_collapsible && (
                         <div className='dbot-accordion__icon'>
-                            <Icon icon={should_be_expanded ? 'IcMinus' : 'IcAdd'} />
+                            {
+                                // eslint-disable-next-line no-nested-ternary
+                                should_be_expanded ? (
+                                    <LabelPairedMinusCaptionRegularIcon />
+                                ) : (
+                                    <LabelPairedPlusCaptionRegularIcon />
+                                )
+                            }
                         </div>
                     )}
                 </button>

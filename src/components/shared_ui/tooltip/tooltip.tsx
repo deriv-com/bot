@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useHover } from '@/hooks/useHover';
 import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedCircleInfoCaptionRegularIcon } from '@deriv/quill-icons';
 
 type TTooltip = {
     alignment: string;
@@ -33,9 +34,8 @@ const Tooltip = ({
         >
             {icon === 'info' && (
                 <React.Fragment>
-                    <Icon icon='IcInfoOutline' className={icon_class} ref={hover_ref} />
-                    <Icon
-                        icon='IcInfoBlue'
+                    <LabelPairedCircleInfoCaptionRegularIcon className={icon_class} ref={hover_ref} />
+                    <LabelPairedCircleInfoCaptionRegularIcon
                         className={classNames(`${classNameIcon}-balloon-icon`, 'dc-tooltip__balloon-icon', {
                             'dc-tooltip__balloon-icon--show': show_tooltip_balloon_icon_on_hover,
                         })}

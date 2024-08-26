@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { minusIconDark, plusIconDark } from '../images';
 
 window.Blockly.Blocks.controls_if = {

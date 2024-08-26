@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { initErrorHandlingListener, removeErrorHandlingEventListener } from '../../../../utils';
 import DBotStore from '../../../dbot-store';

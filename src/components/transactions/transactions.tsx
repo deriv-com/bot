@@ -8,7 +8,7 @@ import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
-import { DataList, Icon } from '@/utils/tmp/dummy';
+import { DataList } from '@/utils/tmp/dummy';
 import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
@@ -116,7 +116,6 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                     onClick={() => {
                         toggleTransactionDetailsModal(true);
                     }}
-                    icon={<Icon icon='IcDbotViewDetail' size={18} />}
                     variant='outlined'
                     color='black'
                     size='sm'
