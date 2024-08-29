@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.math_trig = {
+Blockly.Blocks.math_trig = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -27,13 +28,16 @@ window.Blockly.Blocks.math_trig = {
                 },
             ],
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Trigonometric functions'),
-            category: window.Blockly.Categories.Mathematical,
+            category: Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -48,5 +52,4 @@ window.Blockly.Blocks.math_trig = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.math_trig =
-    window.Blockly.JavaScript.javascriptGenerator.forBlock.math_single;
+Blockly.JavaScript.javascriptGenerator.forBlock.math_trig = Blockly.JavaScript.javascriptGenerator.forBlock.math_single;

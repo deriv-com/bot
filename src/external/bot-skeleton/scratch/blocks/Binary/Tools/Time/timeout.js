@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.timeout = {
+Blockly.Blocks.timeout = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,13 +25,13 @@ window.Blockly.Blocks.timeout = {
                     name: 'SECONDS',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Run the blocks inside after a given number of seconds'),
-            category: window.Blockly.Categories.Time,
+            category: Blockly.Categories.Time,
         };
     },
     meta() {
@@ -41,6 +42,9 @@ window.Blockly.Blocks.timeout = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     getRequiredValueInputs() {
         return {
             SECONDS: null,
@@ -48,13 +52,13 @@ window.Blockly.Blocks.timeout = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
-    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
+Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
     const seconds =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'SECONDS',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '1';
 
     const code = `sleep(${seconds});\n${stack}\n`;

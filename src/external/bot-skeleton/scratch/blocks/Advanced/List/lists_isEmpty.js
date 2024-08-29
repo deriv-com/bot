@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.lists_isEmpty = {
+Blockly.Blocks.lists_isEmpty = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +17,12 @@ window.Blockly.Blocks.lists_isEmpty = {
             ],
             inputsInline: true,
             output: 'Boolean',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Checks if a given list is empty'),
-            category: window.Blockly.Categories.List,
+            category: Blockly.Categories.List,
         };
     },
     meta() {
@@ -37,17 +38,20 @@ window.Blockly.Blocks.lists_isEmpty = {
             VALUE: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_isEmpty = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_isEmpty = block => {
     const list =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || '[]';
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === list) !== -1;
 
     const code = isVariable ? `!${list} || !${list}.length` : `!${list}.length`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
 };

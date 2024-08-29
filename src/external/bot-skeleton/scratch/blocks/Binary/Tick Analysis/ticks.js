@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.ticks = {
+Blockly.Blocks.ticks = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -8,12 +9,12 @@ window.Blockly.Blocks.ticks = {
         return {
             message0: localize('Ticks list'),
             output: 'Array',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you a list of the last 1000 tick values.'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -22,9 +23,12 @@ window.Blockly.Blocks.ticks = {
             description: localize('This block gives you a list of the last 1000 tick values.'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.Blocks.ticks_string = {
+Blockly.Blocks.ticks_string = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -32,12 +36,12 @@ window.Blockly.Blocks.ticks_string = {
         return {
             message0: localize('Ticks String List'),
             output: 'Array',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the list of tick values in string format'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -46,18 +50,18 @@ window.Blockly.Blocks.ticks_string = {
             description: localize('Tick List String Description'),
         };
     },
-    onchange: window.Blockly.Blocks.ticks.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    onchange: Blockly.Blocks.ticks.onchange,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [
-        `Bot.getTicks(${type_list.includes(parent?.type)})`,
-        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
-    ];
+    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
+Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
     'Bot.getTicks(true)',
-    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

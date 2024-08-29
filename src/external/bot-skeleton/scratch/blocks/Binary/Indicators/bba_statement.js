@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.bba_statement = {
+Blockly.Blocks.bba_statement = {
     protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
@@ -37,13 +38,13 @@ window.Blockly.Blocks.bba_statement = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Calculates Bollinger Bands (BB) list from a list with a period'),
             previousStatement: null,
             nextStatement: null,
-            category: window.Blockly.Categories.Indicators,
+            category: Blockly.Categories.Indicators,
         };
     },
     meta() {
@@ -54,14 +55,17 @@ window.Blockly.Blocks.bba_statement = {
             ),
         };
     },
-    onchange: window.Blockly.Blocks.bb_statement.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.bba_statement = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.bba_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = window.Blockly.JavaScript.variableDB_.getName(
+    const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
     const bb_result = block.getFieldValue('BBRESULT_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

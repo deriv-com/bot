@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.tick = {
+Blockly.Blocks.tick = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -8,12 +9,12 @@ window.Blockly.Blocks.tick = {
         return {
             message0: localize('Last Tick'),
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the value of the last tick'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -22,9 +23,12 @@ window.Blockly.Blocks.tick = {
             description: localize('This block gives you the value of the last tick.'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.Blocks.tick_string = {
+Blockly.Blocks.tick_string = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -32,12 +36,12 @@ window.Blockly.Blocks.tick_string = {
         return {
             message0: localize('Last Tick String'),
             output: 'String',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the value of the latest tick in string format'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -46,18 +50,21 @@ window.Blockly.Blocks.tick_string = {
             description: localize('Tick value Description'),
         };
     },
-    onchange: window.Blockly.Blocks.tick.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    onchange: Blockly.Blocks.tick.onchange,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.tick = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.tick = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
     return [
         `Bot.getLastTick(false, ${type_list.includes(parent?.type)})`,
-        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+        Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
     ];
 };
-window.Blockly.JavaScript.javascriptGenerator.forBlock.tick_string = () => [
+Blockly.JavaScript.javascriptGenerator.forBlock.tick_string = () => [
     'Bot.getLastTick(false, true)',
-    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

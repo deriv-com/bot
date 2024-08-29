@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.text_append = {
+Blockly.Blocks.text_append = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -22,13 +22,13 @@ window.Blockly.Blocks.text_append = {
                     name: 'TEXT',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Appends a given text to a variable'),
-            category: window.Blockly.Categories.Text,
+            category: Blockly.Categories.Text,
         };
     },
     meta() {
@@ -42,9 +42,12 @@ window.Blockly.Blocks.text_append = {
             TEXT: emptyTextValidator,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.text_append = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_append = block => {
     const forceString = value => {
         const strRegExp = /^\s*'([^']|\\')*'\s*$/;
         if (strRegExp.test(value)) {
@@ -54,15 +57,12 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.text_append = block => {
     };
 
     // eslint-disable-next-line no-underscore-dangle
-    const varName = window.Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VAR'),
-        window.Blockly.Variables.CATEGORY_NAME
-    );
+    const varName = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.CATEGORY_NAME);
     const value =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TEXT',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
 
     const code = `${varName} += ${forceString(value)};\n`;

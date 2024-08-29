@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../../constants/config';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.balance = {
+Blockly.Blocks.balance = {
     init() {
         this.jsonInit(this.definition());
         const balanceTypeField = this.getField('BALANCE_TYPE');
@@ -12,8 +13,6 @@ window.Blockly.Blocks.balance = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            // kept this commented to fix backward compatibility issue
-            //this.render(false);
             return undefined;
         });
     },
@@ -28,12 +27,12 @@ window.Blockly.Blocks.balance = {
                 },
             ],
             output: null,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block returns account balance'),
-            category: window.Blockly.Categories.Miscellaneous,
+            category: Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -44,11 +43,14 @@ window.Blockly.Blocks.balance = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
     const balanceType = block.getFieldValue('BALANCE_TYPE');
 
     const code = `Bot.getBalance('${balanceType}')`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

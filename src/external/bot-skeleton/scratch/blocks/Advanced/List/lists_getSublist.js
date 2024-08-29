@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.lists_getSublist = {
+Blockly.Blocks.lists_getSublist = {
     init() {
         this.WHERE_OPTIONS_1 = [
             [localize('get sub-list from #'), 'FROM_START'],
@@ -19,13 +20,11 @@ window.Blockly.Blocks.lists_getSublist = {
 
         // eslint-disable-next-line no-underscore-dangle
         const block_color =
-            window.Blockly.Colours.Base.colour ||
-            window.Blockly.Colours.Base.colourSecondary ||
-            window.Blockly.Colours.Base.colourTertiary;
+            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
         this.setColour(block_color);
 
         this.setOutput(true, null);
-        this.setOutputShape(window.Blockly.OUTPUT_SHAPE_ROUND);
+        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.setInputsInline(true);
         this.setTooltip(
             localize('This block creates a list of items from an existing list, using specific item positions.')
@@ -39,13 +38,13 @@ window.Blockly.Blocks.lists_getSublist = {
             description: localize(
                 'This block creates a list of items from an existing list, using specific item positions.'
             ),
-            category: window.Blockly.Categories.List,
+            category: Blockly.Categories.List,
         };
     },
     mutationToDom() {
         const container = document.createElement('mutation');
-        const isAt1 = this.getInput('AT1').type === window.Blockly.INPUT_VALUE;
-        const isAt2 = this.getInput('AT2').type === window.Blockly.INPUT_VALUE;
+        const isAt1 = this.getInput('AT1').type === Blockly.INPUT_VALUE;
+        const isAt2 = this.getInput('AT2').type === Blockly.INPUT_VALUE;
 
         container.setAttribute('at1', isAt1);
         container.setAttribute('at2', isAt2);
@@ -67,7 +66,7 @@ window.Blockly.Blocks.lists_getSublist = {
             this.appendDummyInput(`AT${n}`);
         }
 
-        const menu = new window.Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
+        const menu = new Blockly.FieldDropdown(this[`WHERE_OPTIONS_${n}`], value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(n, newAt);
@@ -84,17 +83,19 @@ window.Blockly.Blocks.lists_getSublist = {
         }
 
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block => {
     const list =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'LIST',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || '[]';
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
@@ -105,14 +106,14 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block 
         code = `${list}.slice(0)`;
     } else if (list.match(/^\w+$/) || (where1 !== 'FROM_END' && where2 === 'FROM_START')) {
         if (where1 === 'FROM_START') {
-            at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
+            at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
         } else if (where1 === 'FROM_END') {
-            at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
+            at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(
                 block,
                 'AT1',
                 1,
                 false,
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
             );
             at1 = `${list}.length - ${at1}`;
         } else if (where1 === 'FIRST') {
@@ -120,14 +121,14 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block 
         }
 
         if (where2 === 'FROM_START') {
-            at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2', 1);
+            at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2', 1);
         } else if (where2 === 'FROM_END') {
-            at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
+            at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(
                 block,
                 'AT2',
                 0,
                 false,
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
             );
             at2 = `${list}.length - ${at2}`;
         } else if (where2 === 'LAST') {
@@ -136,8 +137,8 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block 
 
         code = `${list}.slice(${at1}, ${at2})`;
     } else {
-        at1 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
-        at2 = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2');
+        at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
+        at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2');
         const where_pascal_case = {
             FROM_START: 'FromStart',
             FROM_END: 'FromEnd',
@@ -160,11 +161,11 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block 
         const has_at2 = where2 === 'FROM_END' || where2 === 'FROM_START';
 
         // eslint-disable-next-line no-underscore-dangle
-        const function_name = window.Blockly.JavaScript.javascriptGenerator.provideFunction_(
+        const function_name = Blockly.JavaScript.javascriptGenerator.provideFunction_(
             `subsequence${where_pascal_case[where1]}${where_pascal_case[where2]}`,
             [
                 // eslint-disable-next-line no-underscore-dangle
-                `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
+                `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(
                     sequence${has_at1 ? ', at1' : ''}${has_at2 ? ', at2' : ''}
                 ) {
                     var start = ${getIndex('sequence', where1, 'at1')};
@@ -178,5 +179,5 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getSublist = block 
         code = `${function_name}(${list}${has_at1 ? `, ${at1}` : ''}${has_at2 ? `, ${at2}` : ''})`;
     }
 
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

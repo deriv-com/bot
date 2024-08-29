@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.lists_length = {
+Blockly.Blocks.lists_length = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -15,12 +16,12 @@ window.Blockly.Blocks.lists_length = {
             ],
             inputsInline: true,
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you the total number of items in a given list.'),
-            category: window.Blockly.Categories.List,
+            category: Blockly.Categories.List,
         };
     },
     meta() {
@@ -34,16 +35,19 @@ window.Blockly.Blocks.lists_length = {
             VALUE: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_length = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_length = block => {
     const list =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || '[]';
 
     const code = `${list}.length`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
 };

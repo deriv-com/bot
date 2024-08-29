@@ -4,10 +4,10 @@ import { getCurrencyDisplayCode } from '../../../shared';
 import { modifyContextMenu } from '../../../utils';
 
 const description = localize(
-    'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+    'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the accumulator trade type.'
 );
 
-Blockly.Blocks.multiplier_take_profit = {
+Blockly.Blocks.accumulator_take_profit = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -38,12 +38,9 @@ Blockly.Blocks.multiplier_take_profit = {
             category: Blockly.Categories.Trade_Definition,
         };
     },
-    customContextMenu(menu) {
-        modifyContextMenu(menu);
-    },
     meta() {
         return {
-            display_name: localize('Take Profit (Multiplier)'),
+            display_name: localize('Take Profit (Accumulator)'),
             description,
         };
     },
@@ -58,7 +55,10 @@ Blockly.Blocks.multiplier_take_profit = {
             this.setCurrency();
         }
     },
-    restricted_parents: ['trade_definition_multiplier'],
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    restricted_parents: ['trade_definition_accumulator'],
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
@@ -75,4 +75,4 @@ Blockly.Blocks.multiplier_take_profit = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_take_profit = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.accumulator_take_profit = () => {};

@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.read_ohlc = {
+Blockly.Blocks.read_ohlc = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -32,12 +33,12 @@ window.Blockly.Blocks.read_ohlc = {
                 },
             ],
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Read the selected candle value'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -51,19 +52,22 @@ window.Blockly.Blocks.read_ohlc = {
             CANDLEINDEX: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.read_ohlc = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.read_ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
     const index =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'CANDLEINDEX',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '1';
 
     const code = `Bot.getOhlcFromEnd({ field: '${ohlcField}', index: ${index}, granularity: ${granularity} })`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

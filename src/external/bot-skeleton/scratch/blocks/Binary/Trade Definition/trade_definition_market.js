@@ -1,6 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
 import ApiHelpers from '../../../../services/api/api-helpers';
-import { runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu,runIrreversibleEvents } from '../../../utils';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
@@ -38,12 +38,20 @@ Blockly.Blocks.trade_definition_market = {
         this.setMovable(false);
         this.setDeletable(false);
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     onchange(event) {
         const allowed_events = ['BLOCK_CREATE', 'BLOCK_CHANGE', 'BLOCK_DRAG'];
         const is_allowed_event =
             allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
 
-        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging() || !is_allowed_event) {
+        if (
+            !this.workspace ||
+            Blockly.derivWorkspace.isFlyoutVisible ||
+            this.workspace.isDragging() ||
+            !is_allowed_event
+        ) {
             return;
         }
 

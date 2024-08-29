@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.logic_negate = {
+Blockly.Blocks.logic_negate = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -15,13 +16,16 @@ window.Blockly.Blocks.logic_negate = {
             ],
             inputsInline: true,
             output: 'Boolean',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Converts a given True or False to the opposite value'),
-            category: window.Blockly.Categories.Logic,
+            category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -36,9 +40,9 @@ window.Blockly.Blocks.logic_negate = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_negate = block => {
-    const order = window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT;
-    const argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'true';
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_negate = block => {
+    const order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT;
+    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'true';
 
     const code = `!${argument0}`;
     return [code, order];

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.useless_block = {
+Blockly.Blocks.useless_block = {
     init() {
         this.jsonInit({
             message0: '%1',
@@ -11,15 +12,18 @@ window.Blockly.Blocks.useless_block = {
                     class: 'blocklyTextRootBlockHeader',
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('This block was required to correctly convert your old strategy.'),
-            category: window.Blockly.Categories.Miscellaneous,
+            category: Blockly.Categories.Miscellaneous,
             nextStatement: null,
             previousStatement: null,
         });
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.useless_block = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.useless_block = () => {};

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.total_runs = {
+Blockly.Blocks.total_runs = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -8,13 +9,16 @@ window.Blockly.Blocks.total_runs = {
         return {
             message0: localize('Number of runs'),
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the number of runs'),
-            category: window.Blockly.Categories.Miscellaneous,
+            category: Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -24,10 +28,10 @@ window.Blockly.Blocks.total_runs = {
             ),
         };
     },
-    onchange: window.Blockly.Blocks.total_profit.onchange,
+    onchange: Blockly.Blocks.total_profit.onchange,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.total_runs = () => [
+Blockly.JavaScript.javascriptGenerator.forBlock.total_runs = () => [
     'Bot.getTotalRuns()',
-    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

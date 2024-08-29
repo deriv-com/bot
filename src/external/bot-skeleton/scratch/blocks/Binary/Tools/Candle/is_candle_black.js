@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.is_candle_black = {
+Blockly.Blocks.is_candle_black = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -15,12 +16,12 @@ window.Blockly.Blocks.is_candle_black = {
                 },
             ],
             output: 'Boolean',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns "True" if the given candle is black'),
-            category: window.Blockly.Categories.Candle,
+            category: Blockly.Categories.Candle,
         };
     },
     meta() {
@@ -31,6 +32,9 @@ window.Blockly.Blocks.is_candle_black = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     getRequiredValueInputs() {
         return {
             OHLCOBJ: null,
@@ -38,14 +42,14 @@ window.Blockly.Blocks.is_candle_black = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.is_candle_black = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.is_candle_black = block => {
     const ohlcObj =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'OHLCOBJ',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '{}';
 
     const code = `Bot.isCandleBlack(${ohlcObj})`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

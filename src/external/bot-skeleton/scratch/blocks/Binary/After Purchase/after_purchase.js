@@ -1,8 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 
-window.Blockly.Blocks.after_purchase = {
+Blockly.Blocks.after_purchase = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -43,11 +43,11 @@ window.Blockly.Blocks.after_purchase = {
                     height: 10,
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Get the last trade information and result, then trade again.'),
-            category: window.Blockly.Categories.After_Purchase,
+            category: Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -58,16 +58,19 @@ window.Blockly.Blocks.after_purchase = {
     },
     onchange(event) {
         if (
-            event.type === window.Blockly.Events.BLOCK_CHANGE ||
-            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             removeExtraInput(this);
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
-    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
+Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
         Bot.highlightBlock('${block.id}');

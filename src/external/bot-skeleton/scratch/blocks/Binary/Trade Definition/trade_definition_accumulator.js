@@ -3,9 +3,9 @@ import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '../../../shared';
-import { modifyContextMenu,runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
-Blockly.Blocks.trade_definition_multiplier = {
+Blockly.Blocks.trade_definition_accumulator = {
     init() {
         this.jsonInit(this.definition());
 
@@ -14,16 +14,16 @@ Blockly.Blocks.trade_definition_multiplier = {
     },
     definition() {
         return {
-            message0: localize('Multiplier: {{ multiplier }}', {
-                multiplier: '%1',
+            message0: localize('Growth Rate: {{ accumulator }}', {
+                accumulator: '%1',
             }),
-            message1: `${localize('Stake')}: %1 %2 %3`,
+            message1: `${localize('Stake')}: %1 %2`,
             message2: '%1',
             message3: '%1',
             args0: [
                 {
                     type: 'field_dropdown',
-                    name: 'MULTIPLIERTYPE_LIST',
+                    name: 'GROWTHRATE_LIST',
                     options: [['', '']],
                 },
             ],
@@ -38,11 +38,6 @@ Blockly.Blocks.trade_definition_multiplier = {
                     name: 'AMOUNT',
                     check: 'Number',
                 },
-                {
-                    type: 'field_label',
-                    name: 'AMOUNT_LIMITS',
-                    text: '',
-                },
             ],
             args2: [
                 {
@@ -52,52 +47,48 @@ Blockly.Blocks.trade_definition_multiplier = {
             args3: [
                 {
                     type: 'input_statement',
-                    name: 'MULTIPLIER_PARAMS',
+                    name: 'ACCUMULATOR_PARAMS',
                 },
             ],
-            inputsInline: true,
             colour: Blockly.Colours.Special1.colour,
             colourSecondary: Blockly.Colours.Special1.colourSecondary,
             colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Define your trade options such as multiplier and stake.'),
+            tooltip: localize('Define your trade options, such as accumulator and stake.'),
             category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
-            display_name: localize('Multiplier trade options'),
+            display_name: localize('Accumulator trade options'),
             description: localize(
-                'Define your trade options such as multiplier and stake. This block can only be used with the multipliers trade type. If you select another trade type, this block will be replaced with the Trade options block.'
+                'Define your trade options such as accumulator and stake. This block can only be used with the accumulator trade type. If you select another trade type, this block will be replaced with the Trade options block.'
             ),
         };
     },
     validateBlocksInStatement() {
-        // Enforce only multiplier_<type> blocks in MULTIPLIER_PARAMS statement.
-        const blocks_in_multiplier = this.getBlocksInStatement('MULTIPLIER_PARAMS');
+        // Enforce only accumulator_<type> blocks in ACCUMULATOR_PARAMS statement.
+        const blocks_in_accumulator = this.getBlocksInStatement('ACCUMULATOR_PARAMS');
 
-        if (blocks_in_multiplier.length > 0) {
-            const block_types_in_multiplier = [];
-            blocks_in_multiplier.forEach(block => {
-                block_types_in_multiplier.push(block.type);
-                const block_multiplier_take_profit = block.childValueToCode('multiplier_take_profit', 'AMOUNT');
-                const block_multiplier_stop_loss = block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
-                if (block_multiplier_take_profit <= 0 || block_multiplier_stop_loss <= 0) {
+        if (blocks_in_accumulator.length > 0) {
+            const block_types_in_accumulator = [];
+            blocks_in_accumulator.forEach(block => {
+                block_types_in_accumulator.push(block.type);
+
+                const block_accumulator_take_profit = block.childValueToCode('accumulator_take_profit', 'AMOUNT');
+
+                if (block_accumulator_take_profit <= 0) {
                     block.setDisabled(true);
                 }
 
-                if (block.type === 'multiplier_stop_loss' && block_multiplier_stop_loss > 0) {
-                    block.setDisabled(false);
-                }
-
-                if (block.type === 'multiplier_take_profit' && block_multiplier_take_profit > 0) {
+                if (block.type === 'accumulator_take_profit' && block_accumulator_take_profit > 0) {
                     block.setDisabled(false);
                 }
 
                 if (
-                    !/^multiplier_.+$/.test(block.type) ||
-                    new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length
+                    !/^accumulator_.+$/.test(block.type) ||
+                    new Set(block_types_in_accumulator).size !== block_types_in_accumulator.length
                 ) {
                     runIrreversibleEvents(() => {
                         block.unplug(true);
@@ -129,7 +120,7 @@ Blockly.Blocks.trade_definition_multiplier = {
         this.selected_market = market_block.getFieldValue('MARKET_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
-        this.selected_multiplier = this.getFieldValue('MULTIPLIERTYPE_LIST');
+        this.selected_growth_rate = this.getFieldValue('GROWTHRATE_LIST');
 
         const is_load_event = /^dbot-load/.test(event.group);
 
@@ -137,9 +128,9 @@ Blockly.Blocks.trade_definition_multiplier = {
             this.setCurrency();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
-                this.updateMultiplierInput(false);
+                this.updateAccumulatorInput(false);
             } else {
-                this.updateMultiplierInput(true);
+                this.updateAccumulatorInput(true);
             }
             return;
         }
@@ -148,19 +139,19 @@ Blockly.Blocks.trade_definition_multiplier = {
             this.validateBlocksInStatement();
             if (is_load_event) {
                 if (event.name === 'TRADETYPE_LIST') {
-                    this.updateMultiplierInput(false);
+                    this.updateAccumulatorInput(false);
                 }
             } else if (event.blockId === this.id) {
                 switch (event.name) {
-                    case 'MULTIPLIERTYPE_LIST': {
-                        this.updateMultiplierInput(false);
+                    case 'GROWTHRATE_LIST': {
+                        this.updateAccumulatorInput(false);
                         break;
                     }
                     default:
                         break;
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
-                this.updateMultiplierInput(true);
+                this.updateAccumulatorInput(true);
             }
             return;
         }
@@ -170,31 +161,31 @@ Blockly.Blocks.trade_definition_multiplier = {
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
-                if (!this.selected_multiplier) {
-                    const fake_creation_event = new Blockly.Events.BlockCreate(this);
+                if (!this.selected_growth_rate) {
+                    const fake_creation_event = new Blockly.Events.Create(this);
                     fake_creation_event.recordUndo = false;
                     Blockly.Events.fire(fake_creation_event);
-                } else if (this.selected_trade_type !== 'multiplier') {
-                    this.updateMultiplierInput(true);
+                } else if (this.selected_trade_type !== 'accumulator') {
+                    this.updateAccumulatorInput(true);
                 }
             }
         }
     },
-
-    updateMultiplierInput(should_use_default_value) {
+    updateAmountLimits: Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
+    updateAccumulatorInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 
-        if (this.selected_trade_type === 'multiplier') {
-            contracts_for.getMultiplierRange(this.selected_symbol, this.selected_trade_type).then(multiplier_range => {
-                if (multiplier_range.length > 0) {
-                    const multiplier_list_dropdown = this.getField('MULTIPLIERTYPE_LIST');
-                    const multiplier_options = multiplier_range.map(value => {
+        if (this.selected_trade_type === 'accumulator') {
+            contracts_for.getAccumulationRange().then(accumulator_range => {
+                if (accumulator_range.length > 0) {
+                    const accumulator_list_dropdown = this.getField('GROWTHRATE_LIST');
+                    const accumulator_options = accumulator_range.map(value => {
                         const option = value.toString();
-                        return [option, option];
+                        return [`${option * 100}%`, option];
                     });
 
-                    multiplier_list_dropdown?.updateOptions(multiplier_options, {
-                        default_value: should_use_default_value ? undefined : multiplier_list_dropdown.getValue(),
+                    accumulator_list_dropdown?.updateOptions(accumulator_options, {
+                        default_value: should_use_default_value ? undefined : accumulator_list_dropdown.getValue(),
                     });
                 }
             });
@@ -212,7 +203,7 @@ Blockly.Blocks.trade_definition_multiplier = {
 
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');
                     duration_block.initSvg();
-                    duration_block.renderEfficiently();
+                    duration_block.render();
 
                     const trade_definition_block = this.workspace.getTradeDefinitionBlock();
                     const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
@@ -225,7 +216,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     duration_shadow_block.setShadow(true);
                     duration_shadow_block.outputConnection.connect(duration_input.connection);
                     duration_shadow_block.initSvg();
-                    duration_shadow_block.renderEfficiently();
+                    duration_shadow_block.render(true);
 
                     const stake_input = duration_block.getInput('AMOUNT');
 
@@ -234,10 +225,10 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.setFieldValue(1, 'NUM');
                     stake_shadow_block.outputConnection.connect(stake_input.connection);
                     stake_shadow_block.initSvg();
-                    stake_shadow_block.renderEfficiently();
+                    stake_shadow_block.render(true);
 
                     this.dispose();
-                    window.Blockly.getMainWorkspace().cleanUp(x, y);
+                    Blockly.derivWorkspace.cleanUp(x, y);
                 });
             });
         }
@@ -272,7 +263,7 @@ Blockly.Blocks.trade_definition_multiplier = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_multiplier = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_accumulator = block => {
     const amount =
         Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
@@ -281,20 +272,17 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_multiplier = bl
         ) || '0';
     const { currency } = DBotStore.instance.client;
     const { setContractUpdateConfig } = DBotStore.instance;
-    const multiplier_value = block.getFieldValue('MULTIPLIERTYPE_LIST') || '1';
-    const stop_loss =
-        !block.getChildByType('multiplier_stop_loss')?.disabled &&
-        block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
+    const growth_rate = block.getFieldValue('GROWTHRATE_LIST') || '1';
     const take_profit =
-        !block.getChildByType('multiplier_take_profit')?.disabled &&
-        block.childValueToCode('multiplier_take_profit', 'AMOUNT');
+        !block.getChildByType('accumulator_take_profit')?.disabled &&
+        block.childValueToCode('accumulator_take_profit', 'AMOUNT');
+
     const limit_order = {
-        stop_loss: stop_loss ? `+(Number(${stop_loss}).toFixed(2))` : undefined,
         take_profit: take_profit ? `+(Number(${take_profit}).toFixed(2))` : undefined,
     };
 
-    setContractUpdateConfig(take_profit, stop_loss);
-    // Determine decimal places for rounding the stake, this is done so Martingale multipliers
+    setContractUpdateConfig(undefined, take_profit);
+    // Determine decimal places for rounding the stake, this is done so Martingale accumulators
     // are not affected by fractional values e.g. USD 12.232323 will become 12.23.
     const decimal_places = getDecimalPlaces(currency);
     const stake_amount = `+(Number(${amount}).toFixed(${decimal_places}))`;
@@ -302,13 +290,12 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_multiplier = bl
     const code = `
         Bot.start({
             limitations        : BinaryBotPrivateLimitations,
-            multiplier         : ${multiplier_value},
+            growth_rate        : ${growth_rate},
             currency           : '${currency}',
             amount             : ${stake_amount},
             limit_order        : ${JSON.stringify(limit_order)},
             basis              : 'stake',
-            stop_loss          : ${limit_order.stop_loss},
-            take_profit        : ${limit_order.take_profit},
+            take_profit          : ${limit_order.take_profit},
         });
         BinaryBotPrivateHasCalledTradeOptions = true;
     `;

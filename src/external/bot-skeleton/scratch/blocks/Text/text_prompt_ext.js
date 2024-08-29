@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.text_prompt_ext = {
+Blockly.Blocks.text_prompt_ext = {
     init() {
         this.jsonInit(this.definition());
         const typeField = this.getField('TYPE');
@@ -12,10 +12,12 @@ window.Blockly.Blocks.text_prompt_ext = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            //commented this line breaks the backward compatibility
-            //this.render(false);
+            this.renderEfficiently();
             return undefined;
         });
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     definition() {
         return {
@@ -39,12 +41,12 @@ window.Blockly.Blocks.text_prompt_ext = {
             ],
             output:
                 typeof this.getFieldValue === 'function' && this.getFieldValue('TYPE') === 'TEXT' ? 'String' : 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Special3.colour,
-            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special3.colour,
+            colourSecondary: Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: Blockly.Colours.Special3.colourTertiary,
             tooltip: localize('Request an input'),
-            category: window.Blockly.Categories.Text,
+            category: Blockly.Categories.Text,
         };
     },
     meta() {
@@ -62,20 +64,20 @@ window.Blockly.Blocks.text_prompt_ext = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block => {
     let msg, code;
 
     if (block.getField('TEXT')) {
         // Internal message
         // eslint-disable-next-line no-underscore-dangle
-        msg = window.Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
+        msg = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message
         msg =
-            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'TEXT',
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
             ) || "''";
     }
 
@@ -85,5 +87,5 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block =
         code = `window.prompt(${msg})`;
     }
 
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

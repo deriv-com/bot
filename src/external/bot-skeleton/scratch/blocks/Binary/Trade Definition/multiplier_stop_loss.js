@@ -1,8 +1,13 @@
-import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { getCurrencyDisplayCode } from '../../../shared';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.multiplier_stop_loss = {
+const description = localize(
+    'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+);
+
+Blockly.Blocks.multiplier_stop_loss = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,38 +29,37 @@ window.Blockly.Blocks.multiplier_stop_loss = {
                     check: 'Number',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize(
-                'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
-            category: window.Blockly.Categories.Trade_Definition,
+            tooltip: description,
+            category: Blockly.Categories.Trade_Definition,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
-            display_name: localize('Stop loss'),
-            description: localize(
-                'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
+            display_name: localize('Stop loss (Multiplier)'),
+            description,
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
         if (
-            (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
         }
     },
     restricted_parents: ['trade_definition_multiplier'],
-    setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
+    setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
         if (field_input.connection.targetBlock()) {
@@ -71,4 +75,4 @@ window.Blockly.Blocks.multiplier_stop_loss = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_stop_loss = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_stop_loss = () => {};

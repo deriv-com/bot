@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.controls_repeat = {
+Blockly.Blocks.controls_repeat = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,15 +25,15 @@ window.Blockly.Blocks.controls_repeat = {
                     name: 'DO',
                 },
             ],
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             inputsInline: true,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Repeats inside instructions specified number of times'),
-            category: window.Blockly.Categories.Loop,
+            category: Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -43,7 +44,10 @@ window.Blockly.Blocks.controls_repeat = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
-    window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
+    Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;

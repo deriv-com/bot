@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.math_number_property = {
+Blockly.Blocks.math_number_property = {
     init() {
         this.jsonInit(this.definition());
 
@@ -37,12 +38,12 @@ window.Blockly.Blocks.math_number_property = {
                 },
             ],
             output: 'Boolean',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             toolip: localize('This block tests a given number according to the selection'),
-            category: window.Blockly.Categories.Mathematical,
+            category: Blockly.Categories.Mathematical,
         };
     },
     meta() {
@@ -64,19 +65,19 @@ window.Blockly.Blocks.math_number_property = {
         return container;
     },
     updateShape(hasDivisorInput) {
-        const inputExists = this.getInput('DIVISOR');
-
         if (hasDivisorInput) {
-            if (!inputExists) {
+            const inputExists = this.getInput('DIVISOR');
+            if (inputExists) {
+                this.removeInput('DIVISOR');
+            } else {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
-                //commented this line breaks the backward compatibility
-                //this.render(false);
+                this.renderEfficiently();
             }
-        } else {
-            //commented this line breaks the backward compatibiliy
-            //this.removeInput('DIVISOR');
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     getRequiredValueInputs() {
         return {
@@ -85,12 +86,12 @@ window.Blockly.Blocks.math_number_property = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
     const argument0 =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'NUMBER_TO_CHECK',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
         ) || '0';
     const property = block.getFieldValue('PROPERTY');
 
@@ -98,9 +99,9 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = bl
 
     if (property === 'PRIME') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
+        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
+            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
                 if (n == 2 || n == 3) {
                     return true;
@@ -122,7 +123,7 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = bl
             }`,
         ]);
         code = `${functionName}(${argument0})`;
-        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     } else if (property === 'EVEN') {
         code = `${argument0} % 2 === 0`;
     } else if (property === 'ODD') {
@@ -135,13 +136,13 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = bl
         code = `${argument0} < 0`;
     } else if (property === 'DIVISIBLE_BY') {
         const divisor =
-            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'DIVISOR',
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+                Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
             ) || '0';
         code = `${argument0} % ${divisor} == 0`;
     }
 
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
 };

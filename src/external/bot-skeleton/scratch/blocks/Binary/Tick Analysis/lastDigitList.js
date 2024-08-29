@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.lastDigitList = {
+Blockly.Blocks.lastDigitList = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -8,12 +9,12 @@ window.Blockly.Blocks.lastDigitList = {
         return {
             message0: localize('Last digits list'),
             output: 'Array',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the list of last digits of 1000 recent tick values'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -22,9 +23,12 @@ window.Blockly.Blocks.lastDigitList = {
             description: localize('This block gives you a list of the last digits of the last 1000 tick values.'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.lastDigitList = () => [
+Blockly.JavaScript.javascriptGenerator.forBlock.lastDigitList = () => [
     'Bot.getLastDigitList()',
-    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

@@ -1,8 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { purchase } from '../../images';
 
-window.Blockly.Blocks.before_purchase = {
+Blockly.Blocks.before_purchase = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -44,20 +44,23 @@ window.Blockly.Blocks.before_purchase = {
                     height: 10,
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Specify contract type and purchase conditions.'),
-            category: window.Blockly.Categories.Before_Purchase,
+            category: Blockly.Categories.Before_Purchase,
         };
     },
     onchange(event) {
         if (
-            event.type === window.Blockly.Events.BLOCK_CHANGE ||
-            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             removeExtraInput(this);
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -69,8 +72,8 @@ window.Blockly.Blocks.before_purchase = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.before_purchase = block => {
-    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'BEFOREPURCHASE_STACK');
+Blockly.JavaScript.javascriptGenerator.forBlock.before_purchase = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'BEFOREPURCHASE_STACK');
 
     const code = `BinaryBotPrivateBeforePurchase = function BinaryBotPrivateBeforePurchase() {
         Bot.highlightBlock('${block.id}');

@@ -47,7 +47,7 @@ export default class FlyoutStore implements IFlyoutStore {
     flyout_min_width = 440;
     options = {
         renderer: 'zelos',
-        media: `${window.__webpack_public_path__}assets/media/`,
+        media: 'assets/media/',
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
@@ -244,7 +244,7 @@ export default class FlyoutStore implements IFlyoutStore {
             this.flyout_content = [];
         }
 
-        window.Blockly.derivWorkspace.isFlyout_ = is_visible;
+        window.Blockly.derivWorkspace.isFlyoutVisible = is_visible;
     }
 
     /**

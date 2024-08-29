@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.trade_definition_candleinterval = {
+Blockly.Blocks.trade_definition_candleinterval = {
     init() {
         this.jsonInit({
             message0: localize('Default Candle Interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
@@ -12,9 +13,9 @@ window.Blockly.Blocks.trade_definition_candleinterval = {
                     options: config.candleIntervals.slice(1),
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -23,12 +24,15 @@ window.Blockly.Blocks.trade_definition_candleinterval = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         this.enforceLimitations();
     },
-    enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_candleinterval = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_candleinterval = () => {};

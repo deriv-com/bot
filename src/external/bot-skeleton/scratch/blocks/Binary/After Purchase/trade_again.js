@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.trade_again = {
+Blockly.Blocks.trade_again = {
     init() {
         this.jsonInit(this.definition());
 
@@ -10,12 +11,12 @@ window.Blockly.Blocks.trade_again = {
     definition() {
         return {
             message0: localize('Trade again'),
-            colour: window.Blockly.Colours.Special1.colour,
-            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             tooltip: localize('These blocks transfer control to the Purchase conditions block.'),
-            category: window.Blockly.Categories.After_Purchase,
+            category: Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -27,10 +28,13 @@ window.Blockly.Blocks.trade_again = {
             key_words: localize('restart'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     restricted_parents: ['after_purchase'],
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_again = () => {
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_again = () => {
     const code = `
         Bot.isTradeAgain(true);\n
         return true;\n

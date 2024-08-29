@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.lists_indexOf = {
+Blockly.Blocks.lists_indexOf = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -34,12 +35,12 @@ window.Blockly.Blocks.lists_indexOf = {
             ],
             output: 'Number',
             inputsInline: true,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you the position of an item in a given list.'),
-            category: window.Blockly.Categories.List,
+            category: Blockly.Categories.List,
         };
     },
     meta() {
@@ -54,28 +55,31 @@ window.Blockly.Blocks.lists_indexOf = {
             FIND: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
     const operator = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const item =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FIND',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const list =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
 
     const code = `${list}.${operator}(${item})`;
 
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
+        return [`${code} + 1`, Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
 
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

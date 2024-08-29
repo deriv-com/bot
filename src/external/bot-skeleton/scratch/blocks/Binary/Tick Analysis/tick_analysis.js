@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.tick_analysis = {
+Blockly.Blocks.tick_analysis = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -11,7 +12,7 @@ window.Blockly.Blocks.tick_analysis = {
                 {
                     type: 'field_label',
                     text: localize('The content of this block is called on every tick'),
-                    class: 'blocklyTextRootBlockHeader',
+                    class: 'blocklyTextTickAnalysis',
                 },
                 {
                     type: 'input_dummy',
@@ -22,11 +23,11 @@ window.Blockly.Blocks.tick_analysis = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('You can use this block to analyze the ticks, regardless of your trades'),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -37,10 +38,13 @@ window.Blockly.Blocks.tick_analysis = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.tick_analysis = block => {
-    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TICKANALYSIS_STACK') || '';
+Blockly.JavaScript.javascriptGenerator.forBlock.tick_analysis = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TICKANALYSIS_STACK') || '';
     const code = `
     BinaryBotPrivateTickAnalysisList.push(function BinaryBotPrivateTickAnalysis() {
         ${stack}

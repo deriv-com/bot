@@ -1,15 +1,14 @@
 import { blueInfo } from '../blocks/images';
 
-window.Blockly.Tooltip.HOVER_MS = 50;
+Blockly.Tooltip.HOVER_MS = 50;
 
-window.Blockly.Tooltip.show_ = () => {
+Blockly.Tooltip.show_ = () => {
     let params;
-    window.Blockly.Tooltip.DIV =
-        ((window.Blockly.Tooltip.poisonedElement_ = window.Blockly.Tooltip.element_), window.Blockly.Tooltip.DIV);
-    if (!window.Blockly.Tooltip.blocked_) {
-        window.Blockly.Tooltip.DIV.innerHTML = '';
-        for (params = window.Blockly.Tooltip.element_.tooltip; typeof params === 'function'; ) params = params();
-        params = window.Blockly.utils.string.wrap(params, window.Blockly.Tooltip.LIMIT);
+    Blockly.Tooltip.DIV = ((Blockly.Tooltip.poisonedElement_ = Blockly.Tooltip.element_), Blockly.Tooltip.DIV);
+    if (!Blockly.Tooltip.blocked_) {
+        Blockly.Tooltip.DIV.innerHTML = '';
+        for (params = Blockly.Tooltip.element_.tooltip; typeof params === 'function'; ) params = params();
+        params = Blockly.utils.string.wrap(params, Blockly.Tooltip.LIMIT);
         params = params.split('\n');
 
         params.forEach((param, index) => {
@@ -18,7 +17,7 @@ window.Blockly.Tooltip.show_ = () => {
 
             text_span.appendChild(document.createTextNode(param));
             text_span.style.verticalAlign = 'middle';
-            window.Blockly.Tooltip.DIV.appendChild(div);
+            Blockly.Tooltip.DIV.appendChild(div);
 
             if (!index) {
                 const img = document.createElement('img');
@@ -35,48 +34,45 @@ window.Blockly.Tooltip.show_ = () => {
             div.appendChild(text_span);
         });
 
-        const direction = window.Blockly.Tooltip.element_.RTL;
+        const direction = Blockly.Tooltip.element_.RTL;
         const client_width = document.documentElement.clientWidth;
         const client_height = document.documentElement.clientHeight;
-        if (window.Blockly.Tooltip.DIV) {
-            window.Blockly.Tooltip.DIV.style.direction = direction ? 'rtl' : 'ltr';
+        if (Blockly.Tooltip.DIV) {
+            Blockly.Tooltip.DIV.style.direction = direction ? 'rtl' : 'ltr';
         }
-        window.Blockly.Tooltip.DIV.style.display = 'block';
-        window.Blockly.Tooltip.visible = true;
-        let last_x = window.Blockly.Tooltip.lastX_;
+        Blockly.Tooltip.DIV.style.display = 'block';
+        Blockly.Tooltip.visible = true;
+        let last_x = Blockly.Tooltip.lastX_;
         last_x = direction
-            ? last_x - (window.Blockly.Tooltip.OFFSET_X + window.Blockly.Tooltip.DIV.offsetWidth)
-            : last_x + window.Blockly.Tooltip.OFFSET_X;
-        let last_y = window.Blockly.Tooltip.lastY_ + window.Blockly.Tooltip.OFFSET_Y;
-        if (last_y + window.Blockly.Tooltip.DIV.offsetHeight > client_height + window.scrollY) {
-            last_y -= window.Blockly.Tooltip.DIV.offsetHeight + 2 * window.Blockly.Tooltip.OFFSET_Y;
+            ? last_x - (Blockly.Tooltip.OFFSET_X + Blockly.Tooltip.DIV.offsetWidth)
+            : last_x + Blockly.Tooltip.OFFSET_X;
+        let last_y = Blockly.Tooltip.lastY_ + Blockly.Tooltip.OFFSET_Y;
+        if (last_y + Blockly.Tooltip.DIV.offsetHeight > client_height + window.scrollY) {
+            last_y -= Blockly.Tooltip.DIV.offsetHeight + 2 * Blockly.Tooltip.OFFSET_Y;
         }
         if (direction) {
-            last_x = Math.max(window.Blockly.Tooltip.MARGINS - window.scrollX, last_x);
+            last_x = Math.max(Blockly.Tooltip.MARGINS - window.scrollX, last_x);
         }
-        if (
-            last_x + window.Blockly.Tooltip.DIV.offsetWidth >
-            client_width + window.scrollX - 2 * window.Blockly.Tooltip.MARGINS
-        ) {
-            last_x = client_width - window.Blockly.Tooltip.DIV.offsetWidth - 2 * window.Blockly.Tooltip.MARGINS;
+        if (last_x + Blockly.Tooltip.DIV.offsetWidth > client_width + window.scrollX - 2 * Blockly.Tooltip.MARGINS) {
+            last_x = client_width - Blockly.Tooltip.DIV.offsetWidth - 2 * Blockly.Tooltip.MARGINS;
         }
-        window.Blockly.Tooltip.DIV.style.top = `${last_y}px`;
-        window.Blockly.Tooltip.DIV.style.left = `${last_x}px`;
+        Blockly.Tooltip.DIV.style.top = `${last_y}px`;
+        Blockly.Tooltip.DIV.style.left = `${last_x}px`;
     }
 };
 
-window.Blockly.Tooltip.hide = () => {
-    if (window.Blockly.Tooltip.visible && window.Blockly.Tooltip.DIV) {
-        window.Blockly.Tooltip.visible = false;
-        setTimeout(() => (window.Blockly.Tooltip.DIV.style.display = 'none'), window.Blockly.Tooltip.HOVER_MS);
+Blockly.Tooltip.hide = () => {
+    if (Blockly.Tooltip.visible && Blockly.Tooltip.DIV) {
+        Blockly.Tooltip.visible = false;
+        setTimeout(() => (Blockly.Tooltip.DIV.style.display = 'none'), Blockly.Tooltip.HOVER_MS);
     }
-    if (window.Blockly.Tooltip.showPid_) {
-        clearTimeout(window.Blockly.Tooltip.showPid_);
+    if (Blockly.Tooltip.showPid_) {
+        clearTimeout(Blockly.Tooltip.showPid_);
     }
 
     /// For hiding tooltip next to the platform name.
-    if (!window.Blockly.Tooltip.DIV?.style.direction) {
-        window.Blockly.Tooltip.visible = false;
-        window.Blockly.Tooltip.DIV.style.display = 'none';
+    if (!Blockly.Tooltip.DIV?.style.direction) {
+        Blockly.Tooltip.visible = false;
+        Blockly.Tooltip.DIV.style.display = 'none';
     }
 };

@@ -1,8 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { sellContract } from '../../images';
 
-window.Blockly.Blocks.during_purchase = {
+Blockly.Blocks.during_purchase = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -43,11 +43,11 @@ window.Blockly.Blocks.during_purchase = {
                     height: 10,
                 },
             ],
-            colour: window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Sell your active contract if needed (optional)'),
-            category: window.Blockly.Categories.During_Purchase,
+            category: Blockly.Categories.During_Purchase,
         };
     },
     meta() {
@@ -60,16 +60,19 @@ window.Blockly.Blocks.during_purchase = {
     },
     onchange(event) {
         if (
-            event.type === window.Blockly.Events.BLOCK_CHANGE ||
-            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             removeExtraInput(this);
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.during_purchase = block => {
-    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DURING_PURCHASE_STACK');
+Blockly.JavaScript.javascriptGenerator.forBlock.during_purchase = block => {
+    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DURING_PURCHASE_STACK');
 
     const code = `BinaryBotPrivateDuringPurchase = function BinaryBotPrivateDuringPurchase() {
         Bot.highlightBlock('${block.id}');

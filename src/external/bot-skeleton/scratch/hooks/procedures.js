@@ -1,15 +1,15 @@
+import { localize } from '@/utils/tmp/dummy';
+
 /**
  * Construct the blocks required by the flyout for the procedure category.
- * @param {!window.Blockly.Workspace} workspace The workspace containing procedures.
+ * @param {!Blockly.Workspace} workspace The workspace containing procedures.
  * @return {!Array.<!Element>} Array of XML block elements.
  */
 
-import { localize } from '@/utils/tmp/dummy';
-
-window.Blockly.Procedures.flyoutCategory = function (workspace) {
+Blockly.Procedures.flyoutCategory = function (workspace) {
     let xmlList = [];
 
-    if (window.Blockly.Blocks.procedures_defnoreturn) {
+    if (Blockly.Blocks.procedures_defnoreturn) {
         // <block type="procedures_defnoreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -26,7 +26,7 @@ window.Blockly.Procedures.flyoutCategory = function (workspace) {
         xmlList.push(block);
     }
 
-    if (window.Blockly.Blocks.procedures_defreturn) {
+    if (Blockly.Blocks.procedures_defreturn) {
         // <block type="procedures_defreturn" gap="16">
         //     <field name="NAME">do something</field>
         // </block>
@@ -42,7 +42,7 @@ window.Blockly.Procedures.flyoutCategory = function (workspace) {
         xmlList.push(block);
     }
 
-    if (window.Blockly.Blocks.procedures_ifreturn) {
+    if (Blockly.Blocks.procedures_ifreturn) {
         // <block type="procedures_ifreturn" gap="16"></block>
         const block = document.createElement('block');
         block.setAttribute('type', 'procedures_ifreturn');
@@ -55,12 +55,12 @@ window.Blockly.Procedures.flyoutCategory = function (workspace) {
         xmlList[xmlList.length - 1].setAttribute('gap', 24);
     }
 
-    const tuple = window.Blockly.Procedures.allProcedures(workspace);
-    xmlList = xmlList.concat(window.Blockly.Procedures.populateDynamicProcedures(tuple));
+    const tuple = Blockly.Procedures.allProcedures(workspace);
+    xmlList = xmlList.concat(Blockly.Procedures.populateDynamicProcedures(tuple));
     return xmlList;
 };
 
-window.Blockly.Procedures.populateDynamicProcedures = function (tuple) {
+Blockly.Procedures.populateDynamicProcedures = function (tuple) {
     let xmlList = [];
 
     const populateProcedures = (procedureList, templateName) => {
@@ -108,16 +108,16 @@ window.Blockly.Procedures.populateDynamicProcedures = function (tuple) {
 /**
  * Find the definition block for the named procedure.
  * @param {string} name Name of procedure.
- * @param {!window.Blockly.Workspace} workspace The workspace to search.
- * @return {window.Blockly.Block} The procedure definition block, or null not found.
+ * @param {!Blockly.Workspace} workspace The workspace to search.
+ * @return {Blockly.Block} The procedure definition block, or null not found.
  */
-window.Blockly.Procedures.getDefinition = function (name, workspace) {
+Blockly.Procedures.getDefinition = function (name, workspace) {
     // Assume that a procedure definition is a top block.
     const blocks = workspace.getTopBlocks(false);
     for (let i = 0; i < blocks.length; i++) {
         if (blocks[i].getProcedureDef) {
             const tuple = blocks[i].getProcedureDef();
-            if (tuple && window.Blockly.Names.equals(tuple[0], name)) {
+            if (tuple && Blockly.Names.equals(tuple[0], name)) {
                 return blocks[i];
             }
         }
@@ -125,15 +125,15 @@ window.Blockly.Procedures.getDefinition = function (name, workspace) {
     return null;
 };
 
-// Scratch has a broken version where they return `false` if window.Blockly.Names.equals(procName[0], name).
+// Scratch has a broken version where they return `false` if Blockly.Names.equals(procName[0], name).
 // https://github.com/LLK/scratch-blocks/pull/1930
-window.Blockly.Procedures.isNameUsed = function (name, workspace, optExclude) {
+Blockly.Procedures.isNameUsed = function (name, workspace, optExclude) {
     const blocks = workspace.getAllBlocks(false);
     // Iterate through every block and check the name.
     return blocks.some(block => {
         if (block !== optExclude && block.getProcedureDef) {
             const procName = block.getProcedureDef();
-            return window.Blockly.Names.equals(procName[0], name);
+            return Blockly.Names.equals(procName[0], name);
         }
         return false;
     });

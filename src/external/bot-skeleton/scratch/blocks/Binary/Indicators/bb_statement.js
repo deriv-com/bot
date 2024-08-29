@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.bb_statement = {
+Blockly.Blocks.bb_statement = {
     protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'period', 'std_dev_multiplier_up', 'std_dev_multiplier_down'],
     init() {
@@ -37,13 +38,13 @@ window.Blockly.Blocks.bb_statement = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Calculates Bollinger Bands (BB) from a list with a period'),
             previousStatement: null,
             nextStatement: null,
-            category: window.Blockly.Categories.Indicators,
+            category: Blockly.Categories.Indicators,
         };
     },
     meta() {
@@ -55,28 +56,31 @@ window.Blockly.Blocks.bb_statement = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const blocksInStatement = this.getBlocksInStatement('STATEMENT');
             blocksInStatement.forEach(block => {
                 if (!this.required_child_blocks.includes(block.type)) {
-                    window.Blockly.Events.disable();
+                    Blockly.Events.disable();
                     block.unplug(false);
-                    window.Blockly.Events.enable();
+                    Blockly.Events.enable();
                 }
             });
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.bb_statement = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.bb_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = window.Blockly.JavaScript.variableDB_.getName(
+    const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
     const bb_result = block.getFieldValue('BBRESULT_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

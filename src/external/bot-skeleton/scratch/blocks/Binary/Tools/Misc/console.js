@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.console = {
+Blockly.Blocks.console = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -28,13 +28,13 @@ window.Blockly.Blocks.console = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Special3.colour,
-            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
+            colour: Blockly.Colours.Special3.colour,
+            colourSecondary: Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Display messages in the developer’s console.'),
-            category: window.Blockly.Categories.Miscellaneous,
+            category: Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -50,15 +50,18 @@ window.Blockly.Blocks.console = {
             MESSAGE: emptyTextValidator,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'MESSAGE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || `"${localize('<empty message>')}"`;
 
     const code = `Bot.console({ type: '${console_type}', message: ${message}});\n`;

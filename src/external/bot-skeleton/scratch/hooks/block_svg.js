@@ -1,15 +1,15 @@
-import debounce from 'debounce';
+import debounce from 'lodash.debounce';
 import { localize } from '@/utils/tmp/dummy';
 import DBotStore from '../dbot-store';
 
-window.Blockly.BlockSvg.prototype.addSelect = function () {
-    if (!window.Blockly.derivWorkspace.isFlyout_) {
+Blockly.BlockSvg.prototype.addSelect = function () {
+    if (!Blockly.derivWorkspace.isFlyoutVisible) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);
         }
 
-        window.Blockly.utils.dom.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+        Blockly.utils.dom.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
     }
 };
 
@@ -18,36 +18,16 @@ window.Blockly.BlockSvg.prototype.addSelect = function () {
  * @param {boolean} disabled True if disabled.
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
-window.Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
+Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
     this.disabled = disabled;
     this.updateDisabled();
-};
-
-/**
- * Enable or disable a block.
- * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
- */
-window.Blockly.BlockSvg.prototype.updateDisabled = function () {
-    if (this.disabled || this.getInheritedDisabled()) {
-        window.Blockly.utils.dom.addClass(this.svgGroup_, 'blocklyDisabled');
-
-        const fill = `url(#${this.workspace.options.disabledPatternId})`;
-        if (this.svgGroup_.getAttribute('fill') !== fill) {
-            this.svgGroup_.setAttribute('fill', fill);
-        }
-    } else {
-        window.Blockly.utils.dom.removeClass(this.svgGroup_, 'blocklyDisabled');
-    }
-
-    const children = this.getChildren(false);
-    children.forEach(child => child.updateDisabled());
 };
 
 /**
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */
-window.Blockly.BlockSvg.prototype.setErrorHighlighted = function (
+Blockly.BlockSvg.prototype.setErrorHighlighted = function (
     should_be_error_highlighted,
     error_message = localize(
         'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
@@ -61,9 +41,9 @@ window.Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 
     if (should_be_error_highlighted) {
         // Below function does its own checks to check if class already exists.
-        window.Blockly.utils.dom.addClass(this.svgGroup_, highlight_class);
+        Blockly.utils.dom.addClass(this.svgGroup_, highlight_class);
     } else {
-        window.Blockly.utils.dom.removeClass(this.svgGroup_, highlight_class);
+        Blockly.utils.dom.removeClass(this.svgGroup_, highlight_class);
     }
 
     this.is_error_highlighted = should_be_error_highlighted;
@@ -71,13 +51,13 @@ window.Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 };
 
 // Highlight the block that is being executed
-window.Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
+Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
     const highlight_block_class = 'block--execution-highlighted';
-    if (!window.Blockly.utils.dom.hasClass(this.svgGroup_, highlight_block_class)) {
-        window.Blockly.utils.dom.addClass(this.svgGroup_, highlight_block_class);
+    if (!Blockly.utils.dom.hasClass(this.svgGroup_, highlight_block_class)) {
+        Blockly.utils.dom.addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
             if (this.svgGroup_) {
-                window.Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);
+                Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);
             }
         }, 1505);
     }
@@ -87,12 +67,12 @@ window.Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
  * Set block animation (Blink)
  */
 
-window.Blockly.BlockSvg.prototype.blink = function () {
+Blockly.BlockSvg.prototype.blink = function () {
     const blink_class = 'block--blink';
-    window.Blockly.utils.dom.addClass(this.svgGroup_, blink_class);
+    Blockly.utils.dom.addClass(this.svgGroup_, blink_class);
 
     setTimeout(() => {
-        window.Blockly.utils.dom.removeClass(this.svgGroup_, blink_class);
+        Blockly.utils.dom.removeClass(this.svgGroup_, blink_class);
     }, 2000);
 };
 
@@ -105,7 +85,7 @@ window.Blockly.BlockSvg.prototype.blink = function () {
  * Toggles the collapse state of the block after a short delay to prevent workspace freezing.
  * @param {boolean} collapsed - Whether to collapse the block.
  */
-window.Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed) {
+Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed) {
     debounce(async () => {
         this.setCollapsed(collapsed);
     }, 100)();

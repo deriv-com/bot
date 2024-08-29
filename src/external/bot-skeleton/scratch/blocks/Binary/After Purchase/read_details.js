@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.read_details = {
+Blockly.Blocks.read_details = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +17,12 @@ window.Blockly.Blocks.read_details = {
                 },
             ],
             output: null,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Reads a selected property from contract details list'),
-            category: window.Blockly.Categories.After_Purchase,
+            category: Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -30,12 +31,15 @@ window.Blockly.Blocks.read_details = {
             description: localize('This block gives you information about your last contract.'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     restricted_parents: ['after_purchase'],
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

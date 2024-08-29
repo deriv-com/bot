@@ -1,6 +1,6 @@
 import { localize } from '@/utils/tmp/dummy';
 
-window.Blockly.Blocks.procedures_callreturn = {
+Blockly.Blocks.procedures_callreturn = {
     init() {
         this.arguments = [];
         this.previousDisabledState = false;
@@ -21,12 +21,12 @@ window.Blockly.Blocks.procedures_callreturn = {
                 },
             ],
             output: null,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             tooltip: localize('Custom function'),
-            category: window.Blockly.Categories.Functions,
+            category: Blockly.Categories.Functions,
             inputsInline: true,
         };
     },
@@ -36,34 +36,34 @@ window.Blockly.Blocks.procedures_callreturn = {
             description: '',
         };
     },
-    onchange: window.Blockly.Blocks.procedures_callnoreturn.onchange,
-    getProcedureDefinition: window.Blockly.Blocks.procedures_callnoreturn.getProcedureDefinition,
-    getProcedureCall: window.Blockly.Blocks.procedures_callnoreturn.getProcedureCall,
-    renameProcedure: window.Blockly.Blocks.procedures_callnoreturn.renameProcedure,
-    setProcedureParameters: window.Blockly.Blocks.procedures_callnoreturn.setProcedureParameters,
-    updateShape: window.Blockly.Blocks.procedures_callnoreturn.updateShape,
-    mutationToDom: window.Blockly.Blocks.procedures_callnoreturn.mutationToDom,
-    domToMutation: window.Blockly.Blocks.procedures_callnoreturn.domToMutation,
-    getVarModels: window.Blockly.Blocks.procedures_callnoreturn.getVarModels,
-    customContextMenu: window.Blockly.Blocks.procedures_callnoreturn.customContextMenu,
+    onchange: Blockly.Blocks.procedures_callnoreturn.onchange,
+    getProcedureDefinition: Blockly.Blocks.procedures_callnoreturn.getProcedureDefinition,
+    getProcedureCall: Blockly.Blocks.procedures_callnoreturn.getProcedureCall,
+    renameProcedure: Blockly.Blocks.procedures_callnoreturn.renameProcedure,
+    setProcedureParameters: Blockly.Blocks.procedures_callnoreturn.setProcedureParameters,
+    updateShape: Blockly.Blocks.procedures_callnoreturn.updateShape,
+    mutationToDom: Blockly.Blocks.procedures_callnoreturn.mutationToDom,
+    domToMutation: Blockly.Blocks.procedures_callnoreturn.domToMutation,
+    getVarModels: Blockly.Blocks.procedures_callnoreturn.getVarModels,
+    customContextMenu: Blockly.Blocks.procedures_callnoreturn.customContextMenu,
     defType: 'procedures_defreturn',
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_callreturn = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_callreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const functionName = window.Blockly.JavaScript.variableDB_.getName(
+    const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        window.Blockly.Procedures.CATEGORY_NAME
+        Blockly.Procedures.CATEGORY_NAME
     );
     const args = block.arguments.map(
         (arg, i) =>
-            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 `ARG${i}`,
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+                Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
             ) || 'null'
     );
 
     const code = `${functionName}(${args.join(', ')})`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

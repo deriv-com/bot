@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.math_random_int = {
+Blockly.Blocks.math_random_int = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,13 +25,16 @@ window.Blockly.Blocks.math_random_int = {
             ],
             inputsInline: true,
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you a random number from within a set range'),
-            category: window.Blockly.Categories.Mathematical,
+            category: Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -46,24 +50,24 @@ window.Blockly.Blocks.math_random_int = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.math_random_int = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_random_int = block => {
     const argument0 =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FROM',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
         ) || '0';
     const argument1 =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TO',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
         ) || '0';
 
     // eslint-disable-next-line no-underscore-dangle
-    const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('mathRandomInt', [
+    const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('mathRandomInt', [
         // eslint-disable-next-line no-underscore-dangle
-        `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
+        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(a, b) {
             if (a > b) {
                 // Swap a and b to ensure a is smaller.
                 var c = a;
@@ -75,5 +79,5 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.math_random_int = block =
     ]);
 
     const code = `${functionName}(${argument0}, ${argument1})`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

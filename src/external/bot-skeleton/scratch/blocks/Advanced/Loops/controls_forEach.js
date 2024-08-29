@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.controls_forEach = {
+Blockly.Blocks.controls_forEach = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -29,13 +30,13 @@ window.Blockly.Blocks.controls_forEach = {
                     name: 'DO',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Iterates through a given list'),
-            category: window.Blockly.Categories.Loop,
+            category: Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -51,23 +52,26 @@ window.Blockly.Blocks.controls_forEach = {
             LIST: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_forEach = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_forEach = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const variable0 = window.Blockly.JavaScript.variableDB_.getName(
+    const variable0 = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VAR'),
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
     const argument0 =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'LIST',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || '[]';
 
-    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
-    branch = window.Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
+    let branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+    branch = Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
 
     let code = '';
 
@@ -75,17 +79,14 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_forEach = block 
     let listVar = argument0;
     if (!argument0.match(/^\w+$/)) {
         // eslint-disable-next-line no-underscore-dangle
-        listVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
-            `${variable0}_list`,
-            window.Blockly.Variables.CATEGORY_NAME
-        );
+        listVar = Blockly.JavaScript.variableDB_.getDistinctName(`${variable0}_list`, Blockly.Variables.CATEGORY_NAME);
         code = `var ${listVar} = ${argument0};\n`;
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const indexVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+    const indexVar = Blockly.JavaScript.variableDB_.getDistinctName(
         `${variable0}_list`,
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
 
     code += `

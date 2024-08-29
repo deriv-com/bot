@@ -2,9 +2,9 @@ import { localize } from '@/utils/tmp/dummy';
 
 /**
  * Block for conditionally returning a value from a procedure.
- * @this window.Blockly.Block
+ * @this Blockly.Block
  */
-window.Blockly.Blocks.procedures_ifreturn = {
+Blockly.Blocks.procedures_ifreturn = {
     init() {
         this.hasReturnValue = true;
         this.jsonInit(this.definition());
@@ -23,13 +23,13 @@ window.Blockly.Blocks.procedures_ifreturn = {
                 },
             ],
             inputsInline: true,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Prematurely returns a value within a function'),
-            category: window.Blockly.Categories.Functions,
+            category: Blockly.Categories.Functions,
         };
     },
     meta() {
@@ -43,7 +43,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
     /**
      * Create XML to represent whether this block has a return value.
      * @return {!Element} XML storage element.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     mutationToDom() {
         const container = document.createElement('mutation');
@@ -53,7 +53,7 @@ window.Blockly.Blocks.procedures_ifreturn = {
     /**
      * Parse XML to restore whether this block has a return value.
      * @param {!Element} xmlElement XML storage element.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     domToMutation(xmlElement) {
         const value = xmlElement.getAttribute('value');
@@ -69,8 +69,8 @@ window.Blockly.Blocks.procedures_ifreturn = {
     /**
      * Called whenever anything on the workspace changes.
      * Add warning if this flow block is not nested inside a loop.
-     * @param {!window.Blockly.Events.Abstract} e Change event.
-     * @this window.Blockly.Block
+     * @param {!Blockly.Events.Abstract} e Change event.
+     * @this Blockly.Block
      */
     onchange(/* e */) {
         if (!this.workspace.isDragging || this.workspace.isDragging()) {
@@ -109,36 +109,36 @@ window.Blockly.Blocks.procedures_ifreturn = {
                 this.hasReturnValue = true;
             }
 
-            if (!window.Blockly.derivWorkspace.isFlyout_) {
+            if (!Blockly.derivWorkspace.isFlyoutVisible) {
                 this.setDisabled(false);
             }
-        } else if (!window.Blockly.derivWorkspace.isFlyout_ && !this.getInheritedDisabled()) {
+        } else if (!Blockly.derivWorkspace.isFlyoutVisible && !this.getInheritedDisabled()) {
             this.setDisabled(true);
         }
     },
     /**
      * List of block types that are functions and thus do not need warnings.
      * To add a new function type add this to your code:
-     * window.Blockly.Blocks['procedures_ifreturn'].FUNCTION_TYPES.push('custom_func');
+     * Blockly.Blocks['procedures_ifreturn'].FUNCTION_TYPES.push('custom_func');
      */
     FUNCTION_TYPES: ['procedures_defnoreturn', 'procedures_defreturn'],
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_ifreturn = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_ifreturn = block => {
     const condition =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'CONDITION',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || 'false';
 
     let branch;
     if (block.hasReturnValue) {
         const value =
-            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'VALUE',
-                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
             ) || 'null';
         branch = `return ${value};\n`;
     } else {

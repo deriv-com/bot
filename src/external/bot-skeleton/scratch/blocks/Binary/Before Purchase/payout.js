@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.payout = {
+Blockly.Blocks.payout = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -15,12 +16,12 @@ window.Blockly.Blocks.payout = {
                 },
             ],
             output: 'Number',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block returns the potential payout for the selected trade type'),
-            category: window.Blockly.Categories.Before_Purchase,
+            category: Blockly.Categories.Before_Purchase,
         };
     },
     meta() {
@@ -31,14 +32,17 @@ window.Blockly.Blocks.payout = {
             ),
         };
     },
-    onchange: window.Blockly.Blocks.purchase.onchange,
-    populatePurchaseList: window.Blockly.Blocks.purchase.populatePurchaseList,
-    enforceLimitations: window.Blockly.Blocks.purchase.enforceLimitations,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    onchange: Blockly.Blocks.purchase.onchange,
+    populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,
+    enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getPayout('${purchaseList}')`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

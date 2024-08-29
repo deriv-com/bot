@@ -1,22 +1,27 @@
 import { localize } from '@/utils/tmp/dummy';
 import { plusIconDark } from '../../images';
 
-window.Blockly.Blocks.procedures_defreturn = {
+Blockly.Blocks.procedures_defreturn = {
     init() {
         this.arguments = [];
         this.argument_var_models = [];
 
         this.jsonInit(this.definition());
+
+        if (Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
+            this.setCommentText(Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
+        }
+
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
-        nameField.setValidator(window.Blockly.Procedures.rename);
+        nameField.setValidator(Blockly.Procedures.rename);
 
         // Render a ➕-icon for adding parameters
-        const fieldImage = new window.Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
+        const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
 
         const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
-        const fieldImageCollapse = new window.Blockly.FieldImage(
+        const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,
             16,
             16,
@@ -64,11 +69,11 @@ window.Blockly.Blocks.procedures_defreturn = {
                 },
             ],
             inputsInline: true,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             tooltip: localize('Function that returns a value'),
-            category: window.Blockly.Categories.Functions,
+            category: Blockly.Categories.Functions,
         };
     },
     meta() {
@@ -79,32 +84,32 @@ window.Blockly.Blocks.procedures_defreturn = {
             ),
         };
     },
-    onAddClick: window.Blockly.Blocks.procedures_defnoreturn.onAddClick,
-    onchange: window.Blockly.Blocks.procedures_defnoreturn.onchange,
-    setStatements: window.Blockly.Blocks.procedures_defnoreturn.setStatements,
-    updateParams: window.Blockly.Blocks.procedures_defnoreturn.updateParams,
-    mutationToDom: window.Blockly.Blocks.procedures_defnoreturn.mutationToDom,
-    domToMutation: window.Blockly.Blocks.procedures_defnoreturn.domToMutation,
+    onAddClick: Blockly.Blocks.procedures_defnoreturn.onAddClick,
+    onchange: Blockly.Blocks.procedures_defnoreturn.onchange,
+    setStatements: Blockly.Blocks.procedures_defnoreturn.setStatements,
+    updateParams: Blockly.Blocks.procedures_defnoreturn.updateParams,
+    mutationToDom: Blockly.Blocks.procedures_defnoreturn.mutationToDom,
+    domToMutation: Blockly.Blocks.procedures_defnoreturn.domToMutation,
     /**
      * Return the signature of this procedure definition.
      * @return {!Array} Tuple containing three elements:
      *     - the name of the defined procedure,
      *     - a list of all its arguments,
      *     - that it DOES have a return value.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     getProcedureDef() {
         return [this.getFieldValue('NAME'), this.arguments, true];
     },
-    getProcedureCallers: window.Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,
-    getVars: window.Blockly.Blocks.procedures_defnoreturn.getVars,
-    getVarModels: window.Blockly.Blocks.procedures_defnoreturn.getVarModels,
-    renameVarById: window.Blockly.Blocks.procedures_defnoreturn.renameVarById,
-    displayRenamedVar: window.Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
-    customContextMenu: window.Blockly.Blocks.procedures_defnoreturn.customContextMenu,
-    registerWorkspaceListener: window.Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
+    getProcedureCallers: Blockly.Blocks.procedures_defnoreturn.getProcedureCallers,
+    getVars: Blockly.Blocks.procedures_defnoreturn.getVars,
+    getVarModels: Blockly.Blocks.procedures_defnoreturn.getVarModels,
+    renameVarById: Blockly.Blocks.procedures_defnoreturn.renameVarById,
+    displayRenamedVar: Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
+    customContextMenu: Blockly.Blocks.procedures_defnoreturn.customContextMenu,
+    registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
     callType: 'procedures_callreturn',
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defreturn =
-    window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defreturn =
+    Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;

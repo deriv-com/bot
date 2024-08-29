@@ -1,12 +1,12 @@
 import { localize } from '@/utils/tmp/dummy';
-import { runGroupedEvents } from '../../utils';
+import { modifyContextMenu,runGroupedEvents } from '../../utils';
 import { plusIconDark } from '../images';
 
-window.Blockly.Blocks.text_join = {
+Blockly.Blocks.text_join = {
     protected_statements: ['STACK'],
     allowed_children: ['text_statement'],
     init() {
-        const field_image = new window.Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
+        const field_image = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
         this.jsonInit(this.definition());
         this.appendDummyInput('ADD_ICON').appendField(field_image);
         this.moveInputBefore('ADD_ICON', 'STACK');
@@ -29,14 +29,17 @@ window.Blockly.Blocks.text_join = {
                 },
             ],
             inputsInline: true,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Text join'),
-            category: window.Blockly.Categories.Text,
+            category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -47,7 +50,7 @@ window.Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -56,14 +59,13 @@ window.Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            // kept this commented to fix backward compatibility issue
             text_block?.renderEfficiently();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            // kept this commented to fix backward compatibility issue
+
             shadow_block?.renderEfficiently();
 
             const text_input = text_block.getInput('TEXT');
@@ -77,19 +79,19 @@ window.Blockly.Blocks.text_join = {
         // const inputField = shadow_block.getField('TEXT');
         // inputField.showEditor_();
     },
-    onchange: window.Blockly.Blocks.lists_create_with.onchange,
+    onchange: Blockly.Blocks.lists_create_with.onchange,
 };
 
-// window.Blockly.JavaScript.text_join = window.Blockly.JavaScript.lists_create_with;
-window.Blockly.JavaScript.javascriptGenerator.forBlock.text_join = block => {
+// Blockly.JavaScript.text_join = Blockly.JavaScript.lists_create_with;
+Blockly.JavaScript.javascriptGenerator.forBlock.text_join = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = window.Blockly.JavaScript.variableDB_.getName(
+    const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
     const elements = blocks_in_stack.map(b => {
-        const value = window.Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
+        const value = Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });
 

@@ -1,10 +1,11 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.math_change = {
+Blockly.Blocks.math_change = {
     /**
      * Initializes the block, in most cases this calls the jsonInit function, in some
      * cases it may add extra properties to the block object.
-     * https://developers.google.com/blockly/reference/js/window.Blockly.Block#jsonInit
+     * https://developers.google.com/blockly/reference/js/Blockly.Block#jsonInit
      */
     init() {
         this.jsonInit(this.definition());
@@ -33,13 +34,13 @@ window.Blockly.Blocks.math_change = {
                     check: 'Number',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('This block adds the given number to the selected variable'),
-            category: window.Blockly.Categories.Mathematical,
+            category: Blockly.Categories.Mathematical,
         };
     },
     /**
@@ -58,17 +59,20 @@ window.Blockly.Blocks.math_change = {
             DELTA: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.math_change = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_change = block => {
     const variable = block.getFieldValue('VAR');
     // eslint-disable-next-line no-underscore-dangle
-    const argument0 = window.Blockly.JavaScript.variableDB_.getName(variable, window.Blockly.Variables.CATEGORY_NAME);
+    const argument0 = Blockly.JavaScript.variableDB_.getName(variable, Blockly.Variables.CATEGORY_NAME);
     const argument1 =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'DELTA',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION
+            Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION
         ) || '0';
     const code = `${argument0} = (typeof ${argument0} === 'number' ? ${argument0} : 0) + ${argument1};`;
 

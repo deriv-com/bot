@@ -1,8 +1,9 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.trade_definition_contracttype = {
+Blockly.Blocks.trade_definition_contracttype = {
     init() {
         this.jsonInit({
             message0: localize('Contract Type: {{ contract_type }}', { contract_type: '%1' }),
@@ -13,9 +14,9 @@ window.Blockly.Blocks.trade_definition_contracttype = {
                     options: [['', '']],
                 },
             ],
-            colour: window.Blockly.Colours.Special1.colour,
-            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             tooltip: localize(
                 'If the contract type is “Both”, then the Purchase Conditions should include both Rise and Fall using the “Conditional Block"'
             ),
@@ -26,7 +27,7 @@ window.Blockly.Blocks.trade_definition_contracttype = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -34,7 +35,7 @@ window.Blockly.Blocks.trade_definition_contracttype = {
 
         const is_load_event = /^dbot-load/.test(event.group);
 
-        if (window.Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TRADETYPE_LIST') {
                 const trade_type = event.newValue;
                 const contract_type_list = this.getField('TYPE_LIST');
@@ -59,6 +60,9 @@ window.Blockly.Blocks.trade_definition_contracttype = {
             }
         }
     },
-    enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
-window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_contracttype = () => '';
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_contracttype = () => '';

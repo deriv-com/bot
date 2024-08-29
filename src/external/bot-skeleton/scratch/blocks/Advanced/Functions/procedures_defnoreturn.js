@@ -1,8 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu,removeExtraInput } from '../../../utils';
 import { plusIconLight } from '../../images';
 
-window.Blockly.Blocks.procedures_defnoreturn = {
+Blockly.Blocks.procedures_defnoreturn = {
     init() {
         this.arguments = [];
         this.argument_var_models = [];
@@ -10,16 +10,20 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         this.timeout_id;
         this.jsonInit(this.definition());
 
+        if (Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
+            this.setCommentText(Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
+        }
+
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
-        nameField.setValidator(window.Blockly.Procedures.rename);
+        nameField.setValidator(Blockly.Procedures.rename);
 
         // Render a ➕-icon for adding parameters
-        const fieldImage = new window.Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
+        const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
 
         const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
-        const fieldImageCollapse = new window.Blockly.FieldImage(
+        const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,
             16,
             16,
@@ -52,11 +56,11 @@ window.Blockly.Blocks.procedures_defnoreturn = {
                 },
             ],
             inputsInline: true,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            colour: Blockly.Colours.Special2.colour,
+            colourSecondary: Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: Blockly.Colours.Special2.colourTertiary,
             tooltip: localize('Function with no return value'),
-            category: window.Blockly.Categories.Functions,
+            category: Blockly.Categories.Functions,
         };
     },
     meta() {
@@ -70,20 +74,16 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Sets the block colour and updates this procedure's caller blocks
      * to reflect the same name on a change.
-     * @param {!window.Blockly.Events.Abstract} event Change event.
-     * @this window.Blockly.Block
+     * @param {!Blockly.Events.Abstract} event Change event.
+     * @this Blockly.Block
      */
     onchange(event) {
-        const allowedEvents = [
-            window.Blockly.Events.BLOCK_DELETE,
-            window.Blockly.Events.BLOCK_CREATE,
-            window.Blockly.Events.BLOCK_CHANGE,
-        ];
+        const allowedEvents = [Blockly.Events.BLOCK_DELETE, Blockly.Events.BLOCK_CREATE, Blockly.Events.BLOCK_CHANGE];
 
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || !allowedEvents.includes(event.type)) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || !allowedEvents.includes(event.type)) {
             return;
         }
-        if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || Blockly.Events.BLOCK_CHANGE) {
             // Sync names between definition- and execution-block
             if (event.blockId === this.id && event.name === 'NAME') {
                 this.getProcedureCallers().forEach(block => {
@@ -95,27 +95,22 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     },
     /**
      * Prompt the user for parameter name
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     onAddClick() {
-        if (this.is_adding || this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.is_adding || this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
         this.is_adding = true;
         clearTimeout(this.timeout_id);
 
-        // Wrap in setTimeout so block doesn't stick to mouse (window.Blockly.Events.END_DRAG event isn't blocked).
+        // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         this.timeout_id = setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
-            window.Blockly.dialog.prompt(promptMessage, '', paramName => {
+            Blockly.dialog.prompt(promptMessage, '', paramName => {
                 if (paramName) {
-                    const variable = window.Blockly.Variables.getOrCreateVariablePackage(
-                        this.workspace,
-                        null,
-                        paramName,
-                        ''
-                    );
+                    const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
                     if (variable) {
                         this.arguments.push(paramName);
                         this.argument_var_models.push(variable);
@@ -137,7 +132,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Add or remove the statement block from this function definition.
      * @param {boolean} hasStatements True if a statement block is needed.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     setStatements(hasStatements) {
         if (this.hasStatements === hasStatements) {
@@ -158,7 +153,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Update the display of parameters for this procedure definition block.
      * @private
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     updateParams() {
         let paramString = '';
@@ -169,19 +164,19 @@ window.Blockly.Blocks.procedures_defnoreturn = {
 
         // The params field is deterministic based on the mutation,
         // no need to fire a change event.
-        window.Blockly.Events.disable();
+        Blockly.Events.disable();
         try {
             this.setFieldValue(paramString, 'PARAMS');
         } finally {
-            window.Blockly.Events.enable();
+            Blockly.Events.enable();
         }
     },
     /**
      * Create XML to represent the argument inputs.
      * @param {boolean=} optParamIds If true include the IDs of the parameter
-     *     quarks.  Used by window.Blockly.Procedures.mutateCallers for reconnection.
+     *     quarks.  Used by Blockly.Procedures.mutateCallers for reconnection.
      * @return {!Element} XML storage element.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     mutationToDom(optParamIds) {
         const container = document.createElement('mutation');
@@ -211,7 +206,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Parse XML to restore the argument inputs.
      * @param {!Element} xmlElement XML storage element.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     domToMutation(xmlElement) {
         this.arguments = [];
@@ -221,12 +216,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
             if (childNode.nodeName.toLowerCase() === 'arg') {
                 const var_name = childNode.getAttribute('name');
                 const var_id = childNode.getAttribute('varid') || childNode.getAttribute('varId');
-                const variable = window.Blockly.Variables.getOrCreateVariablePackage(
-                    this.workspace,
-                    var_id,
-                    var_name,
-                    ''
-                );
+                const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, var_id, var_name, '');
 
                 this.arguments.push(var_name);
 
@@ -250,15 +240,15 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      *     - the name of the defined procedure,
      *     - a list of all its arguments,
      *     - that it DOES NOT have a return value.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     getProcedureDef() {
         return [this.getFieldValue('NAME'), this.arguments, false];
     },
     /**
      * Return all procedure callers related to this block.
-     * @return {!Array.<window.Blockly.Block>} List of procedure caller blocks
-     * @this window.Blockly.Block
+     * @return {!Array.<Blockly.Block>} List of procedure caller blocks
+     * @this Blockly.Block
      */
     getProcedureCallers() {
         return this.workspace
@@ -268,15 +258,15 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Return all variables referenced by this block.
      * @return {!Array.<string>} List of variable names.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     getVars() {
         return this.arguments;
     },
     /**
      * Return all variables referenced by this block.
-     * @return {!Array.<!window.Blockly.VariableModel>} List of variable models.
-     * @this window.Blockly.Block
+     * @return {!Array.<!Blockly.VariableModel>} List of variable models.
+     * @this Blockly.Block
      */
     getVarModels() {
         return this.argument_var_models;
@@ -284,10 +274,11 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     /**
      * Add custom menu options to this block's context menu.
      * @param {!Array} options List of menu options to add to.
-     * @this window.Blockly.Block
+     * @this Blockly.Block
      */
     customContextMenu(options) {
-        if (window.Blockly.derivWorkspace.isFlyout_) {
+        modifyContextMenu(options);
+        if (Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
         // Add option to create caller.
@@ -307,7 +298,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         const xmlBlock = document.createElement('block');
         xmlBlock.setAttribute('type', this.callType);
         xmlBlock.appendChild(xmlMutation);
-        option.callback = window.Blockly.ContextMenu.callbackFactory(this, xmlBlock);
+        option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
         options.push(option);
 
         // Add options to create getters for each parameter.
@@ -317,13 +308,13 @@ window.Blockly.Blocks.procedures_defnoreturn = {
 
                 getOption.text = localize('Create "get %1"').replace('%1', argumentVarModel.name);
 
-                const xmlField = window.Blockly.Variables.generateVariableFieldDom(argumentVarModel);
+                const xmlField = Blockly.Variables.generateVariableFieldDom(argumentVarModel);
                 const xmlOptionBlock = document.createElement('block');
 
                 xmlOptionBlock.setAttribute('type', 'variables_get');
                 xmlOptionBlock.appendChild(xmlField);
 
-                getOption.callback = window.Blockly.ContextMenu.callbackFactory(this, xmlOptionBlock);
+                getOption.callback = Blockly.ContextMenu.callbackFactory(this, xmlOptionBlock);
                 options.push(getOption);
             });
         }
@@ -331,46 +322,45 @@ window.Blockly.Blocks.procedures_defnoreturn = {
     callType: 'procedures_callnoreturn',
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const functionName = window.Blockly.JavaScript.variableDB_.getName(
+    const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        window.Blockly.Procedures.CATEGORY_NAME
+        Blockly.Procedures.CATEGORY_NAME
     );
 
-    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'STACK');
+    let branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'STACK');
 
-    if (window.Blockly.JavaScript.STATEMENT_PREFIX) {
+    if (Blockly.JavaScript.STATEMENT_PREFIX) {
         const id = block.id.replace(/\$/g, '$$$$'); // Issue 251.
 
         branch =
-            window.Blockly.JavaScript.prefixLines(
-                window.Blockly.JavaScript.STATEMENT_PREFIX.replace(/%1/g, `'${id}'`),
-                window.Blockly.JavaScript.INDENT
+            Blockly.JavaScript.prefixLines(
+                Blockly.JavaScript.STATEMENT_PREFIX.replace(/%1/g, `'${id}'`),
+                Blockly.JavaScript.INDENT
             ) + branch;
     }
 
-    if (window.Blockly.JavaScript.INFINITE_LOOP_TRAP) {
-        branch = window.Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g, `'${block.id}'`) + branch;
+    if (Blockly.JavaScript.INFINITE_LOOP_TRAP) {
+        branch = Blockly.JavaScript.INFINITE_LOOP_TRAP.replace(/%1/g, `'${block.id}'`) + branch;
     }
 
     let returnValue =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'RETURN',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || '';
     if (returnValue) {
-        returnValue = `${window.Blockly.JavaScript.INDENT}return ${returnValue};\n`;
+        returnValue = `${Blockly.JavaScript.INDENT}return ${returnValue};\n`;
     }
 
     const args = block.arguments.map(
-        argumentName =>
-            window.Blockly.JavaScript.variableDB_.getName(argumentName, window.Blockly.Variables.CATEGORY_NAME) // eslint-disable-line no-underscore-dangle
+        argumentName => Blockly.JavaScript.variableDB_.getName(argumentName, Blockly.Variables.CATEGORY_NAME) // eslint-disable-line no-underscore-dangle
     );
 
     // eslint-disable-next-line no-underscore-dangle
-    const code = window.Blockly.JavaScript.javascriptGenerator.scrub_(
+    const code = Blockly.JavaScript.javascriptGenerator.scrub_(
         block,
         `
     function ${functionName}(${args.join(', ')}) {
@@ -381,6 +371,6 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn = 
 
     // Add % so as not to collide with helper functions in definitions list.
     // eslint-disable-next-line no-underscore-dangle
-    window.Blockly.JavaScript.javascriptGenerator.definitions_[`%${functionName}`] = code;
+    Blockly.JavaScript.javascriptGenerator.definitions_[`%${functionName}`] = code;
     return null;
 };

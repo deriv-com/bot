@@ -1,11 +1,11 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
-import { initErrorHandlingListener, removeErrorHandlingEventListener } from '../../../../utils';
+import { initErrorHandlingListener,removeErrorHandlingEventListener } from '../../../../utils';
 import DBotStore from '../../../dbot-store';
-import { removeExtraInput, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu,removeExtraInput, runIrreversibleEvents } from '../../../utils';
 import { defineContract } from '../../images';
 
-window.window.Blockly.Blocks.trade_definition = {
+Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -96,11 +96,11 @@ window.window.Blockly.Blocks.trade_definition = {
                     height: 10,
                 },
             ],
-            colour: window.window.Blockly.Colours.RootBlock.colour,
-            colourSecondary: window.window.Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: window.window.Blockly.Colours.RootBlock.colourTertiary,
+            colour: Blockly.Colours.RootBlock.colour,
+            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Here is where you define the parameters of your contract.'),
-            category: window.window.Blockly.Categories.Trade_Definition,
+            category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -110,21 +110,24 @@ window.window.Blockly.Blocks.trade_definition = {
             key_words: localize('market, trade type, contract type'),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     onchange(event) {
-        if (event.type === 'ui' && !this.isInit) {
+        if (event.type === Blockly.Events.SELECTED && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');
-        } else if (window.window.Blockly.selected === null && this.isInit) {
+        } else if (Blockly.getSelected() === null && this.isInit) {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }
-        if (!this.workspace || this.workspace.isDragging() || window.window.Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
         if (
-            event.type === window.window.Blockly.Events.BLOCK_CHANGE ||
-            (event.type === window.window.Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
@@ -147,7 +150,7 @@ window.window.Blockly.Blocks.trade_definition = {
     },
 };
 
-window.window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -176,14 +179,8 @@ window.window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition =
             ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
             : [contract_type];
 
-    const initialization = window.window.Blockly.JavaScript.javascriptGenerator.statementToCode(
-        block,
-        'INITIALIZATION'
-    );
-    const trade_options_statement = window.window.Blockly.JavaScript.javascriptGenerator.statementToCode(
-        block,
-        'SUBMARKET'
-    );
+    const initialization = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'SUBMARKET');
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {

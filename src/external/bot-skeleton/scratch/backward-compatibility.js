@@ -284,11 +284,9 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options = new window.window.window.Blockly.Options({
-            media: `${window.__webpack_public_path__}assets/media/`,
-        });
+        const options = new Blockly.Options({ media: `assets/images` });
         const el_injection_div = new DocumentFragment();
-        const workspace = window.window.window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
+        const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
         return workspace;
     }
@@ -358,8 +356,8 @@ export default class BlockConversion {
         // For old "market" blocks, move everything in "Trade options" except "DURATION"
         // to "Run once at start". Legacy "market" blocks had no such thing as "Run once at start"
         // not moving everything would kill Martingale strategies as they'd be reinitialised each run.
-        const trade_definition_block = this.workspace.getTradeDefinitionBlock();
-        const has_initialization_block = trade_definition_block.getBlocksInStatement('INITIALIZATION').length > 0;
+        const trade_definition_block = this.workspace?.getTradeDefinitionBlock();
+        const has_initialization_block = trade_definition_block?.getBlocksInStatement('INITIALIZATION').length > 0;
         if (trade_definition_block) {
             trade_definition_block.getBlocksInStatement('SUBMARKET').forEach(block => {
                 if (
@@ -384,12 +382,7 @@ export default class BlockConversion {
             current_name = variable_name + counter;
         }
 
-        const ws_variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
-            this.workspace,
-            '',
-            current_name,
-            ''
-        );
+        const ws_variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
 
         return ws_variable;
@@ -397,14 +390,14 @@ export default class BlockConversion {
 
     convertStrategy(strategy_node, showIncompatibleStrategyDialog) {
         // Disable events (globally) to suppress block onchange listeners from firing.
-        window.window.window.Blockly.Events.disable();
+        Blockly.Events.disable();
 
         // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
         // Don't convert already compatible strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
-            window.window.window.Blockly.Events.enable();
+            Blockly.Events.enable();
             return xml;
         }
 
@@ -418,8 +411,8 @@ export default class BlockConversion {
             if (showIncompatibleStrategyDialog) {
                 showIncompatibleStrategyDialog();
             }
-            window.window.window.Blockly.Events.enable();
-            return window.window.window.Blockly.utils.xml.textToDom('<xml />');
+            Blockly.Events.enable();
+            return Blockly.utils.xml.textToDom('<xml />');
         }
 
         const variable_nodes = [];
@@ -449,7 +442,7 @@ export default class BlockConversion {
                 const variable_name = el_variable.textContent;
 
                 if (!this.workspace_variables[variable_id]) {
-                    const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
+                    const variable = Blockly.Variables.getOrCreateVariablePackage(
                         this.workspace,
                         variable_id,
                         variable_name,
@@ -512,12 +505,12 @@ export default class BlockConversion {
 
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
-            // block.render();
+            block.renderEfficiently();
         });
 
         this.workspace.cleanUp();
 
-        const converted_xml = window.window.window.Blockly.Xml.workspaceToDom(this.workspace);
+        const converted_xml = Blockly.Xml.workspaceToDom(this.workspace);
 
         if (strategy_node.hasAttribute('collection') && strategy_node.getAttribute('collection') === 'true') {
             converted_xml.setAttribute('collection', 'true');
@@ -527,7 +520,7 @@ export default class BlockConversion {
 
         this.workspace = null;
 
-        window.window.window.Blockly.Events.enable();
+        Blockly.Events.enable();
 
         return converted_xml;
     }
@@ -580,7 +573,7 @@ export default class BlockConversion {
                 });
             }
         } else {
-            const is_legal_block = Object.keys(window.window.window.Blockly.Blocks).includes(block_type);
+            const is_legal_block = Object.keys(Blockly.Blocks).includes(block_type);
 
             if (is_legal_block) {
                 block = this.workspace.newBlock(block_type);
@@ -621,10 +614,10 @@ export default class BlockConversion {
                     const field = block.getField(field_name);
 
                     if (field) {
-                        if (field instanceof window.window.window.Blockly.FieldVariable) {
+                        if (field instanceof Blockly.FieldVariable) {
                             const variable_id = el_block_child.getAttribute('id');
                             const variable_name = el_block_child.innerText.trim();
-                            const variable = window.window.window.Blockly.Variables.getOrCreateVariablePackage(
+                            const variable = Blockly.Variables.getOrCreateVariablePackage(
                                 this.workspace,
                                 variable_id,
                                 variable_name,
@@ -659,20 +652,6 @@ export default class BlockConversion {
                             block.nextConnection.connect(sibling_block.previousConnection);
                         });
                     }
-                    break;
-                }
-                case 'comment': {
-                    const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
-                    const comment_text = el_block_child.innerText;
-
-                    block.comment = new window.window.window.Blockly.WorkspaceComment(
-                        this.workspace,
-                        comment_text,
-                        0,
-                        0,
-                        is_minimised
-                    );
-                    block.comment.iconXY_ = { x: 0, y: 0 };
                     break;
                 }
                 default:

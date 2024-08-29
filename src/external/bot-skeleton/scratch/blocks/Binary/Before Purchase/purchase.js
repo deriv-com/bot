@@ -1,11 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { getContractTypeOptions } from '../../../shared';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
-    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
-};
-
-window.Blockly.Blocks.purchase = {
+Blockly.Blocks.purchase = {
     init() {
         this.jsonInit(this.definition());
 
@@ -23,11 +20,11 @@ window.Blockly.Blocks.purchase = {
                 },
             ],
             previousStatement: null,
-            colour: window.Blockly.Colours.Special1.colour,
-            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
+            colour: Blockly.Colours.Special1.colour,
+            colourSecondary: Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: Blockly.Colours.Special1.colourTertiary,
             tooltip: localize('This block purchases contract of a specified type.'),
-            category: window.Blockly.Categories.Before_Purchase,
+            category: Blockly.Categories.Before_Purchase,
         };
     },
     meta() {
@@ -40,17 +37,17 @@ window.Blockly.Blocks.purchase = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.populatePurchaseList(event);
-        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
+        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
             }
-        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             const purchase_type_list = this.getField('PURCHASE_LIST');
             const purchase_options = purchase_type_list.menuGenerator_; // eslint-disable-line
 
@@ -78,10 +75,13 @@ window.Blockly.Blocks.purchase = {
             });
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     restricted_parents: ['before_purchase'],
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.variables_get = {
+Blockly.Blocks.variables_get = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +17,12 @@ window.Blockly.Blocks.variables_get = {
                 },
             ],
             output: null,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Special4.colour,
+            colourSecondary: Blockly.Colours.Special4.colourSecondary,
+            colourTertiary: Blockly.Colours.Special4.colourTertiary,
             tooltip: localize('Gets variable value'),
-            category: window.Blockly.Categories.Variables,
+            category: Blockly.Categories.Variables,
         };
     },
     meta() {
@@ -31,7 +32,7 @@ window.Blockly.Blocks.variables_get = {
         };
     },
     onchange(event) {
-        if (event.type === window.Blockly.Events.VAR_RENAME) {
+        if (event.type === Blockly.Events.VAR_RENAME) {
             const all_blocks = this.workspace.getAllBlocks();
             const function_blocks = all_blocks.filter(block => block.category_ === 'custom_functions');
             const old_param = event.oldName;
@@ -54,13 +55,13 @@ window.Blockly.Blocks.variables_get = {
             });
         }
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.variables_get = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.variables_get = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const code = window.Blockly.JavaScript.variableDB_.getName(
-        block.getFieldValue('VAR'),
-        window.Blockly.Variables.CATEGORY_NAME
-    );
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    const code = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.CATEGORY_NAME);
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

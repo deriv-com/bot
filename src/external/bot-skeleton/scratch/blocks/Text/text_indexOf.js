@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.text_indexOf = {
+Blockly.Blocks.text_indexOf = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -35,12 +35,12 @@ window.Blockly.Blocks.text_indexOf = {
             ],
             inputsInline: true,
             output: 'String',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Search for a given string'),
-            cateogry: window.Blockly.Categories.Text,
+            cateogry: Blockly.Categories.Text,
         };
     },
     meta() {
@@ -51,6 +51,9 @@ window.Blockly.Blocks.text_indexOf = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     getRequiredValueInputs() {
         return {
             VALUE: emptyTextValidator,
@@ -59,24 +62,24 @@ window.Blockly.Blocks.text_indexOf = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const substring =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FIND',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const text =
-        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
 
     const code = `${text}.${functionName}(${substring})`;
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
+        return [`${code} + 1`, Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

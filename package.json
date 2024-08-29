@@ -7,7 +7,8 @@
     },
     "scripts": {
         "start": "rsbuild dev",
-        "build": "rsbuild build",
+        "build": "rsbuild build && shx mkdir -p ./dist/media && npm run build:copy",
+        "build:copy": "shx cp -r ./node_modules/blockly/media/. ./dist/assets/ && shx cp -r ./public/assets/images/. ./dist/assets/ && shx cp -r ./src/scratch/sounds/. ./dist/assets/",
         "watch": "rsbuild build --watch",
         "serve": "live-server --port=8443 --host=localhost dist",
         "start:webpack": "webpack serve --open --config webpack.config.js",
@@ -123,6 +124,7 @@
         "postcss": "^8.4.38",
         "prettier": "^3.1.0",
         "raw-loader": "^4.0.2",
+        "rimraf": "^6.0.1",
         "sass": "^1.77.6",
         "sass-loader": "^14.2.1",
         "sass-resources-loader": "^2.2.5",

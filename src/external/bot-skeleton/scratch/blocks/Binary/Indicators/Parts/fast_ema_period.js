@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.fast_ema_period = {
+Blockly.Blocks.fast_ema_period = {
     init() {
         this.jsonInit({
             message0: localize('Fast EMA Period {{ input_number }}', { input_number: '%1' }),
@@ -11,9 +12,9 @@ window.Blockly.Blocks.fast_ema_period = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -21,7 +22,10 @@ window.Blockly.Blocks.fast_ema_period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange: window.Blockly.Blocks.input_list.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
     getRequiredValueInputs() {
         return {
@@ -30,4 +34,4 @@ window.Blockly.Blocks.fast_ema_period = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.fast_ema_period = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.fast_ema_period = () => {};

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.std_dev_multiplier_up = {
+Blockly.Blocks.std_dev_multiplier_up = {
     init() {
         this.jsonInit({
             message0: localize('Standard Deviation Up Multiplier {{ input_number }}', { input_number: '%1' }),
@@ -11,9 +12,9 @@ window.Blockly.Blocks.std_dev_multiplier_up = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -21,13 +22,16 @@ window.Blockly.Blocks.std_dev_multiplier_up = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange: window.Blockly.Blocks.input_list.onchange,
+    onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['bb_statement', 'bba_statement'],
     getRequiredValueInputs() {
         return {
             UPMULTIPLIER: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.std_dev_multiplier_up = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.std_dev_multiplier_up = () => {};

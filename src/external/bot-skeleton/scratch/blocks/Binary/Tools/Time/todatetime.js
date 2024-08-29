@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
-window.Blockly.Blocks.todatetime = {
+Blockly.Blocks.todatetime = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -22,14 +23,14 @@ window.Blockly.Blocks.todatetime = {
                 },
             ],
             output: 'String',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize(
                 'This block converts the number of seconds since the Unix Epoch (1 January 1970) into a string of text representing the date and time.'
             ),
-            category: window.Blockly.Categories.Time,
+            category: Blockly.Categories.Time,
         };
     },
     meta() {
@@ -45,20 +46,23 @@ window.Blockly.Blocks.todatetime = {
             TIMESTAMP: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.todatetime = block => {
-    const timestamp = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+Blockly.JavaScript.javascriptGenerator.forBlock.todatetime = block => {
+    const timestamp = Blockly.JavaScript.javascriptGenerator.valueToCode(
         block,
         'TIMESTAMP',
-        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
     );
     const invalid_timestamp = `${localize('Invalid timestamp')}:`;
 
     // eslint-disable-next-line no-underscore-dangle
-    const function_name = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('timestampToDateString', [
+    const function_name = Blockly.JavaScript.javascriptGenerator.provideFunction_('timestampToDateString', [
         // eslint-disable-next-line no-underscore-dangle
-        `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
+        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(timestamp) {
             var datetime = new Date(timestamp * 1000);
 
             if (!datetime.getTime()) {
@@ -94,5 +98,5 @@ window.Blockly.JavaScript.javascriptGenerator.forBlock.todatetime = block => {
     ]);
 
     const code = `${function_name}(${timestamp})`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

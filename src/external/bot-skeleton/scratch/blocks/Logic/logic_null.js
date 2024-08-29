@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
-window.Blockly.Blocks.logic_null = {
+Blockly.Blocks.logic_null = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,13 +10,16 @@ window.Blockly.Blocks.logic_null = {
             inputsInline: true,
             message0: 'null',
             output: null,
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block assigns a null value to an item or statement.'),
-            category: window.Blockly.Categories.Logic,
+            category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -24,7 +28,7 @@ window.Blockly.Blocks.logic_null = {
         };
     },
 };
-window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_null = () => [
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_null = () => [
     'null',
-    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

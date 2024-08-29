@@ -1,7 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.ohlc_values = {
+Blockly.Blocks.ohlc_values = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -27,14 +28,14 @@ window.Blockly.Blocks.ohlc_values = {
                 },
             ],
             output: 'Array',
-            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize(
                 'Returns a list of specific values from a candle list according to selected time interval'
             ),
-            category: window.Blockly.Categories.Tick_Analysis,
+            category: Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -45,13 +46,16 @@ window.Blockly.Blocks.ohlc_values = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 
     const code = `Bot.getOhlc({ field: '${ohlcField}', granularity: ${granularity} })`;
-    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

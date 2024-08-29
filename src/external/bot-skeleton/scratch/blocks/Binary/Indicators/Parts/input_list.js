@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
-import { runIrreversibleEvents } from '../../../../utils';
+import { modifyContextMenu,runIrreversibleEvents } from '../../../../utils';
 
-window.Blockly.Blocks.input_list = {
+Blockly.Blocks.input_list = {
     init() {
         this.jsonInit({
             message0: localize('Input List {{ input_list }}', { input_list: '%1' }),
@@ -12,9 +12,9 @@ window.Blockly.Blocks.input_list = {
                     check: 'Array',
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -23,7 +23,7 @@ window.Blockly.Blocks.input_list = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -34,9 +34,9 @@ window.Blockly.Blocks.input_list = {
             }
         };
 
-        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             setParentId();
-        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             setParentId();
 
             const surround_parent = this.getSurroundParent();
@@ -77,6 +77,9 @@ window.Blockly.Blocks.input_list = {
             INPUT_LIST: null,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.input_list = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.input_list = () => {};

@@ -1,6 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
-window.Blockly.Blocks.rsia_statement = {
+Blockly.Blocks.rsia_statement = {
     protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'period'],
     init() {
@@ -30,14 +31,17 @@ window.Blockly.Blocks.rsia_statement = {
                     check: null,
                 },
             ],
-            colour: window.Blockly.Colours.Base.colour,
-            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
+            colour: Blockly.Colours.Base.colour,
+            colourSecondary: Blockly.Colours.Base.colourSecondary,
+            colourTertiary: Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Calculates Relative Strength Index (RSI) list from a list of values with a period'),
             previousStatement: null,
             nextStatement: null,
-            category: window.Blockly.Categories.Indicators,
+            category: Blockly.Categories.Indicators,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -47,14 +51,14 @@ window.Blockly.Blocks.rsia_statement = {
             ),
         };
     },
-    onchange: window.Blockly.Blocks.bb_statement.onchange,
+    onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.rsia_statement = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.rsia_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = window.Blockly.JavaScript.variableDB_.getName(
+    const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        window.Blockly.Variables.CATEGORY_NAME
+        Blockly.Variables.CATEGORY_NAME
     );
     const input = block.childValueToCode('input_list', 'INPUT_LIST');
     const period = block.childValueToCode('period', 'PERIOD');
