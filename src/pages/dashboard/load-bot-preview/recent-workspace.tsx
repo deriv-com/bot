@@ -11,8 +11,8 @@ import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
 import {
+    LabelPairedCircleArrowRightCaptionRegularIcon,
     LabelPairedFloppyDiskCaptionRegularIcon,
-    LabelPairedPageCircleArrowRightCaptionRegularIcon,
     LabelPairedTrashCaptionRegularIcon,
     LegacyMenuDots1pxIcon,
 } from '@deriv/quill-icons';
@@ -24,7 +24,7 @@ import './recent-workspace.scss';
 export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
-        icon: <LabelPairedPageCircleArrowRightCaptionRegularIcon height='24px' width='24px' />,
+        icon: <LabelPairedCircleArrowRightCaptionRegularIcon height='24px' width='24px' />,
         label: <Localize i18n_default_text='Open' />,
     },
     {
