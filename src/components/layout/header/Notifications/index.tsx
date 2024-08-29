@@ -7,6 +7,7 @@ import './notifications.scss';
 export const Notifications = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { localize } = useTranslations();
+    // TODO: need to add this back after fixing notifications component
     // const { isMobile } = useDevice();
     return (
         <div className='notifications__wrapper'>
