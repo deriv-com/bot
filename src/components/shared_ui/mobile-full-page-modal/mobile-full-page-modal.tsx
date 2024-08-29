@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
@@ -80,10 +80,9 @@ const MobileFullPageModal = ({
                     >
                         {pageHeaderReturnFn && (
                             <div className='dc-mobile-full-page-modal__header-return'>
-                                <Icon
-                                    icon='IcArrowLeftBold'
+                                <LabelPairedArrowLeftCaptionFillIcon
                                     onClick={pageHeaderReturnFn}
-                                    data_testid='dt_mobile_full_page_return_icon'
+                                    data-testid='dt_mobile_full_page_return_icon'
                                 />
                             </div>
                         )}

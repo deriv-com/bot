@@ -1,6 +1,6 @@
 import { Field as FormField, FieldProps, Form, Formik } from 'formik';
 import Input from '@/components/shared_ui/input';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import SearchIcon from './search-icon';
 
 type TSearchBox = {

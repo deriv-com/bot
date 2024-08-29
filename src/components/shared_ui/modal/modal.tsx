@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import { Icon } from '@/utils/tmp/dummy';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowLeftCaptionFillIcon, LegacyClose1pxIcon } from '@deriv/quill-icons';
 import Text from '../text/text';
 import Body from './modal-body';
 import Footer from './modal-footer';
@@ -190,7 +189,10 @@ const ModalElement = ({
                             })}
                         >
                             {has_return_icon && (
-                                <Icon icon='IcArrowLeftBold' onClick={onReturn} className='dc-modal-header__icon' />
+                                <LabelPairedArrowLeftCaptionFillIcon
+                                    onClick={onReturn}
+                                    className='dc-modal-header__icon'
+                                />
                             )}
                             {title}
                         </Text>

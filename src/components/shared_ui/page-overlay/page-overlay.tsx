@@ -2,8 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@/utils/tmp/dummy';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowLeftCaptionFillIcon, LegacyClose1pxIcon } from '@deriv/quill-icons';
 
 type TPageOverlay = {
     header?: React.ReactNode;
@@ -44,7 +43,10 @@ const PageOverlay = ({
                     <div className='dc-page-overlay__header-wrapper'>
                         <div className={classNames('dc-page-overlay__header-title', header_classname)}>
                             {has_return_icon && (
-                                <Icon icon='IcArrowLeftBold' onClick={onReturn} className='dc-modal-header__icon' />
+                                <LabelPairedArrowLeftCaptionFillIcon
+                                    onClick={onReturn}
+                                    className='dc-modal-header__icon'
+                                />
                             )}
                             {header}
                         </div>

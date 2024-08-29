@@ -1,6 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import ApiHelpers from '../../../../services/api/api-helpers';
-import { modifyContextMenu,runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runIrreversibleEvents } from '../../../utils';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {

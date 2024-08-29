@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { Modal } from '@deriv-com/ui';
 import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';

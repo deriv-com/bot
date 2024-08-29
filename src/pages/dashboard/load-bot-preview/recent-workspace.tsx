@@ -1,19 +1,43 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { getRecentFileIcon } from '@/components/load-modal/recent-workspace';
 import { isDesktop } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
-import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
-import { Icon } from '@/utils/tmp/dummy';
+import {
+    LabelPairedFloppyDiskCaptionRegularIcon,
+    LabelPairedPageCircleArrowRightCaptionRegularIcon,
+    LabelPairedTrashCaptionRegularIcon,
+    LegacyMenuDots1pxIcon,
+} from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
-import './index.scss';
+import { STRATEGY } from '../../../constants/dashboard';
+import './recent-workspace.scss';
+
+export const CONTEXT_MENU = [
+    {
+        type: STRATEGY.OPEN,
+        icon: <LabelPairedPageCircleArrowRightCaptionRegularIcon height='24px' width='24px' />,
+        label: <Localize i18n_default_text='Open' />,
+    },
+    {
+        type: STRATEGY.SAVE,
+        icon: <LabelPairedFloppyDiskCaptionRegularIcon height='24px' width='24px' />,
+        label: <Localize i18n_default_text='Save' />,
+    },
+    {
+        type: STRATEGY.DELETE,
+        icon: <LabelPairedTrashCaptionRegularIcon height='24px' width='24px' />,
+        label: <Localize i18n_default_text='Delete' />,
+    },
+];
 
 type TRecentWorkspace = {
     index: number;
@@ -29,7 +53,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
         dashboard_strategies = [],
-        getRecentFileIcon,
         getSaveType,
         getSelectedStrategyID,
         loadFileFromRecent,
@@ -163,12 +186,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 </Text>
             </div>
             <div className='bot-list__item__load-type'>
-                <Icon
-                    icon={getRecentFileIcon(workspace.save_type)}
-                    className={classnames({
-                        'bot-list__item__load-type__icon--active': workspace.save_type === save_types.GOOGLE_DRIVE,
-                    })}
-                />
+                {getRecentFileIcon(workspace.save_type, 'bot-list__item__load-type__icon--active')}
                 <div className='bot-list__item__load-type__icon--saved'>
                     <Text align='left' as='p' size={text_size} LineHeight='lg'>
                         {getSaveType(workspace.save_type)}
@@ -177,7 +195,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             </div>
             <DesktopWrapper>
                 <div className='bot-list__item__actions'>
-                    {MENU_DESKTOP.map(item => (
+                    {CONTEXT_MENU.map(item => (
                         <div
                             key={item.type}
                             className='bot-list__item__actions__action-item'
@@ -186,7 +204,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                                 viewRecentStrategy(item.type);
                             }}
                         >
-                            <Icon icon={item.icon} />
+                            {item.icon}
                         </div>
                     ))}
                 </div>
@@ -194,7 +212,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             <MobileWrapper>
                 <div className='bot-list__item__actions'>
                     <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
-                        <Icon icon='IcMenuDots' />
+                        <LegacyMenuDots1pxIcon height='20px' width='20px' />
                     </button>
                 </div>
                 <div
@@ -203,7 +221,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                         'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
                     })}
                 >
-                    {CONTEXT_MENU_MOBILE.map(item => (
+                    {CONTEXT_MENU.map(item => (
                         <div
                             key={item.type}
                             className='bot-list__item__responsive__menu'
@@ -212,15 +230,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                                 viewRecentStrategy(item.type);
                             }}
                         >
-                            <div>
-                                <Icon icon={item.icon} />
-                            </div>
-                            <Text
-                                color='prominent'
-                                className='bot-list__item__responsive__menu__item'
-                                as='p'
-                                size='xxs'
-                            >
+                            <div>{item.icon}</div>
+                            <Text color='prominent' className='bot-list__item__responsive__menu__item' as='p' size='xs'>
                                 {item.label}
                             </Text>
                         </div>

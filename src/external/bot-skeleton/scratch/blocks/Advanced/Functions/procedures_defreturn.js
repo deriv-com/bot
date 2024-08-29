@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { plusIconDark } from '../../images';
 
 Blockly.Blocks.procedures_defreturn = {

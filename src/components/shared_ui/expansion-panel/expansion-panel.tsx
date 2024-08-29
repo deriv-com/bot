@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
 import { TItem } from '../types/common.types';
 import ArrayRenderer from './array-renderer';
 
@@ -32,7 +32,12 @@ const ExpansionPanel = ({ message, onResize }: TExpansionPanel) => {
                 })}
             >
                 {message.header}
-                <Icon icon='IcChevronDown' className='dc-expansion-panel__header-chevron-icon' onClick={onClick} />
+                <LabelPairedChevronDownLgRegularIcon
+                    className='dc-expansion-panel__header-chevron-icon'
+                    onClick={onClick}
+                    height='24px'
+                    width='24px'
+                />
             </div>
             {is_open &&
                 (Array.isArray(message.content) ? (

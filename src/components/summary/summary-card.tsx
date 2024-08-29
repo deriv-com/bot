@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { getCardLabels, getContractTypeDisplay } from '@/components/shared';
 import ContractCard from '@/components/shared_ui/contract-card';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
@@ -96,9 +96,11 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
             )}
             {!is_contract_loading && !contract_info && (
                 <Text as='p' LineHeight='md' size='sm' weight='lighter'>
-                    {localize('When you’re ready to trade, hit ')}
-                    <strong>{localize('Run')}</strong>
-                    {localize('. You’ll be able to track your bot’s performance here.')}
+                    <Localize i18n_default_text='When you’re ready to trade, hit ' />
+                    <strong>
+                        <Localize i18n_default_text='Run' />
+                    </strong>
+                    <Localize i18n_default_text='. You’ll be able to track your bot’s performance here.' />
                 </Text>
             )}
         </div>
