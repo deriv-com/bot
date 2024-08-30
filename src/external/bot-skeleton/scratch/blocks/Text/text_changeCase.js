@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_changeCase = {
+window.Blockly.Blocks.text_changeCase = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -27,12 +27,12 @@ Blockly.Blocks.text_changeCase = {
                 },
             ],
             output: 'String',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Changes text case accordingly'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -53,7 +53,7 @@ Blockly.Blocks.text_changeCase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
     const operators = {
         UPPERCASE: '.toUpperCase()',
         LOWERCASE: '.toLowerCase()',
@@ -61,9 +61,9 @@ Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
     };
     const operator = operators[block.getFieldValue('CASE')];
     const textOrder = operator
-        ? Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
-        : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
-    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', textOrder) || "''";
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    const text = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', textOrder) || "''";
 
     let code;
 
@@ -71,9 +71,9 @@ Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
         code = `${text}${operator}`;
     } else {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('textToTitleCase', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('textToTitleCase', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(str) {
+            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(str) {
                 return str.toLowerCase().split(' ').map(function(word) {
                     return word.replace(word[0], word[0].toUpperCase());
                 }).join(' ');
@@ -82,5 +82,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
         code = `${functionName}(${text})`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

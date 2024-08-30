@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.lists_sort = {
+window.Blockly.Blocks.lists_sort = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -36,12 +36,12 @@ Blockly.Blocks.lists_sort = {
             ],
             inputsInline: true,
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Sorts the items in a given list'),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     meta() {
@@ -62,19 +62,21 @@ Blockly.Blocks.lists_sort = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_sort = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_sort = block => {
     const list =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'LIST',
-            Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
         ) || '[]';
     const direction = block.getFieldValue('DIRECTION') === '1' ? 1 : -1;
     const type = block.getFieldValue('TYPE');
     // eslint-disable-next-line no-underscore-dangle
-    const getCompareFunctionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('listsGetSortCompare', [
-        // eslint-disable-next-line no-underscore-dangle
-        `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
+    const getCompareFunctionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_(
+        'listsGetSortCompare',
+        [
+            // eslint-disable-next-line no-underscore-dangle
+            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(type, direction) {
             var compareFuncs = {
                 NUMERIC: function(a, b) {
                     return parseFloat(a) - parseFloat(b);
@@ -88,8 +90,9 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_sort = block => {
                 return compareFuncs[type](a, b) * direction; 
             }
         }`,
-    ]);
+        ]
+    );
 
     const code = `${list}.sort().slice(0).sort(${getCompareFunctionName}("${type}", ${direction}))`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

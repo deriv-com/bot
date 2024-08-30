@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.payout = {
+window.Blockly.Blocks.payout = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +16,12 @@ Blockly.Blocks.payout = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block returns the potential payout for the selected trade type'),
-            category: Blockly.Categories.Before_Purchase,
+            category: window.Blockly.Categories.Before_Purchase,
         };
     },
     meta() {
@@ -35,14 +35,14 @@ Blockly.Blocks.payout = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    onchange: Blockly.Blocks.purchase.onchange,
-    populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,
-    enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
+    onchange: window.Blockly.Blocks.purchase.onchange,
+    populatePurchaseList: window.Blockly.Blocks.purchase.populatePurchaseList,
+    enforceLimitations: window.Blockly.Blocks.purchase.enforceLimitations,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getPayout('${purchaseList}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

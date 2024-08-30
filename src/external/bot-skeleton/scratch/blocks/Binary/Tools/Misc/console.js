@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.console = {
+window.Blockly.Blocks.console = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -28,13 +28,13 @@ Blockly.Blocks.console = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Special3.colour,
-            colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            colour: window.Blockly.Colours.Special3.colour,
+            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Display messages in the developer’s console.'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -55,13 +55,13 @@ Blockly.Blocks.console = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'MESSAGE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || `"${localize('<empty message>')}"`;
 
     const code = `Bot.console({ type: '${console_type}', message: ${message}});\n`;

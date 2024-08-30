@@ -3,9 +3,9 @@ import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '../../../shared';
-import { modifyContextMenu,runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
-Blockly.Blocks.trade_definition_multiplier = {
+window.Blockly.Blocks.trade_definition_multiplier = {
     init() {
         this.jsonInit(this.definition());
 
@@ -56,13 +56,13 @@ Blockly.Blocks.trade_definition_multiplier = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Special1.colour,
-            colourSecondary: Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: Blockly.Colours.Special1.colourTertiary,
+            colour: window.Blockly.Colours.Special1.colour,
+            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Define your trade options such as multiplier and stake.'),
-            category: Blockly.Categories.Trade_Definition,
+            category: window.Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -107,7 +107,7 @@ Blockly.Blocks.trade_definition_multiplier = {
         }
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -133,7 +133,7 @@ Blockly.Blocks.trade_definition_multiplier = {
 
         const is_load_event = /^dbot-load/.test(event.group);
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.setCurrency();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
@@ -144,7 +144,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
             this.validateBlocksInStatement();
             if (is_load_event) {
                 if (event.name === 'TRADETYPE_LIST') {
@@ -165,15 +165,15 @@ Blockly.Blocks.trade_definition_multiplier = {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             this.setCurrency();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
                 if (!this.selected_multiplier) {
-                    const fake_creation_event = new Blockly.Events.BlockCreate(this);
+                    const fake_creation_event = new window.Blockly.Events.BlockCreate(this);
                     fake_creation_event.recordUndo = false;
-                    Blockly.Events.fire(fake_creation_event);
+                    window.Blockly.Events.fire(fake_creation_event);
                 } else if (this.selected_trade_type !== 'multiplier') {
                     this.updateMultiplierInput(true);
                 }
@@ -245,7 +245,7 @@ Blockly.Blocks.trade_definition_multiplier = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
+    setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
@@ -272,12 +272,12 @@ Blockly.Blocks.trade_definition_multiplier = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_multiplier = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_multiplier = block => {
     const amount =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'AMOUNT',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '0';
     const { currency } = DBotStore.instance.client;
     const { setContractUpdateConfig } = DBotStore.instance;

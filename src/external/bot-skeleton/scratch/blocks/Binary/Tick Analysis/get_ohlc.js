@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.get_ohlc = {
+window.Blockly.Blocks.get_ohlc = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -25,12 +25,12 @@ Blockly.Blocks.get_ohlc = {
                 },
             ],
             output: 'Candle',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you a specific candle from within the selected time interval.'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -48,16 +48,16 @@ Blockly.Blocks.get_ohlc = {
         modifyContextMenu(menu);
     },
 };
-Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const index =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'CANDLEINDEX',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '1';
 
     const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${granularity} })`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

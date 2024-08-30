@@ -1,12 +1,12 @@
 import { localize } from '@/utils/tmp/dummy';
-import { modifyContextMenu,runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { plusIconDark } from '../../images';
 
-Blockly.Blocks.lists_create_with = {
+window.Blockly.Blocks.lists_create_with = {
     protected_statements: ['STACK'],
     allowed_children: ['lists_statement'],
     init() {
-        const field_image = new Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
+        const field_image = new window.Blockly.FieldImage(plusIconDark, 25, 25, '', this.onIconClick.bind(this));
         this.jsonInit(this.definition());
         this.appendDummyInput('ADD_ICON').appendField(field_image);
         this.moveInputBefore('ADD_ICON', 'STACK');
@@ -29,13 +29,13 @@ Blockly.Blocks.lists_create_with = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('This block creates a list with strings and numbers.'),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     meta() {
@@ -45,7 +45,7 @@ Blockly.Blocks.lists_create_with = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -61,11 +61,11 @@ Blockly.Blocks.lists_create_with = {
         });
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             // Only allow "text_statement" type blocks
             const blocks_in_stack = this.getBlocksInStatement('STACK');
             blocks_in_stack.forEach(block => {
@@ -83,15 +83,15 @@ Blockly.Blocks.lists_create_with = {
 };
 
 // Head's up! This is also the code generation for the "text_join" block.
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_create_with = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_create_with = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = Blockly.JavaScript.variableDB_.getName(
+    const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.CATEGORY_NAME
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
     const elements = blocks_in_stack.map(b => {
-        const value = Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
+        const value = window.Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });
 

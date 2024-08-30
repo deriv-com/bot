@@ -1,9 +1,9 @@
-/* This overrides the createVariable method of Blockly.VariableMap.prototype.createVariable.
+/* This overrides the createVariable method of window.Blockly.VariableMap.prototype.createVariable.
 This was done to allow for the creation of variables with the same name but different sentence case (ex: ema, EMA).
 This was done because with the update of new blockly. It does not support variables with same names irrespective of the sentence case.
 In Order to fix this issue we are avoid throwing error if the name is same but the sentence case is different and we are appending a _ in the duplicated variable. */
 
-Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id) {
+window.Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id) {
     let variable = this.getVariable(name, opt_type);
     if (variable && variable?.name === name) {
         if (opt_id && variable.getId() !== opt_id) {
@@ -18,9 +18,9 @@ Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id)
     if (opt_id && this.getVariableById(opt_id)) {
         throw Error(`Variable id, "${opt_id}", is already in use.`);
     }
-    const id = opt_id || Blockly.utils.idGenerator.genUid();
+    const id = opt_id || window.Blockly.utils.idGenerator.genUid();
     const type = opt_type || '';
-    variable = new Blockly.VariableModel(this.workspace, variable ? `${name}_` : name, type, id);
+    variable = new window.Blockly.VariableModel(this.workspace, variable ? `${name}_` : name, type, id);
 
     const variables = this.variableMap.get(type) || [];
     variables.push(variable);
@@ -31,7 +31,7 @@ Blockly.VariableMap.prototype.createVariable = function (name, opt_type, opt_id)
     this.variableMap.delete(type);
     this.variableMap.set(type, variables);
 
-    Blockly.Events.fire(new (Blockly.Events.get(Blockly.Events.VAR_CREATE))(variable));
+    window.Blockly.Events.fire(new (window.Blockly.Events.get(window.Blockly.Events.VAR_CREATE))(variable));
 
     return variable;
 };

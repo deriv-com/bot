@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_prompt_ext = {
+window.Blockly.Blocks.text_prompt_ext = {
     init() {
         this.jsonInit(this.definition());
         const typeField = this.getField('TYPE');
@@ -41,12 +41,12 @@ Blockly.Blocks.text_prompt_ext = {
             ],
             output:
                 typeof this.getFieldValue === 'function' && this.getFieldValue('TYPE') === 'TEXT' ? 'String' : 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Special3.colour,
-            colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Special3.colour,
+            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
             tooltip: localize('Request an input'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     meta() {
@@ -64,20 +64,20 @@ Blockly.Blocks.text_prompt_ext = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block => {
     let msg, code;
 
     if (block.getField('TEXT')) {
         // Internal message
         // eslint-disable-next-line no-underscore-dangle
-        msg = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
+        msg = window.Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
     } else {
         // External message
         msg =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'TEXT',
-                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
             ) || "''";
     }
 
@@ -87,5 +87,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.text_prompt_ext = block => {
         code = `window.prompt(${msg})`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

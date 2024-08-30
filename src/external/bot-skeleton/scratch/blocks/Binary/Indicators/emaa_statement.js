@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.emaa_statement = {
+window.Blockly.Blocks.emaa_statement = {
     protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'period'],
     init() {
@@ -31,13 +31,13 @@ Blockly.Blocks.emaa_statement = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Calculates Exponential Moving Average (EMA) list from a list of values with a period'),
             previousStatement: null,
             nextStatement: null,
-            category: Blockly.Categories.Indicators,
+            category: window.Blockly.Categories.Indicators,
         };
     },
     meta() {
@@ -48,17 +48,17 @@ Blockly.Blocks.emaa_statement = {
             ),
         };
     },
-    onchange: Blockly.Blocks.bb_statement.onchange,
+    onchange: window.Blockly.Blocks.bb_statement.onchange,
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.emaa_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.emaa_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = Blockly.JavaScript.variableDB_.getName(
+    const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.CATEGORY_NAME
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const input = block.childValueToCode('input_list', 'INPUT_LIST');
     const period = block.childValueToCode('period', 'PERIOD');

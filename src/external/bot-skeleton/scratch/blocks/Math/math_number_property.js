@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_number_property = {
+window.Blockly.Blocks.math_number_property = {
     init() {
         this.jsonInit(this.definition());
 
@@ -38,12 +38,12 @@ Blockly.Blocks.math_number_property = {
                 },
             ],
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             toolip: localize('This block tests a given number according to the selection'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     meta() {
@@ -86,12 +86,12 @@ Blockly.Blocks.math_number_property = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'NUMBER_TO_CHECK',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
         ) || '0';
     const property = block.getFieldValue('PROPERTY');
 
@@ -99,9 +99,9 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => 
 
     if (property === 'PRIME') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('mathIsPrime', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
+            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(n) {
                 // https://en.wikipedia.org/wiki/Primality_test#Naive_methods
                 if (n == 2 || n == 3) {
                     return true;
@@ -123,7 +123,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => 
             }`,
         ]);
         code = `${functionName}(${argument0})`;
-        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     } else if (property === 'EVEN') {
         code = `${argument0} % 2 === 0`;
     } else if (property === 'ODD') {
@@ -136,13 +136,13 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => 
         code = `${argument0} < 0`;
     } else if (property === 'DIVISIBLE_BY') {
         const divisor =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'DIVISOR',
-                Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
             ) || '0';
         code = `${argument0} % ${divisor} == 0`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY];
 };

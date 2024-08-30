@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_trim = {
+window.Blockly.Blocks.text_trim = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,12 +24,12 @@ Blockly.Blocks.text_trim = {
                 },
             ],
             output: 'String',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Trims spaces'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -48,7 +48,7 @@ Blockly.Blocks.text_trim = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_trim = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_trim = block => {
     const operators = {
         LEFT: ".replace(/^[\\s\\xa0]+/, '')",
         RIGHT: ".replace(/[\\s\\xa0]+$/, '')",
@@ -57,12 +57,12 @@ Blockly.JavaScript.javascriptGenerator.forBlock.text_trim = block => {
 
     const operator = operators[block.getFieldValue('MODE')];
     const text =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TEXT',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
 
     const code = `${text}${operator}`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

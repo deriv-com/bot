@@ -4,7 +4,7 @@
  * we use colour too similar to workspace background colour for tertiary (borders).
  * @package
  */
-Blockly.WorkspaceComment.prototype.updateColour = function () {
+window.Blockly.WorkspaceComment.prototype.updateColour = function () {
     if (this.isVisible()) {
         this.bubble_.setColour(this.block_.getColour());
     }

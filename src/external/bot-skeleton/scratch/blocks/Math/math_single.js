@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_single = {
+window.Blockly.Blocks.math_single = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -28,12 +28,12 @@ Blockly.Blocks.math_single = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Operations on a given number'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     meta() {
@@ -52,7 +52,7 @@ Blockly.Blocks.math_single = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
     const operator = block.getFieldValue('OP');
 
     let code, arg;
@@ -60,32 +60,32 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
     if (operator === 'NEG') {
         // Negation is a special case given its different operator precedence.
         arg =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'NUM',
-                Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION
             ) || '0';
         if (arg[0] === '-') {
             // --3 is not legal in JS
             arg = ` ${arg}`;
         }
         code = `-${arg}`;
-        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION];
     }
 
     if (['SIN', 'COS', 'TAN'].includes(operator)) {
         arg =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'NUM',
-                Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION
             ) || '0';
     } else {
         arg =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'NUM',
-                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
             ) || '0';
     }
 
@@ -116,7 +116,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
     }
 
     if (code) {
-        return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+        return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
     }
 
     // Second, handle cases which generate values that may need parentheses
@@ -131,5 +131,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
         code = `Math.atan(${arg}) / Math.PI * 180`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION];
 };

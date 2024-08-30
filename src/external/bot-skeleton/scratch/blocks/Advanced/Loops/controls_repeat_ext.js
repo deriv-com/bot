@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.controls_repeat_ext = {
+window.Blockly.Blocks.controls_repeat_ext = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -22,15 +22,15 @@ Blockly.Blocks.controls_repeat_ext = {
                     name: 'DO',
                 },
             ],
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Repeats inside instructions specified number of times'),
-            category: Blockly.Categories.Loop,
+            category: window.Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -51,29 +51,35 @@ Blockly.Blocks.controls_repeat_ext = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext = block => {
     let repeats;
     if (block.getField('TIMES')) {
         repeats = String(Number(block.getFieldValue('TIMES')));
     } else {
         repeats =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'TIMES',
-                Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
             ) || '0';
     }
 
-    const branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+    const branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     let code = '';
 
     // eslint-disable-next-line no-underscore-dangle
-    const loopVar = Blockly.JavaScript.variableDB_.getDistinctName('count', Blockly.Variables.CATEGORY_NAME);
+    const loopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        'count',
+        window.Blockly.Variables.CATEGORY_NAME
+    );
     let endVar = repeats;
 
-    if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
+    if (!repeats.match(/^\w+$/) && !window.Blockly.isNumber(repeats)) {
         // eslint-disable-next-line no-underscore-dangle
-        endVar = Blockly.JavaScript.variableDB_.getDistinctName('repeat_end', Blockly.Variables.CATEGORY_NAME);
+        endVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'repeat_end',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         code += `var ${endVar} = ${repeats};\n`;
     }
 

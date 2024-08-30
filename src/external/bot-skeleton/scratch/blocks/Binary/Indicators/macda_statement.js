@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.macda_statement = {
+window.Blockly.Blocks.macda_statement = {
     protected_statements: ['STATEMENT'],
     required_child_blocks: ['input_list', 'fast_ema_period', 'slow_ema_period', 'signal_ema_period'],
     init() {
@@ -38,13 +38,13 @@ Blockly.Blocks.macda_statement = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Calculates Moving Average Convergence Divergence (MACD) from a list'),
             previousStatement: null,
             nextStatement: null,
-            category: Blockly.Categories.Indicators,
+            category: window.Blockly.Categories.Indicators,
         };
     },
     customContextMenu(menu) {
@@ -59,14 +59,14 @@ Blockly.Blocks.macda_statement = {
         };
     },
 
-    onchange: Blockly.Blocks.bb_statement.onchange,
+    onchange: window.Blockly.Blocks.bb_statement.onchange,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.macda_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.macda_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const var_name = Blockly.JavaScript.variableDB_.getName(
+    const var_name = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.CATEGORY_NAME
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const macd_field = block.getFieldValue('MACDFIELDS_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

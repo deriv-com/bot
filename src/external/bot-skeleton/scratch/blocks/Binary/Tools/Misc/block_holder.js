@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.block_holder = {
+window.Blockly.Blocks.block_holder = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -23,11 +23,11 @@ Blockly.Blocks.block_holder = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.RootBlock.colour,
-            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            colour: window.Blockly.Colours.RootBlock.colour,
+            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Put your blocks in here to prevent them from being removed'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     customContextMenu(menu) {
@@ -43,4 +43,4 @@ Blockly.Blocks.block_holder = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.block_holder = () => '';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.block_holder = () => '';

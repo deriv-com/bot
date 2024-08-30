@@ -7,7 +7,7 @@ const description = localize(
     'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the accumulator trade type.'
 );
 
-Blockly.Blocks.accumulator_take_profit = {
+window.Blockly.Blocks.accumulator_take_profit = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -29,13 +29,13 @@ Blockly.Blocks.accumulator_take_profit = {
                     check: 'Number',
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: description,
-            category: Blockly.Categories.Trade_Definition,
+            category: window.Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -45,12 +45,12 @@ Blockly.Blocks.accumulator_take_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
         if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
         }
@@ -59,7 +59,7 @@ Blockly.Blocks.accumulator_take_profit = {
         modifyContextMenu(menu);
     },
     restricted_parents: ['trade_definition_accumulator'],
-    setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
+    setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
         if (field_input.connection.targetBlock()) {
@@ -75,4 +75,4 @@ Blockly.Blocks.accumulator_take_profit = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.accumulator_take_profit = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.accumulator_take_profit = () => {};

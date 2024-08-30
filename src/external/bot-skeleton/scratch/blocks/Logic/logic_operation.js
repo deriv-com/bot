@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.logic_operation = {
+window.Blockly.Blocks.logic_operation = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -28,12 +28,12 @@ Blockly.Blocks.logic_operation = {
             ],
             inputsInline: true,
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Performs selected logic operation'),
-            category: Blockly.Categories.Logic,
+            category: window.Blockly.Categories.Logic,
         };
     },
     customContextMenu(menu) {
@@ -53,30 +53,30 @@ Blockly.Blocks.logic_operation = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.logic_operation = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_operation = block => {
     const selectedOperator = block.getFieldValue('OP');
 
     let operator, order;
 
     if (selectedOperator === 'AND') {
         operator = '&&';
-        order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_AND;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_AND;
     } else if (selectedOperator === 'OR') {
         operator = '||';
-        order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_OR;
+        order = window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_OR;
     }
 
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'A',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || 'false';
     const argument1 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'B',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.epoch = {
+window.Blockly.Blocks.epoch = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.epoch = {
         return {
             message0: localize('Seconds Since Epoch'),
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the number of seconds since January 1st, 1970'),
-            category: Blockly.Categories.Time,
+            category: window.Blockly.Categories.Time,
         };
     },
     meta() {
@@ -28,7 +28,7 @@ Blockly.Blocks.epoch = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.epoch = () => [
+window.Blockly.JavaScript.javascriptGenerator.forBlock.epoch = () => [
     'Bot.getTime()',
-    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

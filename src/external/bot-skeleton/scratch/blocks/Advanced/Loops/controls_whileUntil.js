@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.controls_whileUntil = {
+window.Blockly.Blocks.controls_whileUntil = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -30,14 +30,14 @@ Blockly.Blocks.controls_whileUntil = {
                     name: 'DO',
                 },
             ],
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('This block repeats instructions as long as a given condition is true'),
-            category: Blockly.Categories.Loop,
+            category: window.Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -56,24 +56,27 @@ Blockly.Blocks.controls_whileUntil = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_whileUntil = block => {
-    const branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_whileUntil = block => {
+    const branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
     const order = until
-        ? Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT
-        : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
-    let argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'false';
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    let argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'false';
 
     if (until) {
         argument0 = `!${argument0}`;
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const maxLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.CATEGORY_NAME);
+    const maxLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+        'maxLoops',
+        window.Blockly.Variables.CATEGORY_NAME
+    );
     // eslint-disable-next-line no-underscore-dangle
-    const currentLoopVar = Blockly.JavaScript.variableDB_.getDistinctName(
+    const currentLoopVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
         'currentLoop',
-        Blockly.Variables.CATEGORY_NAME
+        window.Blockly.Variables.CATEGORY_NAME
     );
 
     return `

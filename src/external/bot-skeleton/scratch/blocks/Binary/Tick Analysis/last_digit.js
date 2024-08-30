@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.last_digit = {
+window.Blockly.Blocks.last_digit = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.last_digit = {
         return {
             message0: localize('Last Digit'),
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the last digit of the latest tick'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -28,7 +28,7 @@ Blockly.Blocks.last_digit = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.last_digit = () => [
+window.Blockly.JavaScript.javascriptGenerator.forBlock.last_digit = () => [
     'Bot.getLastDigit()',
-    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_modulo = {
+window.Blockly.Blocks.math_modulo = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -25,12 +25,12 @@ Blockly.Blocks.math_modulo = {
             ],
             inputsInline: true,
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the remainder after a division'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     customContextMenu(menu) {
@@ -50,20 +50,20 @@ Blockly.Blocks.math_modulo = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_modulo = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_modulo = block => {
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'DIVIDEND',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
         ) || '0';
     const argument1 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'DIVISOR',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
         ) || '0';
 
     const code = `${argument0} % ${argument1}`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS];
 };

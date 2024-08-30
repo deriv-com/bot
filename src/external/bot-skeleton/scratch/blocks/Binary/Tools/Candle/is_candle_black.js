@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.is_candle_black = {
+window.Blockly.Blocks.is_candle_black = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +16,12 @@ Blockly.Blocks.is_candle_black = {
                 },
             ],
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns "True" if the given candle is black'),
-            category: Blockly.Categories.Candle,
+            category: window.Blockly.Categories.Candle,
         };
     },
     meta() {
@@ -42,14 +42,14 @@ Blockly.Blocks.is_candle_black = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.is_candle_black = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.is_candle_black = block => {
     const ohlcObj =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'OHLCOBJ',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '{}';
 
     const code = `Bot.isCandleBlack(${ohlcObj})`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

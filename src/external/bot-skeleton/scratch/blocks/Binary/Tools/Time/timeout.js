@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.timeout = {
+window.Blockly.Blocks.timeout = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -25,13 +25,13 @@ Blockly.Blocks.timeout = {
                     name: 'SECONDS',
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Run the blocks inside after a given number of seconds'),
-            category: Blockly.Categories.Time,
+            category: window.Blockly.Categories.Time,
         };
     },
     meta() {
@@ -52,13 +52,13 @@ Blockly.Blocks.timeout = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
-    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
     const seconds =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'SECONDS',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '1';
 
     const code = `sleep(${seconds});\n${stack}\n`;

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_constrain = {
+window.Blockly.Blocks.math_constrain = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -31,12 +31,12 @@ Blockly.Blocks.math_constrain = {
             ],
             inputsInline: true,
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block constrains a given number so that it is within a set range.'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     meta() {
@@ -57,26 +57,26 @@ Blockly.Blocks.math_constrain = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_constrain = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_constrain = block => {
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
         ) || '0';
     const argument1 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'LOW',
-            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
         ) || '0';
     const argument2 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'HIGH',
-            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
         ) || '0';
 
     const code = `Math.min(Math.max(${argument0}, ${argument1}), ${argument2})`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

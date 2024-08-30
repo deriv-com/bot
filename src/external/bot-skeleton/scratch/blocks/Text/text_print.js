@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_print = {
+window.Blockly.Blocks.text_print = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -14,13 +14,13 @@ Blockly.Blocks.text_print = {
                     name: 'TEXT',
                 },
             ],
-            colour: Blockly.Colours.Special3.colour,
-            colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            colour: window.Blockly.Colours.Special3.colour,
+            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Displays a dialog window with a message'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -41,12 +41,12 @@ Blockly.Blocks.text_print = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_print = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_print = block => {
     const msg =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TEXT',
-            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const code = `window.alert(${msg});\n`;
     return code;

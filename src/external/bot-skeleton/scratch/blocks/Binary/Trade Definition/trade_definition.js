@@ -5,7 +5,7 @@ import DBotStore from '../../../dbot-store';
 import { modifyContextMenu, removeExtraInput, runIrreversibleEvents } from '../../../utils';
 import { defineContract } from '../../images';
 
-Blockly.Blocks.trade_definition = {
+window.Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -96,11 +96,11 @@ Blockly.Blocks.trade_definition = {
                     height: 10,
                 },
             ],
-            colour: Blockly.Colours.RootBlock.colour,
-            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            colour: window.Blockly.Colours.RootBlock.colour,
+            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Here is where you define the parameters of your contract.'),
-            category: Blockly.Categories.Trade_Definition,
+            category: window.Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -114,20 +114,20 @@ Blockly.Blocks.trade_definition = {
         modifyContextMenu(menu);
     },
     onchange(event) {
-        if (event.type === Blockly.Events.SELECTED && !this.isInit) {
+        if (event.type === window.Blockly.Events.SELECTED && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');
-        } else if (Blockly.getSelected() === null && this.isInit) {
+        } else if (window.Blockly.getSelected() === null && this.isInit) {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }
-        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {
+        if (!this.workspace || this.workspace.isDragging() || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
         if (
-            event.type === Blockly.Events.BLOCK_CHANGE ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
@@ -150,7 +150,7 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -179,8 +179,8 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
             ? opposites[trade_type.toUpperCase()].map(opposite => Object.keys(opposite)[0])
             : [contract_type];
 
-    const initialization = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'INITIALIZATION');
-    const trade_options_statement = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'SUBMARKET');
+    const initialization = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'INITIALIZATION');
+    const trade_options_statement = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'SUBMARKET');
 
     const code = `  
     BinaryBotPrivateInit = function BinaryBotPrivateInit() {

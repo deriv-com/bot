@@ -105,7 +105,7 @@ export default class FlyoutStore implements IFlyoutStore {
     initFlyout() {
         const workspace = window.Blockly.derivWorkspace;
 
-        const flyoutWorkspaceOptions = new Blockly.Options({
+        const flyoutWorkspaceOptions = new window.Blockly.Options({
             parentWorkspace: workspace,
             rtl: workspace.RTL,
             horizontalLayout: true,
@@ -132,8 +132,8 @@ export default class FlyoutStore implements IFlyoutStore {
 
     /**
      * Intialises a workspace unique to the passed block_node
-     * @param {Element} el_block_workspace Element where Blockly.Workspace will be mounted on
-     * @param {Element} block_node DOM of a Blockly.Block
+     * @param {Element} el_block_workspace Element where window.Blockly.Workspace will be mounted on
+     * @param {Element} block_node DOM of a window.Blockly.Block
      * @memberof FlyoutStore
      */
     initBlockWorkspace(el_block_workspace: HTMLElement, block_node: Node) {
@@ -142,7 +142,7 @@ export default class FlyoutStore implements IFlyoutStore {
         workspace.targetWorkspace = window.Blockly.derivWorkspace;
 
         const block = window.Blockly.Xml.domToBlock(block_node, workspace);
-        // Using block.getHeightWidth() here because getDimentions() also calls Blockly.Xml.domToBlock
+        // Using block.getHeightWidth() here because getDimentions() also calls window.Blockly.Xml.domToBlock
         const block_hw = block.getHeightWidth();
 
         block.isInFlyout = true;
@@ -162,7 +162,7 @@ export default class FlyoutStore implements IFlyoutStore {
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });
-                this.flyout.blockMouseDown(block)(event as Blockly.Events.UiBase);
+                this.flyout.blockMouseDown(block)(event as window.Blockly.Events.UiBase);
             }),
             window?.Blockly?.browserEvents?.bind(block_svg_root, 'mouseout', block, block.removeSelect),
             window?.Blockly?.browserEvents?.bind(block_svg_root, 'mouseover', block, block.addSelect)
@@ -177,8 +177,8 @@ export default class FlyoutStore implements IFlyoutStore {
     }
 
     /**
-     * Parses XML contents passed by Blockly.Toolbox. Supports all default
-     * Blockly.Flyout elements i.e. <block>, <label>, <button> in their
+     * Parses XML contents passed by window.Blockly.Toolbox. Supports all default
+     * window.Blockly.Flyout elements i.e. <block>, <label>, <button> in their
      * original format, e.g. <label text="Hello World" />
      * @param {Element[]} xml_list list of XML nodes
      * @memberof FlyoutStore
@@ -216,8 +216,8 @@ export default class FlyoutStore implements IFlyoutStore {
         xmlList.forEach((node: Element) => {
             const tag_name = node.tagName.toUpperCase();
 
-            if (tag_name === Blockly.Xml.NODE_BLOCK) {
-                const block_hw = Blockly.Block.getDimensions(node);
+            if (tag_name === window.Blockly.Xml.NODE_BLOCK) {
+                const block_hw = window.Blockly.Block.getDimensions(node);
 
                 node.setAttribute('width', String(Math.ceil(block_hw.width * this.options.zoom.startScale)));
                 node.setAttribute('height', String(Math.ceil(block_hw.height * this.options.zoom.startScale)));

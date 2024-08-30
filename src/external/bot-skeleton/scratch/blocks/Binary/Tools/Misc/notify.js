@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
 import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.notify = {
+window.Blockly.Blocks.notify = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -33,13 +33,13 @@ Blockly.Blocks.notify = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Special3.colour,
-            colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            colour: window.Blockly.Colours.Special3.colour,
+            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Displays a notification and optionally play selected sound'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     customContextMenu(menu) {
@@ -60,7 +60,7 @@ Blockly.Blocks.notify = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.notify = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.notify = block => {
     const notificationType = block.getFieldValue('NOTIFICATION_TYPE');
     const sound = block.getFieldValue('NOTIFICATION_SOUND');
     const message_block = block.getInputTargetBlock('MESSAGE');
@@ -68,14 +68,14 @@ Blockly.JavaScript.javascriptGenerator.forBlock.notify = block => {
 
     if (message_block.type === 'variables_get') {
         const variable_id = message_block.getFieldValue('VAR');
-        variable_name = Blockly.derivWorkspace.getVariableById(variable_id).name;
+        variable_name = window.Blockly.derivWorkspace.getVariableById(variable_id).name;
     }
 
     const message =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'MESSAGE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || `"${localize('<empty message>')}"`;
 
     const code = `Bot.notify({ className: 'journal__text--${notificationType}', message: ${message}, sound: '${sound}', block_id: '${block.id}', variable_name: '${variable_name}' });\n`;

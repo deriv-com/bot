@@ -88,8 +88,8 @@ export default class LoadModalStore {
         );
     }
 
-    recent_workspace: Blockly.WorkspaceSvg | null = null;
-    local_workspace: Blockly.WorkspaceSvg | null = null;
+    recent_workspace: window.Blockly.WorkspaceSvg | null = null;
+    local_workspace: window.Blockly.WorkspaceSvg | null = null;
     drop_zone: unknown;
 
     active_index = 0;
@@ -106,7 +106,7 @@ export default class LoadModalStore {
     current_workspace_id = '';
     is_open_button_disabled = false;
 
-    get preview_workspace(): Blockly.WorkspaceSvg | null {
+    get preview_workspace(): window.Blockly.WorkspaceSvg | null {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
         if (this.tab_name === tabs_title.TAB_RECENT) return this.recent_workspace;
         return null;
@@ -460,14 +460,14 @@ export default class LoadModalStore {
                 block_string: e?.target?.result,
                 drop_event,
                 from: save_types.LOCAL,
-                workspace: null as Blockly.WorkspaceSvg | null,
+                workspace: null as window.Blockly.WorkspaceSvg | null,
                 file_name: '',
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
             const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
-                this.local_workspace = Blockly.inject(ref, {
+                this.local_workspace = window.Blockly.inject(ref, {
                     media: `${window.__webpack_public_path__}assets/media/`,
                     zoom: {
                         wheel: false,

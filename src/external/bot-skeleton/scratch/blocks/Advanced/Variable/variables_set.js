@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.variables_set = {
+window.Blockly.Blocks.variables_set = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -23,13 +23,13 @@ Blockly.Blocks.variables_set = {
                     name: 'VALUE',
                 },
             ],
-            colour: Blockly.Colours.Special2.colour,
-            colourSecondary: Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: Blockly.Colours.Special2.colourTertiary,
+            colour: window.Blockly.Colours.Special2.colour,
+            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Sets variable value'),
-            category: Blockly.Categories.Variables,
+            category: window.Blockly.Categories.Variables,
         };
     },
     meta() {
@@ -43,15 +43,18 @@ Blockly.Blocks.variables_set = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.variables_set = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.variables_set = block => {
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || '0';
     // eslint-disable-next-line no-underscore-dangle
-    const varName = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('VAR'), Blockly.Variables.CATEGORY_NAME);
+    const varName = window.Blockly.JavaScript.variableDB_.getName(
+        block.getFieldValue('VAR'),
+        window.Blockly.Variables.CATEGORY_NAME
+    );
 
     const code = `${varName} = ${argument0};\n`;
     return code;

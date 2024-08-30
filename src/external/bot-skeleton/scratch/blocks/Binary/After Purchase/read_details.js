@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.read_details = {
+window.Blockly.Blocks.read_details = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -17,12 +17,12 @@ Blockly.Blocks.read_details = {
                 },
             ],
             output: null,
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND, // TODO: Investigate why block glitches in square shape.
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Reads a selected property from contract details list'),
-            category: Blockly.Categories.After_Purchase,
+            category: window.Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -37,9 +37,9 @@ Blockly.Blocks.read_details = {
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

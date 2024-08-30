@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.ohlc_values = {
+window.Blockly.Blocks.ohlc_values = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -28,14 +28,14 @@ Blockly.Blocks.ohlc_values = {
                 },
             ],
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize(
                 'Returns a list of specific values from a candle list according to selected time interval'
             ),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -51,11 +51,11 @@ Blockly.Blocks.ohlc_values = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
 
     const code = `Bot.getOhlc({ field: '${ohlcField}', granularity: ${granularity} })`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

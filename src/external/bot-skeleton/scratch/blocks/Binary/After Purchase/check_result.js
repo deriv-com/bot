@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.contract_check_result = {
+window.Blockly.Blocks.contract_check_result = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -17,12 +17,12 @@ Blockly.Blocks.contract_check_result = {
                 },
             ],
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('True if the result of the last trade matches the selection'),
-            category: Blockly.Categories.After_Purchase,
+            category: window.Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -32,13 +32,13 @@ Blockly.Blocks.contract_check_result = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         if (
-            event.type === Blockly.Events.BLOCK_CREATE ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === window.Blockly.Events.BLOCK_CREATE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             const top_parent = this.getTopParent();
 
@@ -56,9 +56,9 @@ Blockly.Blocks.contract_check_result = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.contract_check_result = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.contract_check_result = block => {
     const checkWith = block.getFieldValue('CHECK_RESULT');
 
     const code = `Bot.isResult('${checkWith}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -2,7 +2,7 @@ import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 
-Blockly.Blocks.after_purchase = {
+window.Blockly.Blocks.after_purchase = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -43,11 +43,11 @@ Blockly.Blocks.after_purchase = {
                     height: 10,
                 },
             ],
-            colour: Blockly.Colours.RootBlock.colour,
-            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            colour: window.Blockly.Colours.RootBlock.colour,
+            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('Get the last trade information and result, then trade again.'),
-            category: Blockly.Categories.After_Purchase,
+            category: window.Blockly.Categories.After_Purchase,
         };
     },
     meta() {
@@ -58,8 +58,8 @@ Blockly.Blocks.after_purchase = {
     },
     onchange(event) {
         if (
-            event.type === Blockly.Events.BLOCK_CHANGE ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            event.type === window.Blockly.Events.BLOCK_CHANGE ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             removeExtraInput(this);
         }
@@ -69,8 +69,8 @@ Blockly.Blocks.after_purchase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
-    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
+window.Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {
         Bot.highlightBlock('${block.id}');

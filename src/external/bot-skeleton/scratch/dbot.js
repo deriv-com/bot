@@ -30,8 +30,8 @@ class DBot {
         this.interpreter = Interpreter();
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         var that = this;
-        Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
-            if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        window.Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
+            if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
             }
 
@@ -39,7 +39,7 @@ class DBot {
 
             const { name, type } = event;
 
-            if (type === Blockly.Events.BLOCK_CHANGE) {
+            if (type === window.Blockly.Events.BLOCK_CHANGE) {
                 const is_symbol_list_change = name === 'SYMBOL_LIST';
                 const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
 
@@ -115,13 +115,13 @@ class DBot {
                     return;
                 }
 
-                this.workspace = Blockly.inject(el_scratch_div, {
+                this.workspace = window.Blockly.inject(el_scratch_div, {
                     media: 'assets/media/',
                     renderer: 'zelos',
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
                     scrollbars: true,
-                    theme: Blockly.Themes.zelos_renderer,
+                    theme: window.Blockly.Themes.zelos_renderer,
                 });
 
                 this.workspace.RTL = isDbotRTL();
@@ -133,7 +133,7 @@ class DBot {
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
                     if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
-                    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+                    if (event.type == window.Blockly.Events.BLOCK_CHANGE) {
                         const block = this.workspace.getBlockById(event.blockId);
                         if (is_mobile && block && event.element == 'collapsed') {
                             block.contextMenu = false;
@@ -141,12 +141,12 @@ class DBot {
                     }
                 });
 
-                Blockly.derivWorkspace = this.workspace;
+                window.Blockly.derivWorkspace = this.workspace;
 
-                const varDB = new Blockly.Names('window');
-                varDB.variableMap = Blockly.derivWorkspace.getVariableMap();
+                const varDB = new window.Blockly.Names('window');
+                varDB.variableMap = window.Blockly.derivWorkspace.getVariableMap();
 
-                Blockly.JavaScript.variableDB_ = varDB;
+                window.Blockly.JavaScript.variableDB_ = varDB;
 
                 this.addBeforeRunFunction(this.unselectBlocks.bind(this));
                 this.addBeforeRunFunction(this.disableStrayBlocks.bind(this));
@@ -154,26 +154,26 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
                 // Push main.xml to workspace and reset the undo stack.
-                this.workspace.current_strategy_id = Blockly.utils.idGenerator.genUid();
+                this.workspace.current_strategy_id = window.Blockly.utils.idGenerator.genUid();
 
-                Blockly.derivWorkspace.strategy_to_load = main_xml;
-                Blockly.getMainWorkspace().strategy_to_load = main_xml;
-                Blockly.getMainWorkspace().RTL = isDbotRTL();
+                window.Blockly.derivWorkspace.strategy_to_load = main_xml;
+                window.Blockly.getMainWorkspace().strategy_to_load = main_xml;
+                window.Blockly.getMainWorkspace().RTL = isDbotRTL();
 
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
-                    Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
-                    Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
+                    window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
+                    window.Blockly.getMainWorkspace().strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
-                    Blockly.derivWorkspace.current_strategy_id = latest_file.id;
-                    Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
+                    window.Blockly.derivWorkspace.current_strategy_id = latest_file.id;
+                    window.Blockly.getMainWorkspace().current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
-                Blockly.Events.setGroup(event_group);
-                Blockly.Xml.domToWorkspace(
-                    Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.Events.setGroup(event_group);
+                window.Blockly.Xml.domToWorkspace(
+                    window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
                     this.workspace
                 );
                 const { save_modal } = DBotStore.instance;
@@ -204,7 +204,7 @@ class DBot {
             )?.[0];
             if (stored_strategy?.xml) {
                 const stored_strategy_xml = stored_strategy?.xml;
-                const current_xml = Blockly.Xml.domToText(current_xml_dom);
+                const current_xml = window.Blockly.Xml.domToText(current_xml_dom);
                 const is_same_strategy = compareXml(stored_strategy_xml, current_xml);
                 if (is_same_strategy) {
                     return false;
@@ -326,7 +326,7 @@ class DBot {
                 }
             }
             var BinaryBotPrivateLimitations = ${JSON.stringify(limitations)};
-            ${Blockly.JavaScript.javascriptGenerator.workspaceToCode(this.workspace)}
+            ${window.Blockly.JavaScript.javascriptGenerator.workspaceToCode(this.workspace)}
             BinaryBotPrivateRun(BinaryBotPrivateInit);
             while (true) {
                 BinaryBotPrivateTickAnalysis();
@@ -389,8 +389,8 @@ class DBot {
      */
     // eslint-disable-next-line class-methods-use-this
     unselectBlocks() {
-        if (Blockly.getSelected()) {
-            Blockly.getSelected().unselect();
+        if (window.Blockly.getSelected()) {
+            window.Blockly.getSelected().unselect();
         }
         return true;
     }
@@ -479,27 +479,27 @@ class DBot {
      * in case one of their inputs is not populated, returns an empty value, or doesn't
      * pass the custom validator.
      * Note: The value passed to the custom validator is always a string value
-     * @param {Blockly.Event} event Workspace event
+     * @param {window.Blockly.Event} event Workspace event
      */
     valueInputLimitationsListener(event, force_check = false) {
         if (!force_check && (!this.workspace || this.workspace.isDragging())) {
             return;
         }
 
-        Blockly.JavaScript.javascriptGenerator.init(this.workspace);
+        window.Blockly.JavaScript.javascriptGenerator.init(this.workspace);
 
         if (force_check) {
-            Blockly.hideChaff(false);
+            window.Blockly.hideChaff(false);
         }
 
-        const isGlobalEndDragEvent = () => event.type === Blockly.Events.BLOCK_DRAG && !event.isStart;
-        const isGlobalDeleteEvent = () => event.type === Blockly.Events.BLOCK_DELETE;
-        const isGlobalCreateEvent = () => event.type === Blockly.Events.BLOCK_CREATE;
+        const isGlobalEndDragEvent = () => event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart;
+        const isGlobalDeleteEvent = () => event.type === window.Blockly.Events.BLOCK_DELETE;
+        const isGlobalCreateEvent = () => event.type === window.Blockly.Events.BLOCK_CREATE;
         const isClickEvent = () =>
-            event.type === Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
-        const isChangeEvent = b => event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
+            event.type === window.Blockly.Events.UI && (event.element === 'click' || event.element === 'selected');
+        const isChangeEvent = b => event.type === window.Blockly.Events.BLOCK_CHANGE && event.blockId === b.id;
         const isChangeInMyInputs = b => {
-            if (event.type === Blockly.Events.BLOCK_CHANGE) {
+            if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
                 return b.inputList.some(input => {
                     if (input.connection) {
                         const target_block = input.connection.targetBlock();
@@ -511,7 +511,7 @@ class DBot {
             return false;
         };
         const isParentEnabledEvent = b => {
-            if (event.type === Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
+            if (event.type === window.Blockly.Events.BLOCK_CHANGE && event.element === 'disabled') {
                 let parent_block = b.getParent();
 
                 while (parent_block !== null) {
@@ -557,7 +557,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names = Object.keys(required_inputs_object);
                 const should_highlight = required_input_names.some(input_name => {
-                    const is_selected = Blockly.getSelected() === block; // Don't highlight selected blocks.
+                    const is_selected = window.Blockly.getSelected() === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 
                     if (is_selected || is_disabled) {
@@ -578,8 +578,12 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
-                        const value = Blockly.JavaScript.javascriptGenerator.valueToCode(block, input_name, order);
+                        const order = window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC;
+                        const value = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
+                            block,
+                            input_name,
+                            order
+                        );
                         const inputValidatorFn = required_inputs_object[input_name];
 
                         // If a custom validator was supplied, use this to determine whether

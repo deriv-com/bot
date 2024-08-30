@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.ohlc = {
+window.Blockly.Blocks.ohlc = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -19,12 +19,12 @@ Blockly.Blocks.ohlc = {
                 },
             ],
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you a list of candles within a selected time interval.'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -38,10 +38,10 @@ Blockly.Blocks.ohlc = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.ohlc = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
 
     const code = `Bot.getOhlc({ granularity: ${granularity} })`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

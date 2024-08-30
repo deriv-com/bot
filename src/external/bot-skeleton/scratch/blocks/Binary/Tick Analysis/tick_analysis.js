@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.tick_analysis = {
+window.Blockly.Blocks.tick_analysis = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -23,11 +23,11 @@ Blockly.Blocks.tick_analysis = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.RootBlock.colour,
-            colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
-            colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
+            colour: window.Blockly.Colours.RootBlock.colour,
+            colourSecondary: window.Blockly.Colours.RootBlock.colourSecondary,
+            colourTertiary: window.Blockly.Colours.RootBlock.colourTertiary,
             tooltip: localize('You can use this block to analyze the ticks, regardless of your trades'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -43,8 +43,8 @@ Blockly.Blocks.tick_analysis = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.tick_analysis = block => {
-    const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TICKANALYSIS_STACK') || '';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.tick_analysis = block => {
+    const stack = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TICKANALYSIS_STACK') || '';
     const code = `
     BinaryBotPrivateTickAnalysisList.push(function BinaryBotPrivateTickAnalysis() {
         ${stack}

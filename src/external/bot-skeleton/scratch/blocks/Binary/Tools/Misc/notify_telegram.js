@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.notify_telegram = {
+window.Blockly.Blocks.notify_telegram = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -26,13 +26,13 @@ Blockly.Blocks.notify_telegram = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Special3.colour,
-            colourSecondary: Blockly.Colours.Special3.colourSecondary,
-            colourTertiary: Blockly.Colours.Special3.colourTertiary,
+            colour: window.Blockly.Colours.Special3.colour,
+            colourSecondary: window.Blockly.Colours.Special3.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special3.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Sends a message to Telegram'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     customContextMenu(menu) {
@@ -53,24 +53,24 @@ Blockly.Blocks.notify_telegram = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.notify_telegram = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.notify_telegram = block => {
     const access_token =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TELEGRAM_ACCESS_TOKEN',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '';
     const chat_id =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TELEGRAM_CHAT_ID',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '';
     const message =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TELEGRAM_MESSAGE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '';
 
     if (!access_token || !chat_id || !message) {

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.trade_definition_tradetype = {
+window.Blockly.Blocks.trade_definition_tradetype = {
     init() {
         this.jsonInit({
             message0: localize('Trade Type: {{ trade_type_category }} > {{ trade_type }}', {
@@ -20,9 +20,9 @@ Blockly.Blocks.trade_definition_tradetype = {
                     options: [['', '']],
                 },
             ],
-            colour: Blockly.Colours.Special1.colour,
-            colourSecondary: Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: Blockly.Colours.Special1.colourTertiary,
+            colour: window.Blockly.Colours.Special1.colour,
+            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -32,7 +32,7 @@ Blockly.Blocks.trade_definition_tradetype = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
+    enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradetype = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradetype = () => {};

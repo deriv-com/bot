@@ -1,8 +1,8 @@
 import { runInvisibleEvents } from '../utils';
 
-Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, options = {}) {
-    if (Blockly.DropDownDiv.isVisible()) {
-        Blockly.DropDownDiv.hideWithoutAnimation();
+window.Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, options = {}) {
+    if (window.Blockly.DropDownDiv.isVisible()) {
+        window.Blockly.DropDownDiv.hideWithoutAnimation();
     }
 
     this.menuGenerator_ = dropdown_options;
@@ -35,7 +35,7 @@ Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, opti
 
     // If "should_trigger_event" prop is omitted or set to true, fire an event.
     if (!options.should_trigger_event || options.should_trigger_event === true) {
-        const event = new Blockly.Events.BlockChange(
+        const event = new window.Blockly.Events.BlockChange(
             this.sourceBlock_,
             'field',
             this.name,
@@ -44,6 +44,6 @@ Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, opti
         );
         event.recordUndo = false;
         event.group = options.event_group;
-        Blockly.Events.fire(event);
+        window.Blockly.Events.fire(event);
     }
 };

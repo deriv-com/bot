@@ -3,7 +3,7 @@ import { LogTypes } from '../../../../../constants/messages';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { loadBlocksFromRemote, modifyContextMenu, runIrreversibleEvents } from '../../../../utils';
 
-Blockly.Blocks.loader = {
+window.Blockly.Blocks.loader = {
     init() {
         this.blocks_added_by_me = [];
         this.current_url = '';
@@ -19,11 +19,11 @@ Blockly.Blocks.loader = {
                     text: 'http://www.example.com/block.xml',
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Loads blocks from URL'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     customContextMenu(menu) {
@@ -38,11 +38,11 @@ Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.current_url = this.getFieldValue('URL');
             const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
 
@@ -55,7 +55,7 @@ Blockly.Blocks.loader = {
             if (!this.disabled) {
                 this.loadBlocksFromCurrentUrl();
             }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
+        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.newValue && event.oldValue !== event.newValue) {
                 if (event.newValue === this.current_url) {
                     this.setDisabled(false);
@@ -95,4 +95,4 @@ Blockly.Blocks.loader = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.loader = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.loader = () => {};

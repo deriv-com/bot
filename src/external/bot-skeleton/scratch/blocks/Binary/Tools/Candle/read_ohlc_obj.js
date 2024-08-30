@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.read_ohlc_obj = {
+window.Blockly.Blocks.read_ohlc_obj = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,12 +24,12 @@ Blockly.Blocks.read_ohlc_obj = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you the selected candle value.'),
-            category: Blockly.Categories.Candle,
+            category: window.Blockly.Categories.Candle,
         };
     },
     meta() {
@@ -48,15 +48,15 @@ Blockly.Blocks.read_ohlc_obj = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.read_ohlc_obj = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.read_ohlc_obj = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
     const ohlcObj =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'OHLCOBJ',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '{}';
 
     const code = `Bot.candleField(${ohlcObj}, '${ohlcField}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { getContractTypeOptions } from '../../../shared';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.purchase = {
+window.Blockly.Blocks.purchase = {
     init() {
         this.jsonInit(this.definition());
 
@@ -20,11 +20,11 @@ Blockly.Blocks.purchase = {
                 },
             ],
             previousStatement: null,
-            colour: Blockly.Colours.Special1.colour,
-            colourSecondary: Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: Blockly.Colours.Special1.colourTertiary,
+            colour: window.Blockly.Colours.Special1.colour,
+            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
             tooltip: localize('This block purchases contract of a specified type.'),
-            category: Blockly.Categories.Before_Purchase,
+            category: window.Blockly.Categories.Before_Purchase,
         };
     },
     meta() {
@@ -37,17 +37,17 @@ Blockly.Blocks.purchase = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.populatePurchaseList(event);
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TYPE_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.populatePurchaseList(event);
             }
-        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
+        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             const purchase_type_list = this.getField('PURCHASE_LIST');
             const purchase_options = purchase_type_list.menuGenerator_; // eslint-disable-line
 
@@ -81,7 +81,7 @@ Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

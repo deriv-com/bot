@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.total_profit = {
+window.Blockly.Blocks.total_profit = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.total_profit = {
         return {
             message0: localize('Total profit/loss'),
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the total profit/loss'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -26,13 +26,13 @@ Blockly.Blocks.total_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         if (
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) ||
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) ||
+            (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id))
         ) {
             const input_statement = this.getRootInputTargetBlock();
 
@@ -46,7 +46,7 @@ Blockly.Blocks.total_profit = {
     },
 };
 
-Blockly.Blocks.total_profit_string = {
+window.Blockly.Blocks.total_profit_string = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -54,12 +54,12 @@ Blockly.Blocks.total_profit_string = {
         return {
             message0: localize('Total Profit String'),
             output: 'String',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the total profit in string format'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -68,14 +68,14 @@ Blockly.Blocks.total_profit_string = {
             description: localize('Total Profit String Description'),
         };
     },
-    onchange: Blockly.Blocks.total_profit.onchange,
+    onchange: window.Blockly.Blocks.total_profit.onchange,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.total_profit = () => [
+window.Blockly.JavaScript.javascriptGenerator.forBlock.total_profit = () => [
     'Bot.getTotalProfit(false)',
-    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];
-Blockly.JavaScript.javascriptGenerator.forBlock.total_profit_string = () => [
+window.Blockly.JavaScript.javascriptGenerator.forBlock.total_profit_string = () => [
     'Bot.getTotalProfit(true)',
-    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

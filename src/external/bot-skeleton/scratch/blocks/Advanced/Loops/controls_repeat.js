@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.controls_repeat = {
+window.Blockly.Blocks.controls_repeat = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -25,15 +25,15 @@ Blockly.Blocks.controls_repeat = {
                     name: 'DO',
                 },
             ],
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Repeats inside instructions specified number of times'),
-            category: Blockly.Categories.Loop,
+            category: window.Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -49,5 +49,5 @@ Blockly.Blocks.controls_repeat = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
-    Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
+    window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.period = {
+window.Blockly.Blocks.period = {
     init() {
         this.jsonInit({
             message0: localize('Period {{ input_period }}', { input_period: '%1' }),
@@ -12,9 +12,9 @@ Blockly.Blocks.period = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -22,7 +22,7 @@ Blockly.Blocks.period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange: Blockly.Blocks.input_list.onchange,
+    onchange: window.Blockly.Blocks.input_list.onchange,
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
@@ -44,4 +44,4 @@ Blockly.Blocks.period = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.period = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.period = () => {};

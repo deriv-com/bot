@@ -2,11 +2,11 @@ import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
-Blockly.Blocks.math_round = {
+window.Blockly.Blocks.math_round = {
     /**
      * Check if a number is even, odd, prime, whole, positive, or negative
      * or if it is divisible by certain number. Returns true or false.
-     * @this Blockly.Block
+     * @this window.Blockly.Block
      */
     init() {
         this.jsonInit(this.definition());
@@ -30,12 +30,12 @@ Blockly.Blocks.math_round = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Rounds a given number to an integer'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     customContextMenu(menu) {
@@ -56,13 +56,13 @@ Blockly.Blocks.math_round = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_round = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_round = block => {
     const operation = block.getFieldValue('OP');
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'NUM',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '0';
 
     let code;
@@ -75,5 +75,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.math_round = block => {
         code = `Math.floor(${argument0})`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

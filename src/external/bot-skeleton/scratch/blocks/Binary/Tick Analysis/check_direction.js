@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.check_direction = {
+window.Blockly.Blocks.check_direction = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -17,12 +17,12 @@ Blockly.Blocks.check_direction = {
                 },
             ],
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('True if the market direction matches the selection'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -38,9 +38,9 @@ Blockly.Blocks.check_direction = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.check_direction = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.check_direction = block => {
     const checkWith = block.getFieldValue('CHECK_DIRECTION');
 
     const code = `Bot.checkDirection('${checkWith}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

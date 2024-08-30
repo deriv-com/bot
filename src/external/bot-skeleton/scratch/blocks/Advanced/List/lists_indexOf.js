@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.lists_indexOf = {
+window.Blockly.Blocks.lists_indexOf = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -35,12 +35,12 @@ Blockly.Blocks.lists_indexOf = {
             ],
             output: 'Number',
             inputsInline: true,
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you the position of an item in a given list.'),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     meta() {
@@ -60,26 +60,26 @@ Blockly.Blocks.lists_indexOf = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
     const operator = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const item =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FIND',
-            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const list =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
 
     const code = `${list}.${operator}(${item})`;
 
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
+        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

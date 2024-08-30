@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_isEmpty = {
+window.Blockly.Blocks.text_isEmpty = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +16,12 @@ Blockly.Blocks.text_isEmpty = {
                 },
             ],
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Tests if a given text string is empty'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -40,15 +40,15 @@ Blockly.Blocks.text_isEmpty = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_isEmpty = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_isEmpty = block => {
     const text =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === text) !== -1;
 
     const code = isVariable ? `!${text} || !${text}.length` : `!${text}.length`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT];
 };

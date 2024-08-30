@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.ticks = {
+window.Blockly.Blocks.ticks = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.ticks = {
         return {
             message0: localize('Ticks list'),
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block gives you a list of the last 1000 tick values.'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -28,7 +28,7 @@ Blockly.Blocks.ticks = {
     },
 };
 
-Blockly.Blocks.ticks_string = {
+window.Blockly.Blocks.ticks_string = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -36,12 +36,12 @@ Blockly.Blocks.ticks_string = {
         return {
             message0: localize('Ticks String List'),
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the list of tick values in string format'),
-            category: Blockly.Categories.Tick_Analysis,
+            category: window.Blockly.Categories.Tick_Analysis,
         };
     },
     meta() {
@@ -53,15 +53,18 @@ Blockly.Blocks.ticks_string = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    onchange: Blockly.Blocks.ticks.onchange,
+    onchange: window.Blockly.Blocks.ticks.onchange,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks = block => {
     const parent = block.getParent();
     const type_list = ['notify', 'text_print'];
-    return [`Bot.getTicks(${type_list.includes(parent?.type)})`, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [
+        `Bot.getTicks(${type_list.includes(parent?.type)})`,
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    ];
 };
-Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ticks_string = () => [
     'Bot.getTicks(true)',
-    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+    window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
 ];

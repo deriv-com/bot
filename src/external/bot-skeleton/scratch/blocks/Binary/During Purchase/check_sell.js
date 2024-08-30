@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.check_sell = {
+window.Blockly.Blocks.check_sell = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.check_sell = {
         return {
             message0: localize('Sell is available'),
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('True if active contract can be sold before expiration at current market price'),
-            category: Blockly.Categories.During_Purchase,
+            category: window.Blockly.Categories.During_Purchase,
         };
     },
     meta() {
@@ -31,7 +31,7 @@ Blockly.Blocks.check_sell = {
     restricted_parents: ['during_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.check_sell = () => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.check_sell = () => {
     const code = 'Bot.isSellAvailable()';
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

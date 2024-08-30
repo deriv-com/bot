@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.signal_ema_period = {
+window.Blockly.Blocks.signal_ema_period = {
     init() {
         this.jsonInit({
             message0: localize('Signal EMA Period {{ input_number }}', { input_number: '%1' }),
@@ -12,9 +12,9 @@ Blockly.Blocks.signal_ema_period = {
                     check: null,
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -22,7 +22,7 @@ Blockly.Blocks.signal_ema_period = {
         this.setMovable(false);
         this.setDeletable(false);
     },
-    onchange: Blockly.Blocks.input_list.onchange,
+    onchange: window.Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],
     getRequiredValueInputs() {
         return {
@@ -34,4 +34,4 @@ Blockly.Blocks.signal_ema_period = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.signal_ema_period = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.signal_ema_period = () => {};

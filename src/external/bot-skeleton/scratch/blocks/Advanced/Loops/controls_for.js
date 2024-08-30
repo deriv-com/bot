@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.controls_for = {
+window.Blockly.Blocks.controls_for = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -46,15 +46,15 @@ Blockly.Blocks.controls_for = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize(
                 'This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'
             ),
-            category: Blockly.Categories.Loop,
+            category: window.Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -77,37 +77,41 @@ Blockly.Blocks.controls_for = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_for = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_for = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const variable0 = Blockly.JavaScript.variableDB_.getName(
+    const variable0 = window.Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VAR'),
-        Blockly.Variables.CATEGORY_NAME
+        window.Blockly.Variables.CATEGORY_NAME
     );
     const argument0 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FROM',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || '0';
     const argument1 =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TO',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || '0';
     const increment =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'BY',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || '1';
 
-    let branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
-    branch = Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
+    let branch = window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
+    branch = window.Blockly.JavaScript.javascriptGenerator.addLoopTrap(branch, block.id);
 
     let code = '';
 
-    if (Blockly.isNumber(argument0) && Blockly.isNumber(argument1) && Blockly.isNumber(increment)) {
+    if (
+        window.Blockly.isNumber(argument0) &&
+        window.Blockly.isNumber(argument1) &&
+        window.Blockly.isNumber(increment)
+    ) {
         const up = parseFloat(argument0) <= parseFloat(argument1);
         const operator = up ? '<=' : '>=';
         const step = Math.abs(parseFloat(increment));
@@ -123,32 +127,32 @@ Blockly.JavaScript.javascriptGenerator.forBlock.controls_for = block => {
     } else {
         // Cache non-trivial values to variables to prevent repeated look-ups.
         let startVar = argument0;
-        if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
+        if (!argument0.match(/^\w+$/) && !window.Blockly.isNumber(argument0)) {
             // eslint-disable-next-line no-underscore-dangle
-            startVar = Blockly.JavaScript.variableDB_.getDistinctName(
+            startVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
                 `${variable0}_start`,
-                Blockly.Variables.CATEGORY_NAME
+                window.Blockly.Variables.CATEGORY_NAME
             );
             code = `var ${startVar} = ${argument0};\n`;
         }
 
         let endVar = argument1;
-        if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
+        if (!argument1.match(/^\w+$/) && !window.Blockly.isNumber(argument1)) {
             // eslint-disable-next-line no-underscore-dangle
-            endVar = Blockly.JavaScript.variableDB_.getDistinctName(
+            endVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
                 `${variable0}_end`,
-                Blockly.Variables.CATEGORY_NAME
+                window.Blockly.Variables.CATEGORY_NAME
             );
             code += `var ${endVar} = ${argument1};\n`;
         }
 
         // Determine loop direction at start, in case one of the bounds changes during loop execution.
         // eslint-disable-next-line no-underscore-dangle
-        const incVar = Blockly.JavaScript.variableDB_.getDistinctName(
+        const incVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
             `${variable0}_inc`,
-            Blockly.Variables.CATEGORY_NAME
+            window.Blockly.Variables.CATEGORY_NAME
         );
-        const incVal = Blockly.isNumber(increment) ? Math.abs(increment) : `Math.abs(${increment})`;
+        const incVal = window.Blockly.isNumber(increment) ? Math.abs(increment) : `Math.abs(${increment})`;
 
         code += `
         var ${incVar} = ${incVal};

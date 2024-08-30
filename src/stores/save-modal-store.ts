@@ -94,7 +94,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
             const workspace_structure = {
                 id: workspace_id,
-                xml: Blockly.Xml.domToText(xml),
+                xml: window.Blockly.Xml.domToText(xml),
                 name: bot_name,
                 timestamp: Date.now(),
                 save_type,

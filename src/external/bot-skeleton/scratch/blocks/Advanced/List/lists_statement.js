@@ -1,12 +1,12 @@
 import { localize } from '@/utils/tmp/dummy';
-import { modifyContextMenu,runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { minusIconDark } from '../../images';
 
-Blockly.Blocks.lists_statement = {
+window.Blockly.Blocks.lists_statement = {
     required_parent_type: 'lists_create_with',
     init() {
         this.required_parent_id = '';
-        const field_image = new Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
+        const field_image = new window.Blockly.FieldImage(minusIconDark, 25, 25, '', () => this.onIconClick());
         this.jsonInit(this.definition());
         this.appendDummyInput('REMOVE_ICON').appendField(field_image);
     },
@@ -20,12 +20,12 @@ Blockly.Blocks.lists_statement = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     meta() {
@@ -35,7 +35,7 @@ Blockly.Blocks.lists_statement = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyoutVisible) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -45,11 +45,11 @@ Blockly.Blocks.lists_statement = {
         });
     },
     onchange(event) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             const surround_parent = this.getSurroundParent();
 
             if (!surround_parent) {
@@ -87,12 +87,12 @@ Blockly.Blocks.lists_statement = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_statement = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_statement = block => {
     const code =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || 'null';
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.trade_definition_restartonerror = {
+window.Blockly.Blocks.trade_definition_restartonerror = {
     init() {
         this.jsonInit({
             message0: localize('Restart last trade on error (bot ignores the unsuccessful trade): {{ checkbox }}', {
@@ -15,9 +15,9 @@ Blockly.Blocks.trade_definition_restartonerror = {
                     class: 'blocklyCheckbox',
                 },
             ],
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
         });
@@ -27,7 +27,7 @@ Blockly.Blocks.trade_definition_restartonerror = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -36,8 +36,8 @@ Blockly.Blocks.trade_definition_restartonerror = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
+    enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['RESTARTONERROR'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_restartonerror = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_restartonerror = () => {};

@@ -1,8 +1,8 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
-import { minusIconDark,plusIconDark } from '../images';
+import { minusIconDark, plusIconDark } from '../images';
 
-Blockly.Blocks.controls_if = {
+window.Blockly.Blocks.controls_if = {
     init() {
         this.value_connections = [null];
         this.statement_connections = [null];
@@ -39,14 +39,14 @@ Blockly.Blocks.controls_if = {
                 },
             ],
             inputsInline: true,
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Conditional block'),
-            category: Blockly.Categories.Logic,
+            category: window.Blockly.Categories.Logic,
         };
     },
     customContextMenu(menu) {
@@ -63,7 +63,7 @@ Blockly.Blocks.controls_if = {
     /**
      * Create XML to represent the number of else-if and else inputs.
      * @return {Element} XML storage element.
-     * @this Blockly.Block
+     * @this window.Blockly.Block
      */
     mutationToDom() {
         const container = document.createElement('mutation');
@@ -81,7 +81,7 @@ Blockly.Blocks.controls_if = {
     /**
      * Parse XML to restore the else-if and else inputs.
      * @param {!Element} xmlElement XML storage element.
-     * @this Blockly.Block
+     * @this window.Blockly.Block
      */
     domToMutation(xmlElement) {
         this.else_if_count = parseInt(xmlElement.getAttribute('elseif')) || 0;
@@ -114,10 +114,10 @@ Blockly.Blocks.controls_if = {
         this.reconnectChildBlocks(value_connections, statement_connections, else_statement_connection);
     },
     update(updateFn) {
-        Blockly.Events.setGroup(true);
+        window.Blockly.Events.setGroup(true);
 
         const old_mutation_dom = this.mutationToDom();
-        const old_mutation = old_mutation_dom && Blockly.Xml.domToText(old_mutation_dom);
+        const old_mutation = old_mutation_dom && window.Blockly.Xml.domToText(old_mutation_dom);
         const is_rendered = this.rendered;
 
         this.rendered = false;
@@ -130,26 +130,32 @@ Blockly.Blocks.controls_if = {
         this.rendered = is_rendered;
         this.initSvg();
 
-        const group = Blockly.Events.getGroup();
+        const group = window.Blockly.Events.getGroup();
         const new_mutation_dom = this.mutationToDom();
-        const new_mutation = new_mutation_dom && Blockly.Xml.domToText(new_mutation_dom);
+        const new_mutation = new_mutation_dom && window.Blockly.Xml.domToText(new_mutation_dom);
 
         if (old_mutation !== new_mutation) {
-            const change_event = new Blockly.Events.BlockChange(this, 'mutation', null, old_mutation, new_mutation);
-            Blockly.Events.fire(change_event);
+            const change_event = new window.Blockly.Events.BlockChange(
+                this,
+                'mutation',
+                null,
+                old_mutation,
+                new_mutation
+            );
+            window.Blockly.Events.fire(change_event);
 
             setTimeout(() => {
-                Blockly.Events.setGroup(group);
+                window.Blockly.Events.setGroup(group);
                 this.bumpNeighbours();
-                Blockly.Events.setGroup(false);
-            }, Blockly.BUMP_DELAY);
+                window.Blockly.Events.setGroup(false);
+            }, window.Blockly.BUMP_DELAY);
         }
 
         if (this.rendered) {
             this.renderEfficiently();
         }
 
-        Blockly.Events.setGroup(false);
+        window.Blockly.Events.setGroup(false);
     },
     updateShape() {
         if (this.getInput('ELSE')) {
@@ -190,7 +196,7 @@ Blockly.Blocks.controls_if = {
             this.appendValueInput(input_names.IF).setCheck('Boolean');
             this.appendDummyInput(input_names.THEN_LABEL).appendField(localize('then'));
             this.appendDummyInput(input_names.DELETE_ICON).appendField(
-                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElseIf)
+                new window.Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElseIf)
             );
             this.appendStatementInput(input_names.DO);
         }
@@ -200,7 +206,7 @@ Blockly.Blocks.controls_if = {
             const removeElse = () => this.modifyElse(false);
             this.appendDummyInput('ELSE_LABEL').appendField(localize('else'));
             this.appendDummyInput('DELETE_ELSE').appendField(
-                new Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElse, false)
+                new window.Blockly.FieldImage(minusIconDark, 24, 24, '-', removeElse, false)
             );
             this.appendStatementInput('ELSE');
         }
@@ -219,7 +225,7 @@ Blockly.Blocks.controls_if = {
 
         // Re-add the "+" icon
         this.appendDummyInput('MUTATOR').appendField(
-            new Blockly.FieldImage(plusIconDark, 24, 24, '+', addElseIf, false)
+            new window.Blockly.FieldImage(plusIconDark, 24, 24, '+', addElseIf, false)
         );
 
         this.initSvg();
@@ -312,24 +318,24 @@ Blockly.Blocks.controls_if = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_if = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_if = block => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';
 
     do {
         const condition =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 `IF${n}`,
-                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
             ) || 'false';
 
         // i.e. (else)? if { // code }
         const keyword = n > 0 ? 'else if' : 'if';
         code += `
         ${keyword} (${condition}) {
-            ${Blockly.JavaScript.javascriptGenerator.statementToCode(block, `DO${n}`)}
+            ${window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, `DO${n}`)}
         }`;
         n++;
     } while (block.getInput(`IF${n}`));
@@ -337,7 +343,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock.controls_if = block => {
     if (block.getInput('ELSE')) {
         code += `
         else {
-            ${Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'ELSE')}
+            ${window.Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'ELSE')}
         }`;
     }
 

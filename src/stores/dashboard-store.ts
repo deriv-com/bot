@@ -173,17 +173,17 @@ export default class DashboardStore implements IDashboardStore {
         } = this.root_store;
 
         const refreshBotBuilderTheme = () => {
-            Blockly.derivWorkspace.asyncClear();
-            Blockly.Xml.domToWorkspace(
-                Blockly.utils.xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
-                Blockly.derivWorkspace
+            window.Blockly.derivWorkspace.asyncClear();
+            window.Blockly.Xml.domToWorkspace(
+                window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
+                window.Blockly.derivWorkspace
             );
         };
 
         const setCurrentXML = () => {
             const xml = Blockly?.Xml.workspaceToDom(Blockly?.derivWorkspace);
             const current_xml = Blockly?.Xml.domToText(xml);
-            if (Blockly) Blockly.derivWorkspace.strategy_to_load = current_xml;
+            if (Blockly) window.Blockly.derivWorkspace.strategy_to_load = current_xml;
         };
 
         reaction(

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.controls_flow_statements = {
+window.Blockly.Blocks.controls_flow_statements = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -19,15 +19,15 @@ Blockly.Blocks.controls_flow_statements = {
                 },
             ],
             inputsInline: true,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize(
                 'This block is used to either terminate or continue a loop, and can be placed anywhere within a loop block.'
             ),
-            category: Blockly.Categories.Loop,
+            category: window.Blockly.Categories.Loop,
         };
     },
     meta() {
@@ -43,7 +43,7 @@ Blockly.Blocks.controls_flow_statements = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.controls_flow_statements = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.controls_flow_statements = block => {
     const keyword = block.getFieldValue('FLOW') === 'BREAK' ? 'break' : 'continue';
     return `${keyword};\n`;
 };

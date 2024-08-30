@@ -34,7 +34,7 @@ export const updateXmlValues = blockly_options => {
     };
 };
 
-export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
+export const getSelectedTradeType = (workspace = window.Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
     let mandatory_tradeoptions_block = 'trade_definition_tradeoptions';
@@ -54,7 +54,7 @@ export const matchTranslateAttribute = translateString => {
 };
 
 export const extractTranslateValues = () => {
-    const transform_value = Blockly?.derivWorkspace?.trashcan?.svgGroup.getAttribute('transform');
+    const transform_value = window.Blockly?.derivWorkspace?.trashcan?.svgGroup.getAttribute('transform');
     const translate_xy = matchTranslateAttribute(transform_value);
 
     if (!translate_xy) {
@@ -70,21 +70,21 @@ export const extractTranslateValues = () => {
 export const validateErrorOnBlockDelete = () => {
     // Get the bounding rectangle of the selected block
     const { translate_X, translate_Y } = extractTranslateValues();
-    const blockRect = Blockly.getSelected()?.getSvgRoot().getBoundingClientRect();
+    const blockRect = window.Blockly.getSelected()?.getSvgRoot().getBoundingClientRect();
     const translate_offset = 200;
     // Extract coordinates from the bounding rectangles
     const blockX = blockRect?.left || 0;
     const blockY = blockRect?.top || 0;
     const mandatory_trade_option_block = getSelectedTradeType();
     const required_block_types = [mandatory_trade_option_block, 'trade_definition', 'purchase', 'before_purchase'];
-    if (required_block_types?.includes(Blockly?.getSelected()?.type)) {
+    if (required_block_types?.includes(window.Blockly?.getSelected()?.type)) {
         if (
             blockY >= translate_Y - translate_offset &&
             blockY <= translate_Y + translate_offset &&
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', error_message_map[Blockly?.getSelected()?.type]?.default);
+            globalObserver.emit('ui.log.error', error_message_map[window.Blockly?.getSelected()?.type]?.default);
         }
     }
 };
@@ -129,7 +129,7 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
 
-    const data = Blockly.Xml.domToPrettyText(xmlDom);
+    const data = window.Blockly.Xml.domToPrettyText(xmlDom);
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
@@ -175,7 +175,7 @@ export const load = async ({
     let xml;
     // Check if XML can be parsed into a strategy.
     try {
-        xml = Blockly.utils.xml.textToDom(block_string);
+        xml = window.Blockly.utils.xml.textToDom(block_string);
     } catch (e) {
         return showInvalidStrategyError();
     }
@@ -192,7 +192,7 @@ export const load = async ({
     // Check if all block types in XML are allowed.
     const has_invalid_blocks = Array.from(blockly_xml).some(block => {
         const block_type = block.getAttribute('type');
-        return !Object.keys(Blockly.Blocks).includes(block_type);
+        return !Object.keys(window.Blockly.Blocks).includes(block_type);
     });
 
     if (has_invalid_blocks) {
@@ -203,7 +203,7 @@ export const load = async ({
         const is_collection = xml.hasAttribute('collection') && xml.getAttribute('collection') === 'true';
         const event_group = is_collection ? `load_collection${Date.now()}` : `dbot-load${Date.now()}`;
 
-        Blockly.Events.setGroup(event_group);
+        window.Blockly.Events.setGroup(event_group);
         removeLimitedBlocks(
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
@@ -214,13 +214,13 @@ export const load = async ({
         } else {
             await loadWorkspace(xml, event_group, workspace);
 
-            const is_main_workspace = workspace === Blockly.derivWorkspace;
+            const is_main_workspace = workspace === window.Blockly.derivWorkspace;
             if (is_main_workspace) {
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
                 workspace.clearUndo();
-                workspace.current_strategy_id = strategy_id || Blockly.utils.idGenerator.genUid();
+                workspace.current_strategy_id = strategy_id || window.Blockly.utils.idGenerator.genUid();
                 await saveWorkspaceToRecent(xml, from);
             }
         }
@@ -233,7 +233,7 @@ export const load = async ({
             }
         });
 
-        if (workspace === Blockly.derivWorkspace) {
+        if (workspace === window.Blockly.derivWorkspace) {
             globalObserver.emit('ui.log.success', { log_type: LogTypes.LOAD_BLOCK });
         }
     } catch (e) {
@@ -246,9 +246,9 @@ export const load = async ({
 };
 
 export const loadBlocks = (xml, drop_event, event_group, workspace) => {
-    Blockly.Events.setGroup(event_group);
+    window.Blockly.Events.setGroup(event_group);
 
-    const block_ids = Blockly.Xml.domToWorkspace(xml, workspace);
+    const block_ids = window.Blockly.Xml.domToWorkspace(xml, workspace);
     const added_blocks = block_ids.map(block_id => workspace.getBlockById(block_id));
 
     if (drop_event && Object.keys(drop_event).length !== 0) {
@@ -259,9 +259,9 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
 };
 
 export const loadWorkspace = async (xml, event_group, workspace) => {
-    Blockly.Events.setGroup(event_group);
+    window.Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
-    Blockly.Xml.domToWorkspace(xml, workspace);
+    window.Blockly.Xml.domToWorkspace(xml, workspace);
     workspace.cleanUp();
 };
 
@@ -271,7 +271,7 @@ const loadBlocksFromHeader = (xml_string, block) => {
         let xml;
 
         try {
-            xml = Blockly.utils.xml.textToDom(xml_string);
+            xml = window.Blockly.utils.xml.textToDom(xml_string);
         } catch (error) {
             return reject(localize('Unrecognized file format'));
         }
@@ -349,7 +349,7 @@ export const addLoaderBlocksFirst = xml => {
 
             if (block_type === 'loader') {
                 el_block.remove();
-                const loader = Blockly.Xml.domToBlock(el_block, Blockly.derivWorkspace);
+                const loader = window.Blockly.Xml.domToBlock(el_block, window.Blockly.derivWorkspace);
                 promises.push(loadBlocksFromRemote(loader)); // eslint-disable-line no-use-before-define
             }
         });
@@ -364,12 +364,12 @@ export const addLoaderBlocksFirst = xml => {
 
 export const addDomAsBlock = (el_block, parent_block = null) => {
     if (el_block.tagName.toLowerCase() === 'variables') {
-        return Blockly.Xml.domToVariables(el_block, Blockly.derivWorkspace);
+        return window.Blockly.Xml.domToVariables(el_block, window.Blockly.derivWorkspace);
     }
 
     const block_type = el_block.getAttribute('type');
     const block_conversion = new BlockConversion();
-    const block_xml = Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
+    const block_xml = window.Blockly.Xml.blockToDom(block_conversion.convertBlockNode(el_block));
 
     // Fix legacy Blockly `varid` attribute.
     Array.from(block_xml.getElementsByTagName('arg')).forEach(el => {
@@ -378,9 +378,9 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
         }
     });
 
-    removeLimitedBlocks(Blockly.derivWorkspace, block_type);
+    removeLimitedBlocks(window.Blockly.derivWorkspace, block_type);
 
-    const block = Blockly.Xml.domToBlock(block_xml, Blockly.derivWorkspace);
+    const block = window.Blockly.Xml.domToBlock(block_xml, window.Blockly.derivWorkspace);
 
     if (parent_block) {
         parent_block.blocks_added_by_me.push(block);
@@ -501,19 +501,19 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
 };
 
 /**
- * Sets the Blockly.Events.group_ and executes the passed callBackFn. Mainly
+ * Sets the window.Blockly.Events.group_ and executes the passed callBackFn. Mainly
  * used to ensure undo/redo actions are executed correctly.
  * @param {Boolean} use_existing_group Uses the existing event group if true.
  * @param {Function} callbackFn Logic to execute as part of this event group.
  */
 export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name) => {
-    const group = (use_existing_group && Blockly.Events.getGroup()) || opt_group_name || true;
+    const group = (use_existing_group && window.Blockly.Events.getGroup()) || opt_group_name || true;
 
-    Blockly.Events.setGroup(group);
+    window.Blockly.Events.setGroup(group);
     callbackFn();
 
     if (!use_existing_group) {
-        Blockly.Events.setGroup(false);
+        window.Blockly.Events.setGroup(false);
     }
 };
 
@@ -523,12 +523,12 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  * @param {*} callbackFn Logic to execute as part of this event group.
  */
 export const runIrreversibleEvents = callbackFn => {
-    const { recordUndo } = Blockly.Events;
-    Blockly.Events.setRecordUndo(false);
+    const { recordUndo } = window.Blockly.Events;
+    window.Blockly.Events.setRecordUndo(false);
 
     callbackFn();
 
-    Blockly.Events.setRecordUndo(recordUndo ?? true);
+    window.Blockly.Events.setRecordUndo(recordUndo ?? true);
 };
 
 /**
@@ -537,13 +537,13 @@ export const runIrreversibleEvents = callbackFn => {
  * @param {*} callbackFn Logic to completely hide from Blockly
  */
 export const runInvisibleEvents = callbackFn => {
-    Blockly.Events.disable();
+    window.Blockly.Events.disable();
     callbackFn();
-    Blockly.Events.enable();
+    window.Blockly.Events.enable();
 };
 
 export const updateDisabledBlocks = (workspace, event) => {
-    if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+    if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
         workspace.getAllBlocks().forEach(block => {
             if (!block.getParent() || block.is_user_disabled_state) {
                 return;
@@ -566,7 +566,7 @@ export const updateDisabledBlocks = (workspace, event) => {
                 event.group
             );
 
-            Blockly.Events.setGroup(false);
+            window.Blockly.Events.setGroup(false);
         });
     }
 };
@@ -593,7 +593,7 @@ export const removeExtraInput = instance => {
     if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
         collapsed_input.icon_added = true;
         const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
-        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
+        const field_expand_icon = new window.Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
             instance.setCollapsed(false)
         );
         const function_name = instance.getFieldValue('NAME');
@@ -601,8 +601,8 @@ export const removeExtraInput = instance => {
 
         if (procedures_array.includes(instance.type)) {
             collapsed_input
-                .appendField(new Blockly.FieldLabel(localize('function'), ''))
-                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+                .appendField(new window.Blockly.FieldLabel(localize('function'), ''))
+                .appendField(new window.Blockly.FieldLabel(function_name + args, 'header__title'))
                 .appendField(field_expand_icon);
         } else {
             collapsed_input.appendField(field_expand_icon);
@@ -623,8 +623,8 @@ export const removeExtraInput = instance => {
 };
 
 const downloadBlock = () => {
-    const xml_block = Blockly?.getSelected()?.svgGroup_;
-    const xml_text = Blockly.Xml.domToPrettyText(xml_block);
+    const xml_block = window.Blockly?.getSelected()?.svgGroup_;
+    const xml_text = window.Blockly.Xml.domToPrettyText(xml_block);
     saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
 };
 

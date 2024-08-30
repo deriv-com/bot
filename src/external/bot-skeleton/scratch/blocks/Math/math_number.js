@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_number = {
+window.Blockly.Blocks.math_number = {
     init() {
         this.jsonInit(this.definition());
 
@@ -19,12 +19,12 @@ Blockly.Blocks.math_number = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Please use `.` as a decimal separator for fractional numbers.'),
-            category: Blockly.Categories.Mathematical,
+            category: window.Blockly.Categories.Mathematical,
         };
     },
     customContextMenu(menu) {
@@ -46,7 +46,7 @@ Blockly.Blocks.math_number = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_number = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number = block => {
     const code = block.getFieldValue('NUM');
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

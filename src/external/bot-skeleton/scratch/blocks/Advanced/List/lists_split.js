@@ -1,9 +1,9 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.lists_split = {
+window.Blockly.Blocks.lists_split = {
     init() {
-        const dropdown = new Blockly.FieldDropdown(
+        const dropdown = new window.Blockly.FieldDropdown(
             [
                 [localize('make list from text'), 'SPLIT'],
                 [localize('make text from list'), 'JOIN'],
@@ -19,9 +19,9 @@ Blockly.Blocks.lists_split = {
         this.appendDummyInput().appendField('', 'SPACE2');
 
         this.setOutput(true, 'Array');
-        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setOutputShape(window.Blockly.OUTPUT_SHAPE_ROUND);
 
-        this.setColour(Blockly.Colours.Base.colour);
+        this.setColour(window.Blockly.Colours.Base.colour);
         // eslint-disable-next-line no-underscore-dangle
 
         this.setTooltip(
@@ -36,7 +36,7 @@ Blockly.Blocks.lists_split = {
             description: localize(
                 'This block creates a list from a given string of text, splitting it with the given delimiter. It can also join items in a list into a string of text.'
             ),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     mutationToDom() {
@@ -76,17 +76,17 @@ Blockly.Blocks.lists_split = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_split = block => {
-    const input = Blockly.JavaScript.javascriptGenerator.valueToCode(
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_split = block => {
+    const input = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
         block,
         'INPUT',
-        Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
     );
     const delimiter =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'DELIM',
-            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const mode = block.getFieldValue('MODE');
 
@@ -98,5 +98,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_split = block => {
         code = `${input || '[]'}.join(${delimiter})`;
     }
 
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

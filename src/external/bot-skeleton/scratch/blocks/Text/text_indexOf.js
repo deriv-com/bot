@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_indexOf = {
+window.Blockly.Blocks.text_indexOf = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -35,12 +35,12 @@ Blockly.Blocks.text_indexOf = {
             ],
             inputsInline: true,
             output: 'String',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Search for a given string'),
-            cateogry: Blockly.Categories.Text,
+            cateogry: window.Blockly.Categories.Text,
         };
     },
     meta() {
@@ -62,24 +62,24 @@ Blockly.Blocks.text_indexOf = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
     const substring =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'FIND',
-            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_NONE
         ) || "''";
     const text =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || "''";
 
     const code = `${text}.${functionName}(${substring})`;
     if (block.workspace.options.oneBasedIndex) {
-        return [`${code} + 1`, Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
+        return [`${code} + 1`, window.Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION];
     }
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

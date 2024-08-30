@@ -7,7 +7,7 @@
  * @return {boolean} True if a block is being dragged from the flyout.
  * @private
  */
-Blockly.Gesture.prototype.updateIsDraggingFromFlyout = function () {
+window.Blockly.Gesture.prototype.updateIsDraggingFromFlyout = function () {
     // Disabled blocks may not be dragged from the flyout.
     if (this.targetBlock.disabled) {
         return false;
@@ -19,8 +19,8 @@ Blockly.Gesture.prototype.updateIsDraggingFromFlyout = function () {
 
         // Start the event group now, so that the same event group is used for block
         // creation and block dragging.
-        if (!Blockly.Events.getGroup()) {
-            Blockly.Events.setGroup(true);
+        if (!window.Blockly.Events.getGroup()) {
+            window.Blockly.Events.setGroup(true);
         }
 
         // The start block is no longer relevant, because this is a drag.

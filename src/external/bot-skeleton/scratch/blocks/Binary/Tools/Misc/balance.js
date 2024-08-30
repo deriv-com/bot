@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.balance = {
+window.Blockly.Blocks.balance = {
     init() {
         this.jsonInit(this.definition());
         const balanceTypeField = this.getField('BALANCE_TYPE');
@@ -27,12 +27,12 @@ Blockly.Blocks.balance = {
                 },
             ],
             output: null,
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('This block returns account balance'),
-            category: Blockly.Categories.Miscellaneous,
+            category: window.Blockly.Categories.Miscellaneous,
         };
     },
     meta() {
@@ -48,9 +48,9 @@ Blockly.Blocks.balance = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
     const balanceType = block.getFieldValue('BALANCE_TYPE');
 
     const code = `Bot.getBalance('${balanceType}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

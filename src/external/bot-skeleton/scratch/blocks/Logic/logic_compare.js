@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.logic_compare = {
+window.Blockly.Blocks.logic_compare = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -32,12 +32,12 @@ Blockly.Blocks.logic_compare = {
             ],
             inputsInline: true,
             output: 'Boolean',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Compares two values'),
-            category: Blockly.Categories.Logic,
+            category: window.Blockly.Categories.Logic,
         };
     },
     meta() {
@@ -57,7 +57,7 @@ Blockly.Blocks.logic_compare = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.logic_compare = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_compare = block => {
     const operatorMapping = {
         EQ: '==',
         NEQ: '!=',
@@ -69,11 +69,11 @@ Blockly.JavaScript.javascriptGenerator.forBlock.logic_compare = block => {
 
     const operator = operatorMapping[block.getFieldValue('OP') || 'EQ'];
     const order = ['==', '!='].includes(operator)
-        ? Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY
-        : Blockly.JavaScript.javascriptGenerator.ORDER_RELATIONAL;
+        ? window.Blockly.JavaScript.javascriptGenerator.ORDER_EQUALITY
+        : window.Blockly.JavaScript.javascriptGenerator.ORDER_RELATIONAL;
 
-    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', order) || 'false';
-    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', order) || 'false';
+    const argument0 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'A', order) || 'false';
+    const argument1 = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'B', order) || 'false';
 
     const code = `${argument0} ${operator} ${argument1}`;
     return [code, order];

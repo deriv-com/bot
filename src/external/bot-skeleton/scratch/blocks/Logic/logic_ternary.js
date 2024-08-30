@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.logic_ternary = {
+window.Blockly.Blocks.logic_ternary = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -31,14 +31,14 @@ Blockly.Blocks.logic_ternary = {
             ],
             inputsInline: true,
             output: null,
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize(
                 'This block tests if a given value is true or false and returns “True” or “False” accordingly.'
             ),
-            category: Blockly.Categories.Logic,
+            category: window.Blockly.Categories.Logic,
         };
     },
     customContextMenu(menu) {
@@ -61,26 +61,26 @@ Blockly.Blocks.logic_ternary = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.logic_ternary = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.logic_ternary = block => {
     const valueIf =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'IF',
-            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
         ) || 'false';
     const valueThen =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'THEN',
-            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
         ) || 'null';
     const valueElse =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'ELSE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
         ) || 'null';
 
     const code = `(${valueIf} ? ${valueThen} : ${valueElse})`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL];
 };

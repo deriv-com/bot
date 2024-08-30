@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
 import { modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.ohlc_values_in_list = {
+window.Blockly.Blocks.ohlc_values_in_list = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -24,12 +24,12 @@ Blockly.Blocks.ohlc_values_in_list = {
                 },
             ],
             output: 'Array',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns a list of specific values from a given candle list'),
-            category: Blockly.Categories.Candle,
+            category: window.Blockly.Categories.Candle,
         };
     },
     meta() {
@@ -48,15 +48,15 @@ Blockly.Blocks.ohlc_values_in_list = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values_in_list = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.ohlc_values_in_list = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST') || 'open';
     const ohlcList =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'OHLCLIST',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '[]';
 
     const code = `Bot.candleValues(${ohlcList}, '${ohlcField}')`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

@@ -1,9 +1,9 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.math_number_positive = {
-    init: Blockly.Blocks.math_number.init,
-    definition: Blockly.Blocks.math_number.definition,
+window.Blockly.Blocks.math_number_positive = {
+    init: window.Blockly.Blocks.math_number.init,
+    definition: window.Blockly.Blocks.math_number.definition,
     meta() {
         return {
             display_name: localize('Math Number Positive'),
@@ -21,6 +21,6 @@ Blockly.Blocks.math_number_positive = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.math_number_positive = block => {
-    return Blockly.JavaScript.javascriptGenerator.forBlock.math_number(block);
+window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number_positive = block => {
+    return window.Blockly.JavaScript.javascriptGenerator.forBlock.math_number(block);
 };

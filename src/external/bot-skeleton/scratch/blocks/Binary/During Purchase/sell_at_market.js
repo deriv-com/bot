@@ -1,20 +1,20 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.sell_at_market = {
+window.Blockly.Blocks.sell_at_market = {
     init() {
         this.jsonInit(this.definition());
     },
     definition() {
         return {
             message0: localize('Sell at market price'),
-            colour: Blockly.Colours.Special1.colour,
-            colourSecondary: Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: Blockly.Colours.Special1.colourTertiary,
+            colour: window.Blockly.Colours.Special1.colour,
+            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Use this block to sell your contract at the market price.'),
-            category: Blockly.Categories.During_Purchase,
+            category: window.Blockly.Categories.During_Purchase,
         };
     },
     meta() {
@@ -29,4 +29,4 @@ Blockly.Blocks.sell_at_market = {
     restricted_parents: ['during_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.sell_at_market = () => 'Bot.sellAtMarket();\n';
+window.Blockly.JavaScript.javascriptGenerator.forBlock.sell_at_market = () => 'Bot.sellAtMarket();\n';

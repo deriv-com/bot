@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
-Blockly.Blocks.totimestamp = {
+window.Blockly.Blocks.totimestamp = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -19,14 +19,14 @@ Blockly.Blocks.totimestamp = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize(
                 'Converts a string representing a date/time string into seconds since Epoch. Example: 2019-01-01 21:03:45 GMT+0800 will be converted to 1546347825. Time and time zone offset are optional.'
             ),
-            category: Blockly.Categories.Time,
+            category: window.Blockly.Categories.Time,
         };
     },
     meta() {
@@ -47,12 +47,12 @@ Blockly.Blocks.totimestamp = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.totimestamp = block => {
-    const datetime_string = Blockly.JavaScript.javascriptGenerator.valueToCode(
+window.Blockly.JavaScript.javascriptGenerator.forBlock.totimestamp = block => {
+    const datetime_string = window.Blockly.JavaScript.javascriptGenerator.valueToCode(
         block,
         'DATETIME',
-        Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
     );
     const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text_length = {
+window.Blockly.Blocks.text_length = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -15,12 +15,12 @@ Blockly.Blocks.text_length = {
                 },
             ],
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Text String Length'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -41,14 +41,14 @@ Blockly.Blocks.text_length = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text_length = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text_length = block => {
     const text =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'VALUE',
-            Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
         ) || "''";
 
     const code = `${text}.length`;
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];
 };

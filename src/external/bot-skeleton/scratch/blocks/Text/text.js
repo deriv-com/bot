@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../utils';
 
-Blockly.Blocks.text = {
+window.Blockly.Blocks.text = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -16,12 +16,12 @@ Blockly.Blocks.text = {
             ],
             inputsInline: true,
             output: 'String',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Enter some text here'),
-            category: Blockly.Categories.Text,
+            category: window.Blockly.Categories.Text,
         };
     },
     customContextMenu(menu) {
@@ -35,8 +35,8 @@ Blockly.Blocks.text = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.text = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.text = block => {
     // eslint-disable-next-line no-underscore-dangle
-    const code = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    const code = window.Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

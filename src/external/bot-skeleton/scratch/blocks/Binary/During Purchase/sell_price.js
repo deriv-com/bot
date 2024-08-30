@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.sell_price = {
+window.Blockly.Blocks.sell_price = {
     init() {
         this.jsonInit(this.definition());
     },
@@ -9,12 +9,12 @@ Blockly.Blocks.sell_price = {
         return {
             message0: localize('Sell profit/loss'),
             output: 'Number',
-            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
-            colour: Blockly.Colours.Base.colour,
-            colourSecondary: Blockly.Colours.Base.colourSecondary,
-            colourTertiary: Blockly.Colours.Base.colourTertiary,
+            outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
+            colour: window.Blockly.Colours.Base.colour,
+            colourSecondary: window.Blockly.Colours.Base.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             tooltip: localize('Returns the profit/loss from selling at market price'),
-            category: Blockly.Categories.During_Purchase,
+            category: window.Blockly.Categories.During_Purchase,
         };
     },
     meta() {
@@ -31,7 +31,7 @@ Blockly.Blocks.sell_price = {
     restricted_parents: ['during_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.sell_price = () => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.sell_price = () => {
     const code = 'Bot.getSellPrice()';
-    return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+    return [code, window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

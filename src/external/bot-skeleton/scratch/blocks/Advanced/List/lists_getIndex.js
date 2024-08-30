@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.lists_getIndex = {
+window.Blockly.Blocks.lists_getIndex = {
     init() {
         this.MODE_OPTIONS = [
             [localize('get'), 'GET'],
@@ -15,7 +15,7 @@ Blockly.Blocks.lists_getIndex = {
             [localize('last'), 'LAST'],
             [localize('random'), 'RANDOM'],
         ];
-        const modeMenu = new Blockly.FieldDropdown(this.MODE_OPTIONS, value => {
+        const modeMenu = new window.Blockly.FieldDropdown(this.MODE_OPTIONS, value => {
             const isStatement = value === 'REMOVE';
             this.updateStatement(isStatement);
         });
@@ -24,14 +24,16 @@ Blockly.Blocks.lists_getIndex = {
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
         const block_color =
-            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
+            window.Blockly.Colours.Base.colour ||
+            window.Blockly.Colours.Base.colourSecondary ||
+            window.Blockly.Colours.Base.colourTertiary;
         this.setColour(block_color);
         this.setTooltip(
             'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
         );
         this.setInputsInline(true);
         this.setOutput(true, null);
-        this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
+        this.setOutputShape(window.Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
     },
     meta() {
@@ -40,13 +42,13 @@ Blockly.Blocks.lists_getIndex = {
             description: localize(
                 'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
             ),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     mutationToDom() {
         const container = document.createElement('mutation');
         const isStatement = !this.outputConnection;
-        const isAt = this.getInput('AT').type === Blockly.INPUT_VALUE;
+        const isAt = this.getInput('AT').type === window.Blockly.INPUT_VALUE;
 
         container.setAttribute('statement', isStatement);
         container.setAttribute('at', isAt);
@@ -82,7 +84,7 @@ Blockly.Blocks.lists_getIndex = {
             this.appendDummyInput('AT');
         }
 
-        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
+        const menu = new window.Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(newAt);
@@ -101,64 +103,64 @@ Blockly.Blocks.lists_getIndex = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_getIndex = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_getIndex = block => {
     const mode = block.getFieldValue('MODE') || 'GET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
     const listOrder =
         where === 'RANDOM'
-            ? Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
-            : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
-    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', listOrder) || '[]';
+            ? window.Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            : window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const list = window.Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', listOrder) || '[]';
 
     let code, order;
 
     if (where === 'FIRST') {
         if (mode === 'GET') {
             code = `${list}[0]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.shift()`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.shift();\n`;
         }
     } else if (where === 'LAST') {
         if (mode === 'GET') {
             code = `${list}.slice(-1)[0]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.pop()`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'REMOVE') {
             return `${list}.pop();\n`;
         }
     } else if (where === 'FROM_START') {
-        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         if (mode === 'GET') {
             code = `${list}[${at}]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT', 1, true);
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT', 1, true);
         if (mode === 'GET') {
             code = `${list}.slice(${at})[0]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'GET_REMOVE') {
             code = `${list}.splice(${at}, 1)[0]`;
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'RANDOM') {
         // eslint-disable-next-line no-underscore-dangle
-        const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('listsGetRandomItem', [
+        const functionName = window.Blockly.JavaScript.javascriptGenerator.provideFunction_('listsGetRandomItem', [
             // eslint-disable-next-line no-underscore-dangle
-            `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
+            `function ${window.Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list, remove) {
                 var x = Math.floor(Math.random() * list.length);
                 if (remove) {
                     return list.splice(x, 1)[0];
@@ -171,7 +173,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_getIndex = block => {
         code = `${functionName}(${list}, ${mode !== 'GET'})`;
 
         if (mode === 'GET' || mode === 'GET_REMOVE') {
-            order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
+            order = window.Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;
         } else if (mode === 'REMOVE') {
             return `${code};\n`;
         }

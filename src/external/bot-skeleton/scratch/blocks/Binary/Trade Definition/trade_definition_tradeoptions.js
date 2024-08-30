@@ -3,9 +3,9 @@ import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '../../../shared';
-import { modifyContextMenu,runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
-Blockly.Blocks.trade_definition_tradeoptions = {
+window.Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
     init() {
         this.jsonInit(this.definition());
@@ -51,13 +51,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     text: '',
                 },
             ],
-            colour: Blockly.Colours.Special1.colour,
-            colourSecondary: Blockly.Colours.Special1.colourSecondary,
-            colourTertiary: Blockly.Colours.Special1.colourTertiary,
+            colour: window.Blockly.Colours.Special1.colour,
+            colourSecondary: window.Blockly.Colours.Special1.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
             nextStatement: null,
             tooltip: localize('Define your trade options such as duration and stake.'),
-            category: Blockly.Categories.Trade_Definition,
+            category: window.Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
@@ -86,7 +86,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 });
         }
 
-        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {
+        if (!this.workspace || this.workspace.isDragging() || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -115,8 +115,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         ];
 
         if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
             this.updateAmountLimits();
@@ -124,7 +124,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
         const is_load_event = /^dbot-load/.test(event.group);
 
-        if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
+        if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateBarrierInputs(false, false);
@@ -137,7 +137,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
             }
-        } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
             if (is_load_event) {
                 if (event.name === 'TRADETYPE_LIST') {
                     this.updateBarrierInputs(false, false);
@@ -169,12 +169,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updatePredictionInput(true);
                 this.updateAmountLimits();
             }
-        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
+        } else if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
             if (!this.selected_duration) {
-                const fake_creation_event = new Blockly.Events.BlockCreate(this);
+                const fake_creation_event = new window.Blockly.Events.BlockCreate(this);
                 fake_creation_event.recordUndo = false;
-                Blockly.Events.fire(fake_creation_event);
+                window.Blockly.Events.fire(fake_creation_event);
             } else if (this.selected_trade_type === 'multiplier') {
                 this.updateDurationInput(false, false);
             }
@@ -213,7 +213,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 } else {
                     input = this.appendValueInput(input_names[i])
                         .appendField(label, `${input_names[i]}_LABEL`)
-                        .appendField(new Blockly.FieldDropdown(config.BARRIER_TYPES), `${input_names[i]}TYPE_LIST`);
+                        .appendField(
+                            new window.Blockly.FieldDropdown(config.BARRIER_TYPES),
+                            `${input_names[i]}TYPE_LIST`
+                        );
 
                     const shadow_block = this.workspace.newBlock('math_number_positive');
 
@@ -580,22 +583,22 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
 };
 
-Blockly.Blocks.trade_definition_tradeoptions_payout = Blockly.Blocks.trade_definition_tradeoptions;
+window.Blockly.Blocks.trade_definition_tradeoptions_payout = window.Blockly.Blocks.trade_definition_tradeoptions;
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions = block => {
     const amount =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'AMOUNT',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '0';
     const { currency } = DBotStore.instance.client;
     const duration_type = block.getFieldValue('DURATIONTYPE_LIST') || '0';
     const duration_value =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'DURATION',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
         ) || '0';
 
     // Determine decimal places for rounding the stake, this is done so Martingale multipliers
@@ -615,20 +618,20 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions = 
 
     if (block.getInput('PREDICTION')) {
         prediction_value =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'PREDICTION',
-                Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
             ) || '-1';
     }
 
     if (block.getInput('BARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('BARRIEROFFSETTYPE_LIST');
         const value =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'BARRIEROFFSET',
-                Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
             ) || '0';
         barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
@@ -636,10 +639,10 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions = 
     if (block.getInput('SECONDBARRIEROFFSET')) {
         const barrier_offset_type = block.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST');
         const value =
-            Blockly.JavaScript.javascriptGenerator.valueToCode(
+            window.Blockly.JavaScript.javascriptGenerator.valueToCode(
                 block,
                 'SECONDBARRIEROFFSET',
-                Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+                window.Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
             ) || '0';
         second_barrier_offset_value = getBarrierValue(barrier_offset_type, value);
     }
@@ -662,5 +665,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions = 
     return code;
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions_payout =
-    Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions;
+window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions_payout =
+    window.Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_tradeoptions;

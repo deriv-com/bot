@@ -284,9 +284,9 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        const options = new Blockly.Options({ media: `assets/images` });
+        const options = new window.Blockly.Options({ media: `assets/images` });
         const el_injection_div = new DocumentFragment();
-        const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
+        const workspace = window.Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
 
         return workspace;
     }
@@ -382,7 +382,7 @@ export default class BlockConversion {
             current_name = variable_name + counter;
         }
 
-        const ws_variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
+        const ws_variable = window.Blockly.Variables.getOrCreateVariablePackage(this.workspace, '', current_name, '');
         this.workspace_variables[ws_variable.id_] = current_name; // eslint-disable-line
 
         return ws_variable;
@@ -390,14 +390,14 @@ export default class BlockConversion {
 
     convertStrategy(strategy_node, showIncompatibleStrategyDialog) {
         // Disable events (globally) to suppress block onchange listeners from firing.
-        Blockly.Events.disable();
+        window.Blockly.Events.disable();
 
         // We only want to update renamed fields for modern strategies.
         const xml = this.updateRenamedFields(strategy_node);
 
         // Don't convert already compatible strategies.
         if (strategy_node.hasAttribute('is_dbot') && strategy_node.getAttribute('is_dbot') === 'true') {
-            Blockly.Events.enable();
+            window.Blockly.Events.enable();
             return xml;
         }
 
@@ -411,8 +411,8 @@ export default class BlockConversion {
             if (showIncompatibleStrategyDialog) {
                 showIncompatibleStrategyDialog();
             }
-            Blockly.Events.enable();
-            return Blockly.utils.xml.textToDom('<xml />');
+            window.Blockly.Events.enable();
+            return window.Blockly.utils.xml.textToDom('<xml />');
         }
 
         const variable_nodes = [];
@@ -442,7 +442,7 @@ export default class BlockConversion {
                 const variable_name = el_variable.textContent;
 
                 if (!this.workspace_variables[variable_id]) {
-                    const variable = Blockly.Variables.getOrCreateVariablePackage(
+                    const variable = window.Blockly.Variables.getOrCreateVariablePackage(
                         this.workspace,
                         variable_id,
                         variable_name,
@@ -510,7 +510,7 @@ export default class BlockConversion {
 
         this.workspace.cleanUp();
 
-        const converted_xml = Blockly.Xml.workspaceToDom(this.workspace);
+        const converted_xml = window.Blockly.Xml.workspaceToDom(this.workspace);
 
         if (strategy_node.hasAttribute('collection') && strategy_node.getAttribute('collection') === 'true') {
             converted_xml.setAttribute('collection', 'true');
@@ -520,7 +520,7 @@ export default class BlockConversion {
 
         this.workspace = null;
 
-        Blockly.Events.enable();
+        window.Blockly.Events.enable();
 
         return converted_xml;
     }
@@ -573,7 +573,7 @@ export default class BlockConversion {
                 });
             }
         } else {
-            const is_legal_block = Object.keys(Blockly.Blocks).includes(block_type);
+            const is_legal_block = Object.keys(window.Blockly.Blocks).includes(block_type);
 
             if (is_legal_block) {
                 block = this.workspace.newBlock(block_type);
@@ -614,10 +614,10 @@ export default class BlockConversion {
                     const field = block.getField(field_name);
 
                     if (field) {
-                        if (field instanceof Blockly.FieldVariable) {
+                        if (field instanceof window.Blockly.FieldVariable) {
                             const variable_id = el_block_child.getAttribute('id');
                             const variable_name = el_block_child.innerText.trim();
-                            const variable = Blockly.Variables.getOrCreateVariablePackage(
+                            const variable = window.Blockly.Variables.getOrCreateVariablePackage(
                                 this.workspace,
                                 variable_id,
                                 variable_name,

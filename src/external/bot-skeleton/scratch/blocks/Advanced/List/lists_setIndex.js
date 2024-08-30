@@ -1,7 +1,7 @@
 import { localize } from '@/utils/tmp/dummy';
 import { modifyContextMenu } from '../../../utils';
 
-Blockly.Blocks.lists_setIndex = {
+window.Blockly.Blocks.lists_setIndex = {
     init() {
         this.MODE_OPTIONS = [
             [localize('set'), 'SET'],
@@ -16,12 +16,14 @@ Blockly.Blocks.lists_setIndex = {
         ];
 
         this.appendValueInput('LIST').setCheck('Array').appendField(localize('in list'));
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(this.MODE_OPTIONS), 'MODE');
+        this.appendDummyInput().appendField(new window.Blockly.FieldDropdown(this.MODE_OPTIONS), 'MODE');
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(localize('as'));
 
         const block_color =
-            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
+            window.Blockly.Colours.Base.colour ||
+            window.Blockly.Colours.Base.colourSecondary ||
+            window.Blockly.Colours.Base.colourTertiary;
         this.setColour(block_color);
 
         this.setPreviousStatement(true, null);
@@ -39,12 +41,12 @@ Blockly.Blocks.lists_setIndex = {
             description: localize(
                 'This block replaces a specific item in a list with another given item. It can also insert the new item in the list at a specific position.'
             ),
-            category: Blockly.Categories.List,
+            category: window.Blockly.Categories.List,
         };
     },
     mutationToDom() {
         const container = document.createElement('mutation');
-        const isAt = this.getInput('AT').type === Blockly.INPUT_VALUE;
+        const isAt = this.getInput('AT').type === window.Blockly.INPUT_VALUE;
 
         container.setAttribute('at', isAt);
         return container;
@@ -62,7 +64,7 @@ Blockly.Blocks.lists_setIndex = {
             this.appendDummyInput('AT');
         }
 
-        const menu = new Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
+        const menu = new window.Blockly.FieldDropdown(this.WHERE_OPTIONS, value => {
             const newAt = ['FROM_START', 'FROM_END'].includes(value);
             if (newAt !== isAt) {
                 this.updateAt(newAt);
@@ -81,21 +83,21 @@ Blockly.Blocks.lists_setIndex = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
+window.Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
     const mode = block.getFieldValue('MODE') || 'SET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
     const value =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'TO',
-            Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_ASSIGNMENT
         ) || 'null';
 
     let list =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(
+        window.Blockly.JavaScript.javascriptGenerator.valueToCode(
             block,
             'LIST',
-            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
         ) || '[]';
 
     const cacheList = () => {
@@ -104,7 +106,10 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
         }
 
         // eslint-disable-next-line no-underscore-dangle
-        const listVar = Blockly.JavaScript.variableDB_.getDistinctName('tmpList', Blockly.Variables.CATEGORY_NAME);
+        const listVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'tmpList',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
         const code = `var ${listVar} = ${list};\n`;
 
         list = listVar;
@@ -127,19 +132,19 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
             code = `${list}.push(${value});\n`;
         }
     } else if (where === 'FROM_START') {
-        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         if (mode === 'SET') {
             code = `${list}[${at}] = ${value};\n`;
         } else if (mode === 'INSERT') {
             code = `${list}.splice(${at}, 0, ${value});\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(
+        const at = window.Blockly.JavaScript.javascriptGenerator.getAdjusted(
             block,
             'AT',
             1,
             false,
-            Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+            window.Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
         );
         code = cacheList();
         if (mode === 'SET') {
@@ -151,7 +156,10 @@ Blockly.JavaScript.javascriptGenerator.forBlock.lists_setIndex = block => {
         code = cacheList();
 
         // eslint-disable-next-line no-underscore-dangle
-        const xVar = Blockly.JavaScript.variableDB_.getDistinctName('tmpX', Blockly.Variables.CATEGORY_NAME);
+        const xVar = window.Blockly.JavaScript.variableDB_.getDistinctName(
+            'tmpX',
+            window.Blockly.Variables.CATEGORY_NAME
+        );
 
         code += `var ${xVar} = Math.floor(Math.random() * ${list}.length);\n`;
 
