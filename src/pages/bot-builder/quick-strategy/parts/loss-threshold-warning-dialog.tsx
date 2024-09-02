@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite';
+import Checkbox from '@/components/shared_ui/checkbox';
+import Dialog from '@/components/shared_ui/dialog';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-import { Checkbox, Dialog } from '@deriv-com/ui';
 import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 import './loss-threshold-warning-dialog.scss';
 

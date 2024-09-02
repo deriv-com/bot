@@ -2,11 +2,12 @@ import React from 'react';
 import debounce from 'debounce';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import Autocomplete from '@/components/shared_ui/autocomplete';
+import { TItem } from '@/components/shared_ui/dropdown-list';
+[];
+import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { IconTradeTypes } from '@/utils/tmp/dummy';
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { Text } from '@deriv-com/ui';
 import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 
 type TTradeTypeOption = {

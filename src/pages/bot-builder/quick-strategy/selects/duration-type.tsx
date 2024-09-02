@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import Autocomplete from '@/components/shared_ui/autocomplete';
+import { TItem } from '@/components/shared_ui/dropdown-list';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { TApiHelpersInstance, TDurationUnitItem, TFormData } from '../types';
 
 type TDurationUnit = {

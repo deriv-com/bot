@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { Text } from '@deriv-com/ui';
 import { TStrategyDescription } from '../types';
 
 const StrategyDescription = observer(({ item, font_size }: TStrategyDescription) => {
@@ -37,7 +37,7 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
             const class_names = classNames(`qs__description__image ${class_name}`);
             return (
                 <div className={class_names} style={item?.styles}>
-                    <img src={is_dark_mode_on ? item.dark_src ?? item.src : item.src} alt={item.alt} />
+                    <img src={is_dark_mode_on ? (item.dark_src ?? item.src) : item.src} alt={item.alt} />
                 </div>
             );
         }

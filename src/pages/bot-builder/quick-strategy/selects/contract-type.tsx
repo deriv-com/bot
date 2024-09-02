@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
 import Autocomplete from '@/components/shared_ui/autocomplete';
+import { TItem } from '@/components/shared_ui/dropdown-list';
+import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { Text } from '@deriv-com/ui';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 
 type TContractTypes = {

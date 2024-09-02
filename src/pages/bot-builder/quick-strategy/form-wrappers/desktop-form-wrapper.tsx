@@ -2,11 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
+import Button from '@/components/shared_ui/button';
+import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
 import {
     rudderStackSendQsEditStrategyEvent,
     rudderStackSendQsRunStrategyEvent,

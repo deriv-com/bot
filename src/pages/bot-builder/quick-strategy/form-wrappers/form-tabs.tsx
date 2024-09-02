@@ -1,7 +1,7 @@
 import React, { KeyboardEvent } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv-com/ui';
+import Text from '@/components/shared_ui/text';
 import { FORM_TABS } from '../config';
 import { TDescriptionItem } from '../types';
 
