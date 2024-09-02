@@ -3,7 +3,7 @@ import Accordion from '@/components/shared_ui/accordion';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {
