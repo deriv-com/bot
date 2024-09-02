@@ -1,14 +1,15 @@
 import { useState } from 'react';
+import clsx from 'clsx';
 import { LegacyNotificationIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Tooltip } from '@deriv-com/ui';
+import { Notifications as UINotifications, Tooltip, useDevice } from '@deriv-com/ui';
 import './notifications.scss';
 
 export const Notifications = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { localize } = useTranslations();
-    // TODO: need to add this back after fixing notifications component
-    // const { isMobile } = useDevice();
+    const { isMobile } = useDevice();
+
     return (
         <div className='notifications__wrapper'>
             <Tooltip
@@ -19,12 +20,11 @@ export const Notifications = () => {
             >
                 <LegacyNotificationIcon iconSize='sm' />
             </Tooltip>
-            {/* <UINotifications
+            <UINotifications
                 className={clsx('', {
                     'notifications__wrapper--mobile': isMobile,
                     'notifications__wrapper--desktop': !isMobile,
                 })}
-                clearNotificationsCallback={() => {}}
                 componentConfig={{
                     clearButtonText: localize('Clear all'),
                     modalTitle: localize('Notifications'),
@@ -34,7 +34,10 @@ export const Notifications = () => {
                 isOpen={isOpen}
                 notifications={[]}
                 setIsOpen={setIsOpen}
-            /> */}
+                clearNotificationsCallback={() => {}}
+                loadMoreFunction={() => {}}
+                isLoading={false}
+            />
         </div>
     );
 };
