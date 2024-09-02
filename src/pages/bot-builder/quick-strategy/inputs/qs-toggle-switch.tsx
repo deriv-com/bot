@@ -4,7 +4,7 @@ import { Field, useFormikContext } from 'formik';
 import Popover from '@/components/shared_ui/popover';
 import Text from '@/components/shared_ui/text';
 import ToggleSwitch from '@/components/shared_ui/toggle-switch';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { TFormData } from '../types';
 
 type TQSToggleSwitch = {
