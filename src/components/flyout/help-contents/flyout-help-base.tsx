@@ -42,7 +42,7 @@ const HelpBase = observer(() => {
                         className='flyout__button-add'
                         has_effect
                         id={`db-flyout-help__add--${block_type}`}
-                        onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
+                        onClick={() => window.Blockly.derivWorkspace.addBlockNode(block_node)}
                         primary
                         text={localize('Add')}
                         type='button'

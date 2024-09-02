@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.variables_get = {
     init() {
@@ -17,9 +18,9 @@ window.Blockly.Blocks.variables_get = {
             ],
             output: null,
             outputShape: window.Blockly.OUTPUT_SHAPE_ROUND,
-            colour: window.Blockly.Colours.Special2.colour,
-            colourSecondary: window.Blockly.Colours.Special2.colourSecondary,
-            colourTertiary: window.Blockly.Colours.Special2.colourTertiary,
+            colour: window.Blockly.Colours.Special4.colour,
+            colourSecondary: window.Blockly.Colours.Special4.colourSecondary,
+            colourTertiary: window.Blockly.Colours.Special4.colourTertiary,
             tooltip: localize('Gets variable value'),
             category: window.Blockly.Categories.Variables,
         };
@@ -53,6 +54,9 @@ window.Blockly.Blocks.variables_get = {
                 }
             });
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

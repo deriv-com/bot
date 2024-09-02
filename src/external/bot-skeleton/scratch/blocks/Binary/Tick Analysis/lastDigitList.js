@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lastDigitList = {
     init() {
@@ -21,6 +22,9 @@ window.Blockly.Blocks.lastDigitList = {
             display_name: localize('Last Digits List'),
             description: localize('This block gives you a list of the last digits of the last 1000 tick values.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

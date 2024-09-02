@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_number_positive = {
     init: window.Blockly.Blocks.math_number.init,
@@ -14,6 +15,9 @@ window.Blockly.Blocks.math_number_positive = {
             return undefined;
         }
         return null;
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

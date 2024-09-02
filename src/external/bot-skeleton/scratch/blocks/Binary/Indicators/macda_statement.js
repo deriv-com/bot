@@ -1,5 +1,6 @@
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.macda_statement = {
     protected_statements: ['STATEMENT'],
@@ -45,6 +46,9 @@ window.Blockly.Blocks.macda_statement = {
             nextStatement: null,
             category: window.Blockly.Categories.Indicators,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_again = {
     init() {
@@ -26,6 +27,9 @@ window.Blockly.Blocks.trade_again = {
             ),
             key_words: localize('restart'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     restricted_parents: ['after_purchase'],
 };

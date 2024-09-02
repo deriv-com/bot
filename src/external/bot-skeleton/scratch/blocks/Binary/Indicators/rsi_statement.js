@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.rsi_statement = {
     protected_statements: ['STATEMENT'],
@@ -46,6 +47,9 @@ window.Blockly.Blocks.rsi_statement = {
                 'RSI is a technical analysis tool that helps you identify the market trend. It will give you a value from 0 to 100. An RSI value of 70 and above means that the asset is overbought and the current trend may reverse, while a value of 30 and below means that the asset is oversold.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };

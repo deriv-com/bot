@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { removeExtraInput } from '../../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { plusIconLight } from '../../images';
 
 window.Blockly.Blocks.procedures_defnoreturn = {
@@ -9,6 +9,10 @@ window.Blockly.Blocks.procedures_defnoreturn = {
         this.is_adding = false;
         this.timeout_id;
         this.jsonInit(this.definition());
+
+        if (window.Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
+            this.setCommentText(window.Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
+        }
 
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
@@ -80,10 +84,10 @@ window.Blockly.Blocks.procedures_defnoreturn = {
             window.Blockly.Events.BLOCK_CHANGE,
         ];
 
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || !allowedEvents.includes(event.type)) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || !allowedEvents.includes(event.type)) {
             return;
         }
-        if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === window.Blockly.Events.BLOCK_CREATE || window.Blockly.Events.BLOCK_CHANGE) {
             // Sync names between definition- and execution-block
             if (event.blockId === this.id && event.name === 'NAME') {
                 this.getProcedureCallers().forEach(block => {
@@ -98,7 +102,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      * @this window.Blockly.Block
      */
     onAddClick() {
-        if (this.is_adding || this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.is_adding || this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -287,7 +291,8 @@ window.Blockly.Blocks.procedures_defnoreturn = {
      * @this window.Blockly.Block
      */
     customContextMenu(options) {
-        if (window.Blockly.derivWorkspace.isFlyout_) {
+        modifyContextMenu(options);
+        if (window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
         // Add option to create caller.

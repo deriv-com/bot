@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { runIrreversibleEvents } from '../../../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu, runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.input_list = {
     init() {
@@ -23,7 +23,7 @@ window.Blockly.Blocks.input_list = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -76,6 +76,9 @@ window.Blockly.Blocks.input_list = {
         return {
             INPUT_LIST: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

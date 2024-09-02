@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.timeout = {
     init() {
@@ -40,6 +41,9 @@ window.Blockly.Blocks.timeout = {
                 'This block delays execution for a given number of seconds. You can place any blocks within this block. The execution of other blocks in your strategy will be paused until the instructions in this block are carried out.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     getRequiredValueInputs() {
         return {

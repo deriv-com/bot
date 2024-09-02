@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js
 window.Blockly.Blocks.math_round = {
@@ -36,6 +37,9 @@ window.Blockly.Blocks.math_round = {
             tooltip: localize('Rounds a given number to an integer'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

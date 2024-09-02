@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_trig = {
     init() {
@@ -34,6 +35,9 @@ window.Blockly.Blocks.math_trig = {
             tooltip: localize('Trigonometric functions'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.ema_statement = {
     protected_statements: ['STATEMENT'],
@@ -46,6 +47,9 @@ window.Blockly.Blocks.ema_statement = {
                 'EMA is a type of moving average that places more significance on the most recent data points. It’s also known as the exponentially weighted moving average. EMA is different from SMA in that it reacts more significantly to recent price changes.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };

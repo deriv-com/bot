@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { runGroupedEvents } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu, runGroupedEvents } from '../../utils';
 import { plusIconDark } from '../images';
 
 window.Blockly.Blocks.text_join = {
@@ -38,6 +38,9 @@ window.Blockly.Blocks.text_join = {
             category: window.Blockly.Categories.Text,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Text join'),
@@ -47,7 +50,7 @@ window.Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -56,14 +59,13 @@ window.Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            // kept this commented to fix backward compatibility issue
             text_block?.renderEfficiently();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            // kept this commented to fix backward compatibility issue
+
             shadow_block?.renderEfficiently();
 
             const text_input = text_block.getInput('TEXT');

@@ -172,7 +172,7 @@ export default class ToolboxStore {
             //we needed to add this check since we are not using
             //blocky way of defining vaiables
             if (dynamic === 'VARIABLE') {
-                fnToApply = Blockly.DataCategory;
+                fnToApply = window.Blockly.DataCategory;
             }
             xml_list = fnToApply(workspace);
         }
@@ -379,7 +379,7 @@ export default class ToolboxStore {
 
         // block_variable_name matched
         const matched_variables = all_variables.filter(variable => variable.name.toUpperCase().includes(search_term));
-        const variables_blocks = Blockly.DataCategory.search(matched_variables);
+        const variables_blocks = window.Blockly.DataCategory.search(matched_variables);
         // eslint-disable-next-line consistent-return
         const unique_var_blocks = variables_blocks.filter(variable_block => {
             return flyout_content.indexOf(variable_block) === -1;
@@ -408,7 +408,7 @@ export default class ToolboxStore {
             }
         });
 
-        const procedures_blocks = Blockly.Procedures.populateDynamicProcedures(searched_procedures);
+        const procedures_blocks = window.Blockly.Procedures.populateDynamicProcedures(searched_procedures);
         // eslint-disable-next-line consistent-return
         const unique_proce_blocks = procedures_blocks.filter(procedure_block => {
             return flyout_content.indexOf(procedure_block) === -1;

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.epoch = {
     init() {
@@ -21,6 +22,9 @@ window.Blockly.Blocks.epoch = {
             display_name: localize('Second Since Epoch'),
             description: localize('This block returns the number of seconds since January 1st, 1970.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

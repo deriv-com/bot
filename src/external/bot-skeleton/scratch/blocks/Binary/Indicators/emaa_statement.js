@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.emaa_statement = {
     protected_statements: ['STATEMENT'],
@@ -48,6 +49,9 @@ window.Blockly.Blocks.emaa_statement = {
         };
     },
     onchange: window.Blockly.Blocks.bb_statement.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
 };
 
 window.Blockly.JavaScript.javascriptGenerator.forBlock.emaa_statement = block => {

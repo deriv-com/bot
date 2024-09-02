@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.is_candle_black = {
     init() {
@@ -30,6 +31,9 @@ window.Blockly.Blocks.is_candle_black = {
                 'This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     getRequiredValueInputs() {
         return {

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.total_runs = {
     init() {
@@ -15,6 +16,9 @@ window.Blockly.Blocks.total_runs = {
             tooltip: localize('Returns the number of runs'),
             category: window.Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

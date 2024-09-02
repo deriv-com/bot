@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_repeat = {
     init() {
@@ -42,6 +42,9 @@ window.Blockly.Blocks.lists_repeat = {
             ITEM: emptyTextValidator,
             NUM: emptyTextValidator,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

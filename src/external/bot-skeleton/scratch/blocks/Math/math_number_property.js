@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_number_property = {
     init() {
@@ -64,19 +65,19 @@ window.Blockly.Blocks.math_number_property = {
         return container;
     },
     updateShape(hasDivisorInput) {
-        const inputExists = this.getInput('DIVISOR');
-
         if (hasDivisorInput) {
-            if (!inputExists) {
+            const inputExists = this.getInput('DIVISOR');
+            if (inputExists) {
+                this.removeInput('DIVISOR');
+            } else {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
-                //commented this line breaks the backward compatibility
-                //this.render(false);
+                this.renderEfficiently();
             }
-        } else {
-            //commented this line breaks the backward compatibiliy
-            //this.removeInput('DIVISOR');
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     getRequiredValueInputs() {
         return {

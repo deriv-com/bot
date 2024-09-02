@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.logic_negate = {
     init() {
@@ -22,6 +23,9 @@ window.Blockly.Blocks.logic_negate = {
             tooltip: localize('Converts a given True or False to the opposite value'),
             category: window.Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

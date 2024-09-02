@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_on_list = {
     init() {
@@ -39,6 +40,9 @@ window.Blockly.Blocks.math_on_list = {
             tooltip: localize('Aggregate operations'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

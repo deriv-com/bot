@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text = {
     init() {
@@ -22,6 +23,9 @@ window.Blockly.Blocks.text = {
             tooltip: localize('Enter some text here'),
             category: window.Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

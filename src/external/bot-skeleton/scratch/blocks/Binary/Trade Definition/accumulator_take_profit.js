@@ -4,18 +4,18 @@ import { getCurrencyDisplayCode } from '../../../shared';
 import { modifyContextMenu } from '../../../utils';
 
 const description = localize(
-    'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+    'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the accumulator trade type.'
 );
 
-window.Blockly.Blocks.multiplier_stop_loss = {
+window.Blockly.Blocks.accumulator_take_profit = {
     init() {
         this.jsonInit(this.definition());
     },
     definition() {
         return {
-            message0: localize('Stop Loss: {{ currency }} {{ stop_loss }}', {
+            message0: localize('Take Profit: {{ currency }} {{ take_profit }}', {
                 currency: '%1',
-                stop_loss: '%2',
+                take_profit: '%2',
             }),
             args0: [
                 {
@@ -38,12 +38,9 @@ window.Blockly.Blocks.multiplier_stop_loss = {
             category: window.Blockly.Categories.Trade_Definition,
         };
     },
-    customContextMenu(menu) {
-        modifyContextMenu(menu);
-    },
     meta() {
         return {
-            display_name: localize('Stop loss (Multiplier)'),
+            display_name: localize('Take Profit (Accumulator)'),
             description,
         };
     },
@@ -58,7 +55,10 @@ window.Blockly.Blocks.multiplier_stop_loss = {
             this.setCurrency();
         }
     },
-    restricted_parents: ['trade_definition_multiplier'],
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
+    restricted_parents: ['trade_definition_accumulator'],
     setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
@@ -66,7 +66,7 @@ window.Blockly.Blocks.multiplier_stop_loss = {
             return {
                 AMOUNT: input => {
                     const input_number = Number(input);
-                    this.error_message = localize('Stop loss must be a positive number.');
+                    this.error_message = localize('Take profit must be a positive number.');
                     return !isNaN(input_number) && input_number <= 0;
                 },
             };
@@ -75,4 +75,4 @@ window.Blockly.Blocks.multiplier_stop_loss = {
     },
 };
 
-window.Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_stop_loss = () => {};
+window.Blockly.JavaScript.javascriptGenerator.forBlock.accumulator_take_profit = () => {};

@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_print = {
     init() {
@@ -22,6 +22,9 @@ window.Blockly.Blocks.text_print = {
             tooltip: localize('Displays a dialog window with a message'),
             category: window.Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.fast_ema_period = {
     init() {
@@ -20,6 +21,9 @@ window.Blockly.Blocks.fast_ema_period = {
 
         this.setMovable(false);
         this.setDeletable(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],

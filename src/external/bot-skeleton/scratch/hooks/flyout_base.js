@@ -70,7 +70,7 @@ window.Blockly.Flyout.prototype.createBlock = function (event, original_block) {
  * @return {!window.Blockly.Block} The new block in the main workspace.
  * @private
  */
-window.Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
+window.Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block = window.Blockly.getSelected()) {
     const main_workspace = this.targetWorkspace;
     const svg_root_old = old_block.getSvgRoot();
 
@@ -102,12 +102,12 @@ window.Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
         // The position of the old block in pixels relative to the flyout workspace's origin.
         const x_offset = 25;
         const y_offset = 160;
-        const old_block_pos_pixels = new window.goog.math.Coordinate(
+        const old_block_pos_pixels = new goog.math.Coordinate(
             event.clientX ? event.clientX - x_offset : 0,
             event.clientY ? event.clientY - y_offset : 0
         );
         // The position of the old block in pixels relative to the origin of the main workspace.
-        const final_offset_pixels = window.goog.math.Coordinate.difference(old_block_pos_pixels, main_offset_pixels);
+        const final_offset_pixels = goog.math.Coordinate.difference(old_block_pos_pixels, main_offset_pixels);
 
         // The position of the old block in main workspace coordinates.
         const final_offset_main_ws = final_offset_pixels.scale(1 / main_workspace.scale);

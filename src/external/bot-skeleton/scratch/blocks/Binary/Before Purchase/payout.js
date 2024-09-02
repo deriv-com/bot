@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.payout = {
     init() {
@@ -30,6 +31,9 @@ window.Blockly.Blocks.payout = {
                 'This block returns the potential payout for the selected trade type. This block can be used only in the "Purchase conditions" root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.purchase.onchange,
     populatePurchaseList: window.Blockly.Blocks.purchase.populatePurchaseList,

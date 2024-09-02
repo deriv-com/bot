@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_sort = {
     init() {
@@ -55,6 +56,9 @@ window.Blockly.Blocks.lists_sort = {
         return {
             LIST: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

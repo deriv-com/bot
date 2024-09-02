@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_constant = {
     init() {
@@ -29,6 +30,9 @@ window.Blockly.Blocks.math_constant = {
             tooltip: localize('This block gives you the selected constant values.'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

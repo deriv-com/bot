@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.total_profit = {
     init() {
@@ -25,7 +26,7 @@ window.Blockly.Blocks.total_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -39,6 +40,9 @@ window.Blockly.Blocks.total_profit = {
                 this.unplug(true);
             }
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

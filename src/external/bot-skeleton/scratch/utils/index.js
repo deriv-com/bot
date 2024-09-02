@@ -1,5 +1,6 @@
-/* eslint-disable no-unsafe-optional-chaining */
-import { localize } from '@deriv-com/translations';
+import { botNotification } from '@/components/bot-notification/bot-notification';
+import { notification_message } from '@/components/bot-notification/bot-notification-utils';
+import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../constants/config';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
@@ -10,11 +11,35 @@ import BlockConversion from '../backward-compatibility';
 import DBotStore from '../dbot-store';
 import { saveAs } from '../shared';
 
+export const inject_workspace_options = {
+    media: 'assets/images/',
+    zoom: {
+        wheel: true,
+        startScale: config.workspaces.previewWorkspaceStartScale,
+    },
+    readOnly: true,
+    scrollbars: true,
+    renderer: 'zelos',
+};
+
+export const updateXmlValues = blockly_options => {
+    if (!window.Blockly) return;
+    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    window.Blockly.xmlValues = {
+        ...window.Blockly.xmlValues,
+        strategy_id,
+        convertedDom,
+        file_name,
+        from,
+    };
+};
+
 export const getSelectedTradeType = (workspace = window.Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPE_LIST');
-    const mandatory_tradeoptions_block =
-        selected_trade_type === 'multiplier' ? 'trade_definition_multiplier' : 'trade_definition_tradeoptions';
+    let mandatory_tradeoptions_block = 'trade_definition_tradeoptions';
+    if (selected_trade_type === 'multiplier') mandatory_tradeoptions_block = 'trade_definition_multiplier';
+    if (selected_trade_type === 'accumulator') mandatory_tradeoptions_block = 'trade_definition_accumulator';
     return mandatory_tradeoptions_block;
 };
 
@@ -100,7 +125,6 @@ export const cleanUpOnLoad = (blocks_to_clean, drop_event, workspace) => {
     workspace.cleanUp(cursor_x, cursor_y, blocks_to_clean);
 };
 
-// eslint-disable-next-line default-param-last
 export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     xmlDom.setAttribute('is_dbot', 'true');
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
@@ -109,7 +133,6 @@ export const save = (filename = '@deriv/bot', collection = false, xmlDom) => {
     saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
 };
 
-// eslint-disable-next-line no-promise-executor-return
 const delayExecution = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export const load = async ({
@@ -122,14 +145,21 @@ export const load = async ({
     showIncompatibleStrategyDialog,
 }) => {
     if (!DBotStore?.instance || !workspace) return;
-    const { setLoading } = DBotStore.instance;
+    const { setLoading, load_modal } = DBotStore.instance;
+    const { setOpenButtonDisabled, setLoadedLocalFile } = load_modal;
+
     setLoading(true);
     // Delay execution to allow fully previewing previous strategy if users quickly switch between strategies.
     await delayExecution(100);
     const showInvalidStrategyError = () => {
+        setLoadedLocalFile(null);
+        botNotification(notification_message.invalid_xml);
         setLoading(false);
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('ui.log.error', error_message);
+        return {
+            error: error_message,
+        };
     };
 
     // Check if XML can be parsed correctly.
@@ -178,7 +208,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {
@@ -211,6 +241,7 @@ export const load = async ({
         return showInvalidStrategyError();
     } finally {
         setLoading(false);
+        setOpenButtonDisabled(false);
     }
 };
 
@@ -228,19 +259,10 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
 };
 
 export const loadWorkspace = async (xml, event_group, workspace) => {
-    window.Blockly.WorkspaceSvg.prototype.asyncClear = function () {
-        const { setLoading } = DBotStore.instance;
-        setLoading(true);
-
-        return new Promise(resolve => {
-            this.clear();
-            setLoading(false);
-            resolve();
-        });
-    };
     window.Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
     window.Blockly.Xml.domToWorkspace(xml, workspace);
+    workspace.cleanUp();
 };
 
 const loadBlocksFromHeader = (xml_string, block) => {
@@ -251,7 +273,6 @@ const loadBlocksFromHeader = (xml_string, block) => {
         try {
             xml = window.Blockly.utils.xml.textToDom(xml_string);
         } catch (error) {
-            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('Unrecognized file format'));
         }
 
@@ -289,7 +310,6 @@ export const loadBlocksFromRemote = block => {
         const has_possible_missing_index_xml = url.slice(-1)[0] === '/';
 
         if (!url.match(url_pattern) && !has_possible_missing_index_xml) {
-            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('Target must be an XML file'));
         }
 
@@ -299,7 +319,6 @@ export const loadBlocksFromRemote = block => {
 
         if (block.isKnownUrl(url)) {
             block.setDisabled(true);
-            // eslint-disable-next-line no-promise-executor-return
             return reject(localize('This URL is already loaded'));
         }
 
@@ -450,7 +469,7 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
-    const is_RTL = window.Blockly.derivWorkspace.RTL;
+    const is_RTL = workspace.RTL;
     if (is_RTL) {
         // For RTL scroll we need to adjust the scroll amount
         scroll_x = scroll_amount;
@@ -469,16 +488,16 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         */
 
         if (window.innerWidth < 768) {
-            workspace.scrollbar.set(0, scroll_y);
+            workspace?.scrollbar?.set(0, scroll_y);
             const calc_scroll =
-                window.Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().width -
-                window.Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().left +
+                workspace.svgBlockCanvas_?.getBoundingClientRect().width -
+                workspace.svgBlockCanvas_?.getBoundingClientRect().left +
                 60;
-            workspace.scrollbar.set(calc_scroll, scroll_y);
+            workspace?.scrollbar?.set(calc_scroll, scroll_y);
             return;
         }
     }
-    workspace.scrollbar.set(scroll_x, scroll_y);
+    workspace?.scrollbar?.set(scroll_x, scroll_y);
 };
 
 /**
@@ -505,11 +524,11 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  */
 export const runIrreversibleEvents = callbackFn => {
     const { recordUndo } = window.Blockly.Events;
-    window.Blockly.Events.recordUndo = false;
+    window.Blockly.Events.setRecordUndo(false);
 
     callbackFn();
 
-    window.Blockly.Events.recordUndo = recordUndo;
+    window.Blockly.Events.setRecordUndo(recordUndo ?? true);
 };
 
 /**
@@ -574,7 +593,7 @@ export const removeExtraInput = instance => {
     if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
         collapsed_input.icon_added = true;
         const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
-        const field_expand_icon = new window.Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
+        const field_expand_icon = new window.Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
             instance.setCollapsed(false)
         );
         const function_name = instance.getFieldValue('NAME');
@@ -600,5 +619,67 @@ export const removeExtraInput = instance => {
             tmp_array[value_input]?.forceRerender();
         };
         remove_last_input(collapsed_input);
+    }
+};
+
+const downloadBlock = () => {
+    const xml_block = window.Blockly?.getSelected()?.svgGroup_;
+    const xml_text = window.Blockly.Xml.domToPrettyText(xml_block);
+    saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
+};
+
+const download_option = {
+    text: localize('Download Block'),
+    enabled: true,
+    callback: downloadBlock,
+};
+
+export const excludeOptionFromContextMenu = (menu, exclude_items) => {
+    if (exclude_items && exclude_items.length > 0) {
+        for (let i = menu.length - 1; i >= 0; i--) {
+            const menu_text = localize(menu[i].text);
+            if (exclude_items.includes(menu_text)) {
+                menu.splice(i, 1);
+            } else {
+                menu[i].text = menu_text;
+            }
+        }
+    }
+};
+
+const common_included_items = [download_option];
+
+const all_context_menu_options = [
+    localize('Duplicate'),
+    localize('Add Comment'),
+    localize('Remove Comment'),
+    localize('Collapse Block'),
+    localize('Expand Block'),
+    localize('Disable Block'),
+    localize('Enable Block'),
+    localize('Download Block'),
+];
+
+// Need for later
+// const deleteLocaleText = localize("Delete");
+// const blocksLocaleText = localize("Blocks");
+// const deleteBlocksLocaleText = localize("Delete Blocks");
+// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+
+export const modifyContextMenu = (menu, add_new_items = []) => {
+    const include_items = [...common_included_items, ...add_new_items];
+    include_items.forEach(item => {
+        menu.push({
+            text: item.text,
+            enabled: item.enabled,
+            callback: item.callback,
+        });
+    });
+
+    for (let i = 0; i < menu.length; i++) {
+        const localized_text = localize(menu[i].text);
+        if (all_context_menu_options.includes(localized_text)) {
+            menu[i].text = localized_text;
+        }
     }
 };

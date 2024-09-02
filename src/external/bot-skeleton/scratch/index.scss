@@ -12,19 +12,48 @@ $colour_toolboxHover: $black;
 $colour_toolboxSelected: $black;
 
 .theme--dark {
+    .blocklyDropDownDiv {
+        background-color: rgb(194 194 194) !important;
+        border-color: rgb(194 194 194) !important;
+    }
+
     .zelos-renderer.zelos_renderer-theme .blocklyMainBackground,
     .load-strategy__container .blocklyMainBackground,
     .zelos-renderer.zelos_renderer-theme rect.blocklyFieldRect.blocklyDropdownRect,
     .zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
     .zelos-renderer.zelos_renderer-theme .blocklyEditableText > rect:not(.blocklyDropdownRect),
-    .zelos-renderer.zelos_renderer-theme .blocklyPath[fill='#fff'] {
+    .blocklyPath[fill='#fff'],
+    .blocklyVariableGet .blocklyPath,
+    .blocklyOutlinePath {
         fill: $black !important;
+    }
+
+    .flyout rect.blocklyFieldRect.blocklyDropdownRect,
+    .flyout .zelos-renderer.classic-theme .blocklyMainBackground {
+        fill: #151816 !important;
     }
 
     .zelos-renderer.zelos_renderer-theme .blocklyEditableText > image,
     .zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > image {
         filter: unset;
     }
+
+    .flyout .zelos-renderer.classic-theme .blocklyEditableText > image {
+        filter: invert(0);
+    }
+
+    .zelos-renderer.classic-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
+    .zelos-renderer.classic-theme .blocklyEditableText > rect:not(.blocklyDropdownRect) {
+        fill: unset;
+    }
+}
+
+.flyout .injectionDiv {
+    height: 100%;
+}
+
+.flyout .zelos-renderer.classic-theme .blocklyMainBackground {
+    filter: unset;
 }
 
 .zelos-renderer.zelos_renderer-theme,
@@ -315,6 +344,10 @@ $colour_toolboxSelected: $black;
         cursor: grab;
         cursor: grab;
         cursor: grab;
+
+        image[alt='Collapsed'] {
+            transform: translate(7px);
+        }
     }
 
     .blocklyDragging {
@@ -629,7 +662,7 @@ drag a block and selected text moves instead.
 
     .blocklyMainBackground {
         stroke-width: 0;
-        fill: #fff !important;
+        fill: #fff;
     }
 
     .blocklyMutatorBackground {
@@ -732,6 +765,7 @@ drag a block and selected text moves instead.
     .blocklyContextMenu {
         border-radius: 4px;
         max-height: 100%;
+        min-width: 20rem;
     }
 
     .blocklyDropdownMenu {
@@ -752,7 +786,8 @@ drag a block and selected text moves instead.
     .blocklyToolboxDiv {
         background-color: $colour_toolbox;
         color: $colour_toolboxText;
-        overflow: visible auto;
+        overflow-x: visible;
+        overflow-y: auto;
         position: absolute;
         z-index: 40; /* so blocks go over toolbox when dragging */
         -webkit-tap-highlight-color: transparent; /* issue #1345 */
@@ -928,7 +963,8 @@ drag a block and selected text moves instead.
         outline: none;
         padding: 4px 0;
         position: absolute;
-        overflow: hidden auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         z-index: 20000;
     }
 
@@ -987,6 +1023,17 @@ drag a block and selected text moves instead.
 
     .blocklyMenuItemContent.goog-menuitem-content {
         color: #000;
+    }
+
+    .blocklyDropDownContent .blocklyMenuItemContent.goog-menuitem-content {
+        font-weight: bold;
+    }
+
+    .blocklyCheckbox {
+        width: 16px;
+        height: 16px;
+        y: 7;
+        x: 2;
     }
 
     .header__title {
@@ -1171,9 +1218,9 @@ drag a block and selected text moves instead.
     }
 
     rect.blocklyFieldRect.blocklyDropdownRect {
-        fill: #fff !important;
+        fill: #fff;
         rx: 16px;
-        ry: 32;
+        ry: 16px;
     }
 
     .blocklyTextRootBlockHeader {
@@ -1182,4 +1229,17 @@ drag a block and selected text moves instead.
         fill: #fff;
         font-size: 1.9rem;
     }
+
+    .blocklyTextTickAnalysis {
+        fill: #fff;
+        font-size: 1.6rem;
+    }
+}
+
+.blocklyNonEditableText:has(> .blocklyCheckbox) .blocklyFieldRect,
+.blocklyEditableText:has(> .blocklyCheckbox) .blocklyFieldRect {
+    width: 16px;
+    height: 16px;
+    y: 7;
+    x: 2;
 }

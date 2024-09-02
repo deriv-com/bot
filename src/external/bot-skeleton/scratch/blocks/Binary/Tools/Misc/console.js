@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.console = {
     init() {
@@ -49,6 +49,9 @@ window.Blockly.Blocks.console = {
         return {
             MESSAGE: emptyTextValidator,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_getSubstring = {
     init() {
@@ -17,6 +17,9 @@ window.Blockly.Blocks.text_getSubstring = {
         this.jsonInit(this.definition());
         this.updateAt(1, true);
         this.updateAt(2, true);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     definition() {
         return {
@@ -128,8 +131,7 @@ window.Blockly.Blocks.text_getSubstring = {
         }
 
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
     },
     getRequiredValueInputs() {
         const hasInput = input_name => this.getInput(input_name)?.type === window.Blockly.INPUT_VALUE;

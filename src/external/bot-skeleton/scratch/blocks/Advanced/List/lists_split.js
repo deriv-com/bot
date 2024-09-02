@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_split = {
     init() {
@@ -68,8 +69,10 @@ window.Blockly.Blocks.lists_split = {
         }
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        //this.render(false);
+        this.renderEfficiently();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

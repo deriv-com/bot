@@ -1,10 +1,10 @@
+import { localize } from '@/utils/tmp/dummy';
+
 /**
  * Construct the blocks required by the flyout for the procedure category.
  * @param {!window.Blockly.Workspace} workspace The workspace containing procedures.
  * @return {!Array.<!Element>} Array of XML block elements.
  */
-
-import { localize } from '@deriv-com/translations';
 
 window.Blockly.Procedures.flyoutCategory = function (workspace) {
     let xmlList = [];

@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { removeExtraInput } from '../../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 
 window.Blockly.Blocks.after_purchase = {
@@ -63,6 +63,9 @@ window.Blockly.Blocks.after_purchase = {
         ) {
             removeExtraInput(this);
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

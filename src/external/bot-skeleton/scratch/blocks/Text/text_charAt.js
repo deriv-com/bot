@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_charAt = {
     init() {
@@ -17,6 +17,9 @@ window.Blockly.Blocks.text_charAt = {
         });
 
         this.updateAt(true);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     definition() {
         return {
@@ -73,8 +76,7 @@ window.Blockly.Blocks.text_charAt = {
 
         this.isAt = isAt;
         this.initSvg();
-        //commented this line breaks the backward compatibility
-        //this.render(false);
+        this.renderEfficiently();
     },
     getRequiredValueInputs() {
         return {

@@ -1,4 +1,5 @@
-import { localize } from '@deriv-com/translations';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_random_float = {
     init() {
@@ -21,6 +22,9 @@ window.Blockly.Blocks.math_random_float = {
             display_name: localize('Random fraction number'),
             description: localize('This block gives you a random fraction between 0.0 to 1.0.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

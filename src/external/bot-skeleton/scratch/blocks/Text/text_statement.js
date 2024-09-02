@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { runIrreversibleEvents } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu, runIrreversibleEvents } from '../../utils';
 import { minusIconDark } from '../images';
 
 window.Blockly.Blocks.text_statement = {
@@ -27,6 +27,9 @@ window.Blockly.Blocks.text_statement = {
             category: window.Blockly.Categories.Text,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Text Statement'),
@@ -34,7 +37,7 @@ window.Blockly.Blocks.text_statement = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 

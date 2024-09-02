@@ -1,5 +1,6 @@
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.balance = {
     init() {
@@ -12,8 +13,6 @@ window.Blockly.Blocks.balance = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            // kept this commented to fix backward compatibility issue
-            //this.render(false);
             return undefined;
         });
     },
@@ -43,6 +42,9 @@ window.Blockly.Blocks.balance = {
                 'This block gives you the balance of your account either as a number or a string of text.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

@@ -1,5 +1,5 @@
-import { localize } from '@deriv-com/translations';
-import { emptyTextValidator } from '../../utils';
+import { localize } from '@/utils/tmp/dummy';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_prompt_ext = {
     init() {
@@ -12,10 +12,12 @@ window.Blockly.Blocks.text_prompt_ext = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            //commented this line breaks the backward compatibility
-            //this.render(false);
+            this.renderEfficiently();
             return undefined;
         });
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     definition() {
         return {

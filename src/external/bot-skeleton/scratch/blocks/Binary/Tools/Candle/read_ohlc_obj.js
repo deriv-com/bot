@@ -1,5 +1,6 @@
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.read_ohlc_obj = {
     init() {
@@ -41,6 +42,9 @@ window.Blockly.Blocks.read_ohlc_obj = {
         return {
             OHLCOBJ: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 
