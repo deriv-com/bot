@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import Autocomplete from '@/components/shared_ui/autocomplete';
+import { TItem } from '@/components/shared_ui/dropdown-list';
+import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { Text } from '@deriv-com/ui';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -31,7 +31,7 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useStore();
     const {
-        ui: { is_mobile, is_desktop },
+        ui: { is_desktop },
     } = useStore();
     const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
@@ -85,7 +85,7 @@ const SymbolSelect: React.FC = () => {
     };
 
     const handleItemSelection = (item: TItem) => {
-        if (item) {
+        if (item?.value) {
             const { value } = item as TSymbol;
             setFieldValue('symbol', value);
             setValue('symbol', value);
@@ -115,9 +115,9 @@ const SymbolSelect: React.FC = () => {
                     <>
                         <Autocomplete
                             {...rest_field}
-                            readOnly={is_mobile}
+                            readOnly={!is_desktop}
                             inputMode='none'
-                            data-testid='qs_autocomplete_symbol'
+                            data-testid='dt_qs_symbol'
                             autoComplete='off'
                             className='qs__autocomplete'
                             value={input_value.text}

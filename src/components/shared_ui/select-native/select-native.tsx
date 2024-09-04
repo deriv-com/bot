@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@/utils/tmp/dummy';
 import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
 import Field from '../field/field';
+import Text from '../text';
 
 type TSelectNative = {
     className?: string;

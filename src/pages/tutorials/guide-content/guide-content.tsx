@@ -5,9 +5,8 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { removeKeyValue } from '@/utils/settings';
-import { localize } from '@/utils/tmp/dummy';
 import { LabelPairedPlayCaptionFillIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 
 type TGuideList = {
     content?: string;
