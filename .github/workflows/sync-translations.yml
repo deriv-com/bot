@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     steps:
-      - name: Sync accounts translations
+      - name: Sync Bots translations
         uses: deriv-com/translations/.github/actions/extract_and_sync_translations@master
         with:
           PROJECT_NAME: ${{ vars.R2_PROJECT_NAME }}
