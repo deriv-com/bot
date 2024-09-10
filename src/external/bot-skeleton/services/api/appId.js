@@ -40,7 +40,7 @@ export const V2GetActiveClientId = () => {
 
 export const getToken = () => {
     const active_loginid = getLoginId();
-    const client_accounts = JSON.parse(localStorage.getItem('client.accounts')) || undefined;
+    const client_accounts = JSON.parse(localStorage.getItem('accountsList')) || undefined;
     const active_account = (client_accounts && client_accounts[active_loginid]) || {};
     return {
         token: active_account?.token || undefined,

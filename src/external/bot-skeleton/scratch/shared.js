@@ -1,34 +1,9 @@
 import filesaver from 'file-saver';
-import { CryptoConfig, getPropertyValue } from '@/components/shared';
 import { config } from '../constants/config';
 
 export const saveAs = ({ data, filename, type }) => {
     const blob = new Blob([data], { type });
     filesaver.saveAs(blob, filename);
-};
-
-/* 
-    TODO: need to add currencies_config, calcDecimalPlaces after account switcher is implemented 
-    add a const and dummy config here to fix the below error
-*/
-const currencies_config = [
-    {
-        USD: 'USD',
-        fractional_digits: 2,
-    },
-];
-const calcDecimalPlaces = currency => currency;
-
-export const getDecimalPlaces = (currency = '') =>
-    // need to check currencies_config[currency] exists instead of || in case of 0 value
-    currencies_config[currency]
-        ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])
-        : calcDecimalPlaces(currency);
-
-export const getCurrencyDisplayCode = (currency = '') => {
-    // eslint-disable-next-line
-    if (currency !== 'eUSDT' && currency !== 'tUSDT') currency = currency.toUpperCase();
-    return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
 };
 
 export const getContractTypeOptions = (contract_type, trade_type) => {

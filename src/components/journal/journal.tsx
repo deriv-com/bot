@@ -2,10 +2,10 @@ import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { DataList } from '@/utils/tmp/dummy';
 import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import DataList from '../data-list';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 

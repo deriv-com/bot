@@ -58,10 +58,6 @@ export const IconTradeTypes = ({ children }) => {
     // Simulate scrollbars
     return <div className='dummy-IconTradeTypes'>{children}</div>;
 };
-export const DataList = ({ children }) => {
-    // Simulate scrollbars
-    return <div className='dummy-DataList'>{children}</div>;
-};
 
 export const getLanguage = () => 'en';
 

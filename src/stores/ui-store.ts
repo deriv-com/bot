@@ -7,7 +7,6 @@ export default class UiStore {
     is_chart_layout_default = true;
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
     url_hashed_values = '';
-    setPromptHandler = () => {};
 
     constructor() {
         makeObservable(this, {
@@ -19,6 +18,14 @@ export default class UiStore {
             setDevice: action,
         });
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setPromptHandler = (...args: unknown[]) => {
+        // TODO: implement this
+    };
+    setAccountSwitcherDisabledMessage = () => {
+        // TODO: implement this
+    };
 
     setDarkMode = (value: boolean) => {
         this.is_dark_mode_on = value;
