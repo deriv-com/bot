@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
-import RootStore from '@/Stores/root-store';
+import RootStore from '@/stores/root-store';
 import { TWebSocket } from '@/Types';
 import { Loader } from '@deriv-com/ui';
 import Bot from '../external/bot-skeleton/scratch/dbot';
