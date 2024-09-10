@@ -11,7 +11,7 @@ type TSummary = {
 const Summary = observer(({ is_drawer_open }: TSummary) => {
     const { ui } = useStore();
     const { dashboard, summary_card } = useStore();
-    const { is_contract_loading, contract_info } = summary_card;
+    const { is_contract_loading, contract_info, is_bot_running } = summary_card;
     const { active_tour } = dashboard;
     const { is_mobile } = ui;
     return (
@@ -30,7 +30,11 @@ const Summary = observer(({ is_drawer_open }: TSummary) => {
                         (is_mobile && is_contract_loading) || (is_mobile && !is_contract_loading && contract_info),
                 })}
             >
-                <SummaryCard is_contract_loading={is_contract_loading} contract_info={contract_info} />
+                <SummaryCard
+                    is_contract_loading={is_contract_loading}
+                    contract_info={contract_info}
+                    is_bot_running={is_bot_running}
+                />
             </ThemedScrollbars>
         </div>
     );

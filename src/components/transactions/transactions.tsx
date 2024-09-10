@@ -8,10 +8,10 @@ import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
 import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
-import { DataList } from '@/utils/tmp/dummy';
 import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
+import DataList from '../data-list';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 import Transaction from './transaction';
 

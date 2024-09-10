@@ -1,16 +1,18 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
+import RootStore from '@/Stores/root-store';
+import { TWebSocket } from '@/Types';
 import { Loader } from '@deriv-com/ui';
 import Bot from '../external/bot-skeleton/scratch/dbot';
-import RootStore from '../stores';
 
 const StoreContext = createContext<null | RootStore>(null);
 
 type TStoreProvider = {
     children: React.ReactNode;
+    mockStore?: RootStore;
 };
 
-const StoreProvider: React.FC<TStoreProvider> = ({ children }) => {
+const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
     const [store, setStore] = useState<RootStore | null>(null);
     const initializingStore = useRef(false);
 
@@ -24,9 +26,14 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children }) => {
 
         if (!store && !initializingStore.current) {
             initializingStore.current = true;
-            initializeStore();
+            // If the store is mocked for testing purposes, then return the mocked value.
+            if (mockStore) {
+                setStore(mockStore);
+            } else {
+                initializeStore();
+            }
         }
-    }, [store]);
+    }, [store, mockStore]);
 
     if (!store) {
         return <Loader />;
@@ -46,3 +53,5 @@ const useStore = () => {
 };
 
 export { StoreProvider, useStore };
+
+export const mockStore = (ws: TWebSocket) => new RootStore(Bot, ws);

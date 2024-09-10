@@ -1,8 +1,8 @@
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
-import { getCurrencyDisplayCode, getDecimalPlaces } from '../../../shared';
 import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_accumulator = {

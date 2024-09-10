@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from 'react';
+import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
 import {
     BrandDerivLogoCoralIcon,
@@ -8,13 +9,16 @@ import {
     LegacyChartsIcon,
     LegacyHelpCentreIcon,
     LegacyHomeOldIcon,
+    LegacyLiveChatOutlineIcon,
     LegacyLogout1pxIcon,
     LegacyProfileSmIcon,
     LegacyResponsibleTradingIcon,
+    LegacyTheme1pxIcon,
     LegacyWhatsappIcon,
 } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
+import { ToggleSwitch } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 
 export type TSubmenuSection = 'accountSettings' | 'cashier';
@@ -34,6 +38,7 @@ type TMenuConfig = {
 export const MobileMenuConfig = () => {
     const { localize } = useTranslations();
     const { logout } = useAuthData();
+    const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
 
     const menuConfig: TMenuConfig[] = [
         [
@@ -67,13 +72,12 @@ export const MobileMenuConfig = () => {
                 label: localize('Cashier'),
                 LeftComponent: LegacyCashierIcon,
             },
-            // TODO add theme logic
-            // {
-            //     as: 'button',
-            //     label: localize('Dark theme'),
-            //     LeftComponent: LegacyTheme1pxIcon,
-            //     RightComponent: <ToggleSwitch />,
-            // },
+            {
+                as: 'button',
+                label: localize('Dark theme'),
+                LeftComponent: LegacyTheme1pxIcon,
+                RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
+            },
         ],
         [
             {
@@ -101,12 +105,11 @@ export const MobileMenuConfig = () => {
                 LeftComponent: LegacyWhatsappIcon,
                 target: '_blank',
             },
-            // TODO add livechat logic
-            // {
-            //     as: 'button',
-            //     label: localize('Live chat'),
-            //     LeftComponent: LegacyLiveChatOutlineIcon,
-            // },
+            {
+                as: 'button',
+                label: localize('Live chat'),
+                LeftComponent: LegacyLiveChatOutlineIcon,
+            },
         ],
         [
             {

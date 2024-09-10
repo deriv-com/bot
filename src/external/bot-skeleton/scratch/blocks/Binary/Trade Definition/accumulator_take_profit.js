@@ -1,6 +1,6 @@
+import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
-import { getCurrencyDisplayCode } from '../../../shared';
 import { modifyContextMenu } from '../../../utils';
 
 const description = localize(

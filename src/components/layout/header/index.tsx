@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useActiveAccount } from '@/hooks/api/account';
+import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
@@ -17,26 +17,14 @@ import './header.scss';
 
 const AppHeader = () => {
     const { isDesktop } = useDevice();
-    const { activeLoginid, logout, isAuthorized } = useAuthData();
+    const { activeLoginid, isAuthorizing } = useAuthData();
     const { data: activeAccount } = useActiveAccount();
+
     const { localize } = useTranslations();
     const { getOauthURL } = URLUtils;
 
     const renderAccountSection = () => {
-        if (!isAuthorized) {
-            return (
-                <Button
-                    size='sm'
-                    variant='outlined'
-                    color='primary-light'
-                    onClick={() => {
-                        window.location.href = getOauthURL();
-                    }}
-                >
-                    {localize('Login')}
-                </Button>
-            );
-        } else if (isAuthorized && !activeAccount) {
+        if (isAuthorizing) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
@@ -53,13 +41,32 @@ const AppHeader = () => {
                             <StandaloneCircleUserRegularIcon className='app-header__profile_icon' />
                         </Tooltip>
                     )}
-                    <AccountSwitcher account={activeAccount!} />
-                    <Button onClick={logout} size='md'>
+                    <AccountSwitcher activeAccount={activeAccount} />
+                    <Button
+                        onClick={() => {
+                            window.location.assign('https://app.deriv.com/cashier/deposit');
+                        }}
+                        size='md'
+                        className='deposit-button'
+                    >
                         <Text size='sm' weight='bold'>
-                            {localize('Logout')}
+                            {localize('Deposit')}
                         </Text>
                     </Button>
                 </>
+            );
+        } else {
+            return (
+                <Button
+                    size='sm'
+                    variant='outlined'
+                    color='primary-light'
+                    onClick={() => {
+                        window.location.assign(getOauthURL());
+                    }}
+                >
+                    {localize('Login')}
+                </Button>
             );
         }
     };
