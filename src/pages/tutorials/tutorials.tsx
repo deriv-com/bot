@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
 import FAQContent from './faq-content';
@@ -19,8 +20,7 @@ export type TTutorialsTabItem = {
 };
 
 const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { dashboard } = useStore();
     const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number | null>(0);
 
@@ -82,7 +82,7 @@ const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
         },
     ];
 
-    return is_desktop ? (
+    return isDesktop ? (
         <TutorialsTabDesktop tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />
     ) : (
         <TutorialsTabMobile tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />

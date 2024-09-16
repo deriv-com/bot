@@ -3,15 +3,14 @@ import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
     const { run_panel, toolbar, quick_strategy } = useStore();
-    const {
-        ui: { is_mobile },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { is_dialog_open, closeResetDialog, onResetOkButtonClick: onOkButtonClick } = toolbar;
     const { is_running } = run_panel;
     const { setFormVisibility } = quick_strategy;
@@ -24,9 +23,9 @@ const Toolbar = observer(() => {
     };
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dt_dashboard_toolbar'>
                 <div className='toolbar__section'>
-                    {is_mobile && (
+                    {!isDesktop && (
                         <ToolbarButton
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
@@ -35,10 +34,10 @@ const Toolbar = observer(() => {
                             button_text={localize('Quick strategy')}
                         />
                     )}
-                    {!is_mobile && <WorkspaceGroup />}
+                    {isDesktop && <WorkspaceGroup />}
                 </div>
             </div>
-            {is_mobile && <WorkspaceGroup />}
+            {!isDesktop && <WorkspaceGroup />}
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}
@@ -58,7 +57,7 @@ const Toolbar = observer(() => {
                             <div
                                 key={0}
                                 className='toolbar__dialog-text--second'
-                                data-testid='toolbar__dialog-text--second'
+                                data-testid='dt_toolbar_dialog_text_second'
                             />,
                         ]}
                     />

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import Text from '@/components/shared_ui/text';
 import { ENDPOINT } from '@/utils/constants';
-import { Text } from '@deriv-com/ui';
 import { LocalStorageConstants, LocalStorageUtils } from '@deriv-com/utils';
 
 const Endpoint = () => {

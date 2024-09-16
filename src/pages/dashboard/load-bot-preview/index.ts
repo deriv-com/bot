@@ -1,4 +1,4 @@
 import LoadBotPreview from './local';
-import './recent-workspace.scss';
+import './index.scss';
 
 export default LoadBotPreview;

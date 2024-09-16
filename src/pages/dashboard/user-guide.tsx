@@ -1,8 +1,8 @@
 import React from 'react';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { StandaloneMapBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
 
 type TUserGuide = {
     is_mobile?: boolean;
@@ -23,7 +23,7 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
             >
                 <StandaloneMapBoldIcon className='user-guide__icon' height='26px' width='26px' />
                 {!is_mobile && (
-                    <Text size='sm' className='user-guide__label'>
+                    <Text size='xs' className='user-guide__label'>
                         <Localize i18n_default_text='User Guide' />
                     </Text>
                 )}

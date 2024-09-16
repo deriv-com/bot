@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import Text from '@/components/shared_ui/text';
 import { localize } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
 
 type TIconRadio = {
     google_drive_connected?: boolean;
@@ -29,9 +29,9 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIcon
                 <Text
                     as='p'
                     align='center'
-                    size='xs'
+                    size='xxs'
                     color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
-                    LineHeight='sm'
+                    lineHeight='s'
                     className='save-type__radio-text'
                 >
                     {localize(text)}

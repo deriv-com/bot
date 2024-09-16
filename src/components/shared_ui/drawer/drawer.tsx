@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isTabletDrawer } from '@/components/shared';
 import { Icon } from '@/utils/tmp/dummy';
+import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {
     anchor?: string;
@@ -38,6 +38,7 @@ const Drawer = ({
     ...props
 }: React.PropsWithChildren<TDrawer>) => {
     const [is_open, setIsOpen] = React.useState(props.is_open);
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         setIsOpen(props.is_open);
@@ -50,21 +51,17 @@ const Drawer = ({
         }
     };
 
-    // Note: Cannot use isMobile from @deriv/shared due to dimension change error
-    // TODO: Maybe we can fix isMobile in @deriv/shared
-    const is_mobile = isTabletDrawer();
-
     return (
         <div
             data-testid='drawer'
             className={classNames('dc-drawer', className, {
-                [`dc-drawer--${anchor}`]: !is_mobile,
+                [`dc-drawer--${anchor}`]: isDesktop,
                 'dc-drawer--open': is_open,
             })}
             style={{
                 zIndex,
                 transform:
-                    is_open && !is_mobile
+                    is_open && isDesktop
                         ? anchor === 'left'
                             ? `translateX(calc(${width}px - 16px))`
                             : `translateX(calc(-${width}px + 16px))`
@@ -77,17 +74,17 @@ const Drawer = ({
                 })}
                 onClick={toggleDrawer}
             >
-                {is_mobile ? (
-                    <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
-                ) : (
+                {isDesktop ? (
                     <IconDrawer
                         className={classNames('dc-drawer__toggle-icon', {
-                            [`dc-drawer__toggle-icon--${anchor}`]: !is_mobile,
+                            [`dc-drawer__toggle-icon--${anchor}`]: isDesktop,
                         })}
                     />
+                ) : (
+                    <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
                 )}
             </div>
-            <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: !is_mobile })}>
+            <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: isDesktop })}>
                 {header && <div className='dc-drawer__header'>{header}</div>}
                 <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>
                 {footer && <div className='dc-drawer__footer'>{footer}</div>}

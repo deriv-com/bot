@@ -7,6 +7,7 @@ import { TItem } from '@/components/shared_ui/dropdown-list';
 import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
+import { useDevice } from '@deriv-com/ui';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 
 type TContractTypes = {
@@ -15,8 +16,7 @@ type TContractTypes = {
 };
 
 const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy } = useStore();
     const { setValue } = quick_strategy;
@@ -53,7 +53,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
                     const selected_item = list?.find(item => item?.value === field?.value);
-                    if (!is_desktop) {
+                    if (!isDesktop) {
                         return (
                             <ul className='qs__form__field__list' data-testid='dt_qs_contract_types'>
                                 {list.map(item => {

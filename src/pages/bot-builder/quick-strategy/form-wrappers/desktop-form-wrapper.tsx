@@ -143,11 +143,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                         </ThemedScrollbars>
                         {activeTab === 'TRADE_PARAMETERS' && (
                             <div className='qs__body__content__footer'>
-                                <Button disabled={!isValid} onClick={onEdit}>
+                                <Button secondary disabled={!isValid} onClick={onEdit}>
                                     <Localize i18n_default_text='Edit' />
                                 </Button>
                                 <Button
                                     data-testid='qs-run-button'
+                                    primary
                                     onClick={e => {
                                         e.preventDefault();
                                         onRun();

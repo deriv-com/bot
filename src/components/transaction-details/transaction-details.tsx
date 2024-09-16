@@ -1,17 +1,14 @@
 import { Suspense } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStore } from '@/hooks/useStore';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import TransactionDetailsDesktop from './transaction-details-desktop';
 import TransactionDetailsMobile from './transaction-details-mobile';
 
 export const TransactionDetails = observer(() => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
+    const { isDesktop } = useDevice();
     return (
         <Suspense fallback={<Loader />}>
-            {is_mobile ? <TransactionDetailsMobile /> : <TransactionDetailsDesktop />}
+            {!isDesktop ? <TransactionDetailsMobile /> : <TransactionDetailsDesktop />}
         </Suspense>
     );
 });

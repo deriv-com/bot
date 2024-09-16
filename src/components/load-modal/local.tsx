@@ -1,22 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import Button from '@/components/shared_ui/button';
 import { useStore } from '@/hooks/useStore';
 import { DerivLightLocalDeviceIcon, DerivLightMyComputerIcon, LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 
 const LocalComponent = observer(() => {
-    const { ui } = useStore();
     const { dashboard, load_modal } = useStore();
     const { active_tab, active_tour } = dashboard;
     const { handleFileChange, loaded_local_file, setLoadedLocalFile } = load_modal;
 
     const file_input_ref = React.useRef<HTMLInputElement>(null);
     const [is_file_supported, setIsFileSupported] = React.useState(true);
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
     if (loaded_local_file && is_file_supported) {
         return (
@@ -43,7 +43,7 @@ const LocalComponent = observer(() => {
                         </div>
                     </div>
                 </div>
-                {is_mobile && (
+                {!isDesktop && (
                     <div className='load-strategy__local-footer'>
                         <LocalFooter />
                     </div>
@@ -70,7 +70,7 @@ const LocalComponent = observer(() => {
                         handleFileChange(e, false);
                     }}
                 >
-                    {is_mobile ? (
+                    {!isDesktop ? (
                         <DerivLightLocalDeviceIcon height='96px' width='96px' className='load-strategy__local-icon' />
                     ) : (
                         <React.Fragment>

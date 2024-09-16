@@ -34,15 +34,8 @@
         padding: 1.3rem 0.8rem;
         height: 6rem;
 
-        & .deriv-input__container {
-            width: 100%;
-        }
-
         &-field {
             margin-bottom: 0 !important;
-            border-radius: 8px;
-            height: 3.2rem;
-            padding: 0.6rem 0.8rem;
 
             input::-ms-clear {
                 display: none;
@@ -85,6 +78,7 @@
         overflow: hidden;
         user-select: none;
         z-index: 1;
+        visibility: visible;
         border: solid 1px var(--general-section-1);
     }
 

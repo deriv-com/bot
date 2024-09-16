@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { getRecentFileIcon } from '@/components/load-modal/recent-workspace';
-import { isDesktop } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
 import { useComponentVisibility } from '@/hooks/useComponentVisibility';
@@ -17,9 +17,9 @@ import {
     LegacyMenuDots1pxIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import { STRATEGY } from '../../../constants/dashboard';
-import './recent-workspace.scss';
+import './index.scss';
 
 export const CONTEXT_MENU = [
     {
@@ -46,8 +46,6 @@ type TRecentWorkspace = {
 };
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const { dashboard, load_modal, save_modal } = useStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
@@ -69,7 +67,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    const is_desktop = isDesktop();
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
@@ -104,7 +102,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handlePreviewList = () => {
         setPreviewedStrategyId(workspace.id);
         // Fires for mobile on clicking preview button
-        if (is_mobile) {
+        if (!isDesktop) {
             setPreviewOnDialog(true);
             const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
             waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {
@@ -155,14 +153,14 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     };
 
     const is_active_mobile = selected_strategy_id === workspace.id && is_dropdown_visible;
-    const text_size = 'xs';
+    const text_size = isDesktop ? 'xs' : 'xxs';
 
     return (
         <div
             className={classnames('bot-list__item', {
                 'bot-list__item--selected': previewed_strategy_id === workspace.id,
                 'bot-list__item--loaded': dashboard_strategies,
-                'bot-list__item--min': !!dashboard_strategies?.length && !is_desktop,
+                'bot-list__item--min': !!dashboard_strategies?.length && !isDesktop,
             })}
             key={workspace.id}
             ref={trigger_div_ref}
@@ -175,20 +173,20 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         >
             <div className='bot-list__item__label'>
                 <div className='text-wrapper' title={workspace.name}>
-                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                    <Text align='left' as='p' size={text_size} lineHeight='l'>
                         {workspace.name}
                     </Text>
                 </div>
             </div>
             <div className='bot-list__item__time-stamp'>
-                <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                <Text align='left' as='p' size={text_size} lineHeight='l'>
                     {timeSince(workspace.timestamp)}
                 </Text>
             </div>
             <div className='bot-list__item__load-type'>
                 {getRecentFileIcon(workspace.save_type, 'bot-list__item__load-type__icon--active')}
                 <div className='bot-list__item__load-type__icon--saved'>
-                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                    <Text align='left' as='p' size={text_size} lineHeight='l'>
                         {getSaveType(workspace.save_type)}
                     </Text>
                 </div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
 import Cards from './cards';
 import InfoPanel from './info-panel';
@@ -14,12 +15,11 @@ type TMobileIconGuide = {
 };
 
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
-    const { ui } = useStore();
     const { load_modal, dashboard } = useStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
     return (
         <React.Fragment>
@@ -30,26 +30,33 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
             >
                 <div className='tab__dashboard__content'>
                     <UserGuide
-                        is_mobile={is_mobile}
+                        is_mobile={!isDesktop}
                         handleTabChange={handleTabChange}
                         setActiveTabTutorial={setActiveTabTutorial}
                     />
                     <div className='quick-panel'>
                         <div
                             className={classNames('tab__dashboard__header', {
-                                'tab__dashboard__header--listed': !is_mobile && has_dashboard_strategies,
+                                'tab__dashboard__header--listed': isDesktop && has_dashboard_strategies,
                             })}
                         >
                             {!has_dashboard_strategies && (
-                                <Text className='title' as='h2' color='prominent' size='lg' weight='bold'>
+                                <Text
+                                    className='title'
+                                    as='h2'
+                                    color='prominent'
+                                    size={isDesktop ? 'sm' : 's'}
+                                    lineHeight='xxl'
+                                    weight='bold'
+                                >
                                     {localize('Load or build your bot')}
                                 </Text>
                             )}
                             <Text
                                 as='p'
                                 color='prominent'
-                                LineHeight='sm'
-                                size='md'
+                                lineHeight='s'
+                                size={isDesktop ? 's' : 'xxs'}
                                 className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                             >
                                 {localize(
@@ -57,12 +64,12 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 )}
                             </Text>
                         </div>
-                        <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
+                        <Cards has_dashboard_strategies={has_dashboard_strategies} />
                     </div>
                 </div>
             </div>
             <InfoPanel />
-            {active_tab === 0 && <OnboardTourHandler is_mobile={is_mobile} />}
+            {active_tab === 0 && <OnboardTourHandler is_mobile={!isDesktop} />}
         </React.Fragment>
     );
 });

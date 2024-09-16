@@ -5,14 +5,14 @@ import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
 
 const Toolbox = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { toolbox, flyout, quick_strategy } = useStore();
     const {
         hasSubCategory,
@@ -47,7 +47,7 @@ const Toolbox = observer(() => {
         rudderStackSendQsOpenEventFromBotBuilder();
     };
 
-    if (!is_mobile) {
+    if (isDesktop) {
         return (
             <div className='db-toolbox' data-testid='dashboard__toolbox'>
                 <ToolbarButton

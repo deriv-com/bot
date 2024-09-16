@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
 import Dialog from './shared_ui/dialog';
 
 const BotStopped = observer(() => {
@@ -23,7 +23,7 @@ const BotStopped = observer(() => {
             onConfirm={() => location.reload()}
         >
             <div className='dc-dialog__content__header'>
-                <Text data-testid='data-title' weight='bold' as='p' align='left' size='sm' color='prominent'>
+                <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
                     {localize("You're back online")}
                 </Text>
                 <div

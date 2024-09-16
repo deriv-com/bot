@@ -6,13 +6,14 @@ import StaticUrl from '@/components/shared_ui/static-url';
 import { useStore } from '@/hooks/useStore';
 import { DerivLightGoogleDriveIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 const GoogleDrive = observer(() => {
-    const { ui, google_drive, load_modal } = useStore();
+    const { google_drive, load_modal } = useStore();
     const { is_authorised } = google_drive;
     const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
-    const { is_mobile } = ui;
-    const icon_size = is_mobile ? '96px' : '128px';
+    const { isDesktop } = useDevice();
+    const icon_size = isDesktop ? '128' : '96';
     return (
         <div className='load-strategy__container' data-testid='dt_google_drive'>
             <div className='load-strategy__google-drive'>

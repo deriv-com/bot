@@ -4,6 +4,7 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import {
     getBotBuilderTourHeader,
     getTourDialogAction,
@@ -13,22 +14,21 @@ import {
 import { setTourSettings, tour_list } from '../utils';
 
 const TourStartDialog = observer(() => {
-    const { ui } = useStore();
     const { dashboard } = useStore();
     const { active_tab, is_tour_dialog_visible, setTourDialogVisibility, setActiveTour, setShowMobileTourDialog } =
         dashboard;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const tour_token = active_tab === 0 ? 'onboard_tour_token' : 'bot_builder_token';
     const toggleTour = () => {
-        if (is_mobile) setShowMobileTourDialog(false);
+        if (!isDesktop) setShowMobileTourDialog(false);
         setTourDialogVisibility(false);
         setActiveTour('');
         setTourSettings(new Date().getTime(), tour_token);
     };
 
     const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
-    const tour_dialog_info = getTourDialogInfo(is_mobile);
-    const tour_dialog_action = getTourDialogAction(is_mobile);
+    const tour_dialog_info = getTourDialogInfo(!isDesktop);
+    const tour_dialog_action = getTourDialogAction(!isDesktop);
 
     const getTourContent = () => {
         return (
@@ -58,14 +58,14 @@ const TourStartDialog = observer(() => {
 
     const onHandleConfirm = () => {
         setActiveTour(tour_list[active_tab]);
-        if (is_mobile) setShowMobileTourDialog(false);
+        if (!isDesktop) setShowMobileTourDialog(false);
         setTourDialogVisibility(false);
         setTourSettings(new Date().getTime(), tour_token);
     };
-    const header_text_size = is_mobile ? 'xs' : 's';
-    const content_text_size = is_mobile ? 'xxs' : 'xs';
+    const header_text_size = isDesktop ? 's' : 'xs';
+    const content_text_size = isDesktop ? 'xs' : 'xxs';
 
-    const tour_headers = active_tab === 0 ? onboarding_tour_header : getBotBuilderTourHeader(is_mobile);
+    const tour_headers = active_tab === 0 ? onboarding_tour_header : getBotBuilderTourHeader(!isDesktop);
     return (
         <div>
             <Dialog

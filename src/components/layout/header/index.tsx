@@ -1,9 +1,11 @@
 import clsx from 'clsx';
+import Button from '@/components/shared_ui/button';
+import Text from '@/components/shared_ui/text';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
-import { Button, Header, Text, useDevice, Wrapper } from '@deriv-com/ui';
+import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';

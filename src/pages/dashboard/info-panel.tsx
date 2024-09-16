@@ -1,14 +1,15 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
-import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Modal from '@/components/shared_ui/modal';
+import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Modal, Text } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
+    const { isDesktop } = useDevice();
     const { dashboard } = useStore();
     const {
         active_tour,
@@ -43,7 +44,7 @@ const InfoPanel = observer(() => {
                 const { label, content, link } = sidebar_item;
                 return (
                     <div key={`${label}-${content}`}>
-                        <Text color='prominent' lineHeight='6xl' size='lg' weight='bold' as='h1'>
+                        <Text color='prominent' lineHeight='xxl' size={isDesktop ? 'm' : 's'} weight='bold' as='h1'>
                             {label}
                         </Text>
                         {content.map(text => (
@@ -56,7 +57,7 @@ const InfoPanel = observer(() => {
                                 lineHeight='3xl'
                                 as='p'
                                 onClick={() => switchTab(link, label, text.faq_id)}
-                                size='sm'
+                                size={isDesktop ? 's' : 'xxs'}
                             >
                                 {text.data}
                             </Text>
@@ -67,30 +68,25 @@ const InfoPanel = observer(() => {
         </div>
     );
 
-    return (
-        <>
-            <DesktopWrapper>
-                {!active_tour && (
-                    <div
-                        className={classNames('tab__dashboard__info-panel', {
-                            'tab__dashboard__info-panel--active': is_info_panel_visible,
-                        })}
-                    >
-                        {renderInfo()}
-                    </div>
-                )}
-            </DesktopWrapper>
-            <MobileWrapper>
-                <Modal
-                    className='statistics__modal statistics__modal--mobile'
-                    is_open={is_info_panel_visible}
-                    toggleModal={handleClose}
-                    width={'440px'}
-                >
-                    <Modal.Body>{renderInfo()}</Modal.Body>
-                </Modal>
-            </MobileWrapper>
-        </>
+    return isDesktop ? (
+        !active_tour && (
+            <div
+                className={classNames('tab__dashboard__info-panel', {
+                    'tab__dashboard__info-panel--active': is_info_panel_visible,
+                })}
+            >
+                {renderInfo()}
+            </div>
+        )
+    ) : (
+        <Modal
+            className='statistics__modal statistics__modal--mobile'
+            is_open={is_info_panel_visible}
+            toggleModal={handleClose}
+            width={'440px'}
+        >
+            <Modal.Body>{renderInfo()}</Modal.Body>
+        </Modal>
     );
 });
 

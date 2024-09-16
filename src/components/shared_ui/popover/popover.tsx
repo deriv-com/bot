@@ -7,7 +7,8 @@ import {
     LabelPairedCircleInfoCaptionRegularIcon,
     LegacyWarningIcon,
 } from '@deriv/quill-icons';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
+import Text from '../text';
 import { TPopoverProps } from '../types';
 
 const Popover = ({
@@ -40,10 +41,10 @@ const Popover = ({
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
     const [is_bubble_visible, setIsBubbleVisible] = React.useState(false);
-    const { is_mobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
-    const should_toggle_on_target_tap = React.useMemo(() => is_mobile && is_open === undefined, [is_mobile, is_open]);
+    const should_toggle_on_target_tap = React.useMemo(() => !isDesktop && is_open === undefined, [isDesktop, is_open]);
 
     React.useEffect(() => {
         if (ref.current) {
@@ -201,7 +202,7 @@ const Popover = ({
                                             {message}
                                         </Text>
                                     )) || (
-                                        <Text LineHeight='md' size='xxs' className='dc-popover__bubble__text'>
+                                        <Text lineHeight='md' size='xxs' className='dc-popover__bubble__text'>
                                             {message}
                                         </Text>
                                     )}

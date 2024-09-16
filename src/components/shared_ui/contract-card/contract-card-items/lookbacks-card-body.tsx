@@ -87,7 +87,7 @@ const LookBacksCardBody = ({
                 </MobileWrapper>
             </div>
             <ContractCardItem className='dc-contract-card-item__payout-limit'>
-                <Text align='center' LineHeight='lg' size='xxs'>
+                <Text align='center' lineHeightt='l' size='xxs'>
                     {getPayoutLimit(contract_type, multiplier)}
                 </Text>
             </ContractCardItem>

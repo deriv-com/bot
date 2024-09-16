@@ -7,12 +7,13 @@ import Input from '@/components/shared_ui/input';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import Modal from '@/components/shared_ui/modal';
 import RadioGroup from '@/components/shared_ui/radio-group';
+import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 import { DerivLightGoogleDriveIcon, DerivLightLocalDeviceIcon, DerivLightMyComputerIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
@@ -59,7 +60,7 @@ const SaveModalForm = ({
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
-                            <Text size='xs' LineHeight='lg'>
+                            <Text size='xs' lineHeight='l'>
                                 {localize(
                                     'Enter your bot name, choose to save on your computer or Google Drive, and hit '
                                 )}
@@ -169,8 +170,9 @@ const SaveModal = observer(() => {
         validateBotName,
     } = save_modal;
     const { is_authorised } = google_drive;
-    const { is_onscreen_keyboard_active, setCurrentFocus, is_mobile } = ui;
+    const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
     const { active_tab } = dashboard;
+    const { isDesktop } = useDevice();
 
     useEffect(() => {
         if (active_tab === 1) {
@@ -178,29 +180,7 @@ const SaveModal = observer(() => {
         }
     }, [active_tab, dashboard_strategies, updateBotName]);
 
-    return is_mobile ? (
-        <MobileFullPageModal
-            is_modal_open={is_save_modal_open}
-            className='save-modal__wrapper'
-            header={localize('Save strategy')}
-            onClickClose={toggleSaveModal}
-            height_offset='80px'
-            page_overlay
-        >
-            <SaveModalForm
-                bot_name={bot_name}
-                button_status={button_status}
-                is_authorised={is_authorised}
-                onConfirmSave={onConfirmSave}
-                onDriveConnect={onDriveConnect}
-                validateBotName={validateBotName}
-                toggleSaveModal={toggleSaveModal}
-                is_mobile={is_mobile}
-                is_onscreen_keyboard_active={is_onscreen_keyboard_active}
-                setCurrentFocus={setCurrentFocus}
-            />
-        </MobileFullPageModal>
-    ) : (
+    return isDesktop ? (
         <Modal
             title={localize('Save Strategy')}
             className='modal--save'
@@ -220,6 +200,28 @@ const SaveModal = observer(() => {
                 setCurrentFocus={setCurrentFocus}
             />
         </Modal>
+    ) : (
+        <MobileFullPageModal
+            is_modal_open={is_save_modal_open}
+            className='save-modal__wrapper'
+            header={localize('Save strategy')}
+            onClickClose={toggleSaveModal}
+            height_offset='80px'
+            page_overlay
+        >
+            <SaveModalForm
+                bot_name={bot_name}
+                button_status={button_status}
+                is_authorised={is_authorised}
+                onConfirmSave={onConfirmSave}
+                onDriveConnect={onDriveConnect}
+                validateBotName={validateBotName}
+                toggleSaveModal={toggleSaveModal}
+                is_mobile={!isDesktop}
+                is_onscreen_keyboard_active={is_onscreen_keyboard_active}
+                setCurrentFocus={setCurrentFocus}
+            />
+        </MobileFullPageModal>
     );
 });
 

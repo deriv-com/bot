@@ -1,9 +1,9 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
+import Text from '@/components/shared_ui/text';
 import { Localize } from '@/utils/tmp/dummy';
 import { LabelPairedBarsFilterCaptionFillIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
 import { TJournalToolsProps } from '../journal.types';
 import FilterDialog from './filter-dialog';
 
@@ -21,7 +21,7 @@ const JournalTools = ({
             <div className='journal-tools__container'>
                 <Download tab='journal' />
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
-                    <Text size='sm' weight='normal' className='journal-tools__container-filter--label'>
+                    <Text size='xs' className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
                     </Text>
                     <LabelPairedBarsFilterCaptionFillIcon height='16px' width='16px' />

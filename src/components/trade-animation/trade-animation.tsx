@@ -6,8 +6,8 @@ import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedPlayCaptionFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
 import { rudderStackSendRunBotEvent } from '../../pages/bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import Button from '../shared_ui/button';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
 

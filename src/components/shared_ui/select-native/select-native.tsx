@@ -218,7 +218,7 @@ const SelectNative = ({
                 as='p'
                 color='less-prominent'
                 size='xxs'
-                LineHeight='lg'
+                lineHeight='l'
                 className={classNames('dc-select-native__hint', classNameHint)}
             >
                 {hint}

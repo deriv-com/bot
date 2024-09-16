@@ -11,6 +11,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
+import { useDevice } from '@deriv-com/ui';
 import ToolbarWidgets from './toolbar-widgets';
 import '@deriv/deriv-charts/dist/smartcharts.css';
 
@@ -45,9 +46,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         updateGranularity,
         updateSymbol,
     } = chart_store;
-    const {
-        ui: { is_mobile, is_desktop },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
 
@@ -109,8 +108,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {
-                'dashboard__chart-wrapper--expanded': is_drawer_open && !is_mobile,
-                'dashboard__chart-wrapper--modal': is_chart_modal_visible && !is_mobile,
+                'dashboard__chart-wrapper--expanded': is_drawer_open && isDesktop,
+                'dashboard__chart-wrapper--modal': is_chart_modal_visible && isDesktop,
             })}
             dir='ltr'
         >
@@ -125,12 +124,12 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     <ToolbarWidgets
                         updateChartType={updateChartType}
                         updateGranularity={updateGranularity}
-                        position={is_mobile ? 'bottom' : 'top'}
+                        position={!isDesktop ? 'bottom' : 'top'}
                     />
                 )}
                 chartType={chart_type}
-                isMobile={is_mobile}
-                enabledNavigationWidget={is_desktop}
+                isMobile={!isDesktop}
+                enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}
                 requestForget={requestForget}

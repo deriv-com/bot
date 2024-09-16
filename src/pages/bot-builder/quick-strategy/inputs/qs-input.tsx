@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Input from '@/components/shared_ui/input';
 import Popover from '@/components/shared_ui/popover';
 import { useStore } from '@/hooks/useStore';
+import { useDevice } from '@deriv-com/ui';
 
 type TQSInput = {
     name: string;
@@ -30,11 +31,11 @@ const QSInput: React.FC<TQSInput> = observer(
         has_currency_unit = false,
     }: TQSInput) => {
         const {
-            ui: { is_mobile },
             client: { currency },
         } = useStore();
         const { quick_strategy } = useStore();
         const { loss_threshold_warning_data } = quick_strategy;
+        const { isDesktop } = useDevice();
 
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
@@ -82,7 +83,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error}
-                                    is_open={is_mobile ? !!error : !!error && has_focus}
+                                    is_open={!isDesktop ? !!error : !!error && has_focus}
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error
