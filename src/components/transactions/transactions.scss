@@ -58,7 +58,7 @@
             list-style-type: disc;
             margin-left: 2rem;
             font-size: var(--text-size-xxs);
-            line-height: var(--text-lh-xxl);
+            line-height: var(--text-lh-xl);
             color: var(--text-less-prominent);
         }
     }
@@ -87,7 +87,7 @@
                 }
 
                 @if $item == 'profit' {
-                    text-align: end;
+                    text-align: start;
                 }
             }
         }

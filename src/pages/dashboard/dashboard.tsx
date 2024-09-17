@@ -64,7 +64,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 )}
                             </Text>
                         </div>
-                        <Cards has_dashboard_strategies={has_dashboard_strategies} />
+                        <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={!isDesktop} />
                     </div>
                 </div>
             </div>

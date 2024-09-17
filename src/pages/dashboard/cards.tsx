@@ -22,6 +22,7 @@ import GoogleDrive from './load-bot-preview/google-drive';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
+    is_mobile: boolean;
 };
 
 type TCardArray = {
@@ -31,7 +32,7 @@ type TCardArray = {
     method: () => void;
 };
 
-const Cards = observer(({ has_dashboard_strategies }: TCardProps) => {
+const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useStore();
     const { toggleLoadModal, setActiveTabIndex } = load_modal;
     const { isDesktop } = useDevice();
@@ -40,25 +41,25 @@ const Cards = observer(({ has_dashboard_strategies }: TCardProps) => {
 
     const openGoogleDriveDialog = () => {
         toggleLoadModal();
-        setActiveTabIndex(!isDesktop ? 1 : 2);
+        setActiveTabIndex(is_mobile ? 1 : 2);
         setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
 
     const openFileLoader = () => {
         toggleLoadModal();
-        setActiveTabIndex(!isDesktop ? 0 : 1);
+        setActiveTabIndex(is_mobile ? 0 : 1);
         setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
 
     const actions: TCardArray[] = [
         {
             id: 'my-computer',
-            icon: !isDesktop ? (
+            icon: is_mobile ? (
                 <DerivLightLocalDeviceIcon height='48px' width='48px' />
             ) : (
                 <DerivLightMyComputerIcon height='48px' width='48px' />
             ),
-            content: !isDesktop ? <Localize i18n_default_text='Local' /> : <Localize i18n_default_text='My computer' />,
+            content: is_mobile ? <Localize i18n_default_text='Local' /> : <Localize i18n_default_text='My computer' />,
             method: openFileLoader,
         },
         {
@@ -90,12 +91,12 @@ const Cards = observer(({ has_dashboard_strategies }: TCardProps) => {
         () => (
             <div
                 className={classNames('tab__dashboard__table', {
-                    'tab__dashboard__table--minimized': has_dashboard_strategies && !isDesktop,
+                    'tab__dashboard__table--minimized': has_dashboard_strategies && is_mobile,
                 })}
             >
                 <div
                     className={classNames('tab__dashboard__table__tiles', {
-                        'tab__dashboard__table__tiles--minimized': has_dashboard_strategies && !isDesktop,
+                        'tab__dashboard__table__tiles--minimized': has_dashboard_strategies && is_mobile,
                     })}
                     id='tab__dashboard__table__tiles'
                 >
@@ -105,7 +106,7 @@ const Cards = observer(({ has_dashboard_strategies }: TCardProps) => {
                             <div
                                 key={id}
                                 className={classNames('tab__dashboard__table__block', {
-                                    'tab__dashboard__table__block--minimized': has_dashboard_strategies && !isDesktop,
+                                    'tab__dashboard__table__block--minimized': has_dashboard_strategies && is_mobile,
                                 })}
                             >
                                 <div
@@ -122,7 +123,7 @@ const Cards = observer(({ has_dashboard_strategies }: TCardProps) => {
                                 >
                                     {icon}
                                 </div>
-                                <Text color='prominent' size={!isDesktop ? 'xxs' : 'xs'}>
+                                <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}
                                 </Text>
                             </div>

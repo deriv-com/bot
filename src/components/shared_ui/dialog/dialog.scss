@@ -2,6 +2,7 @@
 @use 'components/shared/styles/devices' as *;
 
 /** @define dc-dialog */
+
 .dc-dialog {
     width: 100vw;
     height: 100vh;
@@ -126,9 +127,6 @@
 
     &__button {
         margin-left: 0.8rem;
-        height: 4rem;
-        min-width: 6.4rem;
-        border-width: 2px;
 
         @include mobile {
             &:not(:last-child) {

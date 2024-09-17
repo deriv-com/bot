@@ -90,6 +90,9 @@ const LocalComponent = observer(() => {
                     <Button
                         data-testid='dt_load-strategy__local-upload'
                         onClick={() => file_input_ref?.current?.click()}
+                        has_effect
+                        primary
+                        large
                     >
                         {is_file_supported ? (
                             <Localize i18n_default_text='Select an XML file from your device' />

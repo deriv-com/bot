@@ -1,7 +1,7 @@
 @use 'components/shared/styles/mixins' as *;
 
 .tutorials-wrap {
-    %no-search {
+    .no-search {
         display: flex;
         justify-content: center;
         width: 100%;
@@ -19,10 +19,14 @@
             position: relative;
             z-index: 1;
 
-            @include mobile {
+            @include mobile-screen {
                 width: 94%;
                 height: auto;
                 max-height: 80%;
+            }
+
+            @include tablet-screen {
+                height: 40vh;
             }
         }
 
@@ -61,19 +65,19 @@
             display: flex;
             margin-top: 2.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 display: unset;
             }
         }
 
         &__title {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-bottom: 1.4rem;
             }
         }
 
         &__nosearch {
-            @extend %no-search;
+            @extend .no-search;
         }
 
         &__cards {
@@ -82,7 +86,7 @@
             flex-direction: column;
             margin-inline-end: 2.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: row;
                 width: auto;
 
@@ -93,7 +97,7 @@
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex-direction: column;
             margin-bottom: 2.2rem;
         }
@@ -115,13 +119,13 @@
         &__description {
             width: 28rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 text-align: start;
                 width: calc(100% - 14.8rem);
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 8.7rem;
             width: 14.8rem;
             margin: 0 0.8rem 0.8rem 0;
@@ -134,7 +138,7 @@
             width: 21.5rem;
             cursor: pointer;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: 8.7rem;
                 width: 14.8rem;
             }
@@ -152,7 +156,7 @@
                 filter: invert(1);
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0.8rem 1.6rem;
             }
         }
@@ -169,13 +173,13 @@
         padding-bottom: 18px;
 
         &__nosearch {
-            @extend %no-search;
+            @extend .no-search;
         }
 
         &__content {
             width: 85%;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
             }
         }
@@ -197,7 +201,7 @@
                     .loss-control {
                         width: 80%;
 
-                        @include mobile {
+                        @include mobile-or-tablet-screen {
                             width: 100%;
                         }
                     }
@@ -206,7 +210,7 @@
                         width: 45%;
                     }
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
 
                         img {
@@ -231,12 +235,7 @@
         opacity: unset;
         transition: unset;
 
-        @include mobile {
-            width: 90vw;
-            padding: 1.6rem;
-        }
-
-        @include tablet {
+        @include mobile-screen {
             width: 90vw;
             padding: 1.6rem;
         }
@@ -258,7 +257,7 @@
     }
 
     .dc-dialog__footer {
-        @include mobile {
+        @include mobile-screen {
             display: flex;
             flex-direction: column;
             height: unset;
@@ -271,12 +270,24 @@
                 }
             }
         }
+
+        @include tablet-screen {
+            button {
+                flex-basis: unset;
+                margin-bottom: unset;
+            }
+        }
     }
 }
 
 .tutorials-wrapper {
     width: 100%;
     background: var(--general-main-1);
+
+    @include tablet-screen {
+        display: flex;
+        justify-content: center;
+    }
 
     .dc-tabs {
         &__wrapper {
@@ -323,11 +334,12 @@
                         border-color: var(--text-general);
                     }
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
-                        margin-inline: 17px 0;
+                        margin-inline-start: 17px;
                         height: 4rem;
                         padding-inline-start: 13px;
+                        margin-inline-end: 0;
                     }
                 }
             }
@@ -372,7 +384,7 @@
                 &--top {
                     display: flex;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         height: calc(100vh - 22rem);
                     }
                 }
@@ -441,7 +453,13 @@
 
 .tutorials-mobile {
     padding: 1.6rem;
-    overflow: hidden auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    @include tablet-screen {
+        width: 100%;
+        max-width: 60rem;
+    }
 
     &__select {
         height: 4rem;
@@ -449,7 +467,7 @@
 
         @include flex-center;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .dc-select-native {
                 position: relative;
                 margin-inline-end: 17px;
@@ -508,8 +526,8 @@
     &__faq,
     &__qs-guide,
     &__search {
-        @include mobile {
-            height: calc(var(--vh) - 280px);
+        @include mobile-or-tablet-screen {
+            height: 100vh;
             overflow: auto;
 
             .tutorials-wrap {
@@ -519,7 +537,7 @@
     }
 
     &__search {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .tutorials-wrap,
             .faq__wrapper {
                 overflow: unset;

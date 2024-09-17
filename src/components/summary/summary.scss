@@ -5,14 +5,20 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: var(--general-section-2);
+    justify-content: center;
+    background: linear-gradient(180deg, var(--general-section-2) 0%, rgb(242 243 244 / 0%) 80%);
+    width: 100%;
 
-    @include desktop {
+    @include desktop-screen {
         height: inherit;
     }
 
     &--loading {
         width: 100%;
+    }
+
+    &--delayed-loading {
+        justify-content: center;
     }
 
     &__tiles {

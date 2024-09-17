@@ -156,8 +156,7 @@ const SaveModalForm = ({
 );
 
 const SaveModal = observer(() => {
-    const { save_modal, google_drive, dashboard, load_modal } = useStore();
-    const { ui } = useStore();
+    const { save_modal, google_drive, dashboard, load_modal, ui } = useStore();
     const { dashboard_strategies } = load_modal;
     const {
         button_status,
@@ -172,7 +171,7 @@ const SaveModal = observer(() => {
     const { is_authorised } = google_drive;
     const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
     const { active_tab } = dashboard;
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
 
     useEffect(() => {
         if (active_tab === 1) {
@@ -180,9 +179,31 @@ const SaveModal = observer(() => {
         }
     }, [active_tab, dashboard_strategies, updateBotName]);
 
-    return isDesktop ? (
+    return isMobile ? (
+        <MobileFullPageModal
+            is_modal_open={is_save_modal_open}
+            className='save-modal__wrapper'
+            header={localize('Save strategy')}
+            onClickClose={toggleSaveModal}
+            height_offset='80px'
+            page_overlay
+        >
+            <SaveModalForm
+                bot_name={bot_name}
+                button_status={button_status}
+                is_authorised={is_authorised}
+                onConfirmSave={onConfirmSave}
+                onDriveConnect={onDriveConnect}
+                validateBotName={validateBotName}
+                toggleSaveModal={toggleSaveModal}
+                is_mobile={isMobile}
+                is_onscreen_keyboard_active={is_onscreen_keyboard_active}
+                setCurrentFocus={setCurrentFocus}
+            />
+        </MobileFullPageModal>
+    ) : (
         <Modal
-            title={localize('Save Strategy')}
+            title={localize('Save strategy')}
             className='modal--save'
             width='32.8rem'
             height='50rem'
@@ -200,28 +221,6 @@ const SaveModal = observer(() => {
                 setCurrentFocus={setCurrentFocus}
             />
         </Modal>
-    ) : (
-        <MobileFullPageModal
-            is_modal_open={is_save_modal_open}
-            className='save-modal__wrapper'
-            header={localize('Save strategy')}
-            onClickClose={toggleSaveModal}
-            height_offset='80px'
-            page_overlay
-        >
-            <SaveModalForm
-                bot_name={bot_name}
-                button_status={button_status}
-                is_authorised={is_authorised}
-                onConfirmSave={onConfirmSave}
-                onDriveConnect={onDriveConnect}
-                validateBotName={validateBotName}
-                toggleSaveModal={toggleSaveModal}
-                is_mobile={!isDesktop}
-                is_onscreen_keyboard_active={is_onscreen_keyboard_active}
-                setCurrentFocus={setCurrentFocus}
-            />
-        </MobileFullPageModal>
     );
 });
 

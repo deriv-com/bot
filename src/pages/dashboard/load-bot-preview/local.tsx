@@ -7,7 +7,7 @@ import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
 import { useDevice } from '@deriv-com/ui';
 import BotPreview from './bot-preview';
-import './recent-workspace.scss';
+import './index.scss';
 
 const LocalComponent = observer(() => {
     const { isDesktop } = useDevice();
