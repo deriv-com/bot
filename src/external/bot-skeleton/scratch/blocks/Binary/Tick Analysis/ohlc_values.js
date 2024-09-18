@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.ohlc_values = {
     init() {
@@ -44,6 +45,9 @@ window.Blockly.Blocks.ohlc_values = {
                 'This block gives you the selected candle value from a list of candles within the selected time interval.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

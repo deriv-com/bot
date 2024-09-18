@@ -1,9 +1,9 @@
-import debounce from 'debounce';
+import debounce from 'lodash.debounce';
 import { localize } from '@/utils/tmp/dummy';
 import DBotStore from '../dbot-store';
 
 window.Blockly.BlockSvg.prototype.addSelect = function () {
-    if (!window.Blockly.derivWorkspace.isFlyout_) {
+    if (!window.Blockly.derivWorkspace.isFlyoutVisible) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);
@@ -21,26 +21,6 @@ window.Blockly.BlockSvg.prototype.addSelect = function () {
 window.Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
     this.disabled = disabled;
     this.updateDisabled();
-};
-
-/**
- * Enable or disable a block.
- * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
- */
-window.Blockly.BlockSvg.prototype.updateDisabled = function () {
-    if (this.disabled || this.getInheritedDisabled()) {
-        window.Blockly.utils.dom.addClass(this.svgGroup_, 'blocklyDisabled');
-
-        const fill = `url(#${this.workspace.options.disabledPatternId})`;
-        if (this.svgGroup_.getAttribute('fill') !== fill) {
-            this.svgGroup_.setAttribute('fill', fill);
-        }
-    } else {
-        window.Blockly.utils.dom.removeClass(this.svgGroup_, 'blocklyDisabled');
-    }
-
-    const children = this.getChildren(false);
-    children.forEach(child => child.updateDisabled());
 };
 
 /**

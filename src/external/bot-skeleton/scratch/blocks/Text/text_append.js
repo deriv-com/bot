@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_append = {
     init() {
@@ -41,6 +41,9 @@ window.Blockly.Blocks.text_append = {
         return {
             TEXT: emptyTextValidator,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.check_direction = {
     init() {
@@ -31,6 +32,9 @@ window.Blockly.Blocks.check_direction = {
                 'This block is used to determine if the market price moves in the selected direction or not. It gives you a value of “True” or “False”.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

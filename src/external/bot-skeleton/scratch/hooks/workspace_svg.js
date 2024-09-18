@@ -1,5 +1,4 @@
 import { config } from '../../constants/config';
-import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 
 /**
@@ -66,7 +65,7 @@ window.Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = 
         window.Blockly.hideChaff();
     }
 
-    this.scrollbar.set(scrollToCenterX, scrollToCenterY);
+    this?.scrollbar?.set(scrollToCenterX, scrollToCenterY);
 };
 
 /**
@@ -92,7 +91,8 @@ window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
 
     // Call svgResize to avoid glitching workspace.
     window.Blockly.svgResize(new_block.workspace);
-    this.centerOnBlock(new_block.id, false);
+    // kept this commented since it is making a glitching issue,
+    //this.centerOnBlock(new_block.id, false);
 };
 
 /**
@@ -123,6 +123,7 @@ window.Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_t
         let column_index = 0;
 
         root_blocks.forEach((block, index) => {
+            block?.svgGroup_?.setAttribute('data-testid', block?.type);
             if (index === (column_index + 1) * blocks_per_column) {
                 original_cursor_y = y;
                 column_index++;
@@ -145,7 +146,6 @@ window.Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_t
 
                 const fat_neighbour_block = root_blocks
                     .slice(start, start + blocks_per_column)
-                    // eslint-disable-next-line no-confusing-arrow
                     ?.reduce((a, b) => (a.getHeightWidth().width > b.getHeightWidth().width ? a : b), initialValue);
 
                 window.Blockly.BlockSvg.MIN_BLOCK_X = 64;
@@ -251,7 +251,6 @@ window.Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function () {
     const svg_size = window.Blockly.svgSize(this.getParentSvg());
 
     if (this.toolbox_) {
-        // eslint-disable-next-line max-len
         if (
             this.toolboxPosition === window.Blockly.TOOLBOX_AT_TOP ||
             this.toolboxPosition === window.Blockly.TOOLBOX_AT_BOTTOM
@@ -299,27 +298,6 @@ window.Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function () {
     };
 
     return metrics;
-};
-
-/**
- * Paste the provided block onto the workspace.
- * @param {!Element} xml_block XML block element.
- */
-window.Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
-    if (!this.rendered) {
-        return;
-    }
-
-    if (this.currentGesture_) {
-        this.currentGesture_.cancel(); // Dragging while pasting?  No.
-    }
-
-    if (xml_block.tagName.toLowerCase() === 'comment') {
-        this.pasteWorkspaceComment_(xml_block);
-    } else {
-        removeLimitedBlocks(this, xml_block.getAttribute('type'));
-        this.pasteBlock_(xml_block);
-    }
 };
 
 /**

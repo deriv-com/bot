@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { createError } from '../../../utils/error';
 
 const isPositiveNumber = num => Number.isFinite(num) && num > 0;

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.sell_price = {
     init() {
@@ -23,6 +24,9 @@ window.Blockly.Blocks.sell_price = {
                 'This block gives you the potential profit or loss if you decide to sell your contract.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     restricted_parents: ['during_purchase'],
 };

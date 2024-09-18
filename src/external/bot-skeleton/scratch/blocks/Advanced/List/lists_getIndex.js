@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_getIndex = {
     init() {
@@ -72,8 +73,6 @@ window.Blockly.Blocks.lists_getIndex = {
             this.setNextStatement(newStatement);
 
             this.initSvg();
-            // kept this commented to fix backward compatibility issue
-            // this.render(false);
         }
     },
     updateAt(isAt) {
@@ -98,8 +97,9 @@ window.Blockly.Blocks.lists_getIndex = {
         this.getInput('AT').appendField(menu, 'WHERE');
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        //this.render(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

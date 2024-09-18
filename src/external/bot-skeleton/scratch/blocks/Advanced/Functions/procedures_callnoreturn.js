@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.procedures_callnoreturn = {
     init() {
@@ -55,7 +56,7 @@ window.Blockly.Blocks.procedures_callnoreturn = {
      * @this window.Blockly.Block
      */
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible) {
             // Block is deleted or is in a flyout.
             return;
         }
@@ -315,6 +316,7 @@ window.Blockly.Blocks.procedures_callnoreturn = {
      * @this window.Blockly.Block
      */
     customContextMenu(options) {
+        modifyContextMenu(options);
         const name = this.getProcedureCall();
         const { workspace } = this;
 

@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.read_ohlc = {
     init() {
@@ -50,6 +51,9 @@ window.Blockly.Blocks.read_ohlc = {
         return {
             CANDLEINDEX: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

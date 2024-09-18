@@ -1,6 +1,8 @@
+import moment from 'moment';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
+import ClientStore from './client-store';
 import DashboardStore from './dashboard-store';
 import DataCollectionStore from './data-collection-store';
 import FlyoutHelpStore from './flyout-help-store';
@@ -17,6 +19,7 @@ import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
 import TransactionsStore from './transactions-store';
+import UiStore from './ui-store';
 
 // TODO: need to write types for the individual classes and convert them to ts
 export default class RootStore {
@@ -42,9 +45,32 @@ export default class RootStore {
     public blockly_store: BlocklyStore;
     public data_collection_store: DataCollectionStore;
 
-    core = {};
+    public ui: UiStore;
+    public client: ClientStore;
 
-    constructor(dbot: unknown) {
+    ws = null;
+    core = {
+        client: {
+            // check client-store.ts
+        },
+        common: {
+            is_socket_opened: false,
+            current_language: 'en',
+            server_time: moment(),
+            ws: this.ws,
+        },
+        ui: {
+            // check ui-store.ts
+        },
+        gtm: {},
+    };
+    common = this.core.common;
+    gtm = {
+        pushDataLayer: () => {},
+    };
+
+    constructor(dbot: unknown, ws: any) {
+        this.ws = ws;
         this.dbot = dbot;
         this.app = new AppStore(this, this.core);
         this.summary_card = new SummaryCardStore(this, this.core);
@@ -62,10 +88,16 @@ export default class RootStore {
         this.route_prompt_dialog = new RoutePromptDialogStore(this, this.core);
         this.self_exclusion = new SelfExclusionStore(this, this.core);
         this.dashboard = new DashboardStore(this, this.core);
+        this.ui = new UiStore();
+        this.client = new ClientStore();
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this, this.core);
+
+        this.core.ui = this.ui;
+        this.core.client = this.client;
+        this.core.gtm = this.gtm;
     }
 }

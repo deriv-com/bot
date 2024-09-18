@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_modulo = {
     init() {
@@ -31,6 +32,9 @@ window.Blockly.Blocks.math_modulo = {
             tooltip: localize('Returns the remainder after a division'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

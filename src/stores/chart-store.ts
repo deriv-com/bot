@@ -63,7 +63,7 @@ export default class ChartStore {
 
     updateSymbol = () => {
         const workspace = window.Blockly.derivWorkspace;
-        const market_block = workspace.getAllBlocks().find((block: Blockly.Block) => {
+        const market_block = workspace.getAllBlocks().find((block: window.Blockly.Block) => {
             return block.type === 'trade_definition_market';
         });
 

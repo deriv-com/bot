@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.sell_at_market = {
     init() {
@@ -21,6 +22,9 @@ window.Blockly.Blocks.sell_at_market = {
             display_name: localize('Sell at market price'),
             description: localize('Use this block to sell your contract at the market price.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     restricted_parents: ['during_purchase'],
 };

@@ -1,7 +1,7 @@
 // TODO: need to convert Dbot class to TS and write complete types
 export type TBotSkeleton = {
     interpreter: unknown;
-    workspace: Blockly.WorkspaceSvg | null;
+    workspace: window.Blockly.WorkspaceSvg | null;
     before_run_funcs: (() => boolean)[];
     initWorkspace: (
         public_path: string,
@@ -19,7 +19,7 @@ export type TBotSkeleton = {
     terminateConnection: () => void;
     unselectBlocks: () => boolean;
     disableStrayBlocks: () => boolean;
-    disableBlocksRecursively: (block: Blockly.Block) => void;
+    disableBlocksRecursively: (block: window.Blockly.Block) => void;
     checkForErroredBlocks: () => boolean;
     centerAndHighlightBlock: (block_id: string, should_animate?: boolean) => void;
     unHighlightAllBlocks: () => void;

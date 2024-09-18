@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_indexOf = {
     init() {
@@ -50,6 +50,9 @@ window.Blockly.Blocks.text_indexOf = {
                 'Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     getRequiredValueInputs() {
         return {

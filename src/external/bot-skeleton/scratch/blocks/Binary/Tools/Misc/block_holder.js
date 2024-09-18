@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.block_holder = {
     init() {
@@ -28,6 +29,9 @@ window.Blockly.Blocks.block_holder = {
             tooltip: localize('Put your blocks in here to prevent them from being removed'),
             category: window.Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

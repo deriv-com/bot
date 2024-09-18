@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_constrain = {
     init() {
@@ -50,6 +51,9 @@ window.Blockly.Blocks.math_constrain = {
             LOW: null,
             HIGH: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

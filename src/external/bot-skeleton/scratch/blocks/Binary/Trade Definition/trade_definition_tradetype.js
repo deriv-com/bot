@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_tradetype = {
     init() {
@@ -27,6 +28,9 @@ window.Blockly.Blocks.trade_definition_tradetype = {
         });
         this.setMovable(false);
         this.setDeletable(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

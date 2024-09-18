@@ -1,5 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import useModalManager from '@/hooks/useModalManager';
+import { mockStore, StoreProvider } from '@/hooks/useStore';
+import { mock_ws } from '@/utils/mock';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -33,20 +35,17 @@ jest.mock('@deriv-com/api-hooks', () => ({
     }),
 }));
 
-jest.mock('@deriv-com/translations', () => ({
-    useTranslations: jest.fn().mockReturnValue({
-        currentLang: 'EN',
-        localize: jest.fn(text => text),
-    }),
-}));
-
-const MobileMenuComponent = () => (
-    <BrowserRouter>
-        <MobileMenu />
-    </BrowserRouter>
-);
-
 describe('MobileMenu component', () => {
+    const mock_store = mockStore(mock_ws as any);
+
+    const MobileMenuComponent = () => (
+        <BrowserRouter>
+            <StoreProvider mockStore={mock_store}>
+                <MobileMenu />
+            </StoreProvider>
+        </BrowserRouter>
+    );
+
     it('should not render when isDesktop is true', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         render(<MobileMenuComponent />);
@@ -54,6 +53,7 @@ describe('MobileMenu component', () => {
     });
 
     it('should render toggle button and handle click', async () => {
+        mock_store.client.is_logged_in = true;
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(<MobileMenuComponent />);
         expect(screen.queryByText('Menu')).not.toBeInTheDocument();
@@ -62,6 +62,7 @@ describe('MobileMenu component', () => {
     });
 
     it('should open the language settings', async () => {
+        mock_store.client.is_logged_in = true;
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         const { isModalOpenFor, showModal } = useModalManager();
 

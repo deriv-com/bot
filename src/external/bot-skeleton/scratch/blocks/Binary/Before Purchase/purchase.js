@@ -1,9 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { getContractTypeOptions } from '../../../shared';
-
-window.Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
-    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
-};
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.purchase = {
     init() {
@@ -40,7 +37,7 @@ window.Blockly.Blocks.purchase = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -77,6 +74,9 @@ window.Blockly.Blocks.purchase = {
                 should_pretend_empty: true,
             });
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     restricted_parents: ['before_purchase'],
 };

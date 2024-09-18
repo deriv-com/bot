@@ -3,12 +3,13 @@ import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
-import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
     init() {
         this.jsonInit(this.definition());
+        this.setInputsInline(true);
 
         // Ensure one of this type per statement-stack
         this.setNextStatement(false);
@@ -67,6 +68,9 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             ),
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     onchange(event) {
         if (event.type === 'change') {
             const selected_block = this.workspace.getBlockById(event.blockId);
@@ -82,7 +86,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 });
         }
 
-        if (!this.workspace || this.workspace.isDragging() || window.Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || this.workspace.isDragging() || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -192,7 +196,6 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 shadow_block.setFieldValue(prediction_range[0], 'NUM');
                 shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
-                // this breaks the loading of quick strategy and Backward compatibility
                 shadow_block.renderEfficiently();
             }
         });
@@ -222,8 +225,6 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                     shadow_block.setFieldValue(barriers.values[i], 'NUM');
                     shadow_block.outputConnection.connect(input.connection);
                     shadow_block.initSvg();
-                    // kept this commented to fix backward compatibility issue
-                    // need to fix this for mutliplier block
                     shadow_block.renderEfficiently();
                 }
             }
@@ -243,7 +244,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             }
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
-            if (max_payout && min_stake) {
+            if (max_payout && min_stake && this.selected_trade_type !== 'multiplier') {
                 runIrreversibleEvents(() => {
                     this.setFieldValue(
                         localize('(min: {{min_stake}} - max: {{max_payout}})', {
@@ -258,14 +259,49 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
-        const {
-            workspaces: {
-                indentWorkspace: { x, y },
-            },
-        } = config;
-        window.window.Blockly.getMainWorkspace().cleanUp(x, y);
 
-        if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
+        if (this.selected_trade_type === 'accumulator' && this.isDescendantOf('trade_definition')) {
+            runIrreversibleEvents(() => {
+                runGroupedEvents(false, () => {
+                    const accumulator_block = this.workspace.newBlock('trade_definition_accumulator');
+                    accumulator_block.initSvg();
+                    accumulator_block.render();
+
+                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+                    const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
+
+                    const child_connection = accumulator_block.previousConnection;
+                    parent_connection.connect(child_connection);
+
+                    const stake_input = accumulator_block.getInput('AMOUNT');
+                    const stake_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stake_shadow_block.setShadow(true);
+                    stake_shadow_block.setFieldValue(1, 'NUM');
+                    stake_shadow_block.outputConnection.connect(stake_input.connection);
+                    stake_shadow_block.initSvg();
+                    stake_shadow_block.renderEfficiently();
+
+                    const take_profit_block = this.workspace.newBlock('accumulator_take_profit');
+                    const take_profit_input = take_profit_block.getInput('AMOUNT');
+
+                    const take_profit_shadow_block = this.workspace.newBlock('math_number_positive');
+                    take_profit_shadow_block.setShadow(true);
+                    take_profit_shadow_block.setFieldValue(0, 'NUM');
+                    take_profit_block.setDisabled(true);
+                    take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
+                    take_profit_shadow_block.initSvg();
+                    take_profit_shadow_block.renderEfficiently();
+
+                    accumulator_block
+                        .getLastConnectionInStatement('ACCUMULATOR_PARAMS')
+                        .connect(take_profit_block.previousConnection);
+                    take_profit_block.initSvg();
+                    take_profit_block.renderEfficiently();
+
+                    this.dispose();
+                });
+            });
+        } else if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');
@@ -352,6 +388,14 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 }
             });
         }
+        const {
+            workspaces: {
+                indentWorkspace: { x, y },
+            },
+        } = config;
+        setTimeout(() => {
+            window.Blockly.getMainWorkspace().cleanUp(x, y);
+        }, 10);
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
         const { contracts_for } = ApiHelpers.instance;

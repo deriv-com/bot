@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.smaa_statement = {
     protected_statements: ['STATEMENT'],
@@ -46,6 +47,9 @@ window.Blockly.Blocks.smaa_statement = {
                 'Similar to SMA, this block gives you the entire SMA line containing a list of all values for a given period.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.period = {
     init() {
@@ -22,6 +23,9 @@ window.Blockly.Blocks.period = {
         this.setDeletable(false);
     },
     onchange: window.Blockly.Blocks.input_list.onchange,
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     allowed_parents: [
         'bb_statement',
         'bba_statement',

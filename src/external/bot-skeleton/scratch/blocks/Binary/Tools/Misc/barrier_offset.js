@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
+import { modifyContextMenu } from '../../../../utils';
 
 // This block is a remnant of a very old Binary Bot version.
 // needs to be here for backward compatibility.
@@ -22,6 +23,9 @@ window.Blockly.Blocks.barrier_offset = {
             tooltip: localize('Adds a sign to a number to create a barrier offset. (deprecated)'),
             category: window.Blockly.Categories.Miscellaneous,
         });
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

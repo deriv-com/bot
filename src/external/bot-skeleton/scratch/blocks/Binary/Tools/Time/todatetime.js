@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.todatetime = {
     init() {
@@ -44,6 +45,9 @@ window.Blockly.Blocks.todatetime = {
         return {
             TIMESTAMP: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

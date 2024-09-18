@@ -15,55 +15,7 @@ import { TStores } from '@deriv/stores/types';
 import { TStrategy } from 'Types';
 import RootStore from './root-store';
 
-interface ILoadModalStore {
-    active_index: number;
-    is_load_modal_open: boolean;
-    is_explanation_expand: boolean;
-    is_open_button_loading: boolean;
-    is_strategy_loaded: boolean;
-    loaded_local_file: File | null;
-    recent_strategies: TStrategy[];
-    dashboard_strategies: Array<TStrategy>;
-    selected_strategy_id: string | undefined;
-    is_strategy_removed: boolean;
-    is_delete_modal_open: boolean;
-    current_workspace_id: string;
-    preview_workspace: Blockly.WorkspaceSvg | null;
-    selected_strategy: TStrategy;
-    tab_name: string;
-    setPreviewedStrategyId: (clicked_id: string) => void;
-    getSelectedStrategyID: (current_workspace_id: string) => void;
-    refreshStrategies: () => void;
-    loadStrategyToBuilder: (param: TStrategy) => void;
-    refreshStrategiesTheme: () => void;
-    handleFileChange: (
-        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
-        is_body: boolean
-    ) => boolean;
-    loadFileFromLocal: () => void;
-    onActiveIndexChange: () => void;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
-    onEntered: () => void;
-    onLoadModalClose: () => void;
-    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
-    onZoomInOutClick: (is_zoom_in: string) => void;
-    previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number) => void;
-    setLoadedLocalFile: (loaded_local_file: File | null) => void;
-    setDashboardStrategies: (strategies: Array<TStrategy>) => void;
-    setRecentStrategies: (recent_strategies: TStrategy[]) => void;
-    setSelectedStrategyId: (selected_strategy_id: string) => void;
-    toggleExplanationExpand: () => void;
-    toggleLoadModal: () => void;
-    toggleTourLoadModal: (toggle: boolean) => void;
-    readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
-    updateListStrategies: (workspaces: Array<TStrategy>) => void;
-    getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
-    getSaveType: (save_type: { [key: string]: string } | string) => string;
-}
-
-export default class LoadModalStore implements ILoadModalStore {
+export default class LoadModalStore {
     root_store: RootStore;
     core: TStores;
     previewed_strategy_id = '';
@@ -113,6 +65,8 @@ export default class LoadModalStore implements ILoadModalStore {
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
             onToggleDeleteDialog: action,
+            setOpenButtonDisabled: action,
+            is_open_button_disabled: observable,
         });
 
         this.root_store = root_store;
@@ -134,8 +88,8 @@ export default class LoadModalStore implements ILoadModalStore {
         );
     }
 
-    recent_workspace: Blockly.WorkspaceSvg | null = null;
-    local_workspace: Blockly.WorkspaceSvg | null = null;
+    recent_workspace: window.Blockly.WorkspaceSvg | null = null;
+    local_workspace: window.Blockly.WorkspaceSvg | null = null;
     drop_zone: unknown;
 
     active_index = 0;
@@ -150,8 +104,9 @@ export default class LoadModalStore implements ILoadModalStore {
     is_delete_modal_open = false;
     is_strategy_removed = false;
     current_workspace_id = '';
+    is_open_button_disabled = false;
 
-    get preview_workspace(): Blockly.WorkspaceSvg | null {
+    get preview_workspace(): window.Blockly.WorkspaceSvg | null {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
         if (this.tab_name === tabs_title.TAB_RECENT) return this.recent_workspace;
         return null;
@@ -188,6 +143,9 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!strategies.length) {
             this.selected_strategy_id = '';
         }
+    };
+    setOpenButtonDisabled = (is_open_button_disabled: boolean) => {
+        this.is_open_button_disabled = is_open_button_disabled;
     };
 
     getDashboardStrategies = async () => {
@@ -430,6 +388,8 @@ export default class LoadModalStore implements ILoadModalStore {
                 },
                 readOnly: true,
                 scrollbars: true,
+                renderer: 'zelos',
+                theme: window.Blockly.Themes.zelos_renderer,
             });
         }
         this.refreshStrategiesTheme();
@@ -475,19 +435,6 @@ export default class LoadModalStore implements ILoadModalStore {
         }
     };
 
-    getRecentFileIcon = (save_type: { [key: string]: string } | string): string => {
-        switch (save_type) {
-            case save_types.UNSAVED:
-                return 'IcReports';
-            case save_types.LOCAL:
-                return 'IcMyComputer';
-            case save_types.GOOGLE_DRIVE:
-                return 'IcGoogleDrive';
-            default:
-                return 'IcReports';
-        }
-    };
-
     getSaveType = (save_type: { [key: string]: string } | string): string => {
         switch (save_type) {
             case save_types.UNSAVED:
@@ -513,14 +460,14 @@ export default class LoadModalStore implements ILoadModalStore {
                 block_string: e?.target?.result,
                 drop_event,
                 from: save_types.LOCAL,
-                workspace: null as Blockly.WorkspaceSvg | null,
+                workspace: null as window.Blockly.WorkspaceSvg | null,
                 file_name: '',
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
             const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
-                this.local_workspace = Blockly.inject(ref, {
+                this.local_workspace = window.Blockly.inject(ref, {
                     media: `${window.__webpack_public_path__}assets/media/`,
                     zoom: {
                         wheel: false,
@@ -528,6 +475,8 @@ export default class LoadModalStore implements ILoadModalStore {
                     },
                     readOnly: true,
                     scrollbars: true,
+                    renderer: 'zelos',
+                    theme: window.Blockly.Themes.zelos_renderer,
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {

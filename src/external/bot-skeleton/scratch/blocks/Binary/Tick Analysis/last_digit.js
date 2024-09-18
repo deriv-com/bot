@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.last_digit = {
     init() {
@@ -21,6 +22,9 @@ window.Blockly.Blocks.last_digit = {
             display_name: localize('Last Digit'),
             description: localize('This block gives you the last digit of the latest tick value.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

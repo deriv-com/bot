@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.std_dev_multiplier_up = {
     init() {
@@ -27,6 +28,9 @@ window.Blockly.Blocks.std_dev_multiplier_up = {
         return {
             UPMULTIPLIER: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

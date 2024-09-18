@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.logic_operation = {
     init() {
@@ -34,6 +35,9 @@ window.Blockly.Blocks.logic_operation = {
             tooltip: localize('Performs selected logic operation'),
             category: window.Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

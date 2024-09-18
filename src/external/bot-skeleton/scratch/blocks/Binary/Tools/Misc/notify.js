@@ -1,6 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../../constants/config';
-import { emptyTextValidator } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.notify = {
     init() {
@@ -41,6 +41,9 @@ window.Blockly.Blocks.notify = {
             tooltip: localize('Displays a notification and optionally play selected sound'),
             category: window.Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

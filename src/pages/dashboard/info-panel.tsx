@@ -4,7 +4,7 @@ import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Modal, Text } from '@deriv-com/ui';
 import { SIDEBAR_INTRO } from './constants';
 
@@ -36,7 +36,7 @@ const InfoPanel = observer(() => {
     const renderInfo = () => (
         <div className='db-info-panel'>
             <div data-testid='close-icon' className='db-info-panel__close-action' onClick={handleClose}>
-                <Icon width='1rem' height='1rem' icon='IcClose' />
+                <LegacyClose1pxIcon height='18px' width='18px' />
             </div>
 
             {SIDEBAR_INTRO.map(sidebar_item => {

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.rsia_statement = {
     protected_statements: ['STATEMENT'],
@@ -38,6 +39,9 @@ window.Blockly.Blocks.rsia_statement = {
             nextStatement: null,
             category: window.Blockly.Categories.Indicators,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

@@ -19,6 +19,72 @@
     }
 }
 
+.account-switcher {
+    &-footer {
+        background: var(--general-main-1);
+    }
+}
+
+.derivs-secondary-tabs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--general-main-1);
+}
+
+.deriv-account-switcher {
+    &__button {
+        margin: 0 1.6rem 0 1.7rem;
+    }
+
+    &__list {
+        &.account-switcher-panel {
+            padding: 2rem 0.8rem 1rem;
+        }
+
+        .deriv-accordion__text {
+            margin-top: 1rem;
+        }
+    }
+
+    &__title {
+        padding: 0 16px 12px;
+    }
+
+    &__container--mobile {
+        max-height: 90vh;
+        min-height: 340px;
+    }
+
+    &__container {
+        max-height: 80vh;
+        overflow: auto;
+        background: var(--general-main-1);
+    }
+
+    &__logout {
+        align-items: center;
+        display: flex;
+        grid-column: 2 / 3;
+        justify-content: flex-end;
+        justify-self: start;
+        padding: 1.6em 1.3em;
+
+        &-text {
+            margin-inline-end: 1rem;
+            font-size: var(--text-size-xs);
+        }
+    }
+
+    &__footer {
+        padding: 0;
+        display: block;
+    }
+}
+
 .languages-modal {
     background: var(--general-section-1);
 

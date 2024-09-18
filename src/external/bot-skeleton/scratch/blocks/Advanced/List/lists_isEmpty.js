@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_isEmpty = {
     init() {
@@ -36,6 +37,9 @@ window.Blockly.Blocks.lists_isEmpty = {
         return {
             VALUE: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

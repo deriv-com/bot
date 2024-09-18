@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_setIndex = {
     init() {
@@ -76,8 +77,9 @@ window.Blockly.Blocks.lists_setIndex = {
         this.moveInputBefore('AT', 'TO');
         this.getInput('AT').appendField(menu, 'WHERE');
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        //this.render(false);
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

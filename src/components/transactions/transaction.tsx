@@ -7,6 +7,7 @@ import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 
@@ -86,7 +87,7 @@ const PopoverItem = ({ icon, title, children }: TPopoverItem) => (
 const PopoverContent = ({ contract }: TPopoverContent) => (
     <div className='transactions__popover-content'>
         {contract.transaction_ids && (
-            <PopoverItem title={localize('Reference IDs')}>
+            <PopoverItem title={<Localize i18n_default_text='Reference IDs' />}>
                 {contract.transaction_ids.buy && (
                     <div className='transactions__popover-value'>
                         {`${contract.transaction_ids.buy} ${localize('(Buy)')}`}

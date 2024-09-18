@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_restartbuysell = {
     init() {
@@ -8,9 +9,10 @@ window.Blockly.Blocks.trade_definition_restartbuysell = {
             }),
             args0: [
                 {
-                    type: 'field_image_checkbox',
+                    type: 'field_checkbox',
                     name: 'TIME_MACHINE_ENABLED',
                     checked: false,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
@@ -22,13 +24,22 @@ window.Blockly.Blocks.trade_definition_restartbuysell = {
 
         this.setMovable(false);
         this.setDeletable(false);
+        this.setOnChange(() => {
+            const next_block = this?.getNextBlock();
+            if (next_block?.type !== 'trade_definition_restartonerror') {
+                next_block?.unplug(true);
+            }
+        });
     },
     onchange(/* event */) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['TIME_MACHINE_ENABLED'],

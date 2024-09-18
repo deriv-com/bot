@@ -34,7 +34,6 @@ interface IQuickStrategyStore {
     };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
-    is_enabled_toggle_switch: boolean;
     setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
@@ -42,7 +41,6 @@ interface IQuickStrategyStore {
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
     setCurrentDurationMinMax: (min: number, max: number) => void;
-    setIsEnabledToggleSwitch: () => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -64,7 +62,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     loss_threshold_warning_data: TLossThresholdWarningData = {
         show: false,
     };
-    is_enabled_toggle_switch = !!this.form_data.boolean_max_stake;
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
@@ -83,8 +80,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
-            is_enabled_toggle_switch: observable,
-            setIsEnabledToggleSwitch: action,
         });
         this.root_store = root_store;
         reaction(
@@ -110,10 +105,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             highlight_field: [],
             already_shown: false,
         };
-    };
-
-    setIsEnabledToggleSwitch = () => {
-        this.is_enabled_toggle_switch = !this.is_enabled_toggle_switch;
     };
 
     setFormVisibility = (is_open: boolean) => {
@@ -142,7 +133,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
-        const strategy_dom = Blockly.utils.xml.textToDom(strategy_xml.default);
+        const strategy_dom = window.Blockly.utils.xml.textToDom(strategy_xml.default);
         addDynamicBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
 
         const modifyValueInputs = (key: string, value: number) => {
@@ -194,7 +185,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             workspace
                 ?.waitForBlockEvent({
                     block_type: 'trade_definition',
-                    event_type: Blockly.Events.BLOCK_CREATE,
+                    event_type: window.Blockly.Events.BLOCK_CREATE,
                     timeout: 5000,
                 })
                 .then(() => {
@@ -205,7 +196,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.setFormVisibility(false);
 
         await load({
-            block_string: Blockly.Xml.domToText(strategy_dom),
+            block_string: window.Blockly.Xml.domToText(strategy_dom),
             file_name: selected_strategy.label,
             workspace,
             from: save_types.UNSAVED,

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.controls_repeat_ext = {
     init() {
@@ -44,6 +45,9 @@ window.Blockly.Blocks.controls_repeat_ext = {
         return {
             TIMES: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

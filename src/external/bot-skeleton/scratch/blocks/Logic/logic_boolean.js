@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.logic_boolean = {
     init() {
@@ -32,6 +33,9 @@ window.Blockly.Blocks.logic_boolean = {
             display_name: localize('True-False'),
             description: localize('This is a single block that returns a boolean value, either true or false.'),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

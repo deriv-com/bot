@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.slow_ema_period = {
     init() {
@@ -27,6 +28,9 @@ window.Blockly.Blocks.slow_ema_period = {
         return {
             SLOW_EMA_PERIOD: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

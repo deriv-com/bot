@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.logic_compare = {
     init() {
@@ -50,6 +51,9 @@ window.Blockly.Blocks.logic_compare = {
             A: null,
             B: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { getSearchNotFoundOption } from '@/components/shared/utils/constants';
 import { getPosition } from '@/components/shared/utils/dom';
 import { getEnglishCharacters, matchStringByChar } from '@/components/shared/utils/string';
 import { useBlockScroll } from '@/hooks/useBlockscroll';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
 import DropdownList, { TItem } from '../dropdown-list';
 import Input from '../input';
 
@@ -353,13 +354,13 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
                         other_props.trailing_icon ? (
                             other_props.trailing_icon
                         ) : (
-                            <Icon
-                                icon='IcChevronDown'
-                                className={{
-                                    'dc-autocomplete__trailing-icon': true,
+                            <LabelPairedChevronDownLgRegularIcon
+                                className={clsx('dc-autocomplete__trailing-icon', {
                                     'dc-autocomplete__trailing-icon--opened': should_show_list,
                                     'dc-autocomplete__trailing-icon--disabled': other_props.disabled,
-                                }}
+                                })}
+                                height='24px'
+                                width='24px'
                             />
                         )
                     }

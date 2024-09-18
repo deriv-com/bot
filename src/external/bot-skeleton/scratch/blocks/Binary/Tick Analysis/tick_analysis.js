@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.tick_analysis = {
     init() {
@@ -11,7 +12,7 @@ window.Blockly.Blocks.tick_analysis = {
                 {
                     type: 'field_label',
                     text: localize('The content of this block is called on every tick'),
-                    class: 'blocklyTextRootBlockHeader',
+                    class: 'blocklyTextTickAnalysis',
                 },
                 {
                     type: 'input_dummy',
@@ -36,6 +37,9 @@ window.Blockly.Blocks.tick_analysis = {
                 'The content of this block is called on every tick. Place this block outside of any root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

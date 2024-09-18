@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.lists_indexOf = {
     init() {
@@ -53,6 +54,9 @@ window.Blockly.Blocks.lists_indexOf = {
             VALUE: null,
             FIND: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

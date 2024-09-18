@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { sellContract } from '../../images';
 
 window.Blockly.Blocks.during_purchase = {
@@ -65,6 +65,9 @@ window.Blockly.Blocks.during_purchase = {
         ) {
             removeExtraInput(this);
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

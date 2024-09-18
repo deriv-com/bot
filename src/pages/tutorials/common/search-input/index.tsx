@@ -3,7 +3,7 @@ import debounce from 'debounce';
 import { observer } from 'mobx-react-lite';
 import { DEBOUNCE_INTERVAL_TIME } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 type TSearchInput = {
     faq_value: string;

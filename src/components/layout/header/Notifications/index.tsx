@@ -9,6 +9,7 @@ export const Notifications = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { localize } = useTranslations();
     const { isMobile } = useDevice();
+
     return (
         <div className='notifications__wrapper'>
             <Tooltip
@@ -24,7 +25,6 @@ export const Notifications = () => {
                     'notifications__wrapper--mobile': isMobile,
                     'notifications__wrapper--desktop': !isMobile,
                 })}
-                clearNotificationsCallback={() => {}}
                 componentConfig={{
                     clearButtonText: localize('Clear all'),
                     modalTitle: localize('Notifications'),
@@ -34,6 +34,9 @@ export const Notifications = () => {
                 isOpen={isOpen}
                 notifications={[]}
                 setIsOpen={setIsOpen}
+                clearNotificationsCallback={() => {}}
+                loadMoreFunction={() => {}}
+                isLoading={false}
             />
         </div>
     );

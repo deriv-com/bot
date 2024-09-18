@@ -116,7 +116,7 @@ window.Blockly.Block.getDimensions = function (block_node) {
     }
 
     const options = new window.Blockly.Options({
-        media: `${window.__webpack_public_path__}assets/media/`,
+        media: 'assets/media/',
         renderer: 'zelos',
         theme: window.Blockly.Themes.zelos_renderer,
     });
@@ -179,4 +179,14 @@ window.Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
 
 window.Blockly.Block.isDynamic = function (block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
+};
+
+// TODO: Do not remove this
+// overwriting the doClassValidation_ method to handle
+// dropdown values
+window.Blockly.FieldDropdown.prototype.doClassValidation_ = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
 };

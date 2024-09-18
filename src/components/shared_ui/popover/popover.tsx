@@ -2,7 +2,11 @@ import React, { RefObject } from 'react';
 import classNames from 'classnames';
 import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import { useHover, useHoverCallback } from '@/hooks/useHover';
-import { Icon } from '@/utils/tmp/dummy';
+import {
+    LabelPairedCircleDotCaptionFillIcon,
+    LabelPairedCircleInfoCaptionRegularIcon,
+    LegacyWarningIcon,
+} from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TPopoverProps } from '../types';
 
@@ -189,7 +193,7 @@ const Popover = ({
                                 >
                                     {!disable_message_icon && icon === 'info' && (
                                         <i className='dc-popover__bubble__icon'>
-                                            <Icon icon='IcInfoBlue' />
+                                            <LabelPairedCircleInfoCaptionRegularIcon />
                                         </i>
                                     )}
                                     {(has_error && (
@@ -214,9 +218,13 @@ const Popover = ({
                                         message ? 'dc-popover__target__icon' : 'dc-popover__target__icon--disabled'
                                     }
                                 >
-                                    {icon === 'info' && <Icon icon='IcInfoOutline' className={icon_class_name} />}
-                                    {icon === 'question' && <Icon icon='IcUnknown' className={icon_class_name} />}
-                                    {icon === 'dot' && <Icon icon='IcCircle' className={icon_class_name} size={4} />}
+                                    {icon === 'info' && (
+                                        <LabelPairedCircleInfoCaptionRegularIcon className={icon_class_name} />
+                                    )}
+                                    {icon === 'question' && <LegacyWarningIcon className={icon_class_name} />}
+                                    {icon === 'dot' && (
+                                        <LabelPairedCircleDotCaptionFillIcon className={icon_class_name} />
+                                    )}
                                     {icon === 'counter' && <span className={icon_class_name}>{counter}</span>}
                                 </i>
                             )}

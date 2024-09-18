@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@/utils/tmp/dummy';
-import { Text } from '@deriv-com/ui';
+import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
 import Field from '../field/field';
+import Text from '../text';
 
 type TSelectNative = {
     className?: string;
@@ -150,7 +151,11 @@ const SelectNative = ({
                         {label}
                     </div>
                     {!suffix_icon ? (
-                        <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
+                        <LabelPairedChevronDownLgRegularIcon
+                            className='dc-select-native__arrow'
+                            height='24px'
+                            width='24px'
+                        />
                     ) : (
                         <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} />
                     )}

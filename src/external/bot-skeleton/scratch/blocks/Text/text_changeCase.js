@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_changeCase = {
     init() {
@@ -34,6 +34,9 @@ window.Blockly.Blocks.text_changeCase = {
             tooltip: localize('Changes text case accordingly'),
             category: window.Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

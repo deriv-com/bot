@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.bba_statement = {
     protected_statements: ['STATEMENT'],
@@ -53,6 +54,9 @@ window.Blockly.Blocks.bba_statement = {
                 'Similar to BB. This block gives you a choice of returning the values of either the lower band, higher band, or the SMA line in the middle.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     onchange: window.Blockly.Blocks.bb_statement.onchange,
 };

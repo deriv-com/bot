@@ -3,7 +3,7 @@ import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
-import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_multiplier = {
     init() {
@@ -107,7 +107,7 @@ window.Blockly.Blocks.trade_definition_multiplier = {
         }
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -135,7 +135,6 @@ window.Blockly.Blocks.trade_definition_multiplier = {
 
         if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.setCurrency();
-            this.updateAmountLimits();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateMultiplierInput(false);
@@ -162,14 +161,12 @@ window.Blockly.Blocks.trade_definition_multiplier = {
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateMultiplierInput(true);
-                this.updateAmountLimits();
             }
             return;
         }
 
         if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
             this.setCurrency();
-            this.updateAmountLimits();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
@@ -183,7 +180,7 @@ window.Blockly.Blocks.trade_definition_multiplier = {
             }
         }
     },
-    updateAmountLimits: window.Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
+
     updateMultiplierInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 
@@ -215,8 +212,6 @@ window.Blockly.Blocks.trade_definition_multiplier = {
 
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');
                     duration_block.initSvg();
-                    // kept this commented to fix backward compatibility issue
-                    // need to fix this for mutliplier block
                     duration_block.renderEfficiently();
 
                     const trade_definition_block = this.workspace.getTradeDefinitionBlock();
@@ -230,9 +225,7 @@ window.Blockly.Blocks.trade_definition_multiplier = {
                     duration_shadow_block.setShadow(true);
                     duration_shadow_block.outputConnection.connect(duration_input.connection);
                     duration_shadow_block.initSvg();
-                    // kept this commented to fix backward compatibility issue
-                    // need to fix this for mutliplier block
-                    //duration_shadow_block.render(true);
+                    duration_shadow_block.renderEfficiently();
 
                     const stake_input = duration_block.getInput('AMOUNT');
 
@@ -241,15 +234,16 @@ window.Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.setFieldValue(1, 'NUM');
                     stake_shadow_block.outputConnection.connect(stake_input.connection);
                     stake_shadow_block.initSvg();
-                    // kept this commented to fix backward compatibility issue
-                    // need to fix this for mutliplier block
-                    // stake_shadow_block.render(true);
+                    stake_shadow_block.renderEfficiently();
 
                     this.dispose();
-                    window.window.Blockly.getMainWorkspace().cleanUp(x, y);
+                    window.Blockly.getMainWorkspace().cleanUp(x, y);
                 });
             });
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     restricted_parents: ['trade_definition'],

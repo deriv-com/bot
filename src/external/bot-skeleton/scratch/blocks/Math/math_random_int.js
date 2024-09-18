@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_random_int = {
     init() {
@@ -31,6 +32,9 @@ window.Blockly.Blocks.math_random_int = {
             tooltip: localize('This block gives you a random number from within a set range'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

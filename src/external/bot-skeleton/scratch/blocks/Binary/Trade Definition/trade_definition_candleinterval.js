@@ -1,5 +1,6 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_candleinterval = {
     init() {
@@ -23,11 +24,14 @@ window.Blockly.Blocks.trade_definition_candleinterval = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
 };

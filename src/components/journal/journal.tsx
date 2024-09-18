@@ -2,8 +2,10 @@ import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { DataList, Icon, localize } from '@/utils/tmp/dummy';
+import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import DataList from '../data-list';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 
@@ -50,13 +52,18 @@ const Journal = observer(() => {
                 ) : (
                     <>
                         {contract_stage >= contract_stages.STARTING &&
-                            !!Object.keys(checked_filters as TCheckedFilters).length &&
-                            !unfiltered_messages_length &&
-                            is_stop_button_visible ? (
+                        !!Object.keys(checked_filters as TCheckedFilters).length &&
+                        !unfiltered_messages_length &&
+                        is_stop_button_visible ? (
                             <JournalLoader is_mobile={is_mobile} />
                         ) : (
                             <div className='journal-empty'>
-                                <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
+                                <DerivLightEmptyCardboardBoxIcon
+                                    height='64px'
+                                    width='64px'
+                                    className='journal-empty__icon'
+                                    color='secondary'
+                                />
                                 <Text
                                     as='h4'
                                     size='sm'
@@ -66,26 +73,26 @@ const Journal = observer(() => {
                                     lineHeight='sm'
                                     className='journal-empty__header'
                                 >
-                                    {localize('There are no messages to display')}
+                                    <Localize i18n_default_text='There are no messages to display' />
                                 </Text>
                                 <div className='journal-empty__message'>
                                     <Text size='xs' lineHeight='3xl' color='less-prominent'>
-                                        {localize('Here are the possible reasons:')}
+                                        <Localize i18n_default_text='Here are the possible reasons:' />
                                     </Text>
                                     <ul className='journal-empty__list'>
                                         <li>
                                             <Text size='xs' lineHeight='3xl' color='less-prominent'>
-                                                {localize('The bot is not running')}
+                                                <Localize i18n_default_text='The bot is not running' />
                                             </Text>
                                         </li>
                                         <li>
                                             <Text size='xs' lineHeight='3xl' color='less-prominent'>
-                                                {localize('The stats are cleared')}
+                                                <Localize i18n_default_text='The stats are cleared' />
                                             </Text>
                                         </li>
                                         <li>
                                             <Text size='xs' lineHeight='3xl' color='less-prominent'>
-                                                {localize('All messages are filtered out')}
+                                                <Localize i18n_default_text='All messages are filtered out' />
                                             </Text>
                                         </li>
                                     </ul>

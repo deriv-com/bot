@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.controls_for = {
     init() {
@@ -70,6 +71,9 @@ window.Blockly.Blocks.controls_for = {
             TO: null,
             BY: null,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

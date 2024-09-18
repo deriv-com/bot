@@ -1,6 +1,11 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@/utils/tmp/dummy';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
+
+const description = localize(
+    'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+);
 
 window.Blockly.Blocks.multiplier_take_profit = {
     init() {
@@ -29,22 +34,21 @@ window.Blockly.Blocks.multiplier_take_profit = {
             colourTertiary: window.Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize(
-                'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
+            tooltip: description,
             category: window.Blockly.Categories.Trade_Definition,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
-            display_name: localize('Take Profit'),
-            description: localize(
-                'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
-            ),
+            display_name: localize('Take Profit (Multiplier)'),
+            description,
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
         if (

@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 import { minusIconDark, plusIconDark } from '../images';
 
 window.Blockly.Blocks.controls_if = {
@@ -47,6 +48,9 @@ window.Blockly.Blocks.controls_if = {
             tooltip: localize('Conditional block'),
             category: window.Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {
@@ -225,9 +229,7 @@ window.Blockly.Blocks.controls_if = {
         );
 
         this.initSvg();
-        // kept this commented to fix backward compatibility issue
-        // need to fix this for mutliplier block
-        this.renderEfficiently();
+        this.queueRender();
     },
     storeConnections(arg = 0) {
         this.value_connections = [null];
@@ -259,16 +261,23 @@ window.Blockly.Blocks.controls_if = {
             const value_connection = value_connections[i];
             const statement_connection = statement_connections[i];
 
-            if (value_connection && this.getInput(input_names.IF)) {
-                window.Blockly.Mutator.reconnect(value_connection, this, input_names.IF);
+            const if_input = this.getInput(input_names.IF);
+            if (value_connection && if_input) {
+                if_input.connection.disconnect();
+                if_input.connection.connect(value_connection);
             }
-            if (statement_connection && this.getInput(input_names.DO)) {
-                window.Blockly.Mutator.reconnect(statement_connection, this, input_names.DO);
+
+            const do_input = this.getInput(input_names.DO);
+            if (statement_connection && do_input) {
+                do_input.connection.disconnect();
+                do_input.connection.connect(statement_connection);
             }
         }
 
-        if (else_statement_connection && this.getInput('ELSE')) {
-            window.Blockly.Mutator.reconnect(else_statement_connection, this, 'ELSE');
+        const else_input = this.getInput('ELSE');
+        if (else_statement_connection && else_input) {
+            else_input.connection.disconnect();
+            else_input.connection.connect(else_statement_connection);
         }
     },
     modifyElse(is_add) {

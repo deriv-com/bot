@@ -251,8 +251,10 @@ export default class TransactionsStore {
         });
     }
 
-    recoverPendingContractsById(contract_id: number, contract: ProposalOpenContract | null = null) {
-        const positions = this.core.portfolio.positions;
+    async recoverPendingContractsById(contract_id: number, contract: ProposalOpenContract | null = null) {
+        // TODO: need to fix as the portfolio is not available now
+        // const positions = this.core.portfolio.positions;
+        const positions: unknown[] = [];
 
         if (contract) {
             this.is_called_proposal_open_contract = true;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
-import { Icon, Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@/utils/tmp/dummy';
+import { LabelPairedBarsFilterCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { TJournalToolsProps } from '../journal.types';
 import FilterDialog from './filter-dialog';
@@ -23,7 +24,7 @@ const JournalTools = ({
                     <Text size='sm' weight='normal' className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
                     </Text>
-                    <Icon icon='IcFilter' size={16} />
+                    <LabelPairedBarsFilterCaptionFillIcon height='16px' width='16px' />
                 </div>
             </div>
             <CSSTransition

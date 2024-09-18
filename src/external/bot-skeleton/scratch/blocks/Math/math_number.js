@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.math_number = {
     init() {
@@ -25,6 +26,9 @@ window.Blockly.Blocks.math_number = {
             tooltip: localize('Please use `.` as a decimal separator for fractional numbers.'),
             category: window.Blockly.Categories.Mathematical,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

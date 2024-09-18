@@ -15,6 +15,7 @@ import {
     DerivLightMyComputerIcon,
     DerivLightQuickStrategyIcon,
 } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -24,9 +25,9 @@ type TCardProps = {
 };
 
 type TCardArray = {
-    type: string;
-    icon: string;
-    content: string;
+    id: string;
+    icon: React.ReactElement;
+    content: React.ReactElement;
     method: () => void;
 };
 
@@ -52,33 +53,33 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
 
     const actions: TCardArray[] = [
         {
-            type: 'my-computer',
+            id: 'my-computer',
             icon: is_mobile ? (
                 <DerivLightLocalDeviceIcon height='48px' width='48px' />
             ) : (
                 <DerivLightMyComputerIcon height='48px' width='48px' />
             ),
-            content: is_mobile ? localize('Local') : localize('My computer'),
+            content: is_mobile ? <Localize i18n_default_text='Local' /> : <Localize i18n_default_text='My computer' />,
             method: openFileLoader,
         },
         {
-            type: 'google-drive',
+            id: 'google-drive',
             icon: <DerivLightGoogleDriveIcon height='48px' width='48px' />,
-            content: localize('Google Drive'),
+            content: <Localize i18n_default_text='Google Drive' />,
             method: openGoogleDriveDialog,
         },
         {
-            type: 'bot-builder',
+            id: 'bot-builder',
             icon: <DerivLightBotBuilderIcon height='48px' width='48px' />,
-            content: localize('Bot Builder'),
+            content: <Localize i18n_default_text='Bot builder' />,
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
             },
         },
         {
-            type: 'quick-strategy',
+            id: 'quick-strategy',
             icon: <DerivLightQuickStrategyIcon height='48px' width='48px' />,
-            content: localize('Quick strategy'),
+            content: <Localize i18n_default_text='Quick strategy' />,
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
@@ -100,10 +101,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method } = icons;
+                        const { icon, content, method, id } = icons;
                         return (
                             <div
-                                key={content}
+                                key={id}
                                 className={classNames('tab__dashboard__table__block', {
                                     'tab__dashboard__table__block--minimized': has_dashboard_strategies && is_mobile,
                                 })}
@@ -115,7 +116,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     width='8rem'
                                     height='8rem'
                                     icon={icon}
-                                    id={icon}
+                                    id={id}
                                     onClick={() => {
                                         method();
                                     }}

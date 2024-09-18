@@ -1,4 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
+import { modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_restartonerror = {
     init() {
@@ -8,9 +9,10 @@ window.Blockly.Blocks.trade_definition_restartonerror = {
             }),
             args0: [
                 {
-                    type: 'field_image_checkbox',
+                    type: 'field_checkbox',
                     name: 'RESTARTONERROR',
                     checked: true,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
@@ -25,11 +27,14 @@ window.Blockly.Blocks.trade_definition_restartonerror = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
         this.enforceLimitations();
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['RESTARTONERROR'],

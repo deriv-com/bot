@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.text_trim = {
     init() {
@@ -31,6 +31,9 @@ window.Blockly.Blocks.text_trim = {
             tooltip: localize('Trims spaces'),
             category: window.Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
     meta() {
         return {

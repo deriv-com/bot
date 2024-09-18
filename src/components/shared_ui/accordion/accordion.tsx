@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { usePrevious } from '@/hooks/use-previous';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedMinusCaptionRegularIcon, LabelPairedPlusCaptionRegularIcon } from '@deriv/quill-icons';
 import { TAccordionProps } from '../types';
 
-const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) => {
+const Accordion = ({ className, list }: TAccordionProps) => {
     const [open_idx, setOpenIdx] = React.useState<number | null>(null);
 
     const prev_list = usePrevious(list);
@@ -34,9 +34,9 @@ const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) 
                         {item.header}
                         <div className='dc-accordion__item-header-icon-wrapper'>
                             {open_idx === idx ? (
-                                <Icon icon={icon_open || 'IcMinus'} className='dc-accordion__item-header-icon' />
+                                <LabelPairedMinusCaptionRegularIcon className='dc-accordion__item-header-icon' />
                             ) : (
-                                <Icon icon={icon_close || 'IcAdd'} className='dc-accordion__item-header-icon' />
+                                <LabelPairedPlusCaptionRegularIcon className='dc-accordion__item-header-icon' />
                             )}
                         </div>
                     </div>

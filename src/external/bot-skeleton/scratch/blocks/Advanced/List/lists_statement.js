@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { minusIconDark } from '../../images';
 
 window.Blockly.Blocks.lists_statement = {
@@ -35,7 +35,7 @@ window.Blockly.Blocks.lists_statement = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -45,7 +45,7 @@ window.Blockly.Blocks.lists_statement = {
         });
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -81,6 +81,9 @@ window.Blockly.Blocks.lists_statement = {
                 }
             }
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 

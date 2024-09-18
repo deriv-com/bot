@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { LogTypes } from '../../../../../constants/messages';
 import { observer as globalObserver } from '../../../../../utils/observer';
-import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
+import { loadBlocksFromRemote, modifyContextMenu, runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.loader = {
     init() {
@@ -26,6 +26,9 @@ window.Blockly.Blocks.loader = {
             category: window.Blockly.Categories.Miscellaneous,
         };
     },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
+    },
     meta() {
         return {
             display_name: localize('Loads from URL'),
@@ -35,7 +38,7 @@ window.Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 

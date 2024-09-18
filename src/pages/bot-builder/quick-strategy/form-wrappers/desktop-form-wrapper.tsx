@@ -2,11 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
+import Button from '@/components/shared_ui/button';
+import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Button, Text } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
 import {
     rudderStackSendQsEditStrategyEvent,
     rudderStackSendQsRunStrategyEvent,
@@ -78,7 +79,9 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
             <div className='qs'>
                 <div className='qs__head'>
                     <div className='qs__head__title'>
-                        <Text weight='bold'>{localize('Quick Strategy')}</Text>
+                        <Text weight='bold'>
+                            <Localize i18n_default_text='Quick strategy' />
+                        </Text>
                     </div>
                     <div className='qs__head__action'>
                         <span
@@ -98,7 +101,9 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                 <div className='qs__body'>
                     <div className='qs__body__sidebar'>
                         <div className='qs__body__sidebar__subtitle'>
-                            <Text size='xs'>{localize('Choose a template below and set your trade parameters.')}</Text>
+                            <Text size='xs'>
+                                <Localize i18n_default_text='Choose a template below and set your trade parameters.' />
+                            </Text>
                         </div>
                         <div className='qs__body__sidebar__items'>
                             <ul>
@@ -138,19 +143,18 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                         </ThemedScrollbars>
                         {activeTab === 'TRADE_PARAMETERS' && (
                             <div className='qs__body__content__footer'>
-                                <Button secondary disabled={!isValid} onClick={onEdit}>
-                                    {localize('Edit')}
+                                <Button disabled={!isValid} onClick={onEdit}>
+                                    <Localize i18n_default_text='Edit' />
                                 </Button>
                                 <Button
                                     data-testid='qs-run-button'
-                                    primary
                                     onClick={e => {
                                         e.preventDefault();
                                         onRun();
                                     }}
                                     disabled={!isValid}
                                 >
-                                    {localize('Run')}
+                                    <Localize i18n_default_text='Run' />
                                 </Button>
                             </div>
                         )}

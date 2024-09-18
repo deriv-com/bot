@@ -21,7 +21,6 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
                 }}
                 data-testid='btn-user-guide'
             >
-                {/* <Icon className='user-guide__icon' icon='IcUserGuide' /> */}
                 <StandaloneMapBoldIcon className='user-guide__icon' height='26px' width='26px' />
                 {!is_mobile && (
                     <Text size='sm' className='user-guide__label'>

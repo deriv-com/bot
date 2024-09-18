@@ -1,5 +1,5 @@
 import { localize } from '@/utils/tmp/dummy';
-import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { plusIconDark } from '../../images';
 
 window.Blockly.Blocks.lists_create_with = {
@@ -45,7 +45,7 @@ window.Blockly.Blocks.lists_create_with = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyout_) {
+        if (this.workspace.options.readOnly || window.Blockly.derivWorkspace.isFlyoutVisible) {
             return;
         }
 
@@ -61,7 +61,7 @@ window.Blockly.Blocks.lists_create_with = {
         });
     },
     onchange(event) {
-        if (!this.workspace || window.Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
+        if (!this.workspace || window.Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
 
@@ -76,6 +76,9 @@ window.Blockly.Blocks.lists_create_with = {
                 }
             });
         }
+    },
+    customContextMenu(menu) {
+        modifyContextMenu(menu);
     },
 };
 
