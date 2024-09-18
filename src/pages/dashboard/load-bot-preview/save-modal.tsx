@@ -59,7 +59,7 @@ const SaveModalForm = ({
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
-                            <Text size='xs' LineHeight='lg'>
+                            <Text size='xs' lineHeight='lg'>
                                 {localize(
                                     'Enter your bot name, choose to save on your computer or Google Drive, and hit '
                                 )}

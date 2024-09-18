@@ -201,7 +201,7 @@ const Popover = ({
                                             {message}
                                         </Text>
                                     )) || (
-                                        <Text LineHeight='md' size='xxs' className='dc-popover__bubble__text'>
+                                        <Text lineHeight='md' size='xxs' className='dc-popover__bubble__text'>
                                             {message}
                                         </Text>
                                     )}
