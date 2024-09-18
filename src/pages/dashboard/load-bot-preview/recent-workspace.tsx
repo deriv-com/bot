@@ -152,13 +152,13 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         >
             <div className='bot-list__item__label'>
                 <div className='text-wrapper' title={workspace.name}>
-                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                    <Text align='left' as='p' size={text_size} lineHeight='lg'>
                         {workspace.name}
                     </Text>
                 </div>
             </div>
             <div className='bot-list__item__time-stamp'>
-                <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                <Text align='left' as='p' size={text_size} lineHeight='lg'>
                     {timeSince(workspace.timestamp)}
                 </Text>
             </div>
@@ -170,7 +170,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     })}
                 />
                 <div className='bot-list__item__load-type__icon--saved'>
-                    <Text align='left' as='p' size={text_size} LineHeight='lg'>
+                    <Text align='left' as='p' size={text_size} lineHeight='lg'>
                         {getSaveType(workspace.save_type)}
                     </Text>
                 </div>

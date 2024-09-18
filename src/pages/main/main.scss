@@ -58,13 +58,12 @@
                 @include mobile {
                     overflow-x: auto;
                     overflow-y: hidden;
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
 
                     &::-webkit-scrollbar {
                         display: none;
                     }
-
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
                 }
 
                 &--header {
@@ -156,13 +155,13 @@
     }
 
     &__run-strategy-wrapper {
-        @include desktop {
-            position: absolute;
-        }
-
         inset-inline-end: 1.6rem;
         top: 1.6rem;
         z-index: 2;
+
+        @include desktop {
+            position: absolute;
+        }
 
         .animation {
             &__button {
@@ -216,14 +215,14 @@
                 flex-wrap: unset;
 
                 .dc-dialog__button {
-                    &:first-child {
-                        margin-right: 1rem;
-                    }
-
                     padding: 0;
                     width: 40%;
                     min-width: unset;
                     flex-basis: unset;
+
+                    &:first-child {
+                        margin-right: 1rem;
+                    }
                 }
             }
         }
@@ -315,13 +314,13 @@
     }
 
     &__run-strategy-wrapper {
-        @include desktop {
-            position: absolute;
-        }
-
         inset-inline-end: 1.6rem;
         top: 1.6rem;
         z-index: 2;
+
+        @include desktop {
+            position: absolute;
+        }
 
         .animation {
             &__button {

@@ -48,7 +48,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                             <Text
                                 as='p'
                                 color='prominent'
-                                LineHeight='sm'
+                                lineHeight='sm'
                                 size='md'
                                 className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                             >
