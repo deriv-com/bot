@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite';
 import SelectNative from '@/components/shared_ui/select-native';
 import { useStore } from '@/hooks/useStore';
 import {
-    LabelPairedArrowLeftCaptionFillIcon,
-    LabelPairedSearchCaptionRegularIcon,
+    LabelPairedArrowLeftSmRegularIcon,
+    LabelPairedSearchSmRegularIcon,
     LegacyCloseCircle1pxBlackIcon,
 } from '@deriv/quill-icons';
 import SearchInput from './common/search-input';
@@ -84,7 +84,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                 })}
                 data-testid={showSearchBar ? 'id-search-visible' : 'id-search-hidden'}
             >
-                <LabelPairedArrowLeftCaptionFillIcon
+                <LabelPairedArrowLeftSmRegularIcon
                     onClick={onClickBackButton}
                     data-testid='id-arrow-left-bold'
                     className='arrow-left-bold'
@@ -95,9 +95,8 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                     prev_active_tutorials={prev_active_tutorials}
                 />
                 {search && (
-                    <LabelPairedSearchCaptionRegularIcon
-                        height='20px'
-                        width='20px'
+                    <LegacyCloseCircle1pxBlackIcon
+                        iconSize='xs'
                         className='close-icon'
                         data-testid='id-test-search'
                         onClick={onCloseHandleSearch}
@@ -122,12 +121,10 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                         scrollToTop();
                     }}
                 />
-                <LegacyCloseCircle1pxBlackIcon
-                    height='18px'
-                    width='18px'
-                    onClick={onHandleChangeMobile}
+                <LabelPairedSearchSmRegularIcon
                     className='search-icon'
                     data-testid='search-icon'
+                    onClick={onHandleChangeMobile}
                 />
             </div>
             <div

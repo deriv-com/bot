@@ -5,7 +5,7 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { removeKeyValue } from '@/utils/settings';
-import { LabelPairedPlayCaptionFillIcon } from '@deriv/quill-icons';
+import { LegacyPlay1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 
@@ -135,10 +135,10 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                 }}
                                             >
                                                 <div className='tutorials-wrap__placeholder__button-group'>
-                                                    <LabelPairedPlayCaptionFillIcon
+                                                    <LegacyPlay1pxIcon
                                                         className='tutorials-wrap__placeholder__button-group--play'
-                                                        width='36px'
-                                                        height='36px'
+                                                        width='42px'
+                                                        height='42px'
                                                         onClick={() =>
                                                             showVideoDialog({
                                                                 type: 'url',

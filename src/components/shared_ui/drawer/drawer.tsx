@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedChevronUpLgBoldIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {
@@ -81,7 +81,7 @@ const Drawer = ({
                         })}
                     />
                 ) : (
-                    <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
+                    <LabelPairedChevronUpLgBoldIcon className='dc-drawer__toggle-icon' />
                 )}
             </div>
             <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: isDesktop })}>

@@ -98,12 +98,6 @@
             &--right {
                 transform: rotate(180deg);
             }
-
-            @include mobile-or-tablet-screen {
-                width: 2.5rem;
-                height: 0.8rem;
-                transform: rotate(0);
-            }
         }
 
         &--open > &-icon {

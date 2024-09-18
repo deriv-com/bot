@@ -2,19 +2,16 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { getRecentFileIcon } from '@/components/load-modal/recent-workspace';
-import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
-import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
 import { useComponentVisibility } from '@/hooks/useComponentVisibility';
 import { useStore } from '@/hooks/useStore';
-import { waitForDomElement } from '@/utils/dom-observer';
 import {
-    LabelPairedCircleArrowRightCaptionRegularIcon,
-    LabelPairedFloppyDiskCaptionRegularIcon,
-    LabelPairedTrashCaptionRegularIcon,
+    LabelPairedPageCircleArrowRightSmRegularIcon,
+    LabelPairedTrashSmRegularIcon,
     LegacyMenuDots1pxIcon,
+    LegacySave1pxIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -24,17 +21,17 @@ import './index.scss';
 export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
-        icon: <LabelPairedCircleArrowRightCaptionRegularIcon height='24px' width='24px' />,
+        icon: <LabelPairedPageCircleArrowRightSmRegularIcon />,
         label: <Localize i18n_default_text='Open' />,
     },
     {
         type: STRATEGY.SAVE,
-        icon: <LabelPairedFloppyDiskCaptionRegularIcon height='24px' width='24px' />,
+        icon: <LegacySave1pxIcon iconSize='xs' />,
         label: <Localize i18n_default_text='Save' />,
     },
     {
         type: STRATEGY.DELETE,
-        icon: <LabelPairedTrashCaptionRegularIcon height='24px' width='24px' />,
+        icon: <LabelPairedTrashSmRegularIcon />,
         label: <Localize i18n_default_text='Delete' />,
     },
 ];
@@ -47,7 +44,7 @@ type TRecentWorkspace = {
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { dashboard, load_modal, save_modal } = useStore();
-    const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
+    const { setActiveTab } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
         dashboard_strategies = [],
@@ -55,11 +52,9 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         getSelectedStrategyID,
         loadFileFromRecent,
         onToggleDeleteDialog,
-        previewRecentStrategy,
         previewed_strategy_id,
         selected_strategy_id,
         setSelectedStrategyId,
-        setPreviewedStrategyId,
     } = load_modal;
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
@@ -91,27 +86,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId(workspace.id);
     };
 
-    const handleInit = () => {
-        setPreviewedStrategyId(workspace?.id);
-        // Fires for desktop
-        if (active_tab === 0) {
-            previewRecentStrategy(workspace.id);
-        }
-    };
-
-    const handlePreviewList = () => {
-        setPreviewedStrategyId(workspace.id);
-        // Fires for mobile on clicking preview button
-        if (!isDesktop) {
-            setPreviewOnDialog(true);
-            const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
-            waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {
-                previewRecentStrategy(workspace.id);
-            });
-        }
-    };
-
-    const handleEdit = async () => {
+    const handleOpen = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
@@ -125,18 +100,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId(workspace.id);
 
         switch (type) {
-            case STRATEGY.INIT:
-                // Fires for desktop preview
-                handleInit();
-                break;
-
-            case STRATEGY.PREVIEW_LIST:
-                // Fires for mobile preview
-                handlePreviewList();
-                break;
-
-            case STRATEGY.EDIT:
-                await handleEdit();
+            case STRATEGY.OPEN:
+                await handleOpen();
                 break;
 
             case STRATEGY.SAVE:
@@ -191,7 +156,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     </Text>
                 </div>
             </div>
-            <DesktopWrapper>
+            {isDesktop ? (
                 <div className='bot-list__item__actions'>
                     {CONTEXT_MENU.map(item => (
                         <div
@@ -206,36 +171,42 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                         </div>
                     ))}
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='bot-list__item__actions'>
-                    <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
-                        <LegacyMenuDots1pxIcon height='20px' width='20px' />
-                    </button>
-                </div>
-                <div
-                    className={classnames('bot-list__item__responsive', {
-                        'bot-list__item__responsive--active': is_active_mobile,
-                        'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
-                    })}
-                >
-                    {CONTEXT_MENU.map(item => (
-                        <div
-                            key={item.type}
-                            className='bot-list__item__responsive__menu'
-                            onClick={e => {
-                                e.stopPropagation();
-                                viewRecentStrategy(item.type);
-                            }}
-                        >
-                            <div>{item.icon}</div>
-                            <Text color='prominent' className='bot-list__item__responsive__menu__item' as='p' size='xs'>
-                                {item.label}
-                            </Text>
-                        </div>
-                    ))}
-                </div>
-            </MobileWrapper>
+            ) : (
+                <>
+                    <div className='bot-list__item__actions'>
+                        <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
+                            <LegacyMenuDots1pxIcon height='20px' width='20px' />
+                        </button>
+                    </div>
+                    <div
+                        className={classnames('bot-list__item__responsive', {
+                            'bot-list__item__responsive--active': is_active_mobile,
+                            'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
+                        })}
+                    >
+                        {CONTEXT_MENU.map(item => (
+                            <div
+                                key={item.type}
+                                className='bot-list__item__responsive__menu'
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    viewRecentStrategy(item.type);
+                                }}
+                            >
+                                <div>{item.icon}</div>
+                                <Text
+                                    color='prominent'
+                                    className='bot-list__item__responsive__menu__item'
+                                    as='p'
+                                    size='xs'
+                                >
+                                    {item.label}
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 });

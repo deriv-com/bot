@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import ContractResultOverlay from '@/components/contract-result-overlay';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedPlayCaptionFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
+import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 import CircularWrapper from './circular-wrapper';
@@ -74,14 +74,14 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 id: 'db-animation__stop-button',
                 class: 'animation__stop-button',
                 text: <Localize i18n_default_text='Stop' />,
-                icon: <LabelPairedSquareLgFillIcon height='26px' width='26px' fill='#fff' />,
+                icon: <LabelPairedSquareLgFillIcon fill='#fff' />,
             };
         }
         return {
             id: 'db-animation__run-button',
             class: 'animation__run-button',
             text: <Localize i18n_default_text='Run' />,
-            icon: <LabelPairedPlayCaptionFillIcon height='26px' width='26px' fill='#fff' />,
+            icon: <LabelPairedPlayLgFillIcon fill='#fff' />,
         };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
