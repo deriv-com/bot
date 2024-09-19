@@ -137,18 +137,11 @@
                 @include flex-center;
 
                 svg {
-                    width: 1.6rem;
-                    height: 1.6rem;
                     padding-inline-end: 0;
                     margin-inline-end: 0.8rem;
 
                     @include mobile-or-tablet-screen {
-                        margin-inline-end: 0.2rem;
-
-                        // gave this -ve margin becaues we cannot
-                        // overwrite the default core padding which
-                        // will make the icon bigger
-                        margin-top: -0.5rem;
+                        margin-inline-end: 0.4rem;
                     }
                 }
 

@@ -13,6 +13,12 @@ import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
+import {
+    LabelPairedChartLineCaptionRegularIcon,
+    LabelPairedObjectsColumnCaptionRegularIcon,
+    LabelPairedPuzzlePieceTwoCaptionBoldIcon,
+    LegacyGuide1pxIcon,
+} from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
 import Chart from '../chart';
@@ -153,12 +159,33 @@ const AppWrapper = observer(() => {
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        <div label={<Localize i18n_default_text='Dashboard' />} id='id-dbot-dashboard'>
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Dashboard' />
+                                </>
+                            }
+                            id='id-dbot-dashboard'
+                        >
                             <Dashboard handleTabChange={handleTabChange} />
                         </div>
-                        <div label={<Localize i18n_default_text='Bot Builder' />} id='id-bot-builder' />
                         <div
-                            label={<Localize i18n_default_text='Charts' />}
+                            label={
+                                <>
+                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Bot Builder' />
+                                </>
+                            }
+                            id='id-bot-builder'
+                        />
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Charts' />
+                                </>
+                            }
                             id={
                                 is_chart_modal_visible || is_trading_view_modal_visible
                                     ? 'id-charts--disabled'
@@ -167,7 +194,15 @@ const AppWrapper = observer(() => {
                         >
                             <Chart />
                         </div>
-                        <div label={<Localize i18n_default_text='Tutorials' />} id='id-tutorials'>
+                        <div
+                            label={
+                                <>
+                                    <LegacyGuide1pxIcon height='16px' width='16px' />
+                                    <Localize i18n_default_text='Tutorials' />
+                                </>
+                            }
+                            id='id-tutorials'
+                        >
                             <div className='tutorials-wrapper'>
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>
