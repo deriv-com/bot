@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import Text from '@/components/shared_ui/text';
 import { Localize } from '@/utils/tmp/dummy';
 import { LabelPairedCircleCheckMdRegularIcon, LabelPairedCircleXmarkMdRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
 
 type TContractResultOverlayProps = {
     profit: number;

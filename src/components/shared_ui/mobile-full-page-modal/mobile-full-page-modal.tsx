@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import Text from '@/components/shared_ui/text';
 import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay';
@@ -89,7 +89,7 @@ const MobileFullPageModal = ({
                         {renderPageHeader && renderPageHeader()}
                         <div className='dc-mobile-full-page-modal__header-text'>
                             {renderPageHeaderElement ?? (
-                                <Text as='p' color='prominent' LineHeight='md' size='sm' weight='bold'>
+                                <Text as='p' color='prominent' lineHeight='m' size='s' weight='bold'>
                                     {page_header_text}
                                 </Text>
                             )}

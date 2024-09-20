@@ -4,6 +4,7 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {
@@ -43,8 +44,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
 };
 
 const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { dashboard } = useStore();
     const { faq_title, setFaqTitle } = dashboard;
 
@@ -104,13 +104,13 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                     className='faq__title'
                     weight='bold'
                     key={title}
-                    size={is_desktop ? 's' : 'xs'}
+                    size={isDesktop ? 's' : 'xs'}
                 >
                     {title}
                 </Text>
             ),
             content: description?.map((item, index) => (
-                <FAQ {...item} is_mobile={!is_desktop} key={`faq-description-item-${item?.content}-${index}`} />
+                <FAQ {...item} is_mobile={!isDesktop} key={`faq-description-item-${item?.content}-${index}`} />
             )),
         }));
     };
@@ -126,7 +126,7 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
                                 lineHeight='xl'
                                 className='faq__wrapper__header'
                                 weight='bold'
-                                size={is_desktop ? 's' : 'xs'}
+                                size={isDesktop ? 's' : 'xs'}
                             >
                                 <Localize i18n_default_text='FAQ' />
                             </Text>

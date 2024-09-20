@@ -7,6 +7,7 @@ import Modal from '@/components/shared_ui/modal';
 import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
@@ -195,8 +196,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
 const QuickStrategy = observer(() => {
     const { quick_strategy } = useStore();
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { is_open, setFormVisibility, form_data, selected_strategy } = quick_strategy;
 
     const active_tab_ref = useRef<HTMLDivElement>(null);
@@ -223,7 +223,7 @@ const QuickStrategy = observer(() => {
         <FormikWrapper>
             <FormikForm>
                 <LossThresholdWarningDialog />
-                {is_desktop ? (
+                {isDesktop ? (
                     <Modal className='modal--strategy' is_open={is_open} width='72rem'>
                         <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
                             <Form />

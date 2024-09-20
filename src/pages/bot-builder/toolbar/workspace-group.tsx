@@ -1,18 +1,20 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
 import {
-    LabelPairedChartLineLgRegularIcon,
-    LabelPairedFloppyDiskLgRegularIcon,
-    LabelPairedFolderOpenLgRegularIcon,
-    LabelPairedMagnifyingGlassMinusLgRegularIcon,
-    LabelPairedMagnifyingGlassPlusLgRegularIcon,
-    LabelPairedObjectsAlignLeftCaptionRegularIcon,
-    LegacyRefresh1pxIcon,
-    LegacyTradeTypeLookbacksIcon,
+    LabelPairedArrowRotateLeftMdRegularIcon,
+    LabelPairedArrowRotateRightMdRegularIcon,
+    LabelPairedArrowsRotateMdRegularIcon,
+    LabelPairedChartLineMdRegularIcon,
+    LabelPairedChartTradingviewMdRegularIcon,
+    LabelPairedFloppyDiskMdRegularIcon,
+    LabelPairedFolderOpenMdRegularIcon,
+    LabelPairedMagnifyingGlassMinusMdRegularIcon,
+    LabelPairedMagnifyingGlassPlusMdRegularIcon,
+    LabelPairedObjectsAlignLeftMdRegularIcon,
 } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import ToolbarIcon from './toolbar-icon';
 
 const WorkspaceGroup = observer(() => {
@@ -21,6 +23,7 @@ const WorkspaceGroup = observer(() => {
     const { has_redo_stack, has_undo_stack, onResetClick, onSortClick, onUndoClick, onZoomInOutClick } = toolbar;
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
+    const { isDesktop } = useDevice();
 
     return (
         <div className='toolbar__wrapper'>
@@ -34,7 +37,7 @@ const WorkspaceGroup = observer(() => {
                             onClick={onResetClick}
                             data-testid='dt_toolbar_reset_button'
                         >
-                            <LegacyRefresh1pxIcon height='20px' width='20px' />
+                            <LabelPairedArrowsRotateMdRegularIcon />
                         </span>
                     }
                 />
@@ -50,7 +53,7 @@ const WorkspaceGroup = observer(() => {
                                 toggleLoadModal();
                             }}
                         >
-                            <LabelPairedFolderOpenLgRegularIcon height='24px' width='24px' />
+                            <LabelPairedFolderOpenMdRegularIcon />
                         </span>
                     }
                 />
@@ -63,7 +66,7 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_save_button'
                             onClick={toggleSaveModal}
                         >
-                            <LabelPairedFloppyDiskLgRegularIcon height='26px' width='26px' />
+                            <LabelPairedFloppyDiskMdRegularIcon />
                         </span>
                     }
                 />
@@ -76,37 +79,39 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_sort_button'
                             onClick={onSortClick}
                         >
-                            <LabelPairedObjectsAlignLeftCaptionRegularIcon height='24px' width='24px' />
+                            <LabelPairedObjectsAlignLeftMdRegularIcon />
                         </span>
                     }
                 />
-                <DesktopWrapper>
-                    <div className='vertical-divider' />
-                    <ToolbarIcon
-                        popover_message={localize('Charts')}
-                        icon={
-                            <span
-                                className='toolbar__icon'
-                                id='db-toolbar__charts-button'
-                                onClick={() => setChartModalVisibility()}
-                            >
-                                <LabelPairedChartLineLgRegularIcon height='24px' width='24px' />
-                            </span>
-                        }
-                    />
-                    <ToolbarIcon
-                        popover_message={localize('Trading View Chart')}
-                        icon={
-                            <span
-                                className='toolbar__icon'
-                                id='db-toolbar__tradingview-button'
-                                onClick={() => setTradingViewModalVisibility()}
-                            >
-                                <LabelPairedChartLineLgRegularIcon height='24px' width='24px' />
-                            </span>
-                        }
-                    />
-                </DesktopWrapper>
+                {isDesktop && (
+                    <>
+                        <div className='vertical-divider' />
+                        <ToolbarIcon
+                            popover_message={localize('Charts')}
+                            icon={
+                                <span
+                                    className='toolbar__icon'
+                                    id='db-toolbar__charts-button'
+                                    onClick={() => setChartModalVisibility()}
+                                >
+                                    <LabelPairedChartLineMdRegularIcon />
+                                </span>
+                            }
+                        />
+                        <ToolbarIcon
+                            popover_message={localize('Trading View Chart')}
+                            icon={
+                                <span
+                                    className='toolbar__icon'
+                                    id='db-toolbar__tradingview-button'
+                                    onClick={() => setTradingViewModalVisibility()}
+                                >
+                                    <LabelPairedChartTradingviewMdRegularIcon />
+                                </span>
+                            }
+                        />
+                    </>
+                )}
                 <div className='vertical-divider' />
                 <ToolbarIcon
                     popover_message={localize('Undo')}
@@ -119,7 +124,7 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_undo_button'
                             onClick={() => onUndoClick(/* redo */ false)}
                         >
-                            <LegacyTradeTypeLookbacksIcon height='14px' width='14px' />
+                            <LabelPairedArrowRotateLeftMdRegularIcon />
                         </span>
                     }
                 />
@@ -134,7 +139,7 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_redo_button'
                             onClick={() => onUndoClick(/* redo */ true)}
                         >
-                            <LegacyTradeTypeLookbacksIcon height='14px' width='14px' />
+                            <LabelPairedArrowRotateRightMdRegularIcon />
                         </span>
                     }
                 />
@@ -148,7 +153,7 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_zoom_in_button'
                             onClick={() => onZoomInOutClick(/* in */ true)}
                         >
-                            <LabelPairedMagnifyingGlassPlusLgRegularIcon height='24px' width='24px' />
+                            <LabelPairedMagnifyingGlassPlusMdRegularIcon />
                         </span>
                     }
                 />
@@ -161,7 +166,7 @@ const WorkspaceGroup = observer(() => {
                             data-testid='dt_toolbar_zoom_out_button'
                             onClick={() => onZoomInOutClick(/* in */ false)}
                         >
-                            <LabelPairedMagnifyingGlassMinusLgRegularIcon height='24px' width='24px' />
+                            <LabelPairedMagnifyingGlassMinusMdRegularIcon />
                         </span>
                     }
                 />
@@ -169,4 +174,5 @@ const WorkspaceGroup = observer(() => {
         </div>
     );
 });
+
 export default WorkspaceGroup;

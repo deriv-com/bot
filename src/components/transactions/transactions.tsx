@@ -3,6 +3,8 @@ import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
+import Button from '@/components/shared_ui/button';
+import Text from '@/components/shared_ui/text';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
@@ -10,7 +12,7 @@ import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
 import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import DataList from '../data-list';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 import Transaction from './transaction';
@@ -59,11 +61,10 @@ const TransactionItem = ({ row, is_new_row = false, onClickTransaction, active_t
 
 const Transactions = observer(({ is_drawer_open }: TTransactions) => {
     const [active_transaction_id, setActiveTransactionId] = React.useState<number | null>(null);
-    const { ui } = useStore();
     const { run_panel, transactions } = useStore();
     const { contract_stage } = run_panel;
     const { transactions: transaction_list, toggleTransactionDetailsModal, recoverPendingContracts } = transactions;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         window.addEventListener('click', onClickOutsideTransaction);
@@ -103,8 +104,8 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
     return (
         <div
             className={classnames('transactions', {
-                'run-panel-tab__content': !is_mobile,
-                'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
+                'run-panel-tab__content': isDesktop,
+                'run-panel-tab__content--mobile': !isDesktop && is_drawer_open,
             })}
         >
             <div className='download__container transaction-details__button-container'>
@@ -116,10 +117,7 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                     onClick={() => {
                         toggleTransactionDetailsModal(true);
                     }}
-                    variant='outlined'
-                    color='black'
-                    size='sm'
-                    textSize='sm'
+                    secondary
                 >
                     <Localize i18n_default_text='View Detail' />
                 </Button>
@@ -137,8 +135,8 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
             </div>
             <div
                 className={classnames({
-                    transactions__content: !is_mobile,
-                    'transactions__content--mobile': is_mobile,
+                    transactions__content: isDesktop,
+                    'transactions__content--mobile': !isDesktop,
                 })}
             >
                 <div className='transactions__scrollbar'>
@@ -199,27 +197,27 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                             </div>
                                             <Text
                                                 as='h4'
-                                                size='sm'
+                                                size='xs'
                                                 weight='bold'
                                                 align='center'
                                                 color='less-prominent'
-                                                lineHeight='sm'
+                                                lineHeight='xxs'
                                                 className='transactions-empty__header'
                                             >
                                                 <Localize i18n_default_text='There are no transactions to display' />
                                             </Text>
                                             <div className='transactions-empty__message'>
-                                                <Text size='xs' color='less-prominent' lineHeight='3xl'>
+                                                <Text size='xxs' color='less-prominent'>
                                                     <Localize i18n_default_text='Here are the possible reasons:' />
                                                 </Text>
                                                 <ul className='transactions-empty__list'>
                                                     <li>
-                                                        <Text size='xs' color='less-prominent' lineHeight='3xl'>
+                                                        <Text size='xs' color='less-prominent'>
                                                             <Localize i18n_default_text='The bot is not running' />
                                                         </Text>
                                                     </li>
                                                     <li>
-                                                        <Text size='xs' color='less-prominent' lineHeight='3xl'>
+                                                        <Text size='xs' color='less-prominent'>
                                                             <Localize i18n_default_text='The stats are cleared' />
                                                         </Text>
                                                     </li>

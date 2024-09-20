@@ -6,6 +6,7 @@ import { notification_message } from '@/components/bot-notification/bot-notifica
 import { useStore } from '@/hooks/useStore';
 // import initDatadogLogs from '@/utils/datadog-logs';
 import { localize } from '@/utils/tmp/dummy';
+import { useDevice } from '@deriv-com/ui';
 import { TBlocklyEvents } from 'Types';
 import LoadModal from '../../components/load-modal';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
@@ -14,7 +15,6 @@ import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
-    const { ui } = useStore();
     const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store } = useStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
@@ -22,7 +22,7 @@ const BotBuilder = observer(() => {
     const { is_loading } = blockly_store;
     const is_blockly_listener_registered = React.useRef(false);
     const is_blockly_delete_listener_registered = React.useRef(false);
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
 
@@ -123,7 +123,7 @@ const BotBuilder = observer(() => {
                     </div>
                 )}
             </div>
-            {active_tab === 1 && <BotBuilderTourHandler is_mobile={is_mobile} />}
+            {active_tab === 1 && <BotBuilderTourHandler is_mobile={!isDesktop} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />

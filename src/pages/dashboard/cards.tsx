@@ -16,6 +16,7 @@ import {
     DerivLightQuickStrategyIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -34,8 +35,7 @@ type TCardArray = {
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useStore();
     const { toggleLoadModal, setActiveTabIndex } = load_modal;
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { onCloseDialog, dialog_options, is_dialog_open, setActiveTab, setPreviewOnPopup } = dashboard;
     const { setFormVisibility } = quick_strategy;
 
@@ -130,7 +130,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         );
                     })}
 
-                    {is_desktop ? (
+                    {!isDesktop ? (
                         <Dialog
                             title={dialog_options.title}
                             is_visible={is_dialog_open}

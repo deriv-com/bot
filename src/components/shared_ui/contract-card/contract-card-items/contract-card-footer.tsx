@@ -98,7 +98,7 @@ const CardFooter = ({
                                 as='div'
                                 size='xxxs'
                                 color='less-prominent'
-                                LineHeight='sm'
+                                lineHeight='s'
                                 className='lookbacks--note'
                             >
                                 <Localize

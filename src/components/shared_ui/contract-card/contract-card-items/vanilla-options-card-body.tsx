@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { addComma, getDisplayStatus, isCryptocurrency } from '@/components/shared';
-import { TContractInfo } from '@/components/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
 import ArrowIndicator from '../../arrow-indicator';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';

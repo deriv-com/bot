@@ -9,10 +9,10 @@ import {
     isMultiplierContract,
     pick,
 } from '@/components/shared';
-import { TContractInfo, TContractStore } from '@/components/shared/contract/contract-types';
+import { TContractInfo, TContractStore } from '@/components/shared/utils/contract/contract-types';
 import { Localize } from '@/utils/tmp/dummy';
-import { Button } from '@deriv-com/ui';
 import ArrowIndicator from '../../arrow-indicator';
+import Button from '../../button';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';

@@ -1,6 +1,7 @@
 import React from 'react';
+import Dialog from '@/components/shared_ui/dialog';
+import Text from '@/components/shared_ui/text';
 import { Localize, localize } from '@/utils/tmp/dummy';
-import { Dialog, Text } from '@deriv-com/ui';
 
 export type TStopBotModalContent = {
     is_running: boolean;
@@ -44,28 +45,28 @@ const StopBotModalContent = ({
             >
                 {is_running && is_multiplier ? (
                     <>
-                        <Text as='p' LineHeight='sm' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
+                        <Text as='p' lineHeight='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
-                            <Text weight='bold' as='span' LineHeight='sm' size='xs'>
+                            <Text weight='bold' as='span' lineHeight='s' size='xs'>
                                 <Localize i18n_default_text='Reports' />
                             </Text>
                             <Localize i18n_default_text='page.' />
                         </Text>
-                        <Text as='p' LineHeight='sm' size='xs'>
+                        <Text as='p' lineHeight='s' size='xs'>
                             <Localize i18n_default_text='The Quick Strategy you just created will be loaded to the workspace.' />
                         </Text>
                     </>
                 ) : (
                     <>
-                        <Text as='p' LineHeight='sm' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
+                        <Text as='p' lineHeight='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Stopping the current bot will load the Quick Strategy you just created to the workspace.' />
                         </Text>
-                        <Text as='p' LineHeight='sm' size='xs'>
+                        <Text as='p' lineHeight='s' size='xs'>
                             <Localize i18n_default_text='Any open contracts can be viewed on the ' />
-                            <Text weight='bold' as='span' LineHeight='sm' size='xs'>
+                            <Text weight='bold' as='span' lineHeight='s' size='xs'>
                                 <Localize i18n_default_text='Reports' />
                             </Text>
-                            <Text as='span' LineHeight='sm' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
+                            <Text as='span' lineHeight='s' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
                                 <Localize i18n_default_text='page.' />
                             </Text>
                         </Text>

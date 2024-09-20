@@ -4,10 +4,9 @@ import { observer } from 'mobx-react-lite';
 import ContractResultOverlay from '@/components/contract-result-overlay';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedPlayCaptionFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
+import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
-import { rudderStackSendRunBotEvent } from '../../pages/bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import Button from '../shared_ui/button';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
 
@@ -28,15 +27,16 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         onStopBotClick,
         performSelfExclusionCheck,
     } = run_panel;
-    const { account_status, is_logged_in } = client;
+    const { account_status } = client;
     const cashier_validation = account_status?.cashier_validation;
     const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
-        if (is_logged_in) performSelfExclusionCheck();
-    }, [is_logged_in, performSelfExclusionCheck]);
+        performSelfExclusionCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         if (shouldDisable) {
@@ -61,7 +61,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
             progress_status += 1;
         }
 
-        for (let i = 0; i < progress_status; i++) {
+        for (let i = 0; i < progress_status - 1; i++) {
             status_classes[i] = 'completed';
         }
     }
@@ -72,14 +72,16 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         if (is_stop_button_visible) {
             return {
                 id: 'db-animation__stop-button',
+                class: 'animation__stop-button',
                 text: <Localize i18n_default_text='Stop' />,
-                icon: <LabelPairedSquareLgFillIcon height='26px' width='26px' fill='#fff' />,
+                icon: <LabelPairedSquareLgFillIcon fill='#fff' />,
             };
         }
         return {
             id: 'db-animation__run-button',
+            class: 'animation__run-button',
             text: <Localize i18n_default_text='Run' />,
-            icon: <LabelPairedPlayCaptionFillIcon height='26px' width='26px' fill='#fff' />,
+            icon: <LabelPairedPlayLgFillIcon fill='#fff' />,
         };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
@@ -87,7 +89,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         <div className={classNames('animation__wrapper', className)}>
             <Button
                 is_disabled={is_disabled && !is_unavailable_for_payment_agent}
-                className='animation__button'
+                className={button_props.class}
                 id={button_props.id}
                 icon={button_props.icon}
                 onClick={() => {
@@ -97,7 +99,6 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                         return;
                     }
                     onRunButtonClick();
-                    rudderStackSendRunBotEvent();
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}

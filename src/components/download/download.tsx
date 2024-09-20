@@ -3,7 +3,7 @@ import { useStore } from '@/hooks/useStore';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from '@/utils/download';
 import { localize } from '@/utils/tmp/dummy';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import Button from '../shared_ui/button';
 import Popover from '../shared_ui/popover';
 
 type TDownloadProps = {
@@ -98,10 +98,7 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 disabled={disabled}
                 className='download__button'
                 onClick={clickFunction}
-                variant='outlined'
-                color='black'
-                size='sm'
-                textSize='sm'
+                secondary
             >
                 <Localize i18n_default_text='Download' />
             </Button>

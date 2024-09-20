@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useStore } from '@/hooks/useStore';
+import { useDevice } from '@deriv-com/ui';
 import Accordion from '../../../tutorials/dbot-tours/common/accordion';
 import StrategyDescription from '../descriptions/strategy-description';
 import { TDescription, TDescriptionItem } from '../types';
@@ -38,12 +38,11 @@ const AccordionStrategyGroup = observer(
         expanded_subtitles_storage,
         setExpandedSubtitlesStorage,
     }: TAccordionStrategyGroupProps) => {
-        const { ui } = useStore();
-        const { is_desktop } = ui;
+        const { isDesktop } = useDevice();
         const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
         const font_size: string = React.useMemo<string>(
-            () => (is_desktop ? desktop_font_size : 'xs'),
-            [is_desktop, desktop_font_size]
+            () => (isDesktop ? desktop_font_size : 'xs'),
+            [isDesktop, desktop_font_size]
         );
 
         return (

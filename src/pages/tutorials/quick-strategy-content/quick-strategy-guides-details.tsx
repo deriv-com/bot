@@ -2,12 +2,9 @@ import { KeyboardEvent } from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { useStore } from '@/hooks/useStore';
-import {
-    LabelPairedChevronLeftCaptionRegularIcon,
-    LabelPairedChevronRightCaptionRegularIcon,
-} from '@deriv/quill-icons';
+import { LabelPairedChevronLeftMdFillIcon, LabelPairedChevronRightMdFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
@@ -25,9 +22,8 @@ type TQuickStrategyGuides = {
 
 const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
-        const { ui } = useStore();
-        const { is_desktop } = ui;
-        const text_size = is_desktop ? 's' : 'xs';
+        const { isDesktop } = useDevice();
+        const text_size = isDesktop ? 's' : 'xs';
 
         const scrollToTop = () => {
             const qs_guide = document.querySelector('.tutorials-mobile__qs-guide');
@@ -87,9 +83,9 @@ const QuickStrategyGuidesDetail = observer(
                                     </div>
                                 </div>
                                 {isDbotRTL() ? (
-                                    <LabelPairedChevronLeftCaptionRegularIcon className='tutorials-quick-strategy__placeholder__icon' />
+                                    <LabelPairedChevronLeftMdFillIcon className='tutorials-quick-strategy__placeholder__icon' />
                                 ) : (
-                                    <LabelPairedChevronRightCaptionRegularIcon className='tutorials-quick-strategy__placeholder__icon' />
+                                    <LabelPairedChevronRightMdFillIcon className='tutorials-quick-strategy__placeholder__icon' />
                                 )}
                             </div>
                         ))}

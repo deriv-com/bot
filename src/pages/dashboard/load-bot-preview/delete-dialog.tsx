@@ -2,14 +2,13 @@
 import localForage from 'localforage';
 import LZString from 'lz-string';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv-com/ui';
+import Text from '@/components/shared_ui/text';
 import { TStrategy } from 'Types';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import './delete-dialog.scss';
 import Dialog from '@/components/shared_ui/dialog';
-
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useStore();
@@ -82,13 +81,13 @@ const DeleteDialog = observer(() => {
                 has_close_icon
             >
                 <div>
-                    <Text color='prominent' line_height='s' size='xs'>
+                    <Text color='prominent' lineHeight='s' size='xs'>
                         Your bot will be permanently deleted when you hit
                         <strong> Yes, delete.</strong>
                     </Text>
                 </div>
                 <div>
-                    <Text color='prominent' line_height='xl' size='xs'>
+                    <Text color='prominent' lineHeight='xl' size='xs'>
                         Are you sure you want to delete it?
                     </Text>
                 </div>

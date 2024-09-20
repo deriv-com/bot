@@ -14,11 +14,11 @@ type TIcons = {
 };
 
 export const getRecentFileIcon = (save_type: string, class_name: string = ''): React.ReactElement => {
-    if (!save_type && typeof save_type !== 'string') return <LegacyReportsIcon height='14px' width='14px' />;
+    if (!save_type && typeof save_type !== 'string') return <LegacyReportsIcon iconSize='xs' />;
     const icons: TIcons = {
-        [save_types.UNSAVED]: <LegacyReportsIcon height='14px' width='14px' />,
-        [save_types.LOCAL]: <DerivLightMyComputerIcon height='14px' width='24px' />,
-        [save_types.GOOGLE_DRIVE]: <DerivLightGoogleDriveIcon className={class_name} height='14px' width='14px' />,
+        [save_types.UNSAVED]: <LegacyReportsIcon iconSize='xs' />,
+        [save_types.LOCAL]: <DerivLightMyComputerIcon height='16px' width='16px' />,
+        [save_types.GOOGLE_DRIVE]: <DerivLightGoogleDriveIcon className={class_name} height='16px' width='16px' />,
     };
     return icons[save_type as string] as React.ReactElement;
 };

@@ -5,10 +5,13 @@ import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
-import { Button, Input, Modal } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
+import Button from '../shared_ui/button';
 import Div100vhContainer from '../shared_ui/div100vh-container';
 import FadeWrapper from '../shared_ui/fade-wrapper';
+import Input from '../shared_ui/input';
 import MobileWrapper from '../shared_ui/mobile-wrapper';
+import Modal from '../shared_ui/modal';
 import PageOverlay from '../shared_ui/page-overlay';
 
 const SelfExclusionForm = props => {
@@ -195,8 +198,9 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
     const { ui, client } = useStore();
     const { is_restricted, resetSelfExclusion, initial_values, api_max_losses, run_limit, setRunLimit } =
         self_exclusion;
-    const { is_onscreen_keyboard_active, is_mobile } = ui;
+    const { is_onscreen_keyboard_active } = ui;
     const { is_logged_in, updateSelfExclusion, virtual_account_loginid } = client;
+    const { isDesktop } = useDevice();
 
     const self_exclusion_form_props = {
         is_onscreen_keyboard_active,
@@ -209,12 +213,12 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
         setRunLimit,
         virtual_account_loginid,
         run_limit,
-        is_mobile,
+        isDesktop,
     };
 
     return (
         <>
-            {is_mobile ? (
+            {!isDesktop ? (
                 <FadeWrapper is_visible={is_restricted} className='limits__wrapper' keyname='limitis__wrapper'>
                     <PageOverlay header={localize('Limits')} onClickClose={resetSelfExclusion}>
                         <MobileWrapper>

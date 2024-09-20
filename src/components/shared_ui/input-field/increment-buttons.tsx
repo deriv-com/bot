@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@/utils/tmp/dummy';
-import { Button } from '@deriv-com/ui';
+import Button from '../button';
 
 export type TButtonType = 'button' | 'submit' | 'reset';
 

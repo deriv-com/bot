@@ -5,8 +5,9 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { removeKeyValue } from '@/utils/settings';
-import { LabelPairedPlayCaptionFillIcon } from '@deriv/quill-icons';
+import { LegacyPlay1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 type TGuideList = {
     content?: string;
@@ -25,8 +26,7 @@ type TGuideContent = {
 };
 
 const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: TGuideContent) => {
-    const { ui } = useStore();
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { dashboard } = useStore();
     const {
         dialog_options,
@@ -42,13 +42,13 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
         if (type === 'OnBoard') {
             removeKeyValue('onboard_tour_token');
             setActiveTab(DBOT_TABS.DASHBOARD);
-            if (!is_desktop) setActiveTour('onboarding');
+            if (!isDesktop) setActiveTour('onboarding');
             setTourDialogVisibility(true);
         } else {
             setActiveTab(DBOT_TABS.BOT_BUILDER);
-            if (!is_desktop) setActiveTour('bot_builder');
+            if (!isDesktop) setActiveTour('bot_builder');
             setTourDialogVisibility(true);
-            if (!is_desktop) setShowMobileTourDialog(true);
+            if (!isDesktop) setShowMobileTourDialog(true);
         }
     };
 
@@ -70,7 +70,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                     weight='bold'
                                     color='prominent'
                                     lineHeight='s'
-                                    size={is_desktop ? 's' : 'xs'}
+                                    size={isDesktop ? 's' : 'xs'}
                                 >
                                     <Localize i18n_default_text='Step-by-step guides' />
                                 </Text>
@@ -97,7 +97,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                 align='center'
                                                 color='prominent'
                                                 lineHeight='s'
-                                                size={is_desktop ? 's' : 'xs'}
+                                                size={isDesktop ? 's' : 'xs'}
                                             >
                                                 {content}
                                             </Text>
@@ -116,7 +116,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                     weight='bold'
                                     color='prominent'
                                     lineHeight='s'
-                                    size={is_desktop ? 's' : 'xs'}
+                                    size={isDesktop ? 's' : 'xs'}
                                 >
                                     <Localize i18n_default_text='Videos on Deriv Bot' />
                                 </Text>
@@ -135,10 +135,10 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                 }}
                                             >
                                                 <div className='tutorials-wrap__placeholder__button-group'>
-                                                    <LabelPairedPlayCaptionFillIcon
+                                                    <LegacyPlay1pxIcon
                                                         className='tutorials-wrap__placeholder__button-group--play'
-                                                        width='36px'
-                                                        height='36px'
+                                                        width='42px'
+                                                        height='42px'
                                                         onClick={() =>
                                                             showVideoDialog({
                                                                 type: 'url',
@@ -153,7 +153,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                     align='left'
                                                     color='prominent'
                                                     lineHeight='s'
-                                                    size={is_desktop ? 's' : 'xs'}
+                                                    size={isDesktop ? 's' : 'xs'}
                                                 >
                                                     {content}
                                                 </Text>

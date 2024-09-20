@@ -6,6 +6,7 @@ import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
+import { useDevice } from '@deriv-com/ui';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -30,9 +31,7 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 
 const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useStore();
-    const {
-        ui: { is_desktop },
-    } = useStore();
+    const { isDesktop } = useDevice();
     const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
@@ -74,7 +73,7 @@ const SymbolSelect: React.FC = () => {
     }, [symbols, values.symbol, setInputValue]);
 
     const handleFocus = () => {
-        if (is_desktop && !is_input_started) {
+        if (isDesktop && !is_input_started) {
             setIsInputStarted(true);
             setInputValue({ text: '', value: '' });
         }
@@ -94,7 +93,7 @@ const SymbolSelect: React.FC = () => {
     };
 
     const handleHideDropdownList = () => {
-        if (is_desktop) {
+        if (isDesktop) {
             const selectedSymbol = symbols.find(symbol => symbol.value === values.symbol);
             if (selectedSymbol && selectedSymbol.text !== input_value.text) {
                 setInputValue({ text: selectedSymbol.text, value: selectedSymbol.value });
@@ -115,7 +114,7 @@ const SymbolSelect: React.FC = () => {
                     <>
                         <Autocomplete
                             {...rest_field}
-                            readOnly={!is_desktop}
+                            readOnly={!isDesktop}
                             inputMode='none'
                             data-testid='dt_qs_symbol'
                             autoComplete='off'

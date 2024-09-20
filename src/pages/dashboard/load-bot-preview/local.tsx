@@ -1,17 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
+import Dialog from '@/components/shared_ui/dialog';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-import { Dialog } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import BotPreview from './bot-preview';
-import './recent-workspace.scss';
+import './index.scss';
 
 const LocalComponent = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { load_modal, dashboard } = useStore();
     const { loadFileFromRecent, dashboard_strategies } = load_modal;
     const { setActiveTab, setPreviewOnDialog, has_mobile_preview_loaded } = dashboard;
@@ -47,21 +46,20 @@ const LocalComponent = observer(() => {
                 <div className='load-strategy__recent-preview'>
                     <div
                         className={classNames('load-strategy__title', 'load-strategy__recent-preview-title', {
-                            'load-strategy__title--listed': has_strategies && is_mobile,
+                            'load-strategy__title--listed': has_strategies && !isDesktop,
                         })}
                     >
-                        {!is_mobile && <Localize i18n_default_text='Preview' />}
+                        {isDesktop && <Localize i18n_default_text='Preview' />}
                     </div>
 
-                    {!is_mobile && (
+                    {isDesktop ? (
                         <>
                             <div className='load-strategy__preview-workspace'>
                                 <BotPreview id_ref={el_ref} />
                             </div>
                             <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                         </>
-                    )}
-                    <MobileWrapper>
+                    ) : (
                         <Dialog
                             is_visible={has_mobile_preview_loaded}
                             onCancel={() => setPreviewOnDialog(false)}
@@ -74,7 +72,7 @@ const LocalComponent = observer(() => {
                             <BotPreview id_ref={el_ref} />
                             <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                         </Dialog>
-                    </MobileWrapper>
+                    )}
                 </div>
             </div>
         </div>

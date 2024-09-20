@@ -14,13 +14,13 @@ import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 
 const QuickStrategyForm = observer(() => {
-    const { ui } = useStore();
     const { quick_strategy } = useStore();
     const { selected_strategy, setValue, form_data } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
-    const { is_desktop } = ui;
+    const { isDesktop } = useDevice();
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
 
@@ -74,8 +74,8 @@ const QuickStrategyForm = observer(() => {
                         const key = `${field.name || field.type} + ${field_index}`;
 
                         if (
-                            (!is_desktop && field.hide?.includes('mobile')) ||
-                            (is_desktop && field.hide?.includes('desktop'))
+                            (!isDesktop && field.hide?.includes('mobile')) ||
+                            (isDesktop && field.hide?.includes('desktop'))
                         ) {
                             return null;
                         }
@@ -117,7 +117,7 @@ const QuickStrategyForm = observer(() => {
                                     max = 9;
                                 }
                                 if (should_have?.length) {
-                                    if (!should_enable && (!is_desktop || hide_without_should_have)) {
+                                    if (!should_enable && (!isDesktop || hide_without_should_have)) {
                                         return null;
                                     }
                                     return (

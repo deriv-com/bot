@@ -1,14 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Text from '@/components/shared_ui/text';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
+import { useDevice } from '@deriv-com/ui';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
-import SaveModal from './save-modal';
-import './recent-workspace.scss';
+import './index.scss';
 
 type THeader = {
     label: string;
@@ -34,8 +33,7 @@ const DashboardBotList = observer(() => {
     const { load_modal, dashboard } = useStore();
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const get_first_strategy_info = React.useRef(false);
     const get_instacee = React.useRef(false);
 
@@ -65,7 +63,7 @@ const DashboardBotList = observer(() => {
         <div className='bot-list__container'>
             <div className='bot-list__wrapper'>
                 <div className='bot-list__title'>
-                    <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                    <Text size={isDesktop ? 's' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Your bots:' />
                     </Text>
                 </div>
@@ -73,7 +71,7 @@ const DashboardBotList = observer(() => {
                     {HEADERS.map(({ label, className }) => {
                         return (
                             <div className={className} key={label}>
-                                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                <Text size={isDesktop ? 'xs' : 'xxs'} weight='bold'>
                                     {label}
                                 </Text>
                             </div>
@@ -87,9 +85,6 @@ const DashboardBotList = observer(() => {
                 </div>
             </div>
             <DeleteDialog setStrategies={setDashboardStrategies} />
-            <MobileWrapper>
-                <SaveModal />
-            </MobileWrapper>
         </div>
     );
 });

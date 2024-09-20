@@ -94,7 +94,7 @@ const Accordion = ({
                 })}
                 data-testid='accordion-content'
             >
-                <Text as='span' LineHeight='sm' size={font_size}>
+                <Text as='span' lineHeight='s' size={font_size}>
                     {content}
                 </Text>
             </div>

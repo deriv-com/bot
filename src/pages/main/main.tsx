@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
+import Dialog from '@/components/shared_ui/dialog';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Tabs from '@/components/shared_ui/tabs/tabs';
 import TradingViewModal from '@/components/trading-view-chart/trading-view-modal';
@@ -12,7 +13,13 @@ import { api_base } from '@/external/bot-skeleton/services/api/api-base';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@/utils/tmp/dummy';
-import { Dialog } from '@deriv-com/ui';
+import {
+    LabelPairedChartLineCaptionRegularIcon,
+    LabelPairedObjectsColumnCaptionRegularIcon,
+    LabelPairedPuzzlePieceTwoCaptionBoldIcon,
+    LegacyGuide1pxIcon,
+} from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
@@ -42,8 +49,9 @@ const AppWrapper = observer(() => {
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
     const { ui } = useStore();
-    const { url_hashed_values, is_mobile } = ui;
+    const { url_hashed_values } = ui;
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+    const { isDesktop } = useDevice();
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -76,7 +84,7 @@ const AppWrapper = observer(() => {
 
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
-            if (is_mobile) handleTabChange(Number(active_hash_tab));
+            if (!isDesktop) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
             window.location.hash = hash[active_tab] || hash[0];
@@ -141,7 +149,7 @@ const AppWrapper = observer(() => {
             <div className='main'>
                 <div
                     className={classNames('main__container', {
-                        'main__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
+                        'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop,
                     })}
                 >
                     <Tabs
@@ -151,12 +159,33 @@ const AppWrapper = observer(() => {
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        <div label={<Localize i18n_default_text='Dashboard' />} id='id-dbot-dashboard'>
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Dashboard' />
+                                </>
+                            }
+                            id='id-dbot-dashboard'
+                        >
                             <Dashboard handleTabChange={handleTabChange} />
                         </div>
-                        <div label={<Localize i18n_default_text='Bot Builder' />} id='id-bot-builder' />
                         <div
-                            label={<Localize i18n_default_text='Charts' />}
+                            label={
+                                <>
+                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Bot Builder' />
+                                </>
+                            }
+                            id='id-bot-builder'
+                        />
+                        <div
+                            label={
+                                <>
+                                    <LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' />
+                                    <Localize i18n_default_text='Charts' />
+                                </>
+                            }
                             id={
                                 is_chart_modal_visible || is_trading_view_modal_visible
                                     ? 'id-charts--disabled'
@@ -165,7 +194,15 @@ const AppWrapper = observer(() => {
                         >
                             <Chart />
                         </div>
-                        <div label={<Localize i18n_default_text='Tutorials' />} id='id-tutorials'>
+                        <div
+                            label={
+                                <>
+                                    <LegacyGuide1pxIcon height='16px' width='16px' />
+                                    <Localize i18n_default_text='Tutorials' />
+                                </>
+                            }
+                            id='id-tutorials'
+                        >
                             <div className='tutorials-wrapper'>
                                 <Tutorial handleTabChange={handleTabChange} />
                             </div>

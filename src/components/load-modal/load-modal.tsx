@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { tabs_title } from '@/constants/load-modal';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@/utils/tmp/dummy';
+import { useDevice } from '@deriv-com/ui';
 import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';
 import Modal from '../shared_ui/modal';
@@ -12,7 +13,6 @@ import Recent from './recent';
 import RecentFooter from './recent-footer';
 
 const LoadModal = observer(() => {
-    const { ui } = useStore();
     const { load_modal, dashboard } = useStore();
     const {
         active_index,
@@ -25,10 +25,10 @@ const LoadModal = observer(() => {
         tab_name,
     } = load_modal;
     const { setPreviewOnPopup } = dashboard;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const header_text = localize('Load strategy');
 
-    if (is_mobile) {
+    if (!isDesktop) {
         return (
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}

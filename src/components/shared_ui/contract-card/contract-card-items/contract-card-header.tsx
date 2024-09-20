@@ -8,14 +8,14 @@ import {
     isAccumulatorContract,
     isBot,
     isHighLow,
-    isMobile,
     isMultiplierContract,
     isSmartTraderContract,
     isTurbosContract,
 } from '@/components/shared';
-import { TContractInfo } from '@/components/shared/src/utils/contract/contract-types';
+import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
 import { Icon } from '@/utils/tmp/dummy';
-import { Button } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
+import Button from '../../button';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ProgressSlider from '../../progress-slider';
@@ -68,7 +68,7 @@ const ContractCardHeader = ({
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
-    const is_mobile = isMobile();
+    const { isDesktop } = useDevice();
     const is_turbos = isTurbosContract(contract_type);
     const is_multipliers = isMultiplierContract(contract_type);
     const is_high_low = isHighLow({ shortcode });
@@ -103,7 +103,7 @@ const ContractCardHeader = ({
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--trader': !is_bot,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator': isDesktop && is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader--sold':
                         (is_accumulator || is_turbos || is_multipliers) && is_sold,
                 })}

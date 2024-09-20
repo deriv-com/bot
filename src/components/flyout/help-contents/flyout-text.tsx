@@ -1,4 +1,4 @@
-import { Text } from '@deriv-com/ui';
+import Text from '@/components/shared_ui/text';
 
 const FlyoutText = (props: { text: string }) => {
     const { text } = props;
