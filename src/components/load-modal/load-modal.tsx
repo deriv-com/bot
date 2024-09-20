@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { tabs_title } from '@/constants/load-modal';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';

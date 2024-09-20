@@ -10,8 +10,8 @@ import {
     setColors,
 } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { localize } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 import { TStrategy } from 'Types';
 import RootStore from './root-store';
 

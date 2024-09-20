@@ -7,7 +7,6 @@ import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 import {
     DerivLightBotBuilderIcon,
     DerivLightGoogleDriveIcon,
@@ -15,7 +14,7 @@ import {
     DerivLightMyComputerIcon,
     DerivLightQuickStrategyIcon,
 } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';

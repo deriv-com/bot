@@ -1,14 +1,9 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import {
-    ContentFlag,
-    isEuResidenceWithOnlyVRTC,
-    localize,
-    routes,
-    showDigitalOptionsUnavailableError,
-} from '@/utils/tmp/dummy';
+import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
 
 export default class AppStore {

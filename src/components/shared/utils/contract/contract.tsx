@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { unique } from '../object';
 import { isForwardStarting } from '../shortcode';
 import { capitalizeFirstLetter } from '../string/string_util';
