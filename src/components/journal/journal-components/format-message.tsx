@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { formatMoney, getCurrencyDisplayCode } from '@/components/shared';
 import Text from '@/components/shared_ui/text';
 import { LogTypes } from '@/external/bot-skeleton';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 import { TFormatMessageProps } from '../journal.types';
 
 const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {

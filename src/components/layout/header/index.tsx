@@ -48,10 +48,10 @@ const AppHeader = () => {
                         onClick={() => {
                             window.location.assign('https://app.deriv.com/cashier/deposit');
                         }}
-                        size='md'
+                        size='s'
                         className='deposit-button'
                     >
-                        <Text size='sm' weight='bold'>
+                        <Text size='s' weight='bold'>
                             {localize('Deposit')}
                         </Text>
                     </Button>
@@ -60,7 +60,7 @@ const AppHeader = () => {
         } else {
             return (
                 <Button
-                    size='sm'
+                    size='s'
                     variant='outlined'
                     color='primary-light'
                     onClick={() => {

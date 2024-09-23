@@ -1,4 +1,5 @@
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 
 export const switch_to_tick_chart = {
     key: 'switch_to_tick_chart',

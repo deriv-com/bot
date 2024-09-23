@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 
 const TourEndDialog = observer(() => {
