@@ -55,7 +55,7 @@ const TourEndDialog = observer(() => {
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent' size={isDesktop ? 's' : 'xs'}>
-                        {localize('Congratulations')}
+                        <Localize i18n_default_text='Congratulations' />
                     </Text>
                 </div>
                 <div className='dc-dialog__content__description'>
