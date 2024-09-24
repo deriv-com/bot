@@ -9,9 +9,9 @@ import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
+import CustomNotifications from './custom-notifications';
 import MenuItems from './menu-items';
 import MobileMenu from './mobile-menu';
-import { Notifications } from './notifications';
 import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
@@ -30,7 +30,7 @@ const AppHeader = () => {
         } else if (activeLoginid) {
             return (
                 <>
-                    <Notifications />
+                    <CustomNotifications />
                     {isDesktop && (
                         <Tooltip
                             as='a'

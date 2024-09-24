@@ -2,10 +2,10 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { LegacyNotificationIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Notifications as UINotifications, Tooltip, useDevice } from '@deriv-com/ui';
-import './notifications.scss';
+import { Notifications, Tooltip, useDevice } from '@deriv-com/ui';
+import './custom-notifications.scss';
 
-export const Notifications = () => {
+const CustomNotifications = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { localize } = useTranslations();
     const { isMobile } = useDevice();
@@ -20,7 +20,7 @@ export const Notifications = () => {
             >
                 <LegacyNotificationIcon iconSize='sm' />
             </Tooltip>
-            <UINotifications
+            <Notifications
                 className={clsx('', {
                     'notifications__wrapper--mobile': isMobile,
                     'notifications__wrapper--desktop': !isMobile,
@@ -41,3 +41,5 @@ export const Notifications = () => {
         </div>
     );
 };
+
+export default CustomNotifications;
