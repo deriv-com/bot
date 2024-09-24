@@ -6,7 +6,7 @@ type TBackButton = {
     onClick: () => void;
 };
 
-export const BackButton = ({ buttonText, onClick }: TBackButton) => {
+const BackButton = ({ buttonText, onClick }: TBackButton) => {
     const { isDesktop } = useDevice();
 
     return (
@@ -19,3 +19,5 @@ export const BackButton = ({ buttonText, onClick }: TBackButton) => {
         </button>
     );
 };
+
+export default BackButton;

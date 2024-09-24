@@ -1,7 +1,7 @@
 import { useTranslations } from '@deriv-com/translations';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
-import { MenuItems as items } from '../HeaderConfig';
-import './MenuItems.scss';
+import { MenuItems as items, TRADERS_HUB_LINK_CONFIG } from '../header-config';
+import './menu-items.scss';
 
 export const MenuItems = () => {
     const { localize } = useTranslations();
@@ -29,3 +29,18 @@ export const MenuItems = () => {
         </>
     );
 };
+
+export const TradershubLink = () => (
+    <MenuItem
+        as='a'
+        className='app-header__menu'
+        href={TRADERS_HUB_LINK_CONFIG.href}
+        key={TRADERS_HUB_LINK_CONFIG.label}
+        leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
+    >
+        <Text>{TRADERS_HUB_LINK_CONFIG.label}</Text>
+    </MenuItem>
+);
+
+MenuItems.TradershubLink = TradershubLink;
+export default MenuItems;

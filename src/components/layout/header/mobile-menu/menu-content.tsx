@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
-import { PlatformSwitcher } from '../PlatformSwitcher';
-import { MobileMenuConfig } from './MobileMenuConfig';
+import PlatformSwitcher from '../platform-switcher';
+import useMobileMenuConfig from './use-mobile-menu-config';
 
-export const MenuContent = () => {
+const MenuContent = () => {
     const { isDesktop } = useDevice();
     const textSize = isDesktop ? 'sm' : 'md';
+    const { config } = useMobileMenuConfig();
 
     return (
         <div className='mobile-menu__content'>
@@ -14,7 +15,7 @@ export const MenuContent = () => {
             </div>
 
             <div className='mobile-menu__content__items'>
-                {MobileMenuConfig().map((item, index) => {
+                {config.map((item, index) => {
                     const removeBorderBottom = item.find(({ removeBorderBottom }) => removeBorderBottom);
 
                     return (
@@ -78,3 +79,5 @@ export const MenuContent = () => {
         </div>
     );
 };
+
+export default MenuContent;

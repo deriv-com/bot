@@ -2,7 +2,7 @@ import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MenuHeader } from '../MenuHeader';
+import MenuHeader from '../menu-header';
 
 const mockOpenLanguageSetting = jest.fn();
 
