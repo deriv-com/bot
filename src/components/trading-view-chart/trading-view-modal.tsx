@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import DraggableResizeWrapper from '@/components/draggable/draggable-resize-wrapper';
 import TradingViewComponent from '@/components/trading-view-chart/trading-view';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 const TradingViewModal = observer(() => {
     const { dashboard } = useStore();

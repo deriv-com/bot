@@ -1,8 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import Dialog from '../shared_ui/dialog';
 
 const RoutePromptDialog = observer(() => {
