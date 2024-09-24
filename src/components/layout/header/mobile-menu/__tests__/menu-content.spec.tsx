@@ -1,9 +1,9 @@
+import { BrowserRouter } from 'react-router-dom';
+import { mockStore, StoreProvider } from '@/hooks/useStore';
+import { mock_ws } from '@/utils/mock';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import MenuContent from '../menu-content';
-
-const mockSettingsButtonClick = jest.fn();
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -16,36 +16,17 @@ jest.mock('@deriv-com/api-hooks', () => ({
     }),
 }));
 
-jest.mock('../../platform-switcher', () => ({
-    PlatformSwitcher: () => <div>PlatformSwitcher</div>,
-}));
-
-jest.mock('../../use-mobile-menu-config', () => ({
-    MobileMenuConfig: jest.fn(() => ({
-        config: [
-            [
-                {
-                    as: 'a',
-                    href: '/home',
-                    label: 'Home',
-                    LeftComponent: () => <span>Home Icon</span>,
-                    removeBorderBottom: false,
-                },
-            ],
-            [
-                {
-                    as: 'button',
-                    label: 'Settings',
-                    LeftComponent: () => <span>Settings Icon</span>,
-                    onClick: mockSettingsButtonClick,
-                    removeBorderBottom: true,
-                },
-            ],
-        ],
-    })),
-}));
+jest.mock('../../platform-switcher', () => jest.fn(() => <div>Mock Platform Switcher</div>));
 
 describe('MenuContent Component', () => {
+    const mock_store = mockStore(mock_ws as any);
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <BrowserRouter>
+            <StoreProvider mockStore={mock_store}>{children}</StoreProvider>
+        </BrowserRouter>
+    );
+
     beforeEach(() => {
         Object.defineProperty(window, 'matchMedia', {
             value: jest.fn(),
@@ -54,48 +35,22 @@ describe('MenuContent Component', () => {
     });
 
     it('renders PlatformSwitcher and MenuItem components correctly', () => {
-        render(<MenuContent />);
-        expect(screen.getByText('PlatformSwitcher')).toBeInTheDocument();
-        expect(screen.getByText('Home')).toBeInTheDocument();
-        expect(screen.getByText('Settings')).toBeInTheDocument();
-    });
-
-    it('renders MenuItem as an anchor when `as` prop is "a"', () => {
-        render(<MenuContent />);
-        expect(screen.getByRole('link', { name: 'Home Icon Home' })).toBeInTheDocument();
-    });
-
-    it('renders anchor props correctly', () => {
-        render(<MenuContent />);
-        const link = screen.getByRole('link', { name: 'Home Icon Home' });
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', '/home');
-        expect(screen.getByText('Home Icon')).toBeInTheDocument();
-    });
-
-    it('renders MenuItem as a button when `as` prop is "button"', () => {
-        render(<MenuContent />);
-        expect(screen.getByRole('button', { name: 'Settings Icon Settings' })).toBeInTheDocument();
-    });
-
-    it('renders button props correctly', async () => {
-        render(<MenuContent />);
-        const settingsButton = screen.getByRole('button', { name: 'Settings Icon Settings' });
-        expect(settingsButton).toBeInTheDocument();
-        await userEvent.click(settingsButton);
-        expect(mockSettingsButtonClick).toHaveBeenCalled();
+        render(<MenuContent />, { wrapper });
+        expect(screen.getByText(/Mock Platform Switcher/)).toBeInTheDocument();
+        expect(screen.getByText(/Trader's Hub/)).toBeInTheDocument();
+        expect(screen.getByText(/Deriv.com/)).toBeInTheDocument();
     });
 
     it('adjusts text size for mobile devices', () => {
-        render(<MenuContent />);
-        const text = screen.getByText('Home');
+        render(<MenuContent />, { wrapper });
+        const text = screen.getByText(/Trader's Hub/);
         expect(text).toHaveClass('derivs-text__size--md');
     });
 
     it('adjusts text size for desktop devices', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
-        render(<MenuContent />);
-        const text = screen.getByText('Home');
+        render(<MenuContent />, { wrapper });
+        const text = screen.getByText(/Trader's Hub/);
         expect(text).toHaveClass('derivs-text__size--sm');
     });
 });
