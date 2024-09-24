@@ -4,18 +4,20 @@ import Text from '@/components/shared_ui/text';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
-import { AccountSwitcher } from './AccountSwitcher';
-import { MenuItems } from './MenuItems';
-import { MobileMenu } from './MobileMenu';
-import { Notifications } from './Notifications';
-import { PlatformSwitcher } from './PlatformSwitcher';
-import { AccountsInfoLoader } from './SkeletonLoader';
+import AccountsInfoLoader from './account-info-loader';
+import AccountSwitcher from './account-switcher';
+import CustomNotifications from './custom-notifications';
+import MenuItems from './menu-items';
+import MobileMenu from './mobile-menu';
+import PlatformSwitcher from './platform-switcher';
 import './header.scss';
+
+const { getOauthURL } = URLUtils;
 
 const AppHeader = () => {
     const { isDesktop } = useDevice();
@@ -23,7 +25,6 @@ const AppHeader = () => {
     const { data: activeAccount } = useActiveAccount();
 
     const { localize } = useTranslations();
-    const { getOauthURL } = URLUtils;
 
     const renderAccountSection = () => {
         if (isAuthorizing) {
@@ -31,7 +32,7 @@ const AppHeader = () => {
         } else if (activeLoginid) {
             return (
                 <>
-                    <Notifications />
+                    <CustomNotifications />
                     {isDesktop && (
                         <Tooltip
                             as='a'
@@ -59,16 +60,26 @@ const AppHeader = () => {
             );
         } else {
             return (
-                <Button
-                    size='s'
-                    variant='outlined'
-                    color='primary-light'
-                    onClick={() => {
-                        window.location.assign(getOauthURL());
-                    }}
-                >
-                    {localize('Login')}
-                </Button>
+                <div className='auth-actions'>
+                    <Button
+                        borderWidth='sm'
+                        color='primary-light'
+                        variant='ghost'
+                        onClick={() => {
+                            window.location.assign(getOauthURL());
+                        }}
+                    >
+                        <Localize i18n_default_text='Log in' />
+                    </Button>
+                    <Button
+                        size='md'
+                        onClick={() => {
+                            window.location.assign(getOauthURL());
+                        }}
+                    >
+                        <Localize i18n_default_text='Sign up' />
+                    </Button>
+                </div>
             );
         }
     };
@@ -83,6 +94,7 @@ const AppHeader = () => {
             <Wrapper variant='left'>
                 <AppLogo />
                 <MobileMenu />
+                {isDesktop && <MenuItems.TradershubLink />}
                 {isDesktop && <PlatformSwitcher />}
                 {isDesktop && <MenuItems />}
             </Wrapper>

@@ -5,7 +5,7 @@ import { mock_ws } from '@/utils/mock';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import MobileMenu from '../MobileMenu';
+import MobileMenu from '../mobile-menu';
 
 jest.mock('@/hooks/useModalManager', () => ({
     __esModule: true,

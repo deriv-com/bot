@@ -73,13 +73,14 @@ export const platformsConfig: PlatformsConfig[] = [
     },
 ];
 
+export const TRADERS_HUB_LINK_CONFIG = {
+    as: 'a',
+    href: 'https://app.deriv.com/appstore/traders-hub',
+    icon: <TradershubLogo iconSize='xs' />,
+    label: "Trader's Hub",
+};
+
 export const MenuItems: MenuItemsConfig[] = [
-    {
-        as: 'a',
-        href: 'https://app.deriv.com/appstore/traders-hub',
-        icon: <TradershubLogo iconSize='xs' />,
-        label: "Trader's Hub",
-    },
     {
         as: 'a',
         href: 'https://app.deriv.com/appstore/reports',

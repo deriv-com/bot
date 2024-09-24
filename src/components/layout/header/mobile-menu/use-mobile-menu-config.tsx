@@ -35,7 +35,7 @@ type TMenuConfig = {
     target?: ComponentProps<'a'>['target'];
 }[];
 
-export const MobileMenuConfig = () => {
+const useMobileMenuConfig = () => {
     const { localize } = useTranslations();
     const { logout } = useAuthData();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
@@ -122,5 +122,9 @@ export const MobileMenuConfig = () => {
         ],
     ];
 
-    return menuConfig;
+    return {
+        config: menuConfig,
+    };
 };
+
+export default useMobileMenuConfig;

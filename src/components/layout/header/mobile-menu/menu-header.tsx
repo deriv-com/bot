@@ -8,7 +8,7 @@ type TMenuHeader = {
     openLanguageSetting: ComponentProps<'button'>['onClick'];
 };
 
-export const MenuHeader = ({ hideLanguageSetting, openLanguageSetting }: TMenuHeader) => {
+const MenuHeader = ({ hideLanguageSetting, openLanguageSetting }: TMenuHeader) => {
     const { currentLang, localize } = useTranslations();
     const { isDesktop } = useDevice();
 
@@ -34,3 +34,5 @@ export const MenuHeader = ({ hideLanguageSetting, openLanguageSetting }: TMenuHe
         </div>
     );
 };
+
+export default MenuHeader;
