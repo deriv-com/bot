@@ -85,7 +85,7 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
     );
 };
 
-export const AccountSwitcher = ({ activeAccount }: TAccountSwitcherProps) => {
+const AccountSwitcher = ({ activeAccount }: TAccountSwitcherProps) => {
     return (
         activeAccount && (
             <UIAccountSwitcher activeAccount={activeAccount}>
@@ -99,3 +99,5 @@ export const AccountSwitcher = ({ activeAccount }: TAccountSwitcherProps) => {
         )
     );
 };
+
+export default AccountSwitcher;

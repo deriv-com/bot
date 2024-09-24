@@ -5,10 +5,10 @@ import { useTranslations } from '@deriv-com/translations';
 import { Drawer, MobileLanguagesDrawer, useDevice } from '@deriv-com/ui';
 import NetworkStatus from './../../footer/NetworkStatus';
 import ServerTime from './../../footer/ServerTime';
-import { BackButton } from './BackButton';
-import { MenuContent } from './MenuContent';
-import { MenuHeader } from './MenuHeader';
-import { ToggleButton } from './ToggleButton';
+import BackButton from './back-button';
+import MenuContent from './menu-content';
+import MenuHeader from './menu-header';
+import ToggleButton from './toggle-button';
 import './mobile-menu.scss';
 
 const MobileMenu = () => {

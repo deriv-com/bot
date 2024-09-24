@@ -1,7 +1,7 @@
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BackButton } from '../BackButton';
+import BackButton from '../back-button';
 
 const mockOnClick = jest.fn();
 

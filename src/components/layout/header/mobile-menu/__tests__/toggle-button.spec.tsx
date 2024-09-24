@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ToggleButton } from '../ToggleButton';
+import ToggleButton from '../toggle-button';
 
 const mockOnClick = jest.fn();
 

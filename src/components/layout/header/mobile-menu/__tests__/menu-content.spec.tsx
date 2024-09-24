@@ -1,7 +1,7 @@
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MenuContent } from '../MenuContent';
+import MenuContent from '../menu-content';
 
 const mockSettingsButtonClick = jest.fn();
 
@@ -16,31 +16,33 @@ jest.mock('@deriv-com/api-hooks', () => ({
     }),
 }));
 
-jest.mock('../../PlatformSwitcher', () => ({
+jest.mock('../../platform-switcher', () => ({
     PlatformSwitcher: () => <div>PlatformSwitcher</div>,
 }));
 
-jest.mock('../MobileMenuConfig', () => ({
-    MobileMenuConfig: jest.fn(() => [
-        [
-            {
-                as: 'a',
-                href: '/home',
-                label: 'Home',
-                LeftComponent: () => <span>Home Icon</span>,
-                removeBorderBottom: false,
-            },
+jest.mock('../../use-mobile-menu-config', () => ({
+    MobileMenuConfig: jest.fn(() => ({
+        config: [
+            [
+                {
+                    as: 'a',
+                    href: '/home',
+                    label: 'Home',
+                    LeftComponent: () => <span>Home Icon</span>,
+                    removeBorderBottom: false,
+                },
+            ],
+            [
+                {
+                    as: 'button',
+                    label: 'Settings',
+                    LeftComponent: () => <span>Settings Icon</span>,
+                    onClick: mockSettingsButtonClick,
+                    removeBorderBottom: true,
+                },
+            ],
         ],
-        [
-            {
-                as: 'button',
-                label: 'Settings',
-                LeftComponent: () => <span>Settings Icon</span>,
-                onClick: mockSettingsButtonClick,
-                removeBorderBottom: true,
-            },
-        ],
-    ]),
+    })),
 }));
 
 describe('MenuContent Component', () => {

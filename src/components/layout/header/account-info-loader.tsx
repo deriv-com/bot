@@ -27,7 +27,7 @@ const LoggedInPreloader = ({ isMobile }: Pick<TAccountsInfoLoaderProps, 'isMobil
     </>
 );
 
-export const AccountsInfoLoader = ({ isMobile, speed }: TAccountsInfoLoaderProps) => (
+const AccountsInfoLoader = ({ isMobile, speed }: TAccountsInfoLoaderProps) => (
     <ContentLoader
         backgroundColor={'#f2f3f4'}
         data-testid='dt_accounts_info_loader'
@@ -39,3 +39,5 @@ export const AccountsInfoLoader = ({ isMobile, speed }: TAccountsInfoLoaderProps
         <LoggedInPreloader isMobile={isMobile} />
     </ContentLoader>
 );
+
+export default AccountsInfoLoader;
