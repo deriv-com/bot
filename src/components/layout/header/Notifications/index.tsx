@@ -5,7 +5,7 @@ import { useTranslations } from '@deriv-com/translations';
 import { Notifications as UINotifications, Tooltip, useDevice } from '@deriv-com/ui';
 import './notifications.scss';
 
-const Notifications = () => {
+export const Notifications = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { localize } = useTranslations();
     const { isMobile } = useDevice();
@@ -41,5 +41,3 @@ const Notifications = () => {
         </div>
     );
 };
-
-export default Notifications;

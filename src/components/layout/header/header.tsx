@@ -11,7 +11,7 @@ import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
 import MenuItems from './menu-items';
 import MobileMenu from './mobile-menu';
-import Notifications from './notifications';
+import { Notifications } from './notifications';
 import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
