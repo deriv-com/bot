@@ -74,8 +74,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         return chart_api.api.send(req);
     };
     const requestForgetStream = (subscription_id: string) => {
-        subscriptions?.[subscription_id] && chart_api.api.forget(subscription_id);
-        delete subscriptions[subscription_id];
+        if (subscriptions?.[subscription_id]) {
+            chart_api.api.forget(subscription_id);
+            delete subscriptions[subscription_id];
+        }
     };
 
     const requestDeleteUnsubscribe = () => {
