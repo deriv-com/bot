@@ -10,7 +10,7 @@ import {
     save_types,
     saveWorkspaceToRecent,
 } from '@/external/bot-skeleton';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { TStrategy } from 'Types';
 import RootStore from './root-store';
 

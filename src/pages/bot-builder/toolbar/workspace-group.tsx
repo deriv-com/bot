@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 import {
     LabelPairedArrowRotateLeftMdRegularIcon,
     LabelPairedArrowRotateRightMdRegularIcon,
@@ -14,6 +13,7 @@ import {
     LabelPairedMagnifyingGlassPlusMdRegularIcon,
     LabelPairedObjectsAlignLeftMdRegularIcon,
 } from '@deriv/quill-icons';
+import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import ToolbarIcon from './toolbar-icon';
 

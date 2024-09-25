@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from '@/components/shared_ui/dialog';
 import Text from '@/components/shared_ui/text';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 
 export type TStopBotModalContent = {
     is_running: boolean;
@@ -50,7 +50,7 @@ const StopBotModalContent = ({
                             <Text weight='bold' as='span' lineHeight='s' size='xs'>
                                 <Localize i18n_default_text='Reports' />
                             </Text>
-                            <Localize i18n_default_text='page.' />
+                            <Localize i18n_default_text=' page.' />
                         </Text>
                         <Text as='p' lineHeight='s' size='xs'>
                             <Localize i18n_default_text='The Quick Strategy you just created will be loaded to the workspace.' />
@@ -67,7 +67,7 @@ const StopBotModalContent = ({
                                 <Localize i18n_default_text='Reports' />
                             </Text>
                             <Text as='span' lineHeight='s' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
-                                <Localize i18n_default_text='page.' />
+                                <Localize i18n_default_text=' page.' />
                             </Text>
                         </Text>
                     </>

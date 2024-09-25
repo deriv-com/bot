@@ -2,8 +2,8 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
 import Text from '@/components/shared_ui/text';
-import { Localize } from '@/utils/tmp/dummy';
 import { LabelPairedBarsFilterCaptionFillIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import { TJournalToolsProps } from '../journal.types';
 import FilterDialog from './filter-dialog';
 

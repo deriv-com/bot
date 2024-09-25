@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Localize } from '@/utils/tmp/dummy';
 import { LabelPairedPlusLgFillIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 import Text from '../shared_ui/text';
 import FlyoutBlock from './flyout-block';

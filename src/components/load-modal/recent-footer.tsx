@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 
 const RecentFooter = observer(() => {

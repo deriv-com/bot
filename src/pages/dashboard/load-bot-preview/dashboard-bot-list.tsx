@@ -3,28 +3,28 @@ import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import './index.scss';
 
 type THeader = {
-    label: string;
+    label: React.ReactElement;
     className: string;
 };
 
 const HEADERS: THeader[] = [
     {
-        label: localize('Bot name'),
+        label: <Localize i18n_default_text='Bot name' />,
         className: 'bot-list__header__label',
     },
     {
-        label: localize('Last modified'),
+        label: <Localize i18n_default_text='Last modified' />,
         className: 'bot-list__header__time-stamp',
     },
     {
-        label: localize('Status'),
+        label: <Localize i18n_default_text='Status' />,
         className: 'bot-list__header__load-type',
     },
 ];

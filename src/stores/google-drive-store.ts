@@ -2,7 +2,8 @@ import { action, makeObservable, observable } from 'mobx';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
-import { getLanguage, localize } from '@/utils/tmp/dummy';
+import { getLanguage } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
 
 export type TErrorWithStatus = Error & { status?: number };
