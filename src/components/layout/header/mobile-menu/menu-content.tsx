@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { MenuItem, Text, useDevice } from '@deriv-com/ui';
+import Text from '@/components/shared_ui/text';
+import { MenuItem, useDevice } from '@deriv-com/ui';
 import PlatformSwitcher from '../platform-switcher';
 import useMobileMenuConfig from './use-mobile-menu-config';
 

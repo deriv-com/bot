@@ -1,6 +1,5 @@
 import Money from '@/components/shared_ui/money';
-import { localize } from '@/utils/tmp/dummy';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 
 export const contractSold = (currency: string, sold_for: number | string, Money: React.ElementType) => ({
     key: 'contract_sold',

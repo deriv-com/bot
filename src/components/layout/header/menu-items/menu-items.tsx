@@ -1,5 +1,6 @@
+import Text from '@/components/shared_ui/text';
 import { useTranslations } from '@deriv-com/translations';
-import { MenuItem, Text, useDevice } from '@deriv-com/ui';
+import { MenuItem, useDevice } from '@deriv-com/ui';
 import { MenuItems as items, TRADERS_HUB_LINK_CONFIG } from '../header-config';
 import './menu-items.scss';
 

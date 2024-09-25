@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { modifyContextMenu } from '../../utils';
 
 // https://github.com/google/blockly/blob/master/generators/javascript/math.js

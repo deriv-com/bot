@@ -10,13 +10,12 @@ import AppContent from './app-content';
 const queryClient = new QueryClient();
 
 const i18nInstance = initializeI18n({ cdnUrl: 'https://cdn.example.com' });
-
-function App() {
+const App = () => {
     return (
         <Fragment>
             <Router>
                 <QueryClientProvider client={queryClient}>
-                    <TranslationProvider defaultLang={'EN'} i18nInstance={i18nInstance}>
+                    <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <AppDataProvider>
                             <StoreProvider>
                                 <Layout>
@@ -29,6 +28,6 @@ function App() {
             </Router>
         </Fragment>
     );
-}
+};
 
 export default App;

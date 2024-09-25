@@ -1,5 +1,6 @@
+import Text from '@/components/shared_ui/text';
 import { LegacyChevronLeft1pxIcon } from '@deriv/quill-icons';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 
 type TBackButton = {
     buttonText: string;

@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import DBotStore from '../dbot-store';
 
 window.Blockly.BlockSvg.prototype.addSelect = function () {

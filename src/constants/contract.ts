@@ -1,5 +1,5 @@
 import { getTotalProfit } from '@/components/shared';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export type TContract = {
     name: string;

@@ -1,5 +1,5 @@
-import { localize } from '@/utils/tmp/dummy';
 import { TNotificationMessage } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 import { BrandConstants } from '@deriv-com/utils';
 
 const { platforms } = BrandConstants;

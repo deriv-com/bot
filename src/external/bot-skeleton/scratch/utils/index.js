@@ -1,6 +1,6 @@
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../constants/config';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';

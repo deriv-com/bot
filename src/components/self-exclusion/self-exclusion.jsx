@@ -4,7 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import Button from '../shared_ui/button';
 import Div100vhContainer from '../shared_ui/div100vh-container';

@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { modifyContextMenu, runIrreversibleEvents } from '../../../../utils';
 
 window.Blockly.Blocks.input_list = {

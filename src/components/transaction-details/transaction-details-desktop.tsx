@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import DraggableResizeWrapper from '@/components/draggable/draggable-resize-wrapper';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import DesktopTransactionTable from './desktop-transaction-table';
 import { TColumn, TRunPanelStore, TTransactionStore } from './transaction-details.types';
 import './transaction-details-desktop.scss';

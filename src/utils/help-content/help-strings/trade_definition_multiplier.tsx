@@ -1,5 +1,5 @@
 import StaticUrl from '@/components/shared_ui/static-url';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { Localize } from '@deriv-com/translations';
 
 export default {

@@ -1,5 +1,5 @@
-import { localize } from '@/utils/tmp/dummy';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
+import { localize } from '@deriv-com/translations';
 import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 import { CFD_PLATFORMS } from '../platform';
 

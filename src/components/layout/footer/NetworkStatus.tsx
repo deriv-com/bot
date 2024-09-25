@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import clsx from 'clsx';
 import useNetworkStatus from '@/hooks/useNetworkStatus';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 // import { useTranslations } from '@deriv-com/translations';
 
