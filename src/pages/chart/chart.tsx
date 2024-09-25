@@ -62,9 +62,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     useEffect(() => {
         return () => {
             chart_api.api.forgetAll('ticks');
-            Object.keys(subscriptions).forEach(subscription_id => {
-                requestForgetStream(subscription_id);
-            });
+            requestUnsubscribe();
         };
     }, []);
 
@@ -75,14 +73,15 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const requestAPI = (req: ServerTimeRequest | ActiveSymbolsRequest | TradingTimesRequest) => {
         return chart_api.api.send(req);
     };
-
-    const requestForget = () => {
-        return chart_api.api.forgetAll('ticks');
+    const requestForgetAllTicks = () => {
+        chart_api.api.forgetAll('ticks');
     };
 
-    const requestForgetStream = (subscription_id: string) => {
-        subscriptions[subscription_id as string]?.unsubscribe();
-        delete subscriptions[subscription_id];
+    const requestUnsubscribe = () => {
+        Object.keys(subscriptions).forEach(subscription_id => {
+            chart_api.api.forget(subscription_id);
+            delete subscriptions[subscription_id];
+        });
     };
 
     const requestSubscribe = async (req: TicksStreamRequest, callback: (data: any) => void) => {
@@ -132,8 +131,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}
-                requestForget={requestForget}
-                requestForgetStream={requestForgetStream}
+                requestForget={requestUnsubscribe}
+                requestForgetStream={requestForgetAllTicks}
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
