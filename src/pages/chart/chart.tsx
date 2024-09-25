@@ -62,7 +62,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     useEffect(() => {
         return () => {
             chart_api.api.forgetAll('ticks');
-            requestUnsubscribe();
+            requestDeleteUnsubscribe();
         };
     }, []);
 
@@ -73,11 +73,12 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const requestAPI = (req: ServerTimeRequest | ActiveSymbolsRequest | TradingTimesRequest) => {
         return chart_api.api.send(req);
     };
-    const requestForgetAllTicks = () => {
-        chart_api.api.forgetAll('ticks');
+    const requestForgetStream = (subscription_id: string) => {
+        subscriptions?.[subscription_id] && chart_api.api.forget(subscription_id);
+        delete subscriptions[subscription_id];
     };
 
-    const requestUnsubscribe = () => {
+    const requestDeleteUnsubscribe = () => {
         Object.keys(subscriptions).forEach(subscription_id => {
             chart_api.api.forget(subscription_id);
             delete subscriptions[subscription_id];
@@ -131,8 +132,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}
-                requestForget={requestUnsubscribe}
-                requestForgetStream={requestForgetAllTicks}
+                requestForget={requestDeleteUnsubscribe}
+                requestForgetStream={requestForgetStream}
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
