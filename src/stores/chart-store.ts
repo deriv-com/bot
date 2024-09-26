@@ -22,6 +22,8 @@ export default class ChartStore {
             updateChartType: action,
             setChartStatus: action,
             restoreFromStorage: action,
+            chartSubscriptionId: observable,
+            setChartSubscriptionId: action,
         });
 
         this.root_store = root_store;
@@ -34,7 +36,7 @@ export default class ChartStore {
 
         this.restoreFromStorage();
     }
-
+    chartSubscriptionId = '';
     subscription: TSubscription = {
         id: null,
         subscriber: null,
@@ -136,5 +138,10 @@ export default class ChartStore {
                 },
                 has_synthetic_index ? [synthetic_index] : []
             );
+    };
+    setChartSubscriptionId = (chartSubscriptionId: string) => {
+        console.log(chartSubscriptionId, 'sss');
+        this.chartSubscriptionId = chartSubscriptionId;
+        console.log(this.chartSubscriptionId, 'sss uodate');
     };
 }

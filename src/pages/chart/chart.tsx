@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import chart_api from '@/external/bot-skeleton/services/api/chart-api';
@@ -45,11 +45,13 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         updateChartType,
         updateGranularity,
         updateSymbol,
+        setChartSubscriptionId,
+        chartSubscriptionId,
     } = chart_store;
+    const chartSubscriptionIdRef = useRef(chartSubscriptionId);
     const { isDesktop } = useDevice();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
-
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: true,
@@ -67,6 +69,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     }, []);
 
     useEffect(() => {
+        chartSubscriptionIdRef.current = chart_store.chartSubscriptionId;
+    }, [chart_store.chartSubscriptionId]);
+
+    useEffect(() => {
         if (!symbol) updateSymbol();
     }, [symbol, updateSymbol]);
 
@@ -74,22 +80,16 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         return chart_api.api.send(req);
     };
     const requestForgetStream = (subscription_id: string) => {
-        if (subscriptions?.[subscription_id]) {
-            chart_api.api.forget(subscription_id);
-            delete subscriptions[subscription_id];
-        }
+        chart_api.api.forget(subscription_id);
     };
 
-    const requestDeleteUnsubscribe = () => {
-        Object.keys(subscriptions).forEach(subscription_id => {
-            chart_api.api.forget(subscription_id);
-            delete subscriptions[subscription_id];
-        });
-    };
+    const requestDeleteUnsubscribe = () => {};
 
     const requestSubscribe = async (req: TicksStreamRequest, callback: (data: any) => void) => {
         try {
+            requestForgetStream(chartSubscriptionIdRef.current);
             const history = await chart_api.api.send(req);
+            setChartSubscriptionId(history?.subscription.id);
             if (history) callback(history);
             if (req.subscribe === 1) {
                 subscriptions[history?.subscription.id] = chart_api.api
@@ -107,7 +107,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
 
     if (!symbol) return null;
     const is_connection_opened = !!chart_api?.api;
-
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {
@@ -135,8 +134,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}
-                requestForget={requestDeleteUnsubscribe}
-                requestForgetStream={requestForgetStream}
+                requestForget={() => {}}
+                requestForgetStream={() => {}}
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
