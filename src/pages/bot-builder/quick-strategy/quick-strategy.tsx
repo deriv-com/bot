@@ -43,7 +43,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useStore();
     const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData } =
         quick_strategy;
-    const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
+    const config: TConfigItem[][] = STRATEGIES()[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
     const is_mounted = useRef(true);
 

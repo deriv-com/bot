@@ -33,7 +33,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const { submitForm, isValid, setFieldValue, validateForm, values } = useFormikContext<TFormValues>();
     const { quick_strategy } = useStore();
     const { selected_strategy, setSelectedStrategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
-    const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+    const strategy = STRATEGIES()[selected_strategy as keyof typeof STRATEGIES];
     const { handleSubmit } = useQsSubmitHandler();
 
     React.useEffect(() => {
@@ -107,8 +107,8 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                         </div>
                         <div className='qs__body__sidebar__items'>
                             <ul>
-                                {(Object.keys(STRATEGIES) as (keyof typeof STRATEGIES)[]).map(key => {
-                                    const str = STRATEGIES[key];
+                                {(Object.keys(STRATEGIES()) as (keyof typeof STRATEGIES)[]).map(key => {
+                                    const str = STRATEGIES()[key];
                                     const active = key === selected_strategy;
                                     return (
                                         <li
