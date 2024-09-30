@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import Drawer from '@/components/shared_ui/drawer';
 import useModalManager from '@/hooks/useModalManager';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
-import { Drawer, MobileLanguagesDrawer, useDevice } from '@deriv-com/ui';
+import { MobileLanguagesDrawer, useDevice } from '@deriv-com/ui';
 import NetworkStatus from './../../footer/NetworkStatus';
 import ServerTime from './../../footer/ServerTime';
 import BackButton from './back-button';

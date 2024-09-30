@@ -1,7 +1,8 @@
 import { ComponentProps, useMemo } from 'react';
+import Text from '@/components/shared_ui/text';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 
 type TMenuHeader = {
     hideLanguageSetting: boolean;

@@ -1,5 +1,6 @@
+import Text from '@/components/shared_ui/text';
 import { LegacyChevronLeft1pxIcon } from '@deriv/quill-icons';
-import { Text, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 
 type TBackButton = {
     buttonText: string;
@@ -13,7 +14,7 @@ const BackButton = ({ buttonText, onClick }: TBackButton) => {
         <button className='flex items-center w-full pt-8 p-[3.2rem]' onClick={onClick}>
             <LegacyChevronLeft1pxIcon iconSize='xs' />
 
-            <Text className='ml-[1.6rem]' size={isDesktop ? 'md' : 'lg'} weight='bold'>
+            <Text className='ml-[1.6rem]' size={isDesktop ? 's' : 'xs'} weight='bold'>
                 {buttonText}
             </Text>
         </button>
