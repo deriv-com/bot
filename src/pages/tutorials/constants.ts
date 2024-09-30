@@ -1,12 +1,12 @@
 import { getImageLocation } from '../../public-path';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { TFaqContent, TGuideContent, TQuickStrategyContent, TUserGuideContent } from './tutorials.types';
 
 export const USER_GUIDE = 'user guide';
 export const VIDEOS = 'videos on deriv bot';
 export const QUICK_STRATEGY_GUIDES = 'quick strategy guides';
 
-export const user_guide_content: TUserGuideContent[] = [
+export const user_guide_content = (): TUserGuideContent[] => [
     {
         id: 1,
         type: 'Tour',
@@ -25,7 +25,7 @@ export const user_guide_content: TUserGuideContent[] = [
     },
 ];
 
-export const guide_content: TGuideContent[] = [
+export const guide_content = (): TGuideContent[] => [
     {
         id: 1,
         type: 'DBotVideo',
@@ -52,7 +52,7 @@ export const guide_content: TGuideContent[] = [
     },
 ];
 
-export const faq_content: TFaqContent[] = [
+export const faq_content = (): TFaqContent[] => [
     {
         title: localize('What is Deriv Bot?'),
         description: [
@@ -446,7 +446,7 @@ export const faq_content: TFaqContent[] = [
     },
 ];
 
-export const quick_strategy_content: TQuickStrategyContent[] = [
+export const quick_strategy_content = (): TQuickStrategyContent[] => [
     {
         qs_name: 'MARTINGALE',
         type: localize('About Martingale'),
