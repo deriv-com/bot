@@ -307,7 +307,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setOpenSettings = (toast_message: NOTIFICATION_TYPE) => {
         this.toast_message = toast_message;
-        botNotification(notification_message[toast_message]);
+        botNotification(notification_message()[toast_message]);
     };
 
     setChartModalVisibility = () => {
