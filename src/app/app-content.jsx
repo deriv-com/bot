@@ -1,20 +1,22 @@
-import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import React, { lazy, Suspense } from 'react';
 import { getUrlBase } from '@/components/shared';
-import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import GTM from '@/utils/gtm';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { Loader } from '@deriv-com/ui';
-import Audio from '../components/audio';
-import BlocklyLoading from '../components/blockly-loading';
-import BotNotificationMessages from '../components/bot-notification-messages';
-import BotStopped from '../components/bot-stopped';
-import NetworkToastPopup from '../components/network-toast-popup';
-import RoutePromptDialog from '../components/route-prompt-dialog';
-import BotBuilder from '../pages/bot-builder';
-import Main from '../pages/main';
+
+const ToastContainer = lazy(() => import('react-toastify').then(module => ({ default: module.ToastContainer })));
+const TransactionDetailsModal = lazy(() => import('@/components/transaction-details'));
+const Audio = React.lazy(() => import('../components/audio'));
+const BlocklyLoading = React.lazy(() => import('../components/blockly-loading'));
+const BotNotificationMessages = React.lazy(() => import('../components/bot-notification-messages'));
+const BotStopped = React.lazy(() => import('../components/bot-stopped'));
+const NetworkToastPopup = React.lazy(() => import('../components/network-toast-popup'));
+const RoutePromptDialog = React.lazy(() => import('../components/route-prompt-dialog'));
+const BotBuilder = React.lazy(() => import('../pages/bot-builder'));
+const Main = React.lazy(() => import('../pages/main'));
+
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
@@ -124,18 +126,20 @@ const AppContent = () => {
         <Loader />
     ) : (
         <>
-            <BlocklyLoading />
-            <div className='bot-dashboard bot'>
-                <Audio />
-                <BotNotificationMessages />
-                <NetworkToastPopup />
-                <BotStopped />
-                <RoutePromptDialog />
-                <BotBuilder />
-                <Main />
-                <TransactionDetailsModal />
-                <ToastContainer limit={3} draggable={false} />
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <BlocklyLoading />
+                <div className='bot-dashboard bot'>
+                    <Audio />
+                    <BotNotificationMessages />
+                    <NetworkToastPopup />
+                    <BotStopped />
+                    <RoutePromptDialog />
+                    <BotBuilder />
+                    <Main />
+                    <TransactionDetailsModal />
+                    <ToastContainer limit={3} draggable={false} />
+                </div>
+            </Suspense>
         </>
     );
 };

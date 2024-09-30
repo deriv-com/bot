@@ -1,16 +1,21 @@
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Endpoint from '@/pages/endpoint';
 import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '../components/layout';
 import { StoreProvider } from '../hooks/useStore';
-import AppContent from './app-content';
+
+const Endpoint = lazy(() => import('@/pages/endpoint'));
+const AppContent = lazy(() => import('./app-content'));
 
 const queryClient = new QueryClient();
 
 const i18nInstance = initializeI18n({ cdnUrl: 'https://cdn.example.com' });
+
+const Loader = () => {
+    return <div>Loading...</div>;
+};
 
 function App() {
     return (
@@ -22,8 +27,22 @@ function App() {
                             <StoreProvider>
                                 <Layout>
                                     <Routes>
-                                        <Route path='/' element={<AppContent />} />
-                                        <Route path='/endpoint' element={<Endpoint />} />
+                                        <Route
+                                            path='/'
+                                            element={
+                                                <Suspense fallback={<Loader />}>
+                                                    <AppContent />
+                                                </Suspense>
+                                            }
+                                        />
+                                        <Route
+                                            path='/endpoint'
+                                            element={
+                                                <Suspense fallback={<Loader />}>
+                                                    <Endpoint />
+                                                </Suspense>
+                                            }
+                                        />
                                     </Routes>
                                 </Layout>
                             </StoreProvider>
