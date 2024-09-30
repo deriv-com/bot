@@ -1,6 +1,6 @@
-import { getSocketURL } from '@/components/shared';
+import { getAppId, getSocketURL } from '@/components/shared';
 import { website_name } from '@/utils/site-config';
-import { getAppId, getLanguage } from '@/utils/tmp/dummy';
+import { getLanguage } from '@/utils/tmp/dummy';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import APIMiddleware from './api-middleware';
 

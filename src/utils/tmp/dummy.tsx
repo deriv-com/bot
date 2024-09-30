@@ -61,8 +61,6 @@ export const IconTradeTypes = ({ children }) => {
 
 export const getLanguage = () => 'en';
 
-export const getAppId = () => 36300;
-
 export const ContentFlag = Object.freeze({
     LOW_RISK_CR_EU: 'low_risk_cr_eu',
     LOW_RISK_CR_NON_EU: 'low_risk_cr_non_eu',
