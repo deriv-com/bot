@@ -64,7 +64,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     useEffect(() => {
         return () => {
             chart_api.api.forgetAll('ticks');
-            requestDeleteUnsubscribe();
         };
     }, []);
 
@@ -82,8 +81,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const requestForgetStream = (subscription_id: string) => {
         chart_api.api.forget(subscription_id);
     };
-
-    const requestDeleteUnsubscribe = () => {};
 
     const requestSubscribe = async (req: TicksStreamRequest, callback: (data: any) => void) => {
         try {
