@@ -131,7 +131,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
-        const selected_strategy = STRATEGIES[this.selected_strategy];
+        const selected_strategy = STRATEGIES()[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = window.Blockly.utils.xml.textToDom(strategy_xml.default);
         addDynamicBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);

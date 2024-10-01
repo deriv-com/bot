@@ -1,8 +1,8 @@
 import { getImageLocation } from '../../public-path';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
 
-export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
+export const REVERSE_D_ALEMBERT = (): TDescriptionItem[] => [
     {
         type: 'subtitle',
         content: [localize('Exploring the Reverse D’Alembert strategy in Deriv Bot')],

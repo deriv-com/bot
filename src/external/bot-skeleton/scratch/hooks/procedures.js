@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 
 /**
  * Construct the blocks required by the flyout for the procedure category.

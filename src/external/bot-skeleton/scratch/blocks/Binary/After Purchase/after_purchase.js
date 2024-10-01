@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 import { modifyContextMenu, removeExtraInput } from '../../../utils';
 import { finishSign } from '../../images';
 

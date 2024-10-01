@@ -136,7 +136,7 @@ export default class RunPanelStore {
     setShowBotStopMessage = (show_bot_stop_message: boolean) => {
         this.show_bot_stop_message = show_bot_stop_message;
         if (show_bot_stop_message)
-            botNotification(notification_message.bot_stop, {
+            botNotification(notification_message().bot_stop, {
                 label: localize('Reports'),
                 onClick: () => (window.location.href = routes.reports),
             });

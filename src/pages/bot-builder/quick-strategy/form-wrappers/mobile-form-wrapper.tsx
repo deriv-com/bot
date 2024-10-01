@@ -32,7 +32,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const { quick_strategy } = useStore();
     const { selected_strategy, setSelectedStrategy } = quick_strategy;
     const { handleSubmit } = useQsSubmitHandler();
-    const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+    const strategy = STRATEGIES()[selected_strategy as keyof typeof STRATEGIES];
 
     React.useEffect(() => {
         validateForm();
@@ -60,10 +60,10 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
         handleSubmit();
     };
 
-    const dropdown_list = Object.keys(STRATEGIES).map(key => ({
+    const dropdown_list = Object.keys(STRATEGIES()).map(key => ({
         value: key,
-        text: STRATEGIES[key as keyof typeof STRATEGIES].label,
-        description: STRATEGIES[key as keyof typeof STRATEGIES].description,
+        text: STRATEGIES()[key as keyof typeof STRATEGIES].label,
+        description: STRATEGIES()[key as keyof typeof STRATEGIES].description,
     }));
 
     return (

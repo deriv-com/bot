@@ -19,7 +19,7 @@ import { useDevice } from '@deriv-com/ui';
 const QuickStrategyForm = observer(() => {
     const { quick_strategy } = useStore();
     const { selected_strategy, setValue, form_data } = quick_strategy;
-    const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
+    const config: TConfigItem[][] = STRATEGIES()[selected_strategy]?.fields;
     const { isDesktop } = useDevice();
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
