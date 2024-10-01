@@ -140,8 +140,6 @@ export default class ChartStore {
             );
     };
     setChartSubscriptionId = (chartSubscriptionId: string) => {
-        console.log(chartSubscriptionId, 'sss');
         this.chartSubscriptionId = chartSubscriptionId;
-        console.log(this.chartSubscriptionId, 'sss uodate');
     };
 }

@@ -159,3 +159,19 @@
         }
     }
 }
+
+.sc-tooltip.ciq-menu {
+    @include mobile-screen {
+        position: absolute !important;
+        left: 10px !important;
+        top: 50px !important;
+
+        .cq-menu-btn {
+            border-radius: 50% !important;
+        }
+
+        .sc-tooltip__inner {
+            display: none !important;
+        }
+    }
+}
