@@ -59,7 +59,7 @@
             display: flex;
             flex-wrap: wrap;
             position: absolute;
-            top: 0;
+            top: 10px;
             width: 100%;
         }
 
@@ -103,12 +103,17 @@
     }
 
     .smartcharts-desktop {
+        .cq-modal__overlay {
+            position: fixed !important;
+            height: 100vh !important;
+            width: 100% !important;
+            background-color: rgb(0 0 0 / 70%);
+            z-index: 9999 !important;
+        }
+
         .cq-modal-dropdown {
             .sc-dialog {
                 position: absolute !important;
-                top: -50% !important;
-                left: 50% !important;
-                transform: translate(-50%, -50%) !important;
                 z-index: 9999 !important;
             }
         }
@@ -121,6 +126,10 @@
             .sc-mcd__category:last-child {
                 margin-bottom: 3rem !important;
             }
+        }
+
+        .sc-toolbar-widget {
+            z-index: 0 !important;
         }
 
         & .cq-chart-title .cq-menu-dropdown {
@@ -150,13 +159,20 @@
 
 .smartcharts-mobile {
     .cq-modal__overlay {
-        position: unset !important;
+        position: fixed !important;
+        height: 100vh !important;
+        width: 100% !important;
+        background-color: rgb(0 0 0 / 70%);
+        z-index: 9999 !important;
 
         .sc-dialog {
             position: absolute !important;
-            top: -85% !important;
             z-index: 99999 !important;
         }
+    }
+
+    .cq-top-ui-widgets {
+        z-index: 1 !important;
     }
 }
 
