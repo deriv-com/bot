@@ -1,4 +1,4 @@
-import { LegacyChevronLeft1pxIcon } from '@deriv/quill-icons';
+import { LegacyChevronLeft1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Text, useDevice } from '@deriv-com/ui';
 
 type TBackButton = {

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
+import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons/Illustration';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import DataList from '../data-list';

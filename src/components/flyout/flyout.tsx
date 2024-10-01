@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { help_content_config } from '@/utils/help-content/help-content.config';
 import { localize } from '@/utils/tmp/dummy';
-import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Input, Text } from '@deriv-com/ui';
 import { getPlatformSettings } from '../shared';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';

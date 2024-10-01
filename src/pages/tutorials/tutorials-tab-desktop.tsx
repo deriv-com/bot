@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Tabs from '@/components/shared_ui/tabs';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedSearchCaptionRegularIcon, LegacyCloseCircle1pxBlackIcon } from '@deriv/quill-icons';
+import { LabelPairedSearchCaptionRegularIcon } from '@deriv/quill-icons/LabelPaired';
+import { LegacyCloseCircle1pxBlackIcon } from '@deriv/quill-icons/Legacy';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 

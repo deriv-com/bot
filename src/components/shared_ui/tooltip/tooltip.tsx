@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useHover } from '@/hooks/useHover';
 import { Icon } from '@/utils/tmp/dummy';
-import { LabelPairedCircleInfoCaptionRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleInfoCaptionRegularIcon } from '@deriv/quill-icons/LabelPaired';
 
 type TTooltip = {
     alignment: string;

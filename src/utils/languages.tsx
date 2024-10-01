@@ -11,7 +11,7 @@ import {
     FlagTurkeyIcon,
     FlagUnitedKingdomIcon,
     FlagVietnamIcon,
-} from '@deriv/quill-icons';
+} from '@deriv/quill-icons/Flags';
 
 export const LANGUAGES = [
     {

@@ -2,7 +2,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
 import Text from '@/components/shared_ui/text';
-import { LabelPairedBarsFilterCaptionFillIcon } from '@deriv/quill-icons';
+import { LabelPairedBarsFilterCaptionFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 import { TJournalToolsProps } from '../journal.types';
 import FilterDialog from './filter-dialog';

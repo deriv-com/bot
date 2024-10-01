@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
-import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
+import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';

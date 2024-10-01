@@ -1,13 +1,17 @@
 import { ReactNode } from 'react';
 import {
-    DerivProductDerivBotBrandLightLogoWordmarkHorizontalIcon as DerivBotLogo,
-    DerivProductDerivTraderBrandLightLogoWordmarkHorizontalIcon as DerivTraderLogo,
     LegacyCashierIcon as CashierLogo,
     LegacyHomeOldIcon as TradershubLogo,
     LegacyReportsIcon as ReportsLogo,
+} from '@deriv/quill-icons/Legacy';
+import {
     PartnersProductBinaryBotBrandLightLogoWordmarkHorizontalIcon as BinaryBotLogo,
     PartnersProductSmarttraderBrandLightLogoWordmarkIcon as SmarttraderLogo,
-} from '@deriv/quill-icons';
+} from '@deriv/quill-icons/Logo';
+import {
+    DerivProductDerivBotBrandLightLogoWordmarkHorizontalIcon as DerivBotLogo,
+    DerivProductDerivTraderBrandLightLogoWordmarkHorizontalIcon as DerivTraderLogo,
+} from '@deriv/quill-icons/Logo';
 
 export type PlatformsConfig = {
     active: boolean;

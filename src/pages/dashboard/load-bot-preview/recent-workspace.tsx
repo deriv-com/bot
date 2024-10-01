@@ -10,9 +10,8 @@ import { useStore } from '@/hooks/useStore';
 import {
     LabelPairedPageCircleArrowRightSmRegularIcon,
     LabelPairedTrashSmRegularIcon,
-    LegacyMenuDots1pxIcon,
-    LegacySave1pxIcon,
-} from '@deriv/quill-icons';
+} from '@deriv/quill-icons/LabelPaired';
+import { LegacyMenuDots1pxIcon, LegacySave1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { STRATEGY } from '../../../constants/dashboard';

@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { help_content_config, help_content_types } from '@/utils/help-content/help-content.config';
-import { LabelPairedArrowLeftCaptionRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowLeftCaptionRegularIcon } from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 import Button from '../../shared_ui/button';
 import Text from '../../shared_ui/text';

@@ -1,5 +1,5 @@
 import { RESPONSIBLE } from '@/utils/constants';
-import { LegacyResponsibleTradingIcon } from '@deriv/quill-icons';
+import { LegacyResponsibleTradingIcon } from '@deriv/quill-icons/Legacy';
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 

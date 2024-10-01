@@ -1,5 +1,5 @@
 import { DERIV_COM } from '@/utils/constants';
-import { LegacyDerivIcon } from '@deriv/quill-icons';
+import { LegacyDerivIcon } from '@deriv/quill-icons/Legacy';
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 

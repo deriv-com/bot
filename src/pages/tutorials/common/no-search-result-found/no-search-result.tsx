@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 
 const NoSearchResult = observer(() => {

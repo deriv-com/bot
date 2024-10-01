@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { LegacyMenuHamburger1pxIcon } from '@deriv/quill-icons';
+import { LegacyMenuHamburger1pxIcon } from '@deriv/quill-icons/Legacy';
 
 type TToggleButton = {
     onClick: ComponentProps<'button'>['onClick'];
