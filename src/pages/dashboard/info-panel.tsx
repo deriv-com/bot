@@ -40,7 +40,7 @@ const InfoPanel = observer(() => {
                 <LegacyClose1pxIcon height='18px' width='18px' />
             </div>
 
-            {SIDEBAR_INTRO.map(sidebar_item => {
+            {SIDEBAR_INTRO().map(sidebar_item => {
                 const { label, content, link } = sidebar_item;
                 return (
                     <div key={`${label}-${content}`}>
