@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export type TSidebarItem = {
     label: string;
@@ -6,7 +6,7 @@ export type TSidebarItem = {
     link: boolean;
 };
 
-export const SIDEBAR_INTRO: TSidebarItem[] = [
+export const SIDEBAR_INTRO = (): TSidebarItem[] => [
     {
         label: localize('Welcome to Deriv Bot!'),
         content: [
