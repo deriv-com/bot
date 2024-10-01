@@ -102,6 +102,18 @@
         }
     }
 
+    .smartcharts-desktop {
+        .cq-modal-dropdown {
+            .sc-dialog {
+                position: absolute !important;
+                top: -50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                z-index: 9999 !important;
+            }
+        }
+    }
+
     .smartcharts-mobile {
         .cq-context {
             z-index: 99;
@@ -134,4 +146,16 @@
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
+}
+
+.smartcharts-mobile {
+    .cq-modal__overlay {
+        position: unset !important;
+
+        .sc-dialog {
+            position: absolute !important;
+            top: -85% !important;
+            z-index: 99999 !important;
+        }
+    }
 }

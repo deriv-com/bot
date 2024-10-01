@@ -1,5 +1,6 @@
 import { Fragment } from 'react/jsx-runtime';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Endpoint from '@/pages/endpoint';
 import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,7 +21,10 @@ function App() {
                         <AppDataProvider>
                             <StoreProvider>
                                 <Layout>
-                                    <AppContent />
+                                    <Routes>
+                                        <Route path='/' element={<AppContent />} />
+                                        <Route path='/endpoint' element={<Endpoint />} />
+                                    </Routes>
                                 </Layout>
                             </StoreProvider>
                         </AppDataProvider>

@@ -4,9 +4,9 @@ import Text from '@/components/shared_ui/text';
 import { getUUID } from '@/external/bot-skeleton/services/tradeEngine/utils/helpers';
 
 type TTourSteps = {
-    content: string[] | React.ReactElement[];
+    content: React.ReactElement[];
     media?: string;
-    label: string | boolean;
+    label: React.ReactElement;
     step_index: number;
     show_actions?: boolean;
     has_localize_component?: boolean;

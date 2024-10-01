@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 import { modifyContextMenu, runGroupedEvents } from '../../utils';
 import { plusIconDark } from '../images';
 

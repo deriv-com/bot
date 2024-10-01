@@ -1,9 +1,11 @@
 import clsx from 'clsx';
+import Button from '@/components/shared_ui/button';
+import Text from '@/components/shared_ui/text';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Header, Text, useDevice, Wrapper } from '@deriv-com/ui';
+import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
@@ -47,10 +49,10 @@ const AppHeader = () => {
                         onClick={() => {
                             window.location.assign('https://app.deriv.com/cashier/deposit');
                         }}
-                        size='md'
+                        size='s'
                         className='deposit-button'
                     >
-                        <Text size='sm' weight='bold'>
+                        <Text size='s' weight='bold'>
                             {localize('Deposit')}
                         </Text>
                     </Button>

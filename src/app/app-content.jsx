@@ -5,7 +5,9 @@ import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import GTM from '@/utils/gtm';
+import { setLocalize } from '@/utils/localize-utils';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
+import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
@@ -20,6 +22,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = () => {
+    const { localize } = useTranslations();
+    setLocalize(localize);
     const [is_loading, setIsLoading] = React.useState(true);
     const RootStore = {
         common: {},

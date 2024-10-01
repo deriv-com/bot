@@ -2,8 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { Localize, localize } from '@deriv-com/translations';
 import Dialog from './shared_ui/dialog';
 
 const BotStopped = observer(() => {
@@ -24,7 +24,7 @@ const BotStopped = observer(() => {
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
-                    {localize("You're back online")}
+                    <Localize i18n_default_text="You're back online" />
                 </Text>
                 <div
                     data-testid='data-close-button'
@@ -40,9 +40,7 @@ const BotStopped = observer(() => {
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>
-                {localize(
-                    'The bot has stopped, but your trade may still be running. You can check it on the Reports page.'
-                )}
+                <Localize i18n_default_text='The bot has stopped, but your trade may still be running. You can check it on the Reports page.' />
             </Text>
         </Dialog>
     );

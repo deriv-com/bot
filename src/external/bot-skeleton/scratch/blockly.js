@@ -1,5 +1,5 @@
 import * as BlocklyJavaScript from 'blockly/javascript';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 import { setColors } from './hooks/colours.js';
 import goog from './goog.js';
 

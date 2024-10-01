@@ -10,7 +10,7 @@ import {
     pick,
 } from '@/components/shared';
 import { TContractInfo, TContractStore } from '@/components/shared/utils/contract/contract-types';
-import { Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 import ArrowIndicator from '../../arrow-indicator';
 import Button from '../../button';
 import InputWithCheckbox from '../../input-wth-checkbox';

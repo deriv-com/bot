@@ -1,7 +1,7 @@
 import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import QuickStrategyGuidesDetail from './quick-strategy-guides-details';
 import './index.scss';

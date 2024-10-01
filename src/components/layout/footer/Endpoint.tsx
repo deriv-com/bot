@@ -8,7 +8,7 @@ const Endpoint = () => {
 
     if (serverURL) {
         return (
-            <Text className='app-footer__endpoint' color='red' size='sm'>
+            <Text className='app-footer__endpoint' color='red' size='s'>
                 The server{' '}
                 <Link className='app-footer__endpoint-text' to={ENDPOINT}>
                     endpoint

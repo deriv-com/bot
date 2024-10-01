@@ -126,14 +126,14 @@ export default class DashboardStore implements IDashboardStore {
         this.root_store = root_store;
         this.core = core;
 
-        const getUserGuideContent = [...user_guide_content].map(
-            item => `${item.search_id}# ${item.content.toLowerCase()}`
+        const getUserGuideContent = [...user_guide_content()].map(
+            item => `${item.search_id}# ${item.content?.toLowerCase()}`
         );
 
-        const getVideoContent = [...guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
+        const getVideoContent = [...guide_content()].map(item => `${item.search_id}# ${item.content?.toLowerCase()}`);
 
-        const getFaqContent = faq_content.map(item => {
-            return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
+        const getFaqContent = faq_content().map(item => {
+            return `${item.search_id}# ${item.title?.toLowerCase()} ${item.description
                 .map(inner_item => {
                     const itemWithoutHTML = DOMPurify.sanitize(inner_item.content, {
                         ALLOWED_TAGS: [], //kept empty to remove all tags
@@ -146,7 +146,7 @@ export default class DashboardStore implements IDashboardStore {
         const getQSDescriptionContent = (strategy: any) => {
             if (!strategy) return [];
             const content: string[] = [];
-            strategy.forEach((item: TDescriptionItem) => {
+            strategy().forEach((item: TDescriptionItem) => {
                 if (item?.type !== 'media') {
                     item.content?.forEach((text: string) => content.push(text));
                 }
@@ -154,11 +154,11 @@ export default class DashboardStore implements IDashboardStore {
             return content;
         };
 
-        const getQuickStrategyContent = quick_strategy_content.map(item => {
-            const qs_card_content = item.content.join(' ').toLowerCase();
+        const getQuickStrategyContent = quick_strategy_content().map(item => {
+            const qs_card_content = item.content.join(' ')?.toLowerCase();
             let qs_description_content = getQSDescriptionContent(strategy_description?.[item.qs_name]);
-            qs_description_content = qs_description_content.join(' ').toLowerCase();
-            return `${item.search_id}# ${item.type.toLowerCase()} ${qs_description_content + qs_card_content}`;
+            qs_description_content = qs_description_content.join(' ')?.toLowerCase();
+            return `${item.search_id}# ${item.type?.toLowerCase()} ${qs_description_content + qs_card_content}`;
         });
 
         this.combined_search = [
@@ -230,10 +230,10 @@ export default class DashboardStore implements IDashboardStore {
     toast_message = '';
     is_web_socket_intialised = true;
     search_param = '';
-    guide_tab_content = user_guide_content;
-    video_tab_content = guide_content;
-    faq_tab_content = faq_content;
-    quick_strategy_tab_content = quick_strategy_content;
+    guide_tab_content = user_guide_content();
+    video_tab_content = guide_content();
+    faq_tab_content = faq_content();
+    quick_strategy_tab_content = quick_strategy_content();
     filtered_tab_list = [];
     is_chart_modal_visible = false;
     is_trading_view_modal_visible = false;
@@ -244,16 +244,16 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     resetTutorialTabContent = () => {
-        this.guide_tab_content = user_guide_content;
-        this.video_tab_content = guide_content;
-        this.faq_tab_content = faq_content;
-        this.quick_strategy_tab_content = quick_strategy_content;
+        this.guide_tab_content = user_guide_content();
+        this.video_tab_content = guide_content();
+        this.faq_tab_content = faq_content();
+        this.quick_strategy_tab_content = quick_strategy_content();
     };
 
     filterTuotrialTab = (search_param: string) => {
         this.search_param = search_param;
         const foundItems = this.combined_search.filter(item => {
-            return item.includes(search_param.toLowerCase());
+            return item.includes(search_param?.toLowerCase());
         });
 
         const filtered_user_guide: [] = [];
@@ -265,17 +265,17 @@ export default class DashboardStore implements IDashboardStore {
             const identifier = item.split('#')[0];
             const index: string = identifier.split('-')[1];
             if (identifier.includes(USER_GUIDE)) {
-                filtered_user_guide.push(user_guide_content[Number(index)]);
-                return user_guide_content[Number(index)];
+                filtered_user_guide.push(user_guide_content()[Number(index)]);
+                return user_guide_content()[Number(index)];
             } else if (identifier.includes(VIDEOS)) {
-                filter_video_guide.push(guide_content[Number(index)]);
-                return guide_content[Number(index)];
+                filter_video_guide.push(guide_content()[Number(index)]);
+                return guide_content()[Number(index)];
             } else if (identifier.includes('faq')) {
-                filtered_faq_content.push(faq_content[Number(index)]);
-                return faq_content[Number(index)];
+                filtered_faq_content.push(faq_content()[Number(index)]);
+                return faq_content()[Number(index)];
             }
-            filtered_quick_strategy_content.push(quick_strategy_content[Number(index)]);
-            return quick_strategy_content[Number(index)];
+            filtered_quick_strategy_content.push(quick_strategy_content()[Number(index)]);
+            return quick_strategy_content()[Number(index)];
         });
 
         this.guide_tab_content = filtered_user_guide;
@@ -307,7 +307,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setOpenSettings = (toast_message: NOTIFICATION_TYPE) => {
         this.toast_message = toast_message;
-        botNotification(notification_message[toast_message]);
+        botNotification(notification_message()[toast_message]);
     };
 
     setChartModalVisibility = () => {

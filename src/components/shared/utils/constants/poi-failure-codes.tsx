@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@/utils/tmp/dummy';
+import { Localize } from '@deriv-com/translations';
 
 type TIDVErrorStatus = Readonly<{
     [key: string]: {

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
-import { Localize, localize } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import BotPreview from './bot-preview';
 import './index.scss';
