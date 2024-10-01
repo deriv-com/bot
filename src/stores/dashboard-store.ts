@@ -146,7 +146,7 @@ export default class DashboardStore implements IDashboardStore {
         const getQSDescriptionContent = (strategy: any) => {
             if (!strategy) return [];
             const content: string[] = [];
-            strategy.forEach((item: TDescriptionItem) => {
+            strategy().forEach((item: TDescriptionItem) => {
                 if (item?.type !== 'media') {
                     item.content?.forEach((text: string) => content.push(text));
                 }

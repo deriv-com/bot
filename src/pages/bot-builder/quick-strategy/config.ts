@@ -212,7 +212,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: 'martingale_max-stake',
         label: localize('Martingale'),
         rs_strategy_name: 'martingale',
-        description: MARTINGALE,
+        description: MARTINGALE(),
         fields: [
             [
                 LABEL_SYMBOL(),
@@ -245,7 +245,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: 'dalembert_max-stake',
         label: localize('D’Alembert'),
         rs_strategy_name: `d'alembert`,
-        description: D_ALEMBERT,
+        description: D_ALEMBERT(),
         fields: [
             [
                 LABEL_SYMBOL(),
@@ -278,7 +278,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: 'oscars_grind_max-stake',
         label: localize('Oscar’s Grind'),
         rs_strategy_name: `oscar's-grind`,
-        description: OSCARS_GRIND,
+        description: OSCARS_GRIND(),
         fields: [
             [
                 LABEL_SYMBOL(),
@@ -302,7 +302,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
         rs_strategy_name: 'reverse martingale',
-        description: REVERSE_MARTINGALE,
+        description: REVERSE_MARTINGALE(),
         fields: [
             [
                 LABEL_SYMBOL(),
@@ -335,7 +335,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: 'reverse_dalembert',
         label: localize('Reverse D’Alembert'),
         rs_strategy_name: `reverse d'alembert`,
-        description: REVERSE_D_ALEMBERT,
+        description: REVERSE_D_ALEMBERT(),
         fields: [
             [
                 LABEL_SYMBOL(),
@@ -368,7 +368,7 @@ export const STRATEGIES = (): TStrategies => ({
         name: '1_3_2_6',
         label: localize('1-3-2-6'),
         rs_strategy_name: '1-3-2-6',
-        description: STRATEGY_1_3_2_6,
+        description: STRATEGY_1_3_2_6(),
         fields: [
             [
                 LABEL_SYMBOL(),

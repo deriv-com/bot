@@ -1,8 +1,8 @@
 import { getImageLocation } from '../../public-path';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
 
-export const MARTINGALE: TDescriptionItem[] = [
+export const MARTINGALE = (): TDescriptionItem[] => [
     {
         type: 'subtitle',
         content: [localize('Exploring the Martingale strategy in Deriv Bot')],
