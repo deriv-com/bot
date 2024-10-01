@@ -39,7 +39,7 @@ jobs:
               run: npm run build
               env:
                   R2_PROJECT_NAME: ${{ vars.R2_PROJECT_NAME }}
-                  TRANSLATION_CDN_URL: ${{ vars.TRANSLATION_CDN_URL }}
+                  TRANSLATIONS_CDN_URL: ${{ vars.TRANSLATIONS_CDN_URL }}
                   CROWDIN_BRANCH_NAME: staging
 
             - name: Run tests for Eslint

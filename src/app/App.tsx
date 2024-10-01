@@ -10,8 +10,8 @@ import AppContent from './app-content';
 
 const queryClient = new QueryClient();
 
-const { TRANSLATION_CDN_URL, R2_PROJECT_NAME, CROWDIN_BRANCH_NAME } = process.env;
-const i18nInstance = initializeI18n({ cdnUrl: `${TRANSLATION_CDN_URL}/${R2_PROJECT_NAME}/${CROWDIN_BRANCH_NAME}` });
+const { TRANSLATIONS_CDN_URL, R2_PROJECT_NAME, CROWDIN_BRANCH_NAME } = process.env;
+const i18nInstance = initializeI18n({ cdnUrl: `${TRANSLATIONS_CDN_URL}/${R2_PROJECT_NAME}/${CROWDIN_BRANCH_NAME}` });
 
 function App() {
     return (
