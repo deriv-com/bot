@@ -1,4 +1,4 @@
-import { Checkbox } from '@deriv-com/ui';
+import Checkbox from '@/components/shared_ui/checkbox';
 import { TFiltersProps } from '../journal.types';
 
 const Filters = ({
@@ -19,7 +19,8 @@ const Filters = ({
                     checked={hasFilter}
                     label={item.label}
                     onChange={() => filterMessage(!hasFilter, item.id)}
-                    name={item.id} />
+                    name={item.id}
+                />
             );
         })}
     </div>

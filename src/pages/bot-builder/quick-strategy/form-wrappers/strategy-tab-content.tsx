@@ -29,7 +29,7 @@ const StrategyTabContent: React.FC<TStrategyDescription> = observer(
         const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
         const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
 
-        const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
+        const strategy = STRATEGIES()[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
 
         const makeGroupedObjectsByTitle = () => {
             return strategy?.description?.reduce((acc: TDescription, obj: TDescriptionItem, idx) => {

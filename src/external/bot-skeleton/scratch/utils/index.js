@@ -153,7 +153,7 @@ export const load = async ({
     await delayExecution(100);
     const showInvalidStrategyError = () => {
         setLoadedLocalFile(null);
-        botNotification(notification_message.invalid_xml);
+        botNotification(notification_message().invalid_xml);
         setLoading(false);
         const error_message = localize('XML file contains unsupported elements. Please check or modify file.');
         globalObserver.emit('ui.log.error', error_message);

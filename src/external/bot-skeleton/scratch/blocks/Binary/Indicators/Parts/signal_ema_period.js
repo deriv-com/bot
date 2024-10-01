@@ -1,4 +1,4 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 import { modifyContextMenu } from '../../../../utils';
 
 window.Blockly.Blocks.signal_ema_period = {

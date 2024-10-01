@@ -1,6 +1,6 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@/utils/localize-utils';
 
 const getToastPosition = () => {
     const is_RTL = isDbotRTL();
@@ -35,7 +35,7 @@ export enum NOTIFICATION_TYPE {
     BOT_DELETE = 'BOT_DELETE',
 }
 
-export const notification_message = {
+export const notification_message = () => ({
     bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
     workspace_change: localize('Changes you make will not affect your running bot.'),
     block_delete: localize('You’ve just deleted a block.'),
@@ -44,7 +44,7 @@ export const notification_message = {
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
     strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
     google_drive_error: localize('Your session has expired. Please sign in again.'),
-};
+});
 
 export const notification_style = {
     type: toast.TYPE.DEFAULT,
