@@ -1,12 +1,11 @@
 import clsx from 'clsx';
-import Text from '@/components/shared_ui/text';
-import { MenuItem, useDevice } from '@deriv-com/ui';
+import { MenuItem, Text, useDevice } from '@deriv-com/ui';
 import PlatformSwitcher from '../platform-switcher';
 import useMobileMenuConfig from './use-mobile-menu-config';
 
 const MenuContent = () => {
     const { isDesktop } = useDevice();
-    const textSize = isDesktop ? 's' : 'xs';
+    const textSize = isDesktop ? 'sm' : 'md';
     const { config } = useMobileMenuConfig();
 
     return (
