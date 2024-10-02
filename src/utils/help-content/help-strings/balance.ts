@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block returns current account balance.'),
         localize(
             'The only input parameter determines how block output is going to be formatted. In case if the input parameter is "string" then the account currency will be added.'

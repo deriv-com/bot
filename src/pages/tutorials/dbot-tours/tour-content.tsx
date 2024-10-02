@@ -581,6 +581,7 @@ export const getTourDialogAction = (is_mobile: boolean) => {
         <Localize
             key='tour-dialog-action-desktop'
             i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
+            components={[<strong key={0} />]}
         />
     );
 };

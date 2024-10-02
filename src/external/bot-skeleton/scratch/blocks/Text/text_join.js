@@ -1,4 +1,4 @@
-import { localize } from '@/utils/localize-utils';
+import { localize } from '@deriv-com/translations';
 import { modifyContextMenu, runGroupedEvents } from '../../utils';
 import { plusIconDark } from '../images';
 

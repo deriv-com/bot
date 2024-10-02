@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block performs the "AND" or the "OR" logic operation with the given values.'),
         localize(
             'In case if the "AND" operation is selected, the block returns "True" only if both given values are "True"'

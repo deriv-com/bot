@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block gives you a specific candle from within the selected time interval.'),
         localize('In this example, the open price of a candle is assigned to the variable "candle_open_price".'),
         localize(

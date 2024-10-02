@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             "This block is mandatory. It's added to your strategy by default when you create new strategy. You can not add more than one copy of this block to the canvas."
         ),

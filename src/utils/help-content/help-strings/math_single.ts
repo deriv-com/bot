@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block performs the following operations to a given number'),
         localize('Available operations are:'),
         localize('- Square root'),

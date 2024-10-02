@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block returns "True" if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'
         ),

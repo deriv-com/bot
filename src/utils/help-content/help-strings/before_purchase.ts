@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block is mandatory. Only one copy of this block is allowed. It is added to the canvas by default when you open Deriv Bot.'
         ),
