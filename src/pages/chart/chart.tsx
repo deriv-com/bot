@@ -79,7 +79,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         return chart_api.api.send(req);
     };
     const requestForgetStream = (subscription_id: string) => {
-        chart_api.api.forget(subscription_id);
+        subscription_id && chart_api.api.forget(subscription_id);
     };
 
     const requestSubscribe = async (req: TicksStreamRequest, callback: (data: any) => void) => {
