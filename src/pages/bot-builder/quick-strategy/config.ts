@@ -143,7 +143,7 @@ const SIZE = (): TConfigItem => ({
         'floor',
         {
             type: 'min',
-            value: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            value: String(qs_config().QUICK_STRATEGY.DEFAULT.size),
             getMessage: (min: string | number) =>
                 localize('The value must be equal or greater than {{ min }}', { min }),
         },

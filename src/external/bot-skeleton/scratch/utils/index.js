@@ -1,6 +1,6 @@
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../constants/config';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
@@ -15,7 +15,7 @@ export const inject_workspace_options = {
     media: 'assets/images/',
     zoom: {
         wheel: true,
-        startScale: config.workspaces.previewWorkspaceStartScale,
+        startScale: config().workspaces.previewWorkspaceStartScale,
     },
     readOnly: true,
     scrollbars: true,
@@ -92,7 +92,7 @@ export const validateErrorOnBlockDelete = () => {
 export const updateWorkspaceName = () => {
     if (!DBotStore?.instance) return;
     const { load_modal } = DBotStore.instance;
-    const file_name = load_modal?.dashboard_strategies?.[0]?.name ?? config.default_file_name;
+    const file_name = load_modal?.dashboard_strategies?.[0]?.name ?? config().default_file_name;
     if (document.title.indexOf('-') > -1) {
         const string_to_replace = document.title.substr(document.title.indexOf('-'));
         const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
@@ -103,7 +103,7 @@ export const updateWorkspaceName = () => {
     }
 };
 
-export const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
+export const isMainBlock = block_type => config().mainBlocks.indexOf(block_type) >= 0;
 
 export const oppositesToDropdownOptions = opposite_name => {
     return opposite_name.map(contract_type => {
@@ -438,7 +438,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     if (!workspace) return false;
 
     const mandatory_trade_option_block = getSelectedTradeType(workspace);
-    const { mandatoryMainBlocks } = config;
+    const { mandatoryMainBlocks } = config();
     const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
 
     const required_blocks_check = getAllRequiredBlocks(workspace, required_block_types);

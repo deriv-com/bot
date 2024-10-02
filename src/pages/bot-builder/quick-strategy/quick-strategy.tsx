@@ -62,16 +62,16 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const getInitialValue = () => {
         const data = getSavedValues();
         initial_value = {
-            symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
+            symbol: data?.symbol ?? qs_config().QUICK_STRATEGY.DEFAULT.symbol,
             tradetype: data?.tradetype ?? '',
             type: data?.type ?? '',
-            durationtype: data?.durationtype ?? qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+            durationtype: data?.durationtype ?? qs_config().QUICK_STRATEGY.DEFAULT.durationtype,
             duration: data?.duration ?? '1',
             stake: data?.stake ?? '1',
             loss: data?.loss ?? '',
             profit: data?.profit ?? '',
-            size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
-            unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
+            size: data?.size ?? String(qs_config().QUICK_STRATEGY.DEFAULT.size),
+            unit: data?.unit ?? String(qs_config().QUICK_STRATEGY.DEFAULT.unit),
             action: data?.action ?? 'RUN',
             max_stake: data?.max_stake ?? 10,
             boolean_max_stake: data?.boolean_max_stake || false,

@@ -1,8 +1,8 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
-export const config = {
+export const config = () => ({
     lists: {
         PAYOUTTYPE: [
             // [localize('Payout'), 'payout'],
@@ -318,4 +318,4 @@ export const config = {
             prediction: 0,
         },
     },
-};
+});

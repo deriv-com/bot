@@ -31,7 +31,7 @@ window.Blockly.Blocks.trade_definition_accumulator = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config().lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -199,7 +199,7 @@ window.Blockly.Blocks.trade_definition_accumulator = {
                         workspaces: {
                             indentWorkspace: { x, y },
                         },
-                    } = config;
+                    } = config();
 
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');
                     duration_block.initSvg();

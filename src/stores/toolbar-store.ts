@@ -45,7 +45,7 @@ export default class ToolbarStore implements IToolbarStore {
 
     is_animation_info_modal_open = false;
     is_dialog_open = false;
-    file_name = config.default_file_name;
+    file_name = config().default_file_name;
     has_undo_stack = false;
     has_redo_stack = false;
     is_reset_button_clicked = false;
@@ -79,7 +79,7 @@ export default class ToolbarStore implements IToolbarStore {
         workspace.current_strategy_id = window?.Blockly?.utils?.idGenerator?.genUid();
         await load({
             block_string: workspace.cached_xml.main,
-            file_name: config.default_file_name,
+            file_name: config().default_file_name,
             workspace,
             drop_event: null,
             strategy_id: null,
@@ -95,7 +95,7 @@ export default class ToolbarStore implements IToolbarStore {
             workspaces: {
                 indentWorkspace: { x, y },
             },
-        } = config;
+        } = config();
         window.Blockly.derivWorkspace.cleanUp(x, y);
     };
 

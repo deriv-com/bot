@@ -13,7 +13,7 @@ window.Blockly.Blocks.contract_check_result = {
                 {
                     type: 'field_dropdown',
                     name: 'CHECK_RESULT',
-                    options: config.lists.CHECK_RESULT,
+                    options: config().lists.CHECK_RESULT,
                 },
             ],
             output: 'Boolean',

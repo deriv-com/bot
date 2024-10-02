@@ -21,7 +21,7 @@ window.Blockly.Blocks.multiplier_take_profit = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config().lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',

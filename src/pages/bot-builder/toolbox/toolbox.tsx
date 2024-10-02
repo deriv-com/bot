@@ -32,7 +32,7 @@ const Toolbox = observer(() => {
     const { setFormVisibility } = quick_strategy;
     const { setVisibility, selected_category } = flyout;
 
-    const toolbox_ref = React.useRef(ToolboxItems);
+    const toolbox_ref = React.useRef(ToolboxItems());
     const [is_open, setOpen] = React.useState(true);
 
     React.useEffect(() => {

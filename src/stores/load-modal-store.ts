@@ -384,7 +384,7 @@ export default class LoadModalStore {
                 media: `${window.__webpack_public_path__}assets/media/`,
                 zoom: {
                     wheel: true,
-                    startScale: config.workspaces.previewWorkspaceStartScale,
+                    startScale: config().workspaces.previewWorkspaceStartScale,
                 },
                 readOnly: true,
                 scrollbars: true,
@@ -471,7 +471,7 @@ export default class LoadModalStore {
                     media: `${window.__webpack_public_path__}assets/media/`,
                     zoom: {
                         wheel: false,
-                        startScale: config.workspaces.previewWorkspaceStartScale,
+                        startScale: config().workspaces.previewWorkspaceStartScale,
                     },
                     readOnly: true,
                     scrollbars: true,

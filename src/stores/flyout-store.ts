@@ -49,7 +49,7 @@ export default class FlyoutStore implements IFlyoutStore {
         renderer: 'zelos',
         media: 'assets/media/',
         move: { scrollbars: false, drag: true, wheel: false },
-        zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
+        zoom: { startScale: config().workspaces.flyoutWorkspacesStartScale },
         sounds: false,
         theme: window?.Blockly?.Themes?.zelos_renderer,
     };

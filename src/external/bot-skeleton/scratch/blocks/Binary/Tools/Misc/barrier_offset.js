@@ -12,7 +12,7 @@ window.Blockly.Blocks.barrier_offset = {
                 {
                     type: 'field_dropdown',
                     name: 'BARRIEROFFSET_IN',
-                    options: config.BARRIER_TYPES,
+                    options: config().BARRIER_TYPES,
                 },
             ],
             output: null,

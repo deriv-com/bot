@@ -10,7 +10,7 @@ window.Blockly.Blocks.trade_definition_candleinterval = {
                 {
                     type: 'field_dropdown',
                     name: 'CANDLEINTERVAL_LIST',
-                    options: config.candleIntervals.slice(1),
+                    options: config().candleIntervals.slice(1),
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,

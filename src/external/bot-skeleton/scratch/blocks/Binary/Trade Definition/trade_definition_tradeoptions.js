@@ -38,7 +38,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config().lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',
@@ -110,8 +110,8 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_duration = this.getFieldValue('DURATIONTYPE_LIST');
         this.selected_barrier_types = [
-            this.getFieldValue('BARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[0][1],
-            this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
+            this.getFieldValue('BARRIEROFFSETTYPE_LIST') || config().BARRIER_TYPES[0][1],
+            this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config().BARRIER_TYPES[1][1],
         ];
 
         if (
@@ -205,7 +205,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             const input_names = ['BARRIEROFFSET', 'SECONDBARRIEROFFSET'];
 
             for (let i = 0; i < barriers.values.length; i++) {
-                const label = barriers.values.length === 1 ? localize('Barrier') : config.BARRIER_LABELS[i];
+                const label = barriers.values.length === 1 ? localize('Barrier') : config().BARRIER_LABELS[i];
                 let input = this.getInput(input_names[i]);
 
                 if (input) {
@@ -214,7 +214,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                     input = this.appendValueInput(input_names[i])
                         .appendField(label, `${input_names[i]}_LABEL`)
                         .appendField(
-                            new window.Blockly.FieldDropdown(config.BARRIER_TYPES),
+                            new window.Blockly.FieldDropdown(config().BARRIER_TYPES),
                             `${input_names[i]}TYPE_LIST`
                         );
 
@@ -392,14 +392,14 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             workspaces: {
                 indentWorkspace: { x, y },
             },
-        } = config;
+        } = config();
         setTimeout(() => {
             window.Blockly.getMainWorkspace().cleanUp(x, y);
         }, 10);
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
         const { contracts_for } = ApiHelpers.instance;
-        const { BARRIER_TYPES } = config;
+        const { BARRIER_TYPES } = config();
 
         contracts_for
             .getBarriers(
@@ -415,7 +415,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
 
                 for (let i = 0; i < barriers.values.length; i++) {
                     const barrier_field_dropdown = this.getField(`${input_names[i]}TYPE_LIST`);
-                    const { ABSOLUTE_BARRIER_DROPDOWN_OPTION } = config;
+                    const { ABSOLUTE_BARRIER_DROPDOWN_OPTION } = config();
                     const barrier_field_value = should_use_default_type
                         ? BARRIER_TYPES[i][1]
                         : barrier_field_dropdown.getValue();
@@ -484,7 +484,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         const other_barrier_input_name =
             barrier_input_name === 'BARRIEROFFSETTYPE_LIST' ? 'SECONDBARRIEROFFSETTYPE_LIST' : 'BARRIEROFFSETTYPE_LIST';
         const other_barrier_field = this.getField(other_barrier_input_name);
-        const { BARRIER_TYPES } = config;
+        const { BARRIER_TYPES } = config();
 
         if (other_barrier_field) {
             const has_other_barrier = BARRIER_TYPES.findIndex(type => type[1] === new_value) !== -1;
