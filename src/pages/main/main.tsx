@@ -211,7 +211,9 @@ const AppWrapper = observer(() => {
                 </div>
             </div>
             <DesktopWrapper>
-                <div className='main__run-strategy-wrapper'>
+                <div
+                    className={`main__run-strategy-wrapper ${active_tab === BOT_BUILDER ? 'bot-builder-active' : ''} ${active_tab === DBOT_TABS.CHART ? 'chart-active' : ''}`}
+                >
                     <RunStrategy />
                     <RunPanel />
                 </div>

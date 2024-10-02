@@ -65,7 +65,15 @@
     }
 
     .main__run-strategy-wrapper {
-        z-index: 0 !important;
+        z-index: 1 !important;
+
+        &.chart-active {
+            z-index: 0 !important;
+        }
+
+        &.bot-builder-active {
+            z-index: 1 !important;
+        }
     }
 }
 
