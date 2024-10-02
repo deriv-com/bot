@@ -19,12 +19,12 @@ window.Blockly.Blocks.ohlc_values = {
                 {
                     type: 'field_dropdown',
                     name: 'OHLCFIELD_LIST',
-                    options: config.ohlcFields,
+                    options: config().ohlcFields,
                 },
                 {
                     type: 'field_dropdown',
                     name: 'CANDLEINTERVAL_LIST',
-                    options: config.candleIntervals,
+                    options: config().candleIntervals,
                 },
             ],
             output: 'Array',

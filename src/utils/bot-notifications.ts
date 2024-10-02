@@ -1,10 +1,10 @@
-import { localize } from '@/utils/tmp/dummy';
 import { TNotificationMessage } from '@deriv/stores/types';
+import { localize } from '@deriv-com/translations';
 import { BrandConstants } from '@deriv-com/utils';
 
 const { platforms } = BrandConstants;
 
-export const switch_account_notification = {
+export const switch_account_notification = () => ({
     key: 'bot_switch_account',
     header: localize('You have switched accounts.'),
     message: localize(
@@ -12,7 +12,7 @@ export const switch_account_notification = {
     ),
     type: 'warning',
     is_persistent: true,
-};
+});
 
 export const journalError = (onClick: () => void): TNotificationMessage => {
     return {

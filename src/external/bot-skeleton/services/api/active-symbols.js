@@ -7,8 +7,8 @@ import { api_base } from './api-base';
 export default class ActiveSymbols {
     constructor(trading_times) {
         this.active_symbols = [];
-        this.disabled_symbols = config.DISABLED_SYMBOLS;
-        this.disabled_submarkets = config.DISABLED_SUBMARKETS;
+        this.disabled_symbols = config().DISABLED_SYMBOLS;
+        this.disabled_submarkets = config().DISABLED_SUBMARKETS;
         this.init_promise = new PendingPromise();
         this.is_initialised = false;
         this.processed_symbols = {};
@@ -56,8 +56,8 @@ export default class ActiveSymbols {
     processActiveSymbols() {
         return this.active_symbols.reduce((processed_symbols, symbol) => {
             if (
-                config.DISABLED_SYMBOLS.includes(symbol.symbol) ||
-                config.DISABLED_SUBMARKETS.includes(symbol.submarket)
+                config().DISABLED_SYMBOLS.includes(symbol.symbol) ||
+                config().DISABLED_SUBMARKETS.includes(symbol.submarket)
             ) {
                 return processed_symbols;
             }
@@ -136,7 +136,7 @@ export default class ActiveSymbols {
      * @returns {Array} Symbols and their submarkets + markets for deriv-bot
      */
     getSymbolsForBot() {
-        const { DISABLED } = config.QUICK_STRATEGY;
+        const { DISABLED } = config().QUICK_STRATEGY;
         const symbols_for_bot = [];
         Object.keys(this.processed_symbols).forEach(market_name => {
             if (this.isMarketClosed(market_name)) return;
@@ -175,7 +175,7 @@ export default class ActiveSymbols {
         });
 
         if (market_options.length === 0) {
-            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+            return config().NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
         market_options.sort(a => (a[1] === 'synthetic_index' ? -1 : 1));
 
@@ -210,7 +210,7 @@ export default class ActiveSymbols {
         }
 
         if (submarket_options.length === 0) {
-            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+            return config().NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
         if (market === 'synthetic_index') {
             submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
@@ -239,7 +239,7 @@ export default class ActiveSymbols {
         }, []);
 
         if (symbol_options.length === 0) {
-            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+            return config().NOT_AVAILABLE_DROPDOWN_OPTIONS;
         }
 
         return this.sortDropdownOptions(symbol_options, this.isSymbolClosed);

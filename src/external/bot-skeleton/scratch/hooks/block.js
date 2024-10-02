@@ -133,11 +133,11 @@ window.Blockly.Block.getDimensions = function (block_node) {
 };
 
 window.Blockly.Block.prototype.isMainBlock = function () {
-    return config.mainBlocks.includes(this.type);
+    return config().mainBlocks.includes(this.type);
 };
 
 window.Blockly.Block.prototype.isIndependentBlock = function () {
-    return config.INDEPEDENT_BLOCKS.includes(this.type);
+    return config().INDEPEDENT_BLOCKS.includes(this.type);
 };
 
 /**

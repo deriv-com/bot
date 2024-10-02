@@ -48,9 +48,9 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     is_open = false;
     selected_strategy = 'MARTINGALE';
     form_data: TFormData = {
-        symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
-        tradetype: qs_config.QUICK_STRATEGY.DEFAULT.tradetype,
-        durationtype: qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+        symbol: qs_config().QUICK_STRATEGY.DEFAULT.symbol,
+        tradetype: qs_config().QUICK_STRATEGY.DEFAULT.tradetype,
+        durationtype: qs_config().QUICK_STRATEGY.DEFAULT.durationtype,
         action: 'RUN',
     };
     is_contract_dialog_open = false;

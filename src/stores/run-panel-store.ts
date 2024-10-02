@@ -443,7 +443,7 @@ export default class RunPanelStore {
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
-                            notifications.addNotificationMessage(switch_account_notification);
+                            notifications.addNotificationMessage(switch_account_notification());
                         }
                         this.dbot.terminateBot();
                         this.unregisterBotListeners();

@@ -13,7 +13,7 @@ window.Blockly.Blocks.check_direction = {
                 {
                     type: 'field_dropdown',
                     name: 'CHECK_DIRECTION',
-                    options: config.lists.CHECK_DIRECTION,
+                    options: config().lists.CHECK_DIRECTION,
                 },
             ],
             output: 'Boolean',

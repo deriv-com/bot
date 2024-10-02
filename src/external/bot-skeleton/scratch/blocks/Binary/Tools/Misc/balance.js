@@ -23,7 +23,7 @@ window.Blockly.Blocks.balance = {
                 {
                     type: 'field_dropdown',
                     name: 'BALANCE_TYPE',
-                    options: config.lists.BALANCE_TYPE,
+                    options: config().lists.BALANCE_TYPE,
                 },
             ],
             output: null,

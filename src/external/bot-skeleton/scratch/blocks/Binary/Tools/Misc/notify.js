@@ -20,12 +20,12 @@ window.Blockly.Blocks.notify = {
                 {
                     type: 'field_dropdown',
                     name: 'NOTIFICATION_TYPE',
-                    options: config.lists.NOTIFICATION_TYPE,
+                    options: config().lists.NOTIFICATION_TYPE,
                 },
                 {
                     type: 'field_dropdown',
                     name: 'NOTIFICATION_SOUND',
-                    options: config.lists.NOTIFICATION_SOUND,
+                    options: config().lists.NOTIFICATION_SOUND,
                 },
                 {
                     type: 'input_value',

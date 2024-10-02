@@ -17,7 +17,7 @@ window.Blockly.Blocks.read_ohlc = {
                 {
                     type: 'field_dropdown',
                     name: 'OHLCFIELD_LIST',
-                    options: config.ohlcFields,
+                    options: config().ohlcFields,
                 },
                 {
                     type: 'input_value',
@@ -29,7 +29,7 @@ window.Blockly.Blocks.read_ohlc = {
                 {
                     type: 'field_dropdown',
                     name: 'CANDLEINTERVAL_LIST',
-                    options: config.candleIntervals,
+                    options: config().candleIntervals,
                 },
             ],
             output: 'Number',
