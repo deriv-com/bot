@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { CONTRACT_TYPES, shouldShowCancellation, shouldShowExpiration, TRADE_TYPES } from '../contract';
 import { TContractOptions } from '../contract/contract-types';
 import { cloneObject } from '../object';

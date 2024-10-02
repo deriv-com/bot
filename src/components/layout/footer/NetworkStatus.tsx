@@ -1,24 +1,24 @@
 import { useMemo } from 'react';
 import clsx from 'clsx';
 import useNetworkStatus from '@/hooks/useNetworkStatus';
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 // import { useTranslations } from '@deriv-com/translations';
 
-const statusConfigs = {
+const statusConfigs = () => ({
     blinking: {
         className: 'app-footer__network-status-online app-footer__network-status-blinking',
         tooltip: localize('Connecting to server'),
     },
     offline: { className: 'app-footer__network-status-offline', tooltip: 'Offline' },
     online: { className: 'app-footer__network-status-online', tooltip: 'Online' },
-};
+});
 
 const NetworkStatus = () => {
     // TODO complete the logic by adding the socket connctions status
     const status = useNetworkStatus();
     // const { localize } = useTranslations();
-    const { className, tooltip } = useMemo(() => statusConfigs[status], [status]);
+    const { className, tooltip } = useMemo(() => statusConfigs()[status], [status]);
 
     return (
         <Tooltip

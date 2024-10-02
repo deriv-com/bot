@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from '@/utils/download';
-import { localize } from '@/utils/tmp/dummy';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 import Popover from '../shared_ui/popover';
 
