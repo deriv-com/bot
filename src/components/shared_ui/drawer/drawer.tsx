@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LabelPairedChevronUpLgBoldIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronUpLgBoldIcon } from '@deriv/quill-icons/LabelPaired';
 import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {

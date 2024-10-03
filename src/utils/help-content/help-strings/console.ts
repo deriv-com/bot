@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block displays messages in the developer’s console with an input that can be either a string of text, a number, boolean, or an array of data.'
         ),

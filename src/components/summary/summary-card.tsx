@@ -106,9 +106,9 @@ const SummaryCard = observer(({ contract_info, is_contract_loading, is_bot_runni
                 </ContractCard>
             )}
             {!is_contract_loading && !contract_info && !is_bot_running && (
-                <Text as='p' lineHeight='s' size='xs'>
+                <Text as='p' align='center' lineHeight='s' size='xs'>
                     {localize('When you’re ready to trade, hit ')}
-                    <strong>{localize('Run')}</strong>
+                    <strong className='summary-panel-inactive__strong'>{localize('Run')}</strong>
                     {localize('. You’ll be able to track your bot’s performance here.')}
                 </Text>
             )}

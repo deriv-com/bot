@@ -109,7 +109,8 @@ window.Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_t
     const root_blocks = top_blocks
         .filter(block => block.isMainBlock())
         .sort((a, b) => {
-            const blockIndex = block => config.mainBlocks.findIndex(main_block_type => main_block_type === block.type);
+            const blockIndex = block =>
+                config().mainBlocks.findIndex(main_block_type => main_block_type === block.type);
             return blockIndex(a) - blockIndex(b);
         });
     const column_count = 2;

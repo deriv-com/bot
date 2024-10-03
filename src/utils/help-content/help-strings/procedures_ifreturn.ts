@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('Used within a function block, this block returns a value when a specific condition is true.'),
         localize('Example:'),
     ],

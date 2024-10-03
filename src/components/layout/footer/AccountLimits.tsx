@@ -1,5 +1,5 @@
 import { ACCOUNT_LIMITS } from '@/utils/constants';
-import { LegacyAccountLimitsIcon } from '@deriv/quill-icons';
+import { LegacyAccountLimitsIcon } from '@deriv/quill-icons/Legacy';
 import { useTranslations } from '@deriv-com/translations';
 import { Tooltip } from '@deriv-com/ui';
 

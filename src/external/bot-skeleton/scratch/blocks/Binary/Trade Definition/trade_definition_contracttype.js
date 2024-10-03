@@ -50,7 +50,7 @@ window.Blockly.Blocks.trade_definition_contracttype = {
                 contract_type_options.push(...trade_types);
 
                 if (contract_type_options.length === 0) {
-                    contract_type_options.push(...config.NOT_AVAILABLE_DROPDOWN_OPTIONS);
+                    contract_type_options.push(...config().NOT_AVAILABLE_DROPDOWN_OPTIONS);
                 }
 
                 contract_type_list.updateOptions(contract_type_options, {

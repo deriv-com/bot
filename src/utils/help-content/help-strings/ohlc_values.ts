@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block gives you the selected candle value from a list of candles within the selected time interval. You can choose from open price, close price, high price, low price, and open time.'
         ),

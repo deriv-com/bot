@@ -25,7 +25,7 @@ window.Blockly.Blocks.bba_statement = {
                 {
                     type: 'field_dropdown',
                     name: 'BBRESULT_LIST',
-                    options: config.bbResult,
+                    options: config().bbResult,
                 },
                 {
                     type: 'input_dummy',

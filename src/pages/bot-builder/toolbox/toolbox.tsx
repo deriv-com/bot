@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedChevronDownMdFillIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronDownMdFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
@@ -32,7 +32,7 @@ const Toolbox = observer(() => {
     const { setFormVisibility } = quick_strategy;
     const { setVisibility, selected_category } = flyout;
 
-    const toolbox_ref = React.useRef(ToolboxItems);
+    const toolbox_ref = React.useRef(ToolboxItems());
     const [is_open, setOpen] = React.useState(true);
 
     React.useEffect(() => {

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { LabelPairedPlusLgFillIcon } from '@deriv/quill-icons';
+import { LabelPairedPlusLgFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 import Text from '../shared_ui/text';

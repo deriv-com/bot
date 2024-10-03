@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'
         ),

@@ -16,7 +16,7 @@ window.Blockly.Blocks.read_ohlc_obj = {
                 {
                     type: 'field_dropdown',
                     name: 'OHLCFIELD_LIST',
-                    options: config.ohlcFields,
+                    options: config().ohlcFields,
                 },
                 {
                     type: 'input_value',

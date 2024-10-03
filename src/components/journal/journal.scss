@@ -4,7 +4,29 @@
 /**
  * @define journal
  */
-.journal {
+@keyframes move-in {
+    0% {
+        transform: translateX(300px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.journal,
+.transactions {
+    .ReactVirtualized__Grid__innerScrollContainer {
+        & > :first-child,
+        :before,
+        :after {
+            box-sizing: border-box;
+            animation: move-in 0.4s ease-in forwards;
+        }
+    }
+
     &-empty {
         height: 100%;
         display: flex;

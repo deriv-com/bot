@@ -114,7 +114,7 @@ export default class JournalStore {
     }
 
     playAudio = (sound: string) => {
-        if (sound !== config.lists.NOTIFICATION_SOUND[0][1]) {
+        if (sound !== config().lists.NOTIFICATION_SOUND[0][1]) {
             const audio = document.getElementById(sound) as HTMLAudioElement;
             audio.play();
         }

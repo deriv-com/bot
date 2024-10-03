@@ -3,7 +3,7 @@ import { config } from '../constants/config';
 
 // TODO: use-shared-functions - These functions are duplicates of trader ones, export and use these instead.
 export const getContractTypeName = contract => {
-    const { opposites } = config;
+    const { opposites } = config();
     let name = localize('Unknown');
 
     Object.keys(opposites).forEach(opposites_name => {

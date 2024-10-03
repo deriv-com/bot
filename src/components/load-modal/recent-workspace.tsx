@@ -3,7 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { timeSince } from '@/external/bot-skeleton';
 import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { useStore } from '@/hooks/useStore';
-import { DerivLightGoogleDriveIcon, DerivLightMyComputerIcon, LegacyReportsIcon } from '@deriv/quill-icons';
+import { DerivLightGoogleDriveIcon, DerivLightMyComputerIcon } from '@deriv/quill-icons/Illustration';
+import { LegacyReportsIcon } from '@deriv/quill-icons/Legacy';
 
 type TRecentWorkspaceProps = {
     workspace: { [key: string]: any };

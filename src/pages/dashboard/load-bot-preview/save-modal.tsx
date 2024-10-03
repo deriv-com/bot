@@ -11,7 +11,11 @@ import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { config, save_types } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { DerivLightGoogleDriveIcon, DerivLightLocalDeviceIcon, DerivLightMyComputerIcon } from '@deriv/quill-icons';
+import {
+    DerivLightGoogleDriveIcon,
+    DerivLightLocalDeviceIcon,
+    DerivLightMyComputerIcon,
+} from '@deriv/quill-icons/Illustration';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import IconRadio from './icon-radio';
@@ -49,7 +53,7 @@ const SaveModalForm = ({
         initialValues={{
             is_local: true,
             save_as_collection: false,
-            bot_name: bot_name === config.default_file_name ? '' : bot_name,
+            bot_name: bot_name === config().default_file_name ? '' : bot_name,
         }}
         validate={validateBotName}
         onSubmit={onConfirmSave}

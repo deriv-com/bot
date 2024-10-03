@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block will transfer the control back to the Purchase conditions block, enabling you to purchase another contract without manually stopping and restarting your bot.'
         ),

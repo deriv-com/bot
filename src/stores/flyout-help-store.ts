@@ -36,21 +36,21 @@ export default class FlyoutHelpStore {
         // TODO: fix
         media: `assets/media/`,
         move: { scrollbars: false, drag: true, wheel: false },
-        zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
+        zoom: { startScale: config().workspaces.flyoutWorkspacesStartScale },
         sounds: false,
     };
 
     block_node = null;
     block_type = '';
     examples = [];
-    help_string = {};
+    help_string: Record<string, React.ReactNode[]> = {};
     title = '';
     should_next_disable = false;
     should_previous_disable = false;
     active_helper = '';
 
     setHelpContent = async block_node => {
-        const block_type = block_node.getAttribute('type');
+        const block_type: keyof typeof help_strings | '' = block_node.getAttribute('type');
         const title = window.Blockly.Blocks[block_type].meta().display_name;
         if (block_type !== '') {
             this.active_helper = block_type;
@@ -66,7 +66,12 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
-            this.help_string = help_strings[block_type];
+
+            if (block_type !== '') {
+                for (const [key, value] of Object.entries(help_strings[block_type])) {
+                    this.help_string[key] = value();
+                }
+            }
         });
 
         if (!flyout.is_search_flyout) {

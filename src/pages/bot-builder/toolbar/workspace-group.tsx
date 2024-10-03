@@ -12,7 +12,7 @@ import {
     LabelPairedMagnifyingGlassMinusMdRegularIcon,
     LabelPairedMagnifyingGlassPlusMdRegularIcon,
     LabelPairedObjectsAlignLeftMdRegularIcon,
-} from '@deriv/quill-icons';
+} from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import ToolbarIcon from './toolbar-icon';

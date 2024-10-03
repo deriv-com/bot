@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block repeats instructions as long as a given condition is true.'),
         localize('Examples:'),
         localize(

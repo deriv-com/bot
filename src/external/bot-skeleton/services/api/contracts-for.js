@@ -42,7 +42,7 @@ export default class ContractsFor {
     async getBarriers(symbol, trade_type, duration, barrier_types) {
         const barriers = { values: [] };
 
-        if (!config.BARRIER_TRADE_TYPES.includes(trade_type)) {
+        if (!config().BARRIER_TRADE_TYPES.includes(trade_type)) {
             return barriers;
         }
 
@@ -60,7 +60,7 @@ export default class ContractsFor {
                 const real_trade_type = this.getContractCategoryByTradeType(trade_type);
 
                 let contract = contracts_for_category.find(c => {
-                    const { BARRIER_CATEGORIES } = config;
+                    const { BARRIER_CATEGORIES } = config();
                     const barrier_category = Object.keys(BARRIER_CATEGORIES).find(b =>
                         BARRIER_CATEGORIES[b].includes(trade_type)
                     );
@@ -138,7 +138,7 @@ export default class ContractsFor {
 
     // eslint-disable-next-line class-methods-use-this
     getContractCategoryByTradeType(trade_type) {
-        const { TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING } = config;
+        const { TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING } = config();
 
         return (
             Object.keys(TRADE_TYPE_TO_CONTRACT_CATEGORY_MAPPING).find(category =>
@@ -149,7 +149,7 @@ export default class ContractsFor {
 
     // eslint-disable-next-line class-methods-use-this
     getTradeTypeCategoryByTradeType(trade_type) {
-        const { TRADE_TYPE_CATEGORIES } = config;
+        const { TRADE_TYPE_CATEGORIES } = config();
         const trade_type_category = Object.keys(TRADE_TYPE_CATEGORIES).find(t =>
             TRADE_TYPE_CATEGORIES[t].includes(trade_type)
         );
@@ -158,7 +158,7 @@ export default class ContractsFor {
     }
 
     getTradeTypeCategoryNameByTradeType(trade_type) {
-        const { TRADE_TYPE_CATEGORY_NAMES } = config;
+        const { TRADE_TYPE_CATEGORY_NAMES } = config();
         const trade_type_category = this.getTradeTypeCategoryByTradeType(trade_type);
 
         return TRADE_TYPE_CATEGORY_NAMES[trade_type_category];
@@ -166,7 +166,7 @@ export default class ContractsFor {
 
     // eslint-disable-next-line class-methods-use-this
     getBarrierCategoryByTradeType(trade_type) {
-        const { BARRIER_CATEGORIES } = config;
+        const { BARRIER_CATEGORIES } = config();
         return Object.keys(BARRIER_CATEGORIES).find(barrier_category =>
             BARRIER_CATEGORIES[barrier_category].includes(trade_type)
         );
@@ -241,7 +241,7 @@ export default class ContractsFor {
         }
 
         const contracts = await this.getContractsFor(symbol);
-        const { NOT_AVAILABLE_DURATIONS, DEFAULT_DURATION_DROPDOWN_OPTIONS } = config;
+        const { NOT_AVAILABLE_DURATIONS, DEFAULT_DURATION_DROPDOWN_OPTIONS } = config();
 
         if (contracts.length === 0) {
             return NOT_AVAILABLE_DURATIONS;
@@ -325,7 +325,7 @@ export default class ContractsFor {
         const contracts = await this.getContractsByTradeType(symbol, trade_type);
         const contract_category = this.getContractCategoryByTradeType(trade_type);
         const prediction_range = [];
-        const { DIGIT_CATEGORIES, opposites } = config;
+        const { DIGIT_CATEGORIES, opposites } = config();
 
         if (DIGIT_CATEGORIES.includes(contract_category) && trade_type !== 'evenodd') {
             const contract = contracts.find(c => {
@@ -349,7 +349,7 @@ export default class ContractsFor {
     async getMultiplierRange(symbol, trade_type) {
         const contracts = await this.getContractsByTradeType(symbol, trade_type);
         const multiplier_range = [];
-        const { opposites } = config;
+        const { opposites } = config();
 
         const contract = contracts.find(c => {
             return Object.keys(opposites).some(category => {
@@ -414,7 +414,7 @@ export default class ContractsFor {
     }
 
     async getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category) {
-        const { NOT_AVAILABLE_DURATIONS, TRADE_TYPE_CATEGORIES, opposites } = config;
+        const { NOT_AVAILABLE_DURATIONS, TRADE_TYPE_CATEGORIES, opposites } = config();
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
         const dropdown_options = [];
 
@@ -454,8 +454,8 @@ export default class ContractsFor {
 
         for (let j = 0; j < trade_types.length; j++) {
             const trade_type = trade_types[j];
-            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_barrier = config().QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config().QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
 
             if (has_barrier || has_prediction) {
                 hidden_categories++;
@@ -468,8 +468,8 @@ export default class ContractsFor {
     getTradeTypeOptions = (trade_types, trade_type_category) => {
         const trade_type_options = [];
         trade_types.forEach(trade_type => {
-            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_barrier = config().QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config().QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
             const is_muliplier = ['multiplier'].includes(trade_type.value);
 
             // TODO: Render extra inputs for barrier + prediction and multiplier types.
@@ -525,7 +525,7 @@ export default class ContractsFor {
     }
 
     async getTradeTypeCategories(market, submarket, symbol) {
-        const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
+        const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config();
         const contracts = await this.getContractsFor(symbol);
         const trade_type_categories = [];
 
@@ -566,7 +566,7 @@ export default class ContractsFor {
     }
 
     async getTradeTypes(market, submarket, symbol, trade_type_category) {
-        const { NOT_AVAILABLE_DURATIONS, TRADE_TYPE_CATEGORIES, opposites } = config;
+        const { NOT_AVAILABLE_DURATIONS, TRADE_TYPE_CATEGORIES, opposites } = config();
         const trade_types = [];
         const subcategories = TRADE_TYPE_CATEGORIES[trade_type_category];
 
@@ -591,7 +591,7 @@ export default class ContractsFor {
             }
         }
 
-        return trade_types.length > 0 ? trade_types : config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+        return trade_types.length > 0 ? trade_types : config().NOT_AVAILABLE_DROPDOWN_OPTIONS;
     }
 
     isDisabledOption(compare_obj) {
@@ -605,7 +605,7 @@ export default class ContractsFor {
     }
 
     getContractTypes = trade_type => {
-        const { opposites } = config;
+        const { opposites } = config();
         const categories = opposites[trade_type.toUpperCase()].map(opposite => ({
             value: Object.keys(opposite)[0],
             text: Object.values(opposite)[0],

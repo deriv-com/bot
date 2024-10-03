@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block uses the variable "i" to control the iterations. With each iteration, the value of "i" is determined by the items in a given list.'
         ),

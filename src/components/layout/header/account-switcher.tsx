@@ -3,7 +3,7 @@ import Popover from '@/components/shared_ui/popover';
 import useModifiedAccountList from '@/hooks/api/account/useAccountList';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useStore } from '@/hooks/useStore';
-import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
+import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';

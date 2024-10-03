@@ -1,19 +1,17 @@
 import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { CSSTransition } from 'react-transition-group';
 import Download from '@/components/download';
 import Button from '@/components/shared_ui/button';
+import DataList from '@/components/shared_ui/data-list';
 import Text from '@/components/shared_ui/text';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { contract_stages } from '@/constants/contract-stage';
 import { transaction_elements } from '@/constants/transactions';
-import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { useStore } from '@/hooks/useStore';
-import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons';
+import { DerivLightEmptyCardboardBoxIcon } from '@deriv/quill-icons/Illustration';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import DataList from '../data-list';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
 import Transaction from './transaction';
 
@@ -26,24 +24,20 @@ type TTransactionItem = {
         type: string;
         data: TContractInfo;
     };
-    is_new_row?: boolean;
     onClickTransaction?: (transaction_id: null | number) => void;
     active_transaction_id?: number | null;
 };
 
-const TransactionItem = ({ row, is_new_row = false, onClickTransaction, active_transaction_id }: TTransactionItem) => {
-    const { in_prop } = useNewRowTransition(is_new_row);
+const TransactionItem = ({ row = false, onClickTransaction, active_transaction_id }: TTransactionItem) => {
     switch (row.type) {
         case transaction_elements.CONTRACT: {
             const { data: contract } = row;
             return (
-                <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
-                    <Transaction
-                        contract={contract}
-                        onClickTransaction={onClickTransaction}
-                        active_transaction_id={active_transaction_id}
-                    />
-                </CSSTransition>
+                <Transaction
+                    contract={contract}
+                    onClickTransaction={onClickTransaction}
+                    active_transaction_id={active_transaction_id}
+                />
             );
         }
         case transaction_elements.DIVIDER: {

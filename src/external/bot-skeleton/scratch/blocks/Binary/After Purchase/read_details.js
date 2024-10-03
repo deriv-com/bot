@@ -13,7 +13,7 @@ window.Blockly.Blocks.read_details = {
                 {
                     type: 'field_dropdown',
                     name: 'DETAIL_INDEX',
-                    options: config.lists.DETAILS,
+                    options: config().lists.DETAILS,
                 },
             ],
             output: null,

@@ -267,7 +267,7 @@ export default class BlockConversion {
         // We don't convert these atm, as a workaround users can import to BBot, then export and load
         // into DBot.
         const { active_symbols } = ApiHelpers.instance.active_symbols;
-        const { opposites } = config;
+        const { opposites } = config();
 
         active_symbols.forEach(active_symbol => {
             const symbol_name = active_symbol.symbol.toLowerCase();
@@ -731,7 +731,7 @@ export default class BlockConversion {
         // Procedures are a bit special, it's hard to find the correct connection for them so we
         // generate a (completely useless) filler block and connect it to the procedure's statement
         // so we can return that useless block's previousConnection.
-        if (config.procedureDefinitionBlocks.includes(supposed_parent_block.type)) {
+        if (config().procedureDefinitionBlocks.includes(supposed_parent_block.type)) {
             const blocks_in_statement = supposed_parent_block.getBlocksInStatement('STACK');
 
             if (blocks_in_statement.length === 0) {

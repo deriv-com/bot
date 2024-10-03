@@ -5,7 +5,7 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { removeKeyValue } from '@/utils/settings';
-import { LegacyPlay1pxIcon } from '@deriv/quill-icons';
+import { LegacyPlay1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 

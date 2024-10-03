@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block sends a message to a Telegram channel. You will need to create your own Telegram bot to use this block.'
         ),

@@ -45,7 +45,7 @@ const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
         faq_tab_content.length > 0 ||
         quick_strategy_tab_content.length > 0;
 
-    const tutorial_tabs: TTutorialsTabItem[] = [
+    const tutorial_tabs = (): TTutorialsTabItem[] => [
         {
             label: localize('Guide'),
             content: (
@@ -83,9 +83,9 @@ const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
     ];
 
     return isDesktop ? (
-        <TutorialsTabDesktop tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />
+        <TutorialsTabDesktop tutorial_tabs={tutorial_tabs()} prev_active_tutorials={prev_active_tutorials} />
     ) : (
-        <TutorialsTabMobile tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />
+        <TutorialsTabMobile tutorial_tabs={tutorial_tabs()} prev_active_tutorials={prev_active_tutorials} />
     );
 });
 

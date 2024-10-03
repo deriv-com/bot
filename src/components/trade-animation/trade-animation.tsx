@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import ContractResultOverlay from '@/components/contract-result-overlay';
 import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
-import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons';
+import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 import Button from '../shared_ui/button';
 import CircularWrapper from './circular-wrapper';

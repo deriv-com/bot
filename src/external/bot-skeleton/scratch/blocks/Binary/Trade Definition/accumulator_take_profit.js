@@ -1,5 +1,5 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
-import { localize } from '@/utils/localize-utils';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 
@@ -21,7 +21,7 @@ window.Blockly.Blocks.accumulator_take_profit = {
                 {
                     type: 'field_label',
                     name: 'CURRENCY_LIST',
-                    text: getCurrencyDisplayCode(config.lists.CURRENCY[0]),
+                    text: getCurrencyDisplayCode(config().lists.CURRENCY[0]),
                 },
                 {
                     type: 'input_value',

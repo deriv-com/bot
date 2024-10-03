@@ -21,7 +21,7 @@ window.Blockly.Blocks.get_ohlc = {
                 {
                     type: 'field_dropdown',
                     name: 'CANDLEINTERVAL_LIST',
-                    options: config.candleIntervals,
+                    options: config().candleIntervals,
                 },
             ],
             output: 'Candle',

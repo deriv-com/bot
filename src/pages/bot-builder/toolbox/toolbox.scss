@@ -20,11 +20,12 @@
         &__chevron {
             position: absolute;
             right: 0;
+            top: 0.3rem;
             transition: transform 0.3s ease;
 
             &--active {
                 transform: rotate(180deg);
-                top: -0.5rem;
+                top: -0.2rem;
             }
         }
     }
@@ -111,6 +112,8 @@
     }
 
     &__category-arrow {
+        width: 16px;
+        height: 16px;
         margin-right: $category-text-spacing;
         transition: transform 0.3s ease;
 

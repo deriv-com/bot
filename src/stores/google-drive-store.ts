@@ -85,7 +85,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
-        const { SCOPE, DISCOVERY_DOCS } = config.GOOGLE_DRIVE;
+        const { SCOPE, DISCOVERY_DOCS } = config().GOOGLE_DRIVE;
         this.client_id = process.env.GD_CLIENT_ID;
         this.app_id = process.env.GD_APP_ID;
         this.api_key = process.env.GD_API_KEY;

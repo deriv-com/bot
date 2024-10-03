@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons/LabelPaired';
 import { TItem } from '../types/common.types';
 import ArrayRenderer from './array-renderer';
 

@@ -25,7 +25,7 @@ window.Blockly.Blocks.macda_statement = {
                 {
                     type: 'field_dropdown',
                     name: 'MACDFIELDS_LIST',
-                    options: config.macdFields,
+                    options: config().macdFields,
                 },
                 {
                     type: 'input_dummy',

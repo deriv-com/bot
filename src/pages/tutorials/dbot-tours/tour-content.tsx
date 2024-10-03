@@ -2,7 +2,7 @@ import { getImageLocation } from '../../../public-path';
 import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { LabelPairedCircleCheckCaptionRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleCheckCaptionRegularIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 import TourSteps from './common/tour-steps';
 
@@ -581,6 +581,7 @@ export const getTourDialogAction = (is_mobile: boolean) => {
         <Localize
             key='tour-dialog-action-desktop'
             i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
+            components={[<strong key={0} />]}
         />
     );
 };

@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block gives you the potential profit or loss if you decide to sell your contract. It can only be used within the "Sell conditions" root block.'
         ),

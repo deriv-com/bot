@@ -160,7 +160,7 @@ class DBot {
                 window.Blockly.getMainWorkspace().strategy_to_load = main_xml;
                 window.Blockly.getMainWorkspace().RTL = isDbotRTL();
 
-                let file_name = config.default_file_name;
+                let file_name = config().default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
                     window.Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
@@ -398,7 +398,7 @@ class DBot {
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
-        const isMainBlock = block_type => config.mainBlocks.indexOf(block_type) >= 0;
+        const isMainBlock = block_type => config().mainBlocks.indexOf(block_type) >= 0;
         const top_blocks = this.workspace.getTopBlocks();
 
         top_blocks.forEach(block => {

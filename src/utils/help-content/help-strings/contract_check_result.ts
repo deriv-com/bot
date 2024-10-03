@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'You can check the result of the last trade with this block. It can only be placed within the "Restart trading conditions" root block.'
         ),

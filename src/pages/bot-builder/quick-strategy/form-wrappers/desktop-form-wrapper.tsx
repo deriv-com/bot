@@ -6,7 +6,7 @@ import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize } from '@deriv-com/translations';
 import {
     rudderStackSendQsEditStrategyEvent,

@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'SMA adds the market price in a list of ticks or candles for a number of time periods, and divides the sum by that number of time periods.'
         ),
