@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Button from '@/components/shared_ui/button';
 import StaticUrl from '@/components/shared_ui/static-url';
 import { useStore } from '@/hooks/useStore';
-import { DerivLightGoogleDriveIcon } from '@deriv/quill-icons';
+import { DerivLightGoogleDriveIcon } from '@deriv/quill-icons/Illustration';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 

@@ -3,11 +3,8 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import SelectNative from '@/components/shared_ui/select-native';
 import { useStore } from '@/hooks/useStore';
-import {
-    LabelPairedArrowLeftSmRegularIcon,
-    LabelPairedSearchSmRegularIcon,
-    LegacyCloseCircle1pxBlackIcon,
-} from '@deriv/quill-icons';
+import { LabelPairedArrowLeftSmRegularIcon, LabelPairedSearchSmRegularIcon } from '@deriv/quill-icons/LabelPaired';
+import { LegacyCloseCircle1pxBlackIcon } from '@deriv/quill-icons/Legacy';
 import SearchInput from './common/search-input';
 import { TTutorialsTabItem } from './tutorials';
 

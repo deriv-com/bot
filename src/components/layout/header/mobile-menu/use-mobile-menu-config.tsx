@@ -2,8 +2,6 @@ import { ComponentProps, ReactNode } from 'react';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
 import {
-    BrandDerivLogoCoralIcon,
-    IconTypes,
     LegacyAccountLimitsIcon,
     LegacyCashierIcon,
     LegacyChartsIcon,
@@ -15,7 +13,8 @@ import {
     LegacyResponsibleTradingIcon,
     LegacyTheme1pxIcon,
     LegacyWhatsappIcon,
-} from '@deriv/quill-icons';
+} from '@deriv/quill-icons/Legacy';
+import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons/Logo';
 import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
 import { ToggleSwitch } from '@deriv-com/ui';
@@ -23,8 +22,9 @@ import { URLConstants } from '@deriv-com/utils';
 
 export type TSubmenuSection = 'accountSettings' | 'cashier';
 
+//IconTypes
 type TMenuConfig = {
-    LeftComponent: IconTypes;
+    LeftComponent: any;
     RightComponent?: ReactNode;
     as: 'a' | 'button';
     href?: string;

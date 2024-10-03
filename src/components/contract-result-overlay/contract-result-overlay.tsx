@@ -1,7 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import Text from '@/components/shared_ui/text';
-import { LabelPairedCircleCheckMdRegularIcon, LabelPairedCircleXmarkMdRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedCircleCheckMdRegularIcon,
+    LabelPairedCircleXmarkMdRegularIcon,
+} from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
 
 type TContractResultOverlayProps = {

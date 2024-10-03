@@ -5,7 +5,7 @@ import { getSearchNotFoundOption } from '@/components/shared/utils/constants';
 import { getPosition } from '@/components/shared/utils/dom';
 import { getEnglishCharacters, matchStringByChar } from '@/components/shared/utils/string';
 import { useBlockScroll } from '@/hooks/useBlockscroll';
-import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronDownLgRegularIcon } from '@deriv/quill-icons/LabelPaired';
 import DropdownList, { TItem } from '../dropdown-list';
 import Input from '../input';
 

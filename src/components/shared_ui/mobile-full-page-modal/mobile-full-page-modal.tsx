@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import Text from '@/components/shared_ui/text';
-import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons/LabelPaired';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
 import PageOverlay from '../page-overlay/page-overlay';

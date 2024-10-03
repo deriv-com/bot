@@ -1,6 +1,6 @@
 import React from 'react';
 import Text from '@/components/shared_ui/text';
-import { LabelPairedLoaderMdBoldIcon } from '@deriv/quill-icons';
+import { LabelPairedLoaderMdBoldIcon } from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 
 export const message_running_bot = localize('Your bot is running and waiting for a signal to buy a contract.');

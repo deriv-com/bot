@@ -1,7 +1,7 @@
 import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
-import { StandaloneMapBoldIcon } from '@deriv/quill-icons';
+import { StandaloneMapBoldIcon } from '@deriv/quill-icons/Standalone';
 import { Localize } from '@deriv-com/translations';
 
 type TUserGuide = {

@@ -1,8 +1,6 @@
 import classnames from 'classnames';
-import { CSSTransition } from 'react-transition-group';
 import { MessageTypes } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { useNewRowTransition } from '@/hooks/useNewRowTransition';
 import { TJournalItemExtra, TJournalItemProps } from '../journal.types';
 import DateItem from './date-item';
 import FormatMessage from './format-message';
@@ -32,20 +30,21 @@ const getJournalItemContent = (
     }
 };
 
-const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => {
-    const { in_prop } = useNewRowTransition(is_new_row);
+const JournalItem = ({ row, measure }: TJournalItemProps) => {
     const { date, time, message, message_type, className, extra } = row;
     const date_el = DateItem({ date, time });
 
     return (
-        <CSSTransition in={in_prop} timeout={500} classNames='list__animation' data-testid='mock-css-transition'>
-            <div className='journal__item' dir={isDbotRTL() ? 'rtl' : 'ltr'}>
-                <div className='journal__item-content'>
-                    {getJournalItemContent(message, message_type, className, extra as TJournalItemExtra, measure)}
+        <div>
+            <div className='list__animation' data-testid='mock-css-transition'>
+                <div className='journal__item' dir={isDbotRTL() ? 'rtl' : 'ltr'}>
+                    <div className='journal__item-content'>
+                        {getJournalItemContent(message, message_type, className, extra as TJournalItemExtra, measure)}
+                    </div>
+                    <div className='journal__text-datetime'>{date_el}</div>
                 </div>
-                <div className='journal__text-datetime'>{date_el}</div>
             </div>
-        </CSSTransition>
+        </div>
     );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import Div100vhContainer from '../div100vh-container';
 import Text from '../text/text';
 import ThemedScrollbars from '../themed-scrollbars';
