@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block converts the date and time to the number of seconds since the Unix Epoch (1970-01-01 00:00:00).'
         ),

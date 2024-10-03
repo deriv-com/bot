@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('"Seconds Since Epoch" block returns the number of seconds since January 1st, 1970.'),
         localize('Example:'),
         localize('1551661986 seconds since Jan 01 1970 (UTC) translates to 03/04/2019 @ 1:13am (UTC).'),

@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block gives you information about your last contract.'),
         localize('You can choose to see one of the following:'),
         localize('- Deal reference ID: the reference ID of the contract'),

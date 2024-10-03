@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize("This block assigns a given value to a variable, creating the variable if it doesn't already exist."),
         localize(
             'A variable is among the most important and powerful components in creating a bot. It is a way to store information, either as text or numbers. The information stored as a variable can be used and changed according to the given instructions. Variables can be given any name, but usually they are given useful, symbolic names so that it is easier to call them during the execution of instructions.'

@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize('This block performs arithmetic operations between two numbers.'),
         localize('Available operations:'),
         localize('- Addition'),

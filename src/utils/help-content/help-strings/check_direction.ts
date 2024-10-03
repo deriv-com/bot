@@ -1,7 +1,7 @@
-import { localize } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 export default {
-    text: [
+    text: () => [
         localize(
             'This block is used to determine if the market price moves in the selected direction or not. It gives you a value of "True" or "False".'
         ),

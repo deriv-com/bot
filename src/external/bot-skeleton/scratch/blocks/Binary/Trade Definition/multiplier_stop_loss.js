@@ -1,5 +1,5 @@
 import { getCurrencyDisplayCode } from '@/components/shared';
-import { localize } from '@/utils/localize-utils';
+import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { modifyContextMenu } from '../../../utils';
 

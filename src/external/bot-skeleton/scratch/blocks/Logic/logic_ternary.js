@@ -1,4 +1,4 @@
-import { localize } from '@/utils/localize-utils';
+import { localize } from '@deriv-com/translations';
 import { modifyContextMenu } from '../../utils';
 
 window.Blockly.Blocks.logic_ternary = {
