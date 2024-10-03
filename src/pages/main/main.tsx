@@ -192,7 +192,7 @@ const AppWrapper = observer(() => {
                                     : 'id-charts'
                             }
                         >
-                            <Chart />
+                            <Chart show_digits_stats={false} />
                         </div>
                         <div
                             label={

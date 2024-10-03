@@ -70,7 +70,10 @@ const DashboardBotList = observer(() => {
                 <div className='bot-list__header'>
                     {HEADERS.map(({ label, className }) => {
                         return (
-                            <div className={className} key={label}>
+                            <div
+                                className={className}
+                                key={typeof label === 'string' ? label : label?.props?.i18n_default_text}
+                            >
                                 <Text size={isDesktop ? 'xs' : 'xxs'} weight='bold'>
                                     {label}
                                 </Text>

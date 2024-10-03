@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
 import { getDecimalPlaces } from '@/components/shared';
 import { useStore } from '@/hooks/useStore';
@@ -19,9 +19,9 @@ const useActiveAccount = () => {
         [activeLoginid, data]
     );
 
-    const modifiedAccount = useMemo(() => {
-        const currentBalanceData = allBalanceData?.accounts?.[activeAccount?.loginid ?? ''];
+    const currentBalanceData = allBalanceData?.accounts?.[activeAccount?.loginid ?? ''];
 
+    useEffect(() => {
         if (currentBalanceData) {
             setLoginId(activeLoginid);
             setAccountList(data);
@@ -29,7 +29,9 @@ const useActiveAccount = () => {
             setCurrency(currentBalanceData.currency);
             setIsLoggedIn(true);
         }
+    }, [currentBalanceData, activeLoginid, data, setLoginId, setAccountList, setBalance, setCurrency, setIsLoggedIn]);
 
+    const modifiedAccount = useMemo(() => {
         return activeAccount
             ? {
                   ...activeAccount,
