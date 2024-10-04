@@ -14,7 +14,7 @@ const QuickStrategyGuides = () => {
 
     return (
         <div className='tutorials-quick-strategy'>
-            {tutorial_selected_strategy === '' && quick_strategy_tab_content.length > 0 && (
+            {tutorial_selected_strategy === '' && quick_strategy_tab_content().length > 0 && (
                 <Text
                     className='tutorials-quick-strategy__title'
                     weight='bold'
@@ -29,7 +29,7 @@ const QuickStrategyGuides = () => {
             <QuickStrategyGuidesDetail
                 tutorial_selected_strategy={tutorial_selected_strategy}
                 setTutorialSelectedStrategy={setTutorialSelectedStrategy}
-                quick_strategy_tab_content={quick_strategy_tab_content}
+                quick_strategy_tab_content={quick_strategy_tab_content()}
             />
         </div>
     );

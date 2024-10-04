@@ -230,10 +230,10 @@ export default class DashboardStore implements IDashboardStore {
     toast_message = '';
     is_web_socket_intialised = true;
     search_param = '';
-    guide_tab_content = user_guide_content();
-    video_tab_content = guide_content();
-    faq_tab_content = faq_content();
-    quick_strategy_tab_content = quick_strategy_content();
+    guide_tab_content = user_guide_content;
+    video_tab_content = guide_content;
+    faq_tab_content = faq_content;
+    quick_strategy_tab_content = quick_strategy_content;
     filtered_tab_list = [];
     is_chart_modal_visible = false;
     is_trading_view_modal_visible = false;
@@ -244,10 +244,10 @@ export default class DashboardStore implements IDashboardStore {
     };
 
     resetTutorialTabContent = () => {
-        this.guide_tab_content = user_guide_content();
-        this.video_tab_content = guide_content();
-        this.faq_tab_content = faq_content();
-        this.quick_strategy_tab_content = quick_strategy_content();
+        this.guide_tab_content = user_guide_content;
+        this.video_tab_content = guide_content;
+        this.faq_tab_content = faq_content;
+        this.quick_strategy_tab_content = quick_strategy_content;
     };
 
     filterTuotrialTab = (search_param: string) => {
@@ -278,10 +278,10 @@ export default class DashboardStore implements IDashboardStore {
             return quick_strategy_content()[Number(index)];
         });
 
-        this.guide_tab_content = filtered_user_guide;
-        this.video_tab_content = filter_video_guide;
-        this.faq_tab_content = filtered_faq_content;
-        this.quick_strategy_tab_content = filtered_quick_strategy_content;
+        this.guide_tab_content = () => filtered_user_guide;
+        this.video_tab_content = () => filter_video_guide;
+        this.faq_tab_content = () => filtered_faq_content;
+        this.quick_strategy_tab_content = () => filtered_quick_strategy_content;
 
         return filtered_tutorial_content;
     };
