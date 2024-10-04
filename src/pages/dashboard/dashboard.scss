@@ -23,13 +23,12 @@
 
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
+        transition: all 0.4s;
+        margin-top: 1rem;
 
         @include is-RTL {
             transform: translateX(calc(-367px));
         }
-
-        transition: all 0.4s;
-        margin-top: 1rem;
 
         &--tour-active {
             transform: translateX(calc(0px)) !important;
@@ -75,12 +74,11 @@
         background-color: var(--general-main-1);
         padding: 2.4rem;
         height: 100%;
+        display: none;
 
         &--block {
             display: block;
         }
-
-        display: none;
 
         &__images {
             background: var(--general-section-6);
@@ -176,16 +174,15 @@
         &__content {
             display: flex;
             align-items: flex-start;
-
-            @include mobile-or-tablet-screen {
-                display: unset;
-            }
-
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
             overflow: hidden;
             position: relative;
+
+            @include mobile-or-tablet-screen {
+                display: unset;
+            }
 
             @include desktop-screen {
                 padding: 80px 216px 0;

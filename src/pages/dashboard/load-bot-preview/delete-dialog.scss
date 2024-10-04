@@ -12,12 +12,11 @@
 
                 button {
                     flex-basis: unset;
+                    margin-bottom: unset;
 
                     &:first-child {
                         margin-inline-end: 0.8rem;
                     }
-
-                    margin-bottom: unset;
                 }
             }
         }

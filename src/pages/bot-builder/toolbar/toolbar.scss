@@ -11,6 +11,7 @@
     top: 0;
     inset-inline-start: 23.2rem;
     background-color: var(--general-main-1);
+    z-index: 1;
 
     @include mobile-or-tablet-screen {
         height: 64px;
@@ -20,17 +21,14 @@
         overflow-x: auto;
         width: fit-content;
         padding: 0;
+        scrollbar-width: none;
+        z-index: 0;
+        -ms-overflow-style: none;
 
         &::-webkit-scrollbar {
             display: none;
         }
-
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        z-index: 0;
     }
-
-    z-index: 1;
 
     &__btn {
         background-color: var(--button-primary-default) !important;
