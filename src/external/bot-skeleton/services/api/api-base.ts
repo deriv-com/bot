@@ -35,23 +35,27 @@ class APIBase {
     is_stopping = false;
     active_symbols = [];
     current_auth_subscriptions: SubscriptionPromise[] = [];
-
+    is_authorized = false;
     active_symbols_promise: Promise<void> | null = null;
+
+    unsubscribeAllSubscriptions = () => {
+        this.current_auth_subscriptions?.forEach(subscription_promise => {
+            subscription_promise.then(({ subscription }) => {
+                if (subscription?.id) {
+                    this.api?.send({
+                        forget: subscription.id,
+                    });
+                }
+            });
+        });
+        this.current_auth_subscriptions = [];
+    };
 
     async init() {
         this.toggleRunButton(true);
 
         if (this.api) {
-            this.current_auth_subscriptions?.forEach(subscription_promise => {
-                subscription_promise.then(({ subscription }) => {
-                    if (subscription?.id) {
-                        this.api?.send({
-                            forget: subscription.id,
-                        });
-                    }
-                });
-            });
-            this.current_auth_subscriptions = [];
+            this.unsubscribeAllSubscriptions();
         }
 
         if (!this.api || this.getConnectionStatus() === socket_state[3]) {
@@ -130,16 +134,18 @@ class APIBase {
                     this.active_symbols_promise = this.getActiveSymbols();
                 }
                 this.account_info = authorize;
+                this.is_authorized = true;
                 this.subscribe();
                 this.getSelfExclusion();
             } catch (e) {
+                this.is_authorized = false;
                 globalObserver.emit('Error', e);
             }
         }
     }
 
     async getSelfExclusion() {
-        if (!this.api) return;
+        if (!this.api || !this.is_authorized) return;
         await this.api.getSelfExclusion();
         // TODO: fix self exclusion
     }

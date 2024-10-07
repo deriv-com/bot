@@ -7,6 +7,7 @@ import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '../components/layout';
 import { StoreProvider } from '../hooks/useStore';
+import AuthProvider from './AuthProvider';
 
 const AppContent = lazy(() => import('./app-content')); // Lazy load AppContent
 
@@ -28,7 +29,9 @@ const router = createBrowserRouter(
                             <AppDataProvider>
                                 <StoreProvider>
                                     <RoutePromptDialog />
-                                    <Layout />
+                                    <AuthProvider>
+                                        <Layout />
+                                    </AuthProvider>
                                 </StoreProvider>
                             </AppDataProvider>
                         </TranslationProvider>

@@ -1,4 +1,4 @@
-import { isEuCountry } from '../location';
+import { isEuCountry } from '../../common/utility';
 
 type TMessage = {
     title: string;

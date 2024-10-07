@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from 'react';
+import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
 import {
@@ -15,7 +16,6 @@ import {
     LegacyWhatsappIcon,
 } from '@deriv/quill-icons/Legacy';
 import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons/Logo';
-import { useAuthData } from '@deriv-com/api-hooks';
 import { useTranslations } from '@deriv-com/translations';
 import { ToggleSwitch } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
@@ -37,8 +37,8 @@ type TMenuConfig = {
 
 const useMobileMenuConfig = () => {
     const { localize } = useTranslations();
-    const { logout } = useAuthData();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
+    const { client } = useStore();
 
     const menuConfig: TMenuConfig[] = [
         [
@@ -116,7 +116,7 @@ const useMobileMenuConfig = () => {
                 as: 'button',
                 label: localize('Log out'),
                 LeftComponent: LegacyLogout1pxIcon,
-                onClick: logout,
+                onClick: client.logout,
                 removeBorderBottom: true,
             },
         ],

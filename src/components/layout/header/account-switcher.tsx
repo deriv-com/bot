@@ -16,7 +16,8 @@ type TAccountSwitcherProps = {
 
 const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
     const { data: modifiedAccountList } = useModifiedAccountList();
-    const { switchAccount, logout } = useAuthData();
+    const { switchAccount } = useAuthData();
+    const { client } = useStore();
 
     return (
         <>
@@ -56,13 +57,7 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
                 <Divider color='#f2f3f4' height='4px' />
 
                 <UIAccountSwitcher.Footer>
-                    <div
-                        id='dt_logout_button'
-                        className='deriv-account-switcher__logout'
-                        onClick={() => {
-                            logout();
-                        }}
-                    >
+                    <div id='dt_logout_button' className='deriv-account-switcher__logout' onClick={client.logout}>
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
                             {localize('Log out')}
                         </Text>

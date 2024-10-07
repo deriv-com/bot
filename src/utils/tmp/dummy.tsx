@@ -76,49 +76,6 @@ export const routes = {
     bot: '/bot',
 };
 
-// eu countries to support
-const eu_countries = [
-    'it',
-    'de',
-    'fr',
-    'lu',
-    'gr',
-    'mf',
-    'es',
-    'sk',
-    'lt',
-    'nl',
-    'at',
-    'bg',
-    'si',
-    'cy',
-    'be',
-    'ro',
-    'hr',
-    'pt',
-    'pl',
-    'lv',
-    'ee',
-    'cz',
-    'fi',
-    'hu',
-    'dk',
-    'se',
-    'ie',
-    'im',
-    'gb',
-    'mt',
-];
-// check if client is from EU
-export const isEuCountry = (country: string) => eu_countries.includes(country);
-
-export const isEuResidenceWithOnlyVRTC = (accounts: any[]) => {
-    return (
-        accounts?.length === 1 &&
-        accounts.every(acc => isEuCountry(acc.residence ?? '') && acc.landing_company_shortcode === 'virtual')
-    );
-};
-
 export const showDigitalOptionsUnavailableError = (
     showError: (t: any) => void,
     message: any,

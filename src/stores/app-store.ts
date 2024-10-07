@@ -1,7 +1,8 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
+import { isEuResidenceWithOnlyVRTC } from '@/components/shared';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
+import { ContentFlag, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -278,7 +279,7 @@ export default class AppStore {
         const { client } = this.core;
 
         this.disposeResidenceChangeReaction = reaction(
-            () => client.account_settings.country_code,
+            () => client.account_settings?.country_code,
             () => this.handleErrorForEu()
         );
     };

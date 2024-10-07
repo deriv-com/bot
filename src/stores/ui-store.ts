@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 
 export default class UiStore {
-    is_mobile = false;
+    is_mobile = true;
     is_desktop = true;
     is_tablet = false;
     is_chart_layout_default = true;
@@ -10,6 +10,9 @@ export default class UiStore {
     account_switcher_disabled_message = '';
     is_accounts_switcher_on = true;
     show_prompt = false;
+
+    // TODO: fix - need to implement this feature
+    is_onscreen_keyboard_active = false;
 
     constructor() {
         makeObservable(this, {
