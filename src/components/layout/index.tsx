@@ -1,22 +1,20 @@
-import React from 'react';
 import clsx from 'clsx';
+import { Outlet } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
 
-type TLayoutProps = {
-    children: React.ReactNode;
-};
-
-const Layout: React.FC<TLayoutProps> = ({ children }) => {
+const Layout = () => {
     const { isDesktop } = useDevice();
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
             <AppHeader />
-            <Body>{children}</Body>
+            <Body>
+                <Outlet />
+            </Body>
             {isDesktop && <Footer />}
         </div>
     );

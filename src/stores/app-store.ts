@@ -1,7 +1,8 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
+import { isEuResidenceWithOnlyVRTC } from '@/components/shared';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
+import { ContentFlag, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -22,7 +23,6 @@ export default class AppStore {
         makeObservable(this, {
             onMount: action,
             onUnmount: action,
-            onBeforeUnload: action,
             registerReloadOnLanguageChange: action,
             registerCurrencyReaction: action,
             registerOnAccountSwitch: action,
@@ -149,7 +149,6 @@ export default class AppStore {
         this.registerResidenceChangeReaction.call(this);
 
         window.addEventListener('click', this.onClickOutsideBlockly);
-        window.addEventListener('beforeunload', this.onBeforeUnload);
 
         blockly_store.getCachedActiveTab();
 
@@ -188,25 +187,16 @@ export default class AppStore {
         }
 
         window.removeEventListener('click', this.onClickOutsideBlockly);
-        window.removeEventListener('beforeunload', this.onBeforeUnload);
 
         // Ensure account switch is re-enabled.
         // TODO: fix
-        // const { ui } = this.core;
+        const { ui } = this.core;
 
-        // ui.setAccountSwitcherDisabledMessage();
-        // ui.setPromptHandler(false);
+        ui.setAccountSwitcherDisabledMessage();
+        ui.setPromptHandler(false);
 
         if (this.timer) clearInterval(this.timer);
         performance.clearMeasures();
-    };
-
-    onBeforeUnload = (event: Event) => {
-        const { is_stop_button_visible } = this.root_store.run_panel;
-
-        if (is_stop_button_visible) {
-            event.returnValue = true;
-        }
     };
 
     registerReloadOnLanguageChange = () => {
@@ -289,7 +279,7 @@ export default class AppStore {
         const { client } = this.core;
 
         this.disposeResidenceChangeReaction = reaction(
-            () => client.account_settings.country_code,
+            () => client.account_settings?.country_code,
             () => this.handleErrorForEu()
         );
     };

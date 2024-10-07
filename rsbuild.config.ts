@@ -1,6 +1,7 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
+import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl';
 
 const path = require('path');
 
@@ -10,13 +11,14 @@ export default defineConfig({
             sassLoaderOptions: {
                 sourceMap: true,
                 sassOptions: {
-                    includePaths: [path.resolve(__dirname, 'src')],
+                    // includePaths: [path.resolve(__dirname, 'src')],
                 },
                 // additionalData: `@use "${path.resolve(__dirname, 'src/components/shared/styles')}" as *;`,
             },
             exclude: /node_modules/,
         }),
         pluginReact(),
+        pluginBasicSsl(),
     ],
     source: {
         entry: {

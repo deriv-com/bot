@@ -11,15 +11,12 @@ import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
-import BotNotificationMessages from '../components/bot-notification-messages';
 import BotStopped from '../components/bot-stopped';
 import NetworkToastPopup from '../components/network-toast-popup';
-import RoutePromptDialog from '../components/route-prompt-dialog';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = () => {
     const { localize } = useTranslations();
@@ -131,10 +128,8 @@ const AppContent = () => {
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
-                <BotNotificationMessages />
                 <NetworkToastPopup />
                 <BotStopped />
-                <RoutePromptDialog />
                 <BotBuilder />
                 <Main />
                 <TransactionDetailsModal />

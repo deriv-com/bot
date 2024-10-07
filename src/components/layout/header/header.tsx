@@ -49,7 +49,6 @@ const AppHeader = () => {
                         onClick={() => {
                             window.location.assign('https://app.deriv.com/cashier/deposit');
                         }}
-                        size='s'
                         className='deposit-button'
                     >
                         <Text size='s' weight='bold'>
@@ -62,9 +61,7 @@ const AppHeader = () => {
             return (
                 <div className='auth-actions'>
                     <Button
-                        borderWidth='sm'
                         color='primary-light'
-                        variant='ghost'
                         onClick={() => {
                             window.location.assign(getOauthURL());
                         }}
@@ -72,7 +69,6 @@ const AppHeader = () => {
                         <Localize i18n_default_text='Log in' />
                     </Button>
                     <Button
-                        size='md'
                         onClick={() => {
                             window.location.assign(getOauthURL());
                         }}

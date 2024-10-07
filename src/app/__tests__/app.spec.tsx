@@ -1,18 +1,60 @@
-import { act, render } from '@testing-library/react';
-import Bot from '../App';
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
+import App from '../App';
 
-jest.mock('@deriv-com/translations', () => ({
-    ...jest.requireActual('@deriv-com/translations'),
-    TranslationProvider: jest.fn(({ children }) => <>{children}</>),
+// Mock the necessary dependencies
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    createBrowserRouter: jest.fn(),
+    RouterProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid='router-provider'>{children}</div>
+    ),
 }));
 
-describe('Bot component', () => {
-    it('renders app-main and all the childrens', async () => {
-        let container;
-        await act(async () => {
-            const result = await render(<Bot />);
-            container = result.container;
+jest.mock('@deriv-com/api-hooks', () => ({
+    AppDataProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid='app-data-provider'>{children}</div>
+    ),
+}));
+
+jest.mock('@deriv-com/translations', () => ({
+    TranslationProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid='translation-provider'>{children}</div>
+    ),
+    initializeI18n: jest.fn(),
+}));
+
+jest.mock('@tanstack/react-query', () => ({
+    QueryClientProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid='query-client-provider'>{children}</div>
+    ),
+    QueryClient: jest.fn(),
+}));
+
+// eslint-disable-next-line react/display-name
+jest.mock('@/components/layout', () => () => <div data-testid='layout'>Layout</div>);
+
+jest.mock('@/hooks/useStore', () => ({
+    StoreProvider: ({ children }: { children: React.ReactNode }) => <div data-testid='store-provider'>{children}</div>,
+}));
+
+// eslint-disable-next-line react/display-name
+jest.mock('@/components/route-prompt-dialog', () => () => (
+    <div data-testid='route-prompt-dialog'>RoutePromptDialog</div>
+));
+
+describe('App Component', () => {
+    it('renders without crashing', async () => {
+        render(
+            <MemoryRouter>
+                <App />
+            </MemoryRouter>
+        );
+
+        // Wait for the Suspense fallback to resolve
+        await waitFor(() => {
+            expect(screen.getByTestId('router-provider')).toBeInTheDocument();
         });
-        expect(container).toBeDefined();
     });
 });

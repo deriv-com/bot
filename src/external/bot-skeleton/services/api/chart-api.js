@@ -4,7 +4,9 @@ class ChartAPI {
     api;
 
     init = async () => {
-        this.api = await generateDerivApiInstance();
+        if (!this.api) {
+            this.api = await generateDerivApiInstance();
+        }
         if (getLoginId()) {
             await this.api.authorize(getToken().token);
         }

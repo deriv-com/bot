@@ -162,7 +162,7 @@ export default class RunPanelStore {
                 }
             }, 10000);
         }
-        const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
+        const { summary_card, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
         this.dbot.saveRecentWorkspace();
@@ -199,7 +199,7 @@ export default class RunPanelStore {
         );
         runInAction(() => {
             this.setIsRunning(true);
-            ui.setPromptHandler(true, route_prompt_dialog.shouldNavigateAfterPrompt);
+            ui.setPromptHandler(true);
             this.toggleDrawer(true);
             this.run_id = `run-${Date.now()}`;
 
@@ -669,6 +669,7 @@ export default class RunPanelStore {
 
     setIsRunning = (is_running: boolean) => {
         this.is_running = is_running;
+        this.core.ui.setIsAccountsSwitcherOn(!is_running);
     };
 
     onMount = () => {

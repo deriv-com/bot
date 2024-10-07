@@ -1,30 +1,50 @@
 import { action, makeObservable, observable } from 'mobx';
 
 export default class UiStore {
-    is_mobile = false;
+    is_mobile = true;
     is_desktop = true;
     is_tablet = false;
     is_chart_layout_default = true;
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
     url_hashed_values = '';
+    account_switcher_disabled_message = '';
+    is_accounts_switcher_on = true;
+    show_prompt = false;
+
+    // TODO: fix - need to implement this feature
+    is_onscreen_keyboard_active = false;
 
     constructor() {
         makeObservable(this, {
+            show_prompt: observable,
             is_dark_mode_on: observable,
             is_mobile: observable,
             is_desktop: observable,
             is_tablet: observable,
+            is_accounts_switcher_on: observable,
+            account_switcher_disabled_message: observable,
             setDarkMode: action,
             setDevice: action,
+            setIsAccountsSwitcherOn: action,
+            setAccountSwitcherDisabledMessage: action,
+            setPromptHandler: action,
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setPromptHandler = (...args: unknown[]) => {
-        // TODO: implement this
+    setPromptHandler = (should_show: boolean) => {
+        this.show_prompt = should_show;
     };
-    setAccountSwitcherDisabledMessage = () => {
-        // TODO: implement this
+
+    setAccountSwitcherDisabledMessage = (message: string) => {
+        if (message) {
+            this.account_switcher_disabled_message = message;
+        } else {
+            this.account_switcher_disabled_message = '';
+        }
+    };
+
+    setIsAccountsSwitcherOn = (value: boolean) => {
+        this.is_accounts_switcher_on = value;
     };
 
     setDarkMode = (value: boolean) => {
