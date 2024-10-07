@@ -178,12 +178,12 @@
             position: relative;
 
             .dc-modal-header__title {
+                justify-content: center;
+                width: 100%;
+
                 @include mobile {
                     position: absolute;
                 }
-
-                justify-content: center;
-                width: 100%;
             }
 
             .dc-modal-header__close {
@@ -203,14 +203,14 @@
 
     /** @define dc-modal-body */
     &-body {
-        &:first-child {
-            padding-top: 2.4rem;
-        }
-
         padding: 2.4rem;
         font-size: 1.4rem;
         line-height: 1.43;
         color: var(--text-prominent);
+
+        &:first-child {
+            padding-top: 2.4rem;
+        }
 
         &__expiration {
             min-height: 12rem;
