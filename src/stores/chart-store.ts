@@ -22,6 +22,8 @@ export default class ChartStore {
             updateChartType: action,
             setChartStatus: action,
             restoreFromStorage: action,
+            chartSubscriptionId: observable,
+            setChartSubscriptionId: action,
         });
 
         this.root_store = root_store;
@@ -39,6 +41,7 @@ export default class ChartStore {
         id: null,
         subscriber: null,
     };
+    chartSubscriptionId = '';
 
     symbol: string | undefined;
     is_chart_loading: boolean | undefined;
@@ -136,5 +139,8 @@ export default class ChartStore {
                 },
                 has_synthetic_index ? [synthetic_index] : []
             );
+    };
+    setChartSubscriptionId = (chartSubscriptionId: string) => {
+        this.chartSubscriptionId = chartSubscriptionId;
     };
 }

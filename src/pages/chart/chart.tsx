@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import chart_api from '@/external/bot-skeleton/services/api/chart-api';
@@ -45,11 +45,13 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         updateChartType,
         updateGranularity,
         updateSymbol,
+        setChartSubscriptionId,
+        chartSubscriptionId,
     } = chart_store;
-    const { isDesktop } = useDevice();
+    const chartSubscriptionIdRef = useRef(chartSubscriptionId);
+    const { isDesktop, isMobile } = useDevice();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
-
     const settings = {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: true,
@@ -62,11 +64,12 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     useEffect(() => {
         return () => {
             chart_api.api.forgetAll('ticks');
-            Object.keys(subscriptions).forEach(subscription_id => {
-                requestForgetStream(subscription_id);
-            });
         };
     }, []);
+
+    useEffect(() => {
+        chartSubscriptionIdRef.current = chart_store.chartSubscriptionId;
+    }, [chart_store.chartSubscriptionId]);
 
     useEffect(() => {
         if (!symbol) updateSymbol();
@@ -75,19 +78,15 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const requestAPI = (req: ServerTimeRequest | ActiveSymbolsRequest | TradingTimesRequest) => {
         return chart_api.api.send(req);
     };
-
-    const requestForget = () => {
-        return chart_api.api.forgetAll('ticks');
-    };
-
     const requestForgetStream = (subscription_id: string) => {
-        subscriptions[subscription_id as string]?.unsubscribe();
-        delete subscriptions[subscription_id];
+        subscription_id && chart_api.api.forget(subscription_id);
     };
 
     const requestSubscribe = async (req: TicksStreamRequest, callback: (data: any) => void) => {
         try {
+            requestForgetStream(chartSubscriptionIdRef.current);
             const history = await chart_api.api.send(req);
+            setChartSubscriptionId(history?.subscription.id);
             if (history) callback(history);
             if (req.subscribe === 1) {
                 subscriptions[history?.subscription.id] = chart_api.api
@@ -98,13 +97,13 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
             }
         } catch (e) {
             // eslint-disable-next-line no-console
+            (e as TError)?.error?.code === 'MarketIsClosed' && callback([]); //if market is closed sending a empty array  to resolve
             console.log((e as TError)?.error?.message);
         }
     };
 
     if (!symbol) return null;
     const is_connection_opened = !!chart_api?.api;
-
     return (
         <div
             className={classNames('dashboard__chart-wrapper', {
@@ -128,12 +127,12 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     />
                 )}
                 chartType={chart_type}
-                isMobile={!isDesktop}
+                isMobile={isMobile}
                 enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}
-                requestForget={requestForget}
-                requestForgetStream={requestForgetStream}
+                requestForget={() => {}}
+                requestForgetStream={() => {}}
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
