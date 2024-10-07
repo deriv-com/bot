@@ -97,7 +97,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
             }
         } catch (e) {
             // eslint-disable-next-line no-console
-            (e as TError)?.error?.code === 'MarketIsClosed' && callback([]); //if market is closed sending a empty array  to resolve
+            // (e as TError)?.error?.code === 'MarketIsClosed' && callback([]); //if market is closed sending a empty array  to resolve
             console.log((e as TError)?.error?.message);
         }
     };
