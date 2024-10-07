@@ -7,7 +7,7 @@ type TToolbarWidgetsProps = {
     updateGranularity: (updateGranularity: number) => void;
     position?: string | null;
 };
-
+//test
 const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
     return (
         <>
