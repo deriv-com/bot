@@ -1,27 +1,28 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import RootStore from '@/stores/root-store';
 import { TWebSocket } from '@/Types';
 import { Loader } from '@deriv-com/ui';
-import Bot from '../external/bot-skeleton/scratch/dbot';
 
-const StoreContext = createContext<null | RootStore>(null);
+const StoreContext = createContext<null | typeof RootStore>(null);
 
 type TStoreProvider = {
     children: React.ReactNode;
-    mockStore?: RootStore;
+    mockStore?: typeof RootStore;
 };
 
 const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
-    const [store, setStore] = useState<RootStore | null>(null);
+    const [store, setStore] = useState<typeof RootStore | null>(null);
     const initializingStore = useRef(false);
 
     useEffect(() => {
         const initializeStore = async () => {
             await api_base.init();
             const ws = api_base.api;
-            const rootStore = new RootStore(Bot, ws);
-            setStore(rootStore);
+            const RootStoreModule = await import('@/stores/root-store');
+            const BotModule = await import('../external/bot-skeleton/scratch/dbot');
+            const rootStore = new RootStoreModule.default(BotModule.default, ws);
+            setStore(rootStore as unknown as typeof RootStore);
         };
 
         if (!store && !initializingStore.current) {
@@ -36,10 +37,19 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
     }, [store, mockStore]);
 
     if (!store) {
-        return <Loader />;
+        return (
+            <div>
+                <h1>Loading app, please wait for a while...</h1>
+                <Loader />
+            </div>
+        );
     }
 
-    return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
+    return (
+        <Suspense fallback={<Loader />}>
+            <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+        </Suspense>
+    );
 };
 
 const useStore = () => {
@@ -54,4 +64,8 @@ const useStore = () => {
 
 export { StoreProvider, useStore };
 
-export const mockStore = (ws: TWebSocket) => new RootStore(Bot, ws);
+export const mockStore = async (ws: TWebSocket) => {
+    const RootStoreModule = await import('@/stores/root-store');
+    const BotModule = await import('../external/bot-skeleton/scratch/dbot');
+    return new RootStoreModule.default(BotModule.default, ws);
+};
