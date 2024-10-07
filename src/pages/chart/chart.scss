@@ -105,7 +105,7 @@
     .smartcharts-desktop {
         .cq-modal__overlay {
             position: fixed !important;
-            height: 100vh !important;
+            height: 100% !important;
             width: 100% !important;
             background-color: rgb(0 0 0 / 70%);
             z-index: 9999 !important;
@@ -160,7 +160,7 @@
 .smartcharts-mobile {
     .cq-modal__overlay {
         position: fixed !important;
-        height: 100vh !important;
+        height: 100% !important;
         width: 100% !important;
         background-color: rgb(0 0 0 / 70%);
         z-index: 9999 !important;
