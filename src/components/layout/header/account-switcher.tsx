@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import Popover from '@/components/shared_ui/popover';
 import useModifiedAccountList from '@/hooks/api/account/useAccountList';
@@ -30,13 +31,19 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
                 {modifiedAccountList
                     ?.filter(account => (isVirtual ? account.is_virtual : !account.is_virtual))
                     .map(account => (
-                        <UIAccountSwitcher.AccountsItem
+                        <span
+                            className={clsx('account-switcher__item', {
+                                'account-switcher__item--disabled': account.is_disabled,
+                            })}
                             key={account.loginid}
-                            account={account}
-                            onSelectAccount={() => {
-                                switchAccount(account.loginid);
-                            }}
-                        />
+                        >
+                            <UIAccountSwitcher.AccountsItem
+                                account={account}
+                                onSelectAccount={() => {
+                                    if (!account.is_disabled) switchAccount(account.loginid);
+                                }}
+                            />
+                        </span>
                     ))}
             </UIAccountSwitcher.AccountsPanel>
 
