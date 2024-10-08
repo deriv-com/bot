@@ -33,7 +33,7 @@ const useModifiedAccountList = () => {
                 isActive: account?.loginid === activeLoginid,
             };
         });
-    }, [accountList, balanceData, activeLoginid]);
+    }, [accountList, balanceData, activeLoginid, client.website_status]);
 
     return {
         /** User's active accounts list. */
