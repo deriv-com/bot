@@ -6,8 +6,8 @@ import { TContractInfo } from '@/components/summary/summary-card.types';
 import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes, localize } from '@/utils/tmp/dummy';
-import { Localize } from '@deriv-com/translations';
+import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
+import { Localize, localize } from '@deriv-com/translations';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 
