@@ -1,5 +1,6 @@
 import moment from 'moment';
-import { getLanguage, localize } from '@/utils/tmp/dummy';
+import { getLanguage } from '@/utils/tmp/dummy';
+import { localize } from '@deriv-com/translations';
 
 type TExtendedMoment = typeof moment & {
     createFromInputFallback: (config: { _d: Date }) => void;
