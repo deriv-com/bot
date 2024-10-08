@@ -34,6 +34,8 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
         }
     }, [store, mockStore]);
 
+    if (!store && mockStore) return null;
+
     return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
