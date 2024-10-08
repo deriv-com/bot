@@ -20,6 +20,12 @@
 }
 
 .account-switcher {
+    &__item {
+        &--disabled {
+            opacity: 0.32;
+        }
+    }
+
     &-footer {
         background: var(--general-main-1);
     }
