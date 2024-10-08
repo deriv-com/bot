@@ -46,9 +46,9 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         updateGranularity,
         updateSymbol,
         setChartSubscriptionId,
-        chartSubscriptionId,
+        chart_subscription_id,
     } = chart_store;
-    const chartSubscriptionIdRef = useRef(chartSubscriptionId);
+    const chartSubscriptionIdRef = useRef(chart_subscription_id);
     const { isDesktop, isMobile } = useDevice();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
@@ -68,8 +68,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     }, []);
 
     useEffect(() => {
-        chartSubscriptionIdRef.current = chart_store.chartSubscriptionId;
-    }, [chart_store.chartSubscriptionId]);
+        chartSubscriptionIdRef.current = chart_subscription_id;
+    }, [chart_subscription_id]);
 
     useEffect(() => {
         if (!symbol) updateSymbol();
