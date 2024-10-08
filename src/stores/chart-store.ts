@@ -22,7 +22,7 @@ export default class ChartStore {
             updateChartType: action,
             setChartStatus: action,
             restoreFromStorage: action,
-            chartSubscriptionId: observable,
+            chart_subscription_id: observable,
             setChartSubscriptionId: action,
         });
 
@@ -41,7 +41,7 @@ export default class ChartStore {
         id: null,
         subscriber: null,
     };
-    chartSubscriptionId = '';
+    chart_subscription_id = '';
 
     symbol: string | undefined;
     is_chart_loading: boolean | undefined;
@@ -141,6 +141,6 @@ export default class ChartStore {
             );
     };
     setChartSubscriptionId = (chartSubscriptionId: string) => {
-        this.chartSubscriptionId = chartSubscriptionId;
+        this.chart_subscription_id = chartSubscriptionId;
     };
 }
