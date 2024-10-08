@@ -1,15 +1,18 @@
 import { Fragment, lazy, Suspense } from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import RoutePromptDialog from '@/components/route-prompt-dialog';
-import Endpoint from '@/pages/endpoint';
-import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Layout from '../components/layout';
-import { StoreProvider } from '../hooks/useStore';
-import AuthProvider from './AuthProvider';
 
-const AppRoot = lazy(() => import('./app-root')); // Lazy load AppContent
+const RoutePromptDialog = lazy(() => import('@/components/route-prompt-dialog'));
+const Endpoint = lazy(() => import('@/pages/endpoint'));
+const AppDataProvider = lazy(() =>
+    import('@deriv-com/api-hooks').then(module => ({ default: module.AppDataProvider }))
+);
+const Layout = lazy(() => import('../components/layout'));
+const StoreProvider = lazy(() => import('../hooks/useStore').then(module => ({ default: module.StoreProvider })));
+const AuthProvider = lazy(() => import('./AuthProvider'));
+
+const AppRoot = lazy(() => import('./app-root'));
 
 const queryClient = new QueryClient();
 
