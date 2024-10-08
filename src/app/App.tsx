@@ -26,7 +26,7 @@ const router = createBrowserRouter(
         <Route
             path='/'
             element={
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div className='loader'></div>}>
                     <QueryClientProvider client={queryClient}>
                         <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                             <AppDataProvider>
