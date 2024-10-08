@@ -18,7 +18,11 @@ type TAccountSwitcherProps = {
 const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
     const { data: modifiedAccountList } = useModifiedAccountList();
     const { switchAccount } = useAuthData();
-    const { client } = useStore();
+    const { client } = useStore() ?? {
+        client: {
+            logout: () => {},
+        },
+    };
 
     return (
         <>
@@ -77,7 +81,12 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
 };
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
-    const { ui } = useStore();
+    const { ui } = useStore() ?? {
+        ui: {
+            is_accounts_switcher_on: false,
+            account_switcher_disabled_message: '',
+        },
+    };
     const { is_accounts_switcher_on, account_switcher_disabled_message } = ui;
 
     return (

@@ -6,7 +6,11 @@ import { Localize, localize } from '@deriv-com/translations';
 import Dialog from '../shared_ui/dialog';
 
 const RoutePromptDialog = observer(() => {
-    const { ui } = useStore();
+    const { ui } = useStore() ?? {
+        ui: {
+            show_prompt: false,
+        },
+    };
     const { show_prompt } = ui;
 
     const blocker = useBlocker(

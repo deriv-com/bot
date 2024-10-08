@@ -2,7 +2,12 @@ import { useCallback } from 'react';
 import { useStore } from './useStore';
 
 const useThemeSwitcher = () => {
-    const { ui } = useStore();
+    const { ui } = useStore() ?? {
+        ui: {
+            setDarkMode: () => {},
+            is_dark_mode_on: false,
+        },
+    };
     const { setDarkMode, is_dark_mode_on } = ui;
 
     const toggleTheme = useCallback(() => {

@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import RootStore from '@/stores/root-store';
 import { TWebSocket } from '@/Types';
-import { Loader } from '@deriv-com/ui';
 import Bot from '../external/bot-skeleton/scratch/dbot';
 
 const StoreContext = createContext<null | RootStore>(null);
@@ -35,19 +34,11 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
         }
     }, [store, mockStore]);
 
-    if (!store) {
-        return <Loader />;
-    }
-
     return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };
 
 const useStore = () => {
     const store = useContext(StoreContext);
-
-    if (!store) {
-        throw new Error('useStore must be used within StoreProvider');
-    }
 
     return store;
 };

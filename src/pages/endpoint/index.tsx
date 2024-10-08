@@ -1,17 +1,18 @@
 import { useFormik } from 'formik';
+import { getAppId, getSocketURL } from '@/components/shared';
 import { Button, Input, Text } from '@deriv-com/ui';
-import { LocalStorageConstants } from '@deriv-com/utils';
+import { LocalStorageConstants, LocalStorageUtils } from '@deriv-com/utils';
 import './endpoint.scss';
 
 const Endpoint = () => {
     const formik = useFormik({
         initialValues: {
-            appId: window.localStorage.getItem(LocalStorageConstants.configAppId) || '',
-            serverUrl: window.localStorage.getItem(LocalStorageConstants.configServerURL) || '',
+            appId: LocalStorageUtils.getValue(LocalStorageConstants.configAppId) ?? getAppId(),
+            serverUrl: LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ?? getSocketURL(),
         },
         onSubmit: values => {
-            window.localStorage.setItem(LocalStorageConstants.configServerURL, values.serverUrl);
-            window.localStorage.setItem(LocalStorageConstants.configAppId, values.appId);
+            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, values.serverUrl);
+            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, values.appId);
             formik.resetForm({ values });
             window.location.reload();
         },
@@ -39,7 +40,7 @@ const Endpoint = () => {
                     data-testid='dt_endpoint_server_url_input'
                     label='Server'
                     name='serverUrl'
-                    message={formik.errors.serverUrl}
+                    message={formik.errors.serverUrl as string}
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.serverUrl}
@@ -48,7 +49,7 @@ const Endpoint = () => {
                     data-testid='dt_endpoint_app_id_input'
                     label='OAuth App ID'
                     name='appId'
-                    message={formik.errors.appId}
+                    message={formik.errors.appId as string}
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     value={formik.values.appId}
@@ -61,9 +62,18 @@ const Endpoint = () => {
                         className='endpoint__button'
                         color='black'
                         onClick={() => {
-                            window.localStorage.setItem(LocalStorageConstants.configServerURL, '');
-                            window.localStorage.setItem(LocalStorageConstants.configAppId, '');
-                            formik.resetForm();
+                            // TODO: fix - get default server and app id from the backend
+                            const defaultServer = 'blue.derivws.com';
+                            const defaultAppId = 19111;
+                            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, defaultServer);
+                            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, defaultAppId);
+                            formik.resetForm({
+                                values: {
+                                    appId: defaultAppId,
+                                    serverUrl: defaultServer,
+                                },
+                            });
+                            window.location.reload();
                         }}
                         variant='outlined'
                         type='button'
