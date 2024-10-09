@@ -5,11 +5,11 @@ import Endpoint from '@/pages/endpoint';
 import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Layout from '../components/layout';
 import { StoreProvider } from '../hooks/useStore';
 import AuthProvider from './AuthProvider';
 
-const AppContent = lazy(() => import('./app-content')); // Lazy load AppContent
+const Layout = lazy(() => import('../components/layout'));
+const AppRoot = lazy(() => import('./app-root'));
 
 const queryClient = new QueryClient();
 
@@ -23,7 +23,7 @@ const router = createBrowserRouter(
         <Route
             path='/'
             element={
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>Please wait while we load the app...</div>}>
                     <QueryClientProvider client={queryClient}>
                         <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                             <AppDataProvider>
@@ -40,7 +40,7 @@ const router = createBrowserRouter(
             }
         >
             {/* All child routes will be passed as children to Layout */}
-            <Route index element={<AppContent />} />
+            <Route index element={<AppRoot />} />
             <Route path='endpoint' element={<Endpoint />} />
         </Route>
     )

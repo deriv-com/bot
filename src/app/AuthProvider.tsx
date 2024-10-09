@@ -23,7 +23,16 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }
         enabled: !!accountSettings?.country_code,
     });
 
-    const { client } = useStore();
+    const { client } = useStore() ?? {
+        client: {
+            setApiHookLogout: () => {},
+            setAccountStatus: () => {},
+            setAccountSettings: () => {},
+            setWebsiteStatus: () => {},
+            setLandingCompany: () => {},
+            setSwitchBroadcast: () => {},
+        },
+    };
 
     useEffect(() => {
         if (client) {

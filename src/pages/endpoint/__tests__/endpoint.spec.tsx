@@ -1,3 +1,4 @@
+import { LocalStorageUtils } from '@deriv-com/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Endpoint from '..';
@@ -26,12 +27,15 @@ describe('<Endpoint />', () => {
         const appIdInput = screen.getByTestId('dt_endpoint_app_id_input');
         const submitButton = screen.getByRole('button', { name: 'Submit' });
 
+        await userEvent.clear(serverUrlInput);
         await userEvent.type(serverUrlInput, 'qa10.deriv.dev');
+        await userEvent.clear(appIdInput);
         await userEvent.type(appIdInput, '123');
         await userEvent.click(submitButton);
 
-        expect(localStorage.getItem('config.server_url') ?? '').toBe('qa10.deriv.dev');
-        expect(localStorage.getItem('config.app_id') ?? '').toBe('123');
+        expect(LocalStorageUtils.getValue('config.server_url') ?? '').toBe('qa10.deriv.dev');
+        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe('123');
+
         expect(mockReload).toHaveBeenCalledTimes(1);
     });
 
@@ -46,7 +50,7 @@ describe('<Endpoint />', () => {
         await userEvent.type(appIdInput, '123');
         await userEvent.click(resetButton);
 
-        expect(localStorage.getItem('config.server_url') ?? '').toBe('');
-        expect(localStorage.getItem('config.app_id') ?? '').toBe('');
+        expect(LocalStorageUtils.getValue('config.server_url') ?? '').toBe('blue.derivws.com');
+        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe(19111);
     });
 });

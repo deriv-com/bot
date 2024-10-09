@@ -11,7 +11,15 @@ const useActiveAccount = () => {
     const { data, ...rest } = useAccountList();
     const { activeLoginid } = useAuthData();
     const { data: allBalanceData } = useBalance();
-    const { client } = useStore();
+    const { client } = useStore() ?? {
+        client: {
+            setLoginId: () => {},
+            setAccountList: () => {},
+            setBalance: () => {},
+            setCurrency: () => {},
+            setIsLoggedIn: () => {},
+        },
+    };
     const { setLoginId, setAccountList, setBalance, setCurrency, setIsLoggedIn } = client;
 
     const activeAccount = useMemo(
