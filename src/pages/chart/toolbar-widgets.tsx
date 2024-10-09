@@ -10,29 +10,22 @@ type TToolbarWidgetsProps = {
 
 const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
     return (
-        <>
-            <div id='chart_modal_root' />
-            <ToolbarWidget position={position}>
-                <ChartMode
-                    portalNodeId='chart_modal_root'
-                    onChartType={updateChartType}
-                    onGranularity={updateGranularity}
-                />
-                {isDesktop() && (
-                    <>
-                        <StudyLegend portalNodeId='chart_modal_root' searchInputClassName='data-hj-whitelist' />
-                        <Views
-                            portalNodeId='chart_modal_root'
-                            onChartType={updateChartType}
-                            onGranularity={updateGranularity}
-                            searchInputClassName='data-hj-whitelist'
-                        />
-                        <DrawTools portalNodeId='chart_modal_root' />
-                        <Share portalNodeId='chart_modal_root' />
-                    </>
-                )}
-            </ToolbarWidget>
-        </>
+        <ToolbarWidget position={position}>
+            <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
+            {isDesktop() && (
+                <>
+                    <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                    <Views
+                        portalNodeId='modal_root'
+                        onChartType={updateChartType}
+                        onGranularity={updateGranularity}
+                        searchInputClassName='data-hj-whitelist'
+                    />
+                    <DrawTools portalNodeId='modal_root' />
+                    <Share portalNodeId='modal_root' />
+                </>
+            )}
+        </ToolbarWidget>
     );
 };
 
