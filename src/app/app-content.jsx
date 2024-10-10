@@ -17,6 +17,7 @@ import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = () => {
     const { localize } = useTranslations();
