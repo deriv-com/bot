@@ -60,7 +60,7 @@ const AppHeader = () => {
             return (
                 <div className='auth-actions'>
                     <Button
-                        color='primary-light'
+                        tertiary
                         onClick={() => {
                             window.location.assign(getOauthURL());
                         }}
@@ -68,6 +68,7 @@ const AppHeader = () => {
                         <Localize i18n_default_text='Log in' />
                     </Button>
                     <Button
+                        primary
                         onClick={() => {
                             window.location.assign(getOauthURL());
                         }}
