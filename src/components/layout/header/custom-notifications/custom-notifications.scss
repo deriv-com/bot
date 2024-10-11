@@ -1,8 +1,14 @@
+@use 'components/shared/styles/mixins' as *;
+
 .notifications__wrapper {
     padding-inline-start: 0.5rem;
     border-inline-start: 1px solid var(--general-section-1);
     border-width: 1px;
-    margin-inline-end: 1rem;
+    margin-inline-end: 2.4rem;
+
+    @include mobile-screen {
+        margin-inline-end: 0;
+    }
 
     &--desktop {
         z-index: 10;
