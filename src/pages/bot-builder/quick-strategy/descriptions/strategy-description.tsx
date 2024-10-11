@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import parse from 'html-react-parser';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
@@ -15,7 +16,7 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
                 <>
                     {item?.content?.map((text: string) => (
                         <div className={class_names} key={text}>
-                            <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
+                            <Text size={font_size}>{parse(text)}</Text>
                         </div>
                     ))}
                 </>
@@ -27,7 +28,7 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
                 <>
                     {item?.content?.map((text: string) => (
                         <div className={class_names} key={text}>
-                            <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
+                            <Text size={font_size}>{parse(text)}</Text>
                         </div>
                     ))}
                 </>
