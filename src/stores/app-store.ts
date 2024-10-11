@@ -23,7 +23,6 @@ export default class AppStore {
         makeObservable(this, {
             onMount: action,
             onUnmount: action,
-            registerReloadOnLanguageChange: action,
             registerCurrencyReaction: action,
             registerOnAccountSwitch: action,
             registerLandingCompanyChangeReaction: action,
@@ -142,7 +141,6 @@ export default class AppStore {
         blockly_store.setContainerSize();
         blockly_store.setLoading(false);
 
-        this.registerReloadOnLanguageChange();
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
@@ -197,20 +195,6 @@ export default class AppStore {
 
         if (this.timer) clearInterval(this.timer);
         performance.clearMeasures();
-    };
-
-    registerReloadOnLanguageChange = () => {
-        this.disposeReloadOnLanguageChangeReaction = reaction(
-            () => this.core.common.current_language,
-            () => {
-                // temporarily added this to refresh just dbot in case of changing language,
-                // otherwise it should change language without refresh.
-                const { pathname } = window.location;
-                const is_bot =
-                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
-                if (is_bot) window.location.reload();
-            }
-        );
     };
 
     registerCurrencyReaction = () => {

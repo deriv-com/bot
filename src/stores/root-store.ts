@@ -1,8 +1,8 @@
-import moment from 'moment';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
 import ClientStore from './client-store';
+import CommonStore from './common-store';
 import DashboardStore from './dashboard-store';
 import DataCollectionStore from './data-collection-store';
 import FlyoutHelpStore from './flyout-help-store';
@@ -45,6 +45,7 @@ export default class RootStore {
 
     public ui: UiStore;
     public client: ClientStore;
+    public common: CommonStore;
 
     ws = null;
     core = {
@@ -52,17 +53,12 @@ export default class RootStore {
             // check client-store.ts
         },
         common: {
-            is_socket_opened: false,
-            current_language: 'en',
-            server_time: moment(),
-            ws: this.ws,
+            // check common-store.ts
         },
         ui: {
             // check ui-store.ts
         },
-        gtm: {},
     };
-    common = this.core.common;
     gtm = {
         pushDataLayer: () => {},
     };
@@ -87,6 +83,7 @@ export default class RootStore {
         this.dashboard = new DashboardStore(this, this.core);
         this.ui = new UiStore();
         this.client = new ClientStore();
+        this.common = new CommonStore();
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
@@ -95,6 +92,6 @@ export default class RootStore {
 
         this.core.ui = this.ui;
         this.core.client = this.client;
-        this.core.gtm = this.gtm;
+        this.core.common = this.common;
     }
 }

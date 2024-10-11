@@ -438,6 +438,7 @@ export default class RunPanelStore {
         let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {
+            // TODO: fix notifications and is_socket_opened
             if (common.is_socket_opened) {
                 disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
@@ -669,7 +670,6 @@ export default class RunPanelStore {
 
     setIsRunning = (is_running: boolean) => {
         this.is_running = is_running;
-        this.core.ui.setIsAccountsSwitcherOn(!is_running);
     };
 
     onMount = () => {
