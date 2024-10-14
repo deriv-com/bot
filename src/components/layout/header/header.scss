@@ -1,8 +1,7 @@
 @use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
 
 .app-header {
-    padding-inline-end: 20px;
-
     &__account-settings {
         padding-inline-end: 0.75rem;
         border-inline-end: 0.1rem solid var(--general-section-1);
@@ -42,8 +41,8 @@
 }
 
 .deriv-account-switcher {
-    &__button {
-        margin: 0 1.6rem 0 1.7rem;
+    &__balance {
+        padding: 0 1rem 0.1rem 0;
     }
 
     &__list {
@@ -113,9 +112,5 @@
     button {
         font-weight: 400;
         margin-right: 1.6rem;
-
-        &:last-child {
-            margin-right: 0;
-        }
     }
 }

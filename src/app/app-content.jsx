@@ -15,6 +15,7 @@ import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
