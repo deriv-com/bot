@@ -80,7 +80,7 @@ const AppContent = observer(() => {
     React.useEffect(() => {
         showDigitalOptionsMaltainvestError(client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client.is_options_blocked, client.account_settings.country_code, client.clients_country]);
+    }, [client.is_options_blocked, client.account_settings?.country_code, client.clients_country]);
 
     const init = () => {
         GTM.init(store);

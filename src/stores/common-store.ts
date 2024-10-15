@@ -8,10 +8,9 @@ export default class CommonStore {
     server_time = toMoment();
     update_time_interval: NodeJS.Timeout | undefined;
     current_language = '';
-
-    //TODO: fix missing properties
     is_socket_opened = false;
 
+    //TODO: fix missing properties
     showError = false;
     has_error = false;
     setError = () => {};
@@ -20,9 +19,11 @@ export default class CommonStore {
         makeObservable(this, {
             current_language: observable,
             server_time: observable,
+            is_socket_opened: observable,
             setServerTime: action,
             updateServerTime: action,
             setCurrentLanguage: action,
+            setSocketOpened: action,
         });
     }
 
@@ -44,5 +45,9 @@ export default class CommonStore {
 
     updateServerTime() {
         this.server_time = moment(this.server_time).add(UPDATE_TIME_INTERVAL, 'milliseconds');
+    }
+
+    setSocketOpened(opened: boolean) {
+        this.is_socket_opened = opened;
     }
 }
