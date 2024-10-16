@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
@@ -8,15 +8,21 @@ import PageError from '../index';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    isMobile: jest.fn(() => false),
+    useDevice: jest.fn(() => {
+        return {
+            isMobile: false,
+        };
+    }),
 }));
 
 describe('<PageError/>', () => {
-    let history;
-
     const renderWithRouter = (component: React.ReactElement) => {
-        history = createBrowserHistory();
-        return render(<Router history={history}>{component}</Router>);
+        const history = createMemoryHistory();
+        return render(
+            <Router location={history.location} navigator={history}>
+                {component}
+            </Router>
+        );
     };
 
     const mockSetError = jest.fn();
@@ -40,7 +46,7 @@ describe('<PageError/>', () => {
         expect(screen.getByText('Test error message')).toBeInTheDocument();
     });
 
-    it('Should call buttonOnClick() upon button click when should_redirect and should_clear_error_on_click equals to false', () => {
+    it('Should call buttonOnClick() upon button click when should_redirect and should_clear_error_on_click equals to false', async () => {
         const { buttonOnClick } = pageErrorDefaultProps;
 
         render(
@@ -53,7 +59,7 @@ describe('<PageError/>', () => {
         );
 
         expect(screen.getByRole('button')).toHaveClass('dc-page-error__btn--no-redirect');
-        userEvent.click(screen.getByRole('button'));
+        await userEvent.click(screen.getByRole('button'));
         expect(buttonOnClick).toHaveBeenCalledTimes(1);
     });
 
@@ -64,31 +70,31 @@ describe('<PageError/>', () => {
         expect(button).toBeInTheDocument();
     });
 
-    it('Should call setError() when redirect button gets clicked', () => {
+    it('Should call setError() when redirect button gets clicked', async () => {
         const { setError } = pageErrorDefaultProps;
         renderWithRouter(<PageError {...pageErrorDefaultProps} />);
 
         const link = screen.getByRole('link');
 
-        userEvent.click(link);
+        await userEvent.click(link);
         expect(setError).toHaveBeenCalledTimes(1);
     });
 
-    it('Should call setError() when redirect button gets clicked and should_redirect did not pass', () => {
+    it('Should call setError() when redirect button gets clicked and should_redirect did not pass', async () => {
         const { setError } = pageErrorDefaultProps;
         renderWithRouter(<PageError {...pageErrorDefaultProps} should_redirect={undefined} />);
 
         const link = screen.getByRole('link');
 
-        userEvent.click(link);
+        await userEvent.click(link);
         expect(setError).toHaveBeenCalled();
     });
 
-    it('Should call setError when button is clicked and should_clear_error_on_click is true', () => {
+    it('Should call setError when button is clicked and should_clear_error_on_click is true', async () => {
         renderWithRouter(<PageError {...pageErrorDefaultProps} />);
 
         const button = screen.getByText('Go back');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         expect(mockSetError).toHaveBeenCalledWith(false, null);
     });
@@ -106,7 +112,7 @@ describe('<PageError/>', () => {
 
         const page_error = screen.getByTestId('dc-page-error__btn-wrapper');
 
-        expect(page_error).not.toHaveTextContent();
+        expect(page_error).toHaveTextContent('');
     });
 
     it('Should show on mobile version text size of the error equals to "xs" and not show the button when redirect equals to false and redirect_labels has one element in the array', () => {

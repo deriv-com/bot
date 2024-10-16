@@ -1,15 +1,9 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ErrorComponent from '../error-component';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    PageError: () => <div>PageError</div>,
-}));
-
 describe('<ErrorComponent/>', () => {
     it('should render PageError component', () => {
-        render(<ErrorComponent />);
-        expect(screen.getByText('PageError')).toBeInTheDocument();
+        render(<ErrorComponent header='Error' message='Error message' />);
+        expect(screen.getByText('Error message')).toBeInTheDocument();
     });
 });
