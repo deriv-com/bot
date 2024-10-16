@@ -285,7 +285,6 @@ export default class AppStore {
     };
 
     setDBotEngineStores = () => {
-        // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store and pass it through.
         const { flyout, toolbar, save_modal, dashboard, load_modal, run_panel, blockly_store, summary_card } =
             this.root_store;
         const { client } = this.core;
