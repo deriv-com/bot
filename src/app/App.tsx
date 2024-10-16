@@ -1,4 +1,5 @@
 import { Fragment, lazy, Suspense } from 'react';
+import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import Endpoint from '@/pages/endpoint';
@@ -47,6 +48,11 @@ const router = createBrowserRouter(
 );
 
 function App() {
+    React.useEffect(() => {
+        window?.dataLayer?.push({ event: 'page_load' });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <Fragment>
             <RouterProvider router={router} />
