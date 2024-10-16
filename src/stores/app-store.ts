@@ -1,8 +1,12 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
-import { isEuResidenceWithOnlyVRTC } from '@/components/shared';
+import {
+    ContentFlag,
+    isEuResidenceWithOnlyVRTC,
+    routes,
+    showDigitalOptionsUnavailableError,
+} from '@/components/shared';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { ContentFlag, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -59,7 +63,7 @@ export default class AppStore {
     };
 
     handleErrorForEu = (show_default_error = false) => {
-        const { client, common, ui, traders_hub } = this.core;
+        const { client, common, ui } = this.core;
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
@@ -70,42 +74,37 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname === routes.bot) {
-            if (client.should_show_eu_error) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForEuClients(client.is_logged_in)
-                );
-            }
+        if (client.should_show_eu_error) {
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
+        }
 
-            if (traders_hub.content_flag === ContentFlag.HIGH_RISK_CR) {
-                return false;
-            }
+        if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
+            return false;
+        }
 
-            if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForNonEuClients(),
-                    toggleAccountsDialog,
-                    false,
-                    false
-                );
-            }
+        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForNonEuClients(),
+                toggleAccountsDialog,
+                false,
+                false
+            );
+        }
 
-            if (
-                ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
-                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                    client.is_options_blocked) &&
-                toggleAccountsDialog
-            ) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForNonEuClients(),
-                    toggleAccountsDialog,
-                    false,
-                    false
-                );
-            }
+        if (
+            ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+                isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+                client.is_options_blocked) &&
+            toggleAccountsDialog
+        ) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForNonEuClients(),
+                toggleAccountsDialog,
+                false,
+                false
+            );
         }
 
         if (show_default_error && common.has_error) {
@@ -116,7 +115,7 @@ export default class AppStore {
 
     onMount = async () => {
         const { blockly_store, run_panel } = this.root_store;
-        const { client, ui, traders_hub } = this.core;
+        const { client, ui } = this.core;
         this.showDigitalOptionsMaltainvestError();
 
         let timer_counter = 1;
@@ -156,7 +155,7 @@ export default class AppStore {
         );
 
         reaction(
-            () => traders_hub?.content_flag,
+            () => client?.content_flag,
             () => this.showDigitalOptionsMaltainvestError()
         );
     };

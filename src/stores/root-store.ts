@@ -49,15 +49,9 @@ export default class RootStore {
 
     ws = null;
     core = {
-        client: {
-            // check client-store.ts
-        },
-        common: {
-            // check common-store.ts
-        },
-        ui: {
-            // check ui-store.ts
-        },
+        ui: {},
+        client: {},
+        common: {},
     };
     gtm = {
         pushDataLayer: () => {},
@@ -66,6 +60,15 @@ export default class RootStore {
     constructor(dbot: unknown, ws: any) {
         this.ws = ws;
         this.dbot = dbot;
+
+        // Need to fix later without using this.core
+        this.ui = new UiStore();
+        this.client = new ClientStore();
+        this.common = new CommonStore();
+        this.core.ui = this.ui;
+        this.core.client = this.client;
+        this.core.common = this.common;
+
         this.app = new AppStore(this, this.core);
         this.summary_card = new SummaryCardStore(this, this.core);
         this.flyout = new FlyoutStore(this);
@@ -81,17 +84,10 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.self_exclusion = new SelfExclusionStore(this, this.core);
         this.dashboard = new DashboardStore(this, this.core);
-        this.ui = new UiStore();
-        this.client = new ClientStore();
-        this.common = new CommonStore();
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this, this.core);
-
-        this.core.ui = this.ui;
-        this.core.client = this.client;
-        this.core.common = this.common;
     }
 }
