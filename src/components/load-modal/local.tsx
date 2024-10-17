@@ -7,8 +7,8 @@ import { DerivLightLocalDeviceIcon, DerivLightMyComputerIcon } from '@deriv/quil
 import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { botNotification } from 'Components/bot-notification/bot-notification';
-import { notification_message } from 'Components/bot-notification/bot-notification-utils';
+import { botNotification } from '../bot-notification/bot-notification';
+import { notification_message } from '../bot-notification/bot-notification-utils';
 import LocalFooter from './local-footer';
 import SectionMessage from './section-message';
 import WorkspaceControl from './workspace-control';

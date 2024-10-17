@@ -9,12 +9,13 @@ import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import './google-drive.scss';
 
-const GoogleDrive = observer(() => {
+const GoogleDrive: React.FC = observer(() => {
     const { google_drive, load_modal } = useStore();
-    const { is_authorised } = google_drive;
-    const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
+    const { is_authorised, signIn, signOut } = google_drive;
+    const { is_open_button_loading, onDriveOpen } = load_modal;
     const { isDesktop } = useDevice();
     const icon_size = isDesktop ? '128' : '96';
+
     return (
         <div className='load-strategy__container' data-testid='dt_google_drive'>
             <div className='load-strategy__google-drive'>
@@ -34,7 +35,14 @@ const GoogleDrive = observer(() => {
                 </div>
                 {is_authorised ? (
                     <Button.Group>
-                        <Button onClick={onDriveConnect} has_effect secondary large>
+                        <Button
+                            onClick={() => {
+                                signOut();
+                            }}
+                            has_effect
+                            secondary
+                            large
+                        >
                             <Localize i18n_default_text='Disconnect' />
                         </Button>
                         <Button
@@ -69,7 +77,14 @@ const GoogleDrive = observer(() => {
                                 />
                             </div>
                         </div>
-                        <Button onClick={onDriveConnect} has_effect primary large>
+                        <Button
+                            onClick={() => {
+                                signIn();
+                            }}
+                            has_effect
+                            primary
+                            large
+                        >
                             <Localize i18n_default_text='Sign in' />
                         </Button>
                     </React.Fragment>
