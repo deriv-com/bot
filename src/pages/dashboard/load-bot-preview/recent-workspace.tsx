@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { getRecentFileIcon } from '@/components/load-modal/recent-workspace';
+import Popover from '@/components/shared_ui/popover';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { timeSince } from '@/external/bot-skeleton';
@@ -166,7 +167,9 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                                 viewRecentStrategy(item.type);
                             }}
                         >
-                            {item.icon}
+                            <Popover alignment='top' message={item.label} zIndex={'9999'}>
+                                {item.icon}
+                            </Popover>
                         </div>
                     ))}
                 </div>
