@@ -1,15 +1,18 @@
 import { memo, useEffect } from 'react';
 import { useStore } from '@/hooks/useStore';
 import { GetLandingCompanyResult } from '@/stores/client-store';
+import { toMoment } from '@/utils/time';
 import {
     useAuthData,
     useGetAccountStatus,
     useGetSettings,
     useLandingCompany,
+    useTime,
     useWebsiteStatus,
 } from '@deriv-com/api-hooks';
+import { useTranslations } from '@deriv-com/translations';
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }) => {
+const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }) => {
     const { logout, isAuthorizing } = useAuthData();
     const { data: accountStatus } = useGetAccountStatus();
     const { data: accountSettings } = useGetSettings();
@@ -22,8 +25,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }
         },
         enabled: !!accountSettings?.country_code,
     });
+    const { data: serverTime, error: serverTimeError } = useTime({
+        refetchInterval: 15000,
+    });
+    const { currentLang } = useTranslations();
 
-    const { client } = useStore() ?? {
+    const { client, common } = useStore() ?? {
         client: {
             setApiHookLogout: () => {},
             setAccountStatus: () => {},
@@ -32,7 +39,23 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }
             setLandingCompany: () => {},
             setSwitchBroadcast: () => {},
         },
+        common: {
+            setServerTime: () => {},
+            setCurrentLanguage: () => {},
+        },
     };
+
+    useEffect(() => {
+        if (common && currentLang) {
+            common.setCurrentLanguage(currentLang);
+        }
+    }, [currentLang, common]);
+
+    useEffect(() => {
+        if (common && serverTime) {
+            common.setServerTime(toMoment(serverTime), !!serverTimeError);
+        }
+    }, [serverTime, common, serverTimeError]);
 
     useEffect(() => {
         if (client) {
@@ -73,6 +96,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = memo(({ children }
     return <>{children}</>;
 });
 
-AuthProvider.displayName = 'AuthProvider';
+CoreStoreProvider.displayName = 'CoreStoreProvider';
 
-export default AuthProvider;
+export default CoreStoreProvider;

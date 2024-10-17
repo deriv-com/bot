@@ -1,6 +1,5 @@
 import moment from 'moment';
-import { getLanguage } from '@/utils/tmp/dummy';
-import { localize } from '@deriv-com/translations';
+import { getInitialLanguage, localize } from '@deriv-com/translations';
 
 type TExtendedMoment = typeof moment & {
     createFromInputFallback: (config: { _d: Date }) => void;
@@ -54,7 +53,7 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
 
 export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
 export const getLongDate = (time: number): string => {
-    moment.locale(getLanguage().toLowerCase());
+    moment.locale(getInitialLanguage().toLowerCase());
     //need to divide to 1000 as timestamp coming from BE is in ms
     return moment.unix(time / 1000).format('MMMM Do, YYYY');
 };

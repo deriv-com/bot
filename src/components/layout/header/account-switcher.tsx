@@ -81,13 +81,16 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
 };
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
-    const { ui } = useStore() ?? {
+    const { ui, run_panel } = useStore() ?? {
         ui: {
-            is_accounts_switcher_on: false,
             account_switcher_disabled_message: '',
         },
+        run_panel: {
+            is_stop_button_visible: false,
+        },
     };
-    const { is_accounts_switcher_on, account_switcher_disabled_message } = ui;
+    const { account_switcher_disabled_message } = ui;
+    const { is_stop_button_visible } = run_panel;
 
     return (
         activeAccount && (
@@ -98,7 +101,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
                 message={account_switcher_disabled_message}
                 zIndex='5'
             >
-                <UIAccountSwitcher activeAccount={activeAccount} isDisabled={!is_accounts_switcher_on}>
+                <UIAccountSwitcher activeAccount={activeAccount} isDisabled={is_stop_button_visible}>
                     <UIAccountSwitcher.Tab title={localize('Real')}>
                         <RenderAccountItems activeAccount={activeAccount} />
                     </UIAccountSwitcher.Tab>
