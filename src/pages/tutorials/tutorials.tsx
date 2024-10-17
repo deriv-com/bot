@@ -22,7 +22,7 @@ export type TTutorialsTabItem = {
 const TutorialsTab = observer(({ handleTabChange }: TTutorialsTab) => {
     const { isDesktop } = useDevice();
     const { dashboard } = useStore();
-    const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number | null>(0);
+    const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number>(0);
 
     const {
         active_tab_tutorials,

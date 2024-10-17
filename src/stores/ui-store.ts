@@ -6,7 +6,6 @@ export default class UiStore {
     is_tablet = false;
     is_chart_layout_default = true;
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
-    url_hashed_values = '';
     account_switcher_disabled_message = '';
     show_prompt = false;
 
