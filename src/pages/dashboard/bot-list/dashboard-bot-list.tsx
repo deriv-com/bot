@@ -3,28 +3,28 @@ import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 import { getSavedWorkspaces } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import './index.scss';
 
 type THeader = {
-    label: React.ReactElement;
+    label: string;
     className: string;
 };
 
 const HEADERS: THeader[] = [
     {
-        label: <Localize i18n_default_text='Bot name' />,
+        label: localize('Bot name'),
         className: 'bot-list__header__label',
     },
     {
-        label: <Localize i18n_default_text='Last modified' />,
+        label: localize('Last modified'),
         className: 'bot-list__header__time-stamp',
     },
     {
-        label: <Localize i18n_default_text='Status' />,
+        label: localize('Status'),
         className: 'bot-list__header__load-type',
     },
 ];
@@ -70,10 +70,7 @@ const DashboardBotList = observer(() => {
                 <div className='bot-list__header'>
                     {HEADERS.map(({ label, className }) => {
                         return (
-                            <div
-                                className={className}
-                                key={typeof label === 'string' ? label : label?.props?.i18n_default_text}
-                            >
+                            <div className={className} key={label}>
                                 <Text size={isDesktop ? 'xs' : 'xxs'} weight='bold'>
                                     {label}
                                 </Text>
@@ -82,12 +79,12 @@ const DashboardBotList = observer(() => {
                     })}
                 </div>
                 <div className='bot-list__table'>
-                    {dashboard_strategies.map((workspace, index) => {
-                        return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
-                    })}
+                    {dashboard_strategies.map(workspace => (
+                        <RecentWorkspace key={workspace.id} workspace={workspace} />
+                    ))}
                 </div>
             </div>
-            <DeleteDialog setStrategies={setDashboardStrategies} />
+            <DeleteDialog />
         </div>
     );
 });

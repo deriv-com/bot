@@ -2,6 +2,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import GoogleDrive from '@/components/load-modal/google-drive';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import Text from '@/components/shared_ui/text';
@@ -16,8 +17,7 @@ import {
 } from '@deriv/quill-icons/Illustration';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import DashboardBotList from './load-bot-preview/dashboard-bot-list';
-import GoogleDrive from './load-bot-preview/google-drive';
+import DashboardBotList from './bot-list/dashboard-bot-list';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;

@@ -7,6 +7,7 @@ import { useStore } from '@/hooks/useStore';
 import { DerivLightGoogleDriveIcon } from '@deriv/quill-icons/Illustration';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import './google-drive.scss';
 
 const GoogleDrive = observer(() => {
     const { google_drive, load_modal } = useStore();
