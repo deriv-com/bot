@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
 import { useStore } from '@/hooks/useStore';
-// import initDatadogLogs from '@/utils/datadog-logs';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { TBlocklyEvents } from 'Types';
@@ -31,12 +30,6 @@ const BotBuilder = observer(() => {
     // const { data: remote_config_data } = useRemoteConfig(isMounted());
     let end_drag_id: null | string = null;
     let selection_id: null | string = null;
-
-    // TODO: fix
-    // React.useEffect(() => {
-    //     initDatadogLogs(remote_config_data.tracking_datadog);
-    //     window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
-    // }, [remote_config_data.tracking_datadog]);
 
     React.useEffect(() => {
         onMount();

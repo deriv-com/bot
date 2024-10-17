@@ -1,5 +1,3 @@
-// import { datadogLogs } from '@datadog/browser-logs';
-
 export const REQUESTS = [
     'active_symbols',
     'authorize',
@@ -16,7 +14,6 @@ class APIMiddleware {
     constructor(config) {
         this.config = config;
         this.debounced_calls = {};
-        this.addGlobalMethod();
     }
 
     getRequestType = request => {
@@ -26,25 +23,6 @@ class APIMiddleware {
         });
 
         return req_type;
-    };
-
-    // eslint-disable-next-line no-unused-vars, default-param-last
-    // TODO: fix this
-    log = (
-        measures = []
-        // is_bot_running
-    ) => {
-        if (window.is_datadog_logging_enabled && measures && measures.length) {
-            // measures.forEach(measure => {
-            //     datadogLogs.logger.info(measure.name, {
-            //         name: measure.name,
-            //         startTime: measure.startTimeDate,
-            //         duration: measure.duration,
-            //         detail: measure.detail,
-            //         isBotRunning: is_bot_running,
-            //     });
-            // });
-        }
     };
 
     defineMeasure = res_type => {
@@ -64,7 +42,7 @@ class APIMiddleware {
 
     sendIsCalled = ({ response_promise, args: [request] }) => {
         const req_type = this.getRequestType(request);
-        if (req_type) performance?.mark?.(`${req_type}_start`);
+        if (req_type) performance.mark(`${req_type}_start`);
         response_promise
             .then(res => {
                 const res_type = this.getRequestType(res);
@@ -75,22 +53,6 @@ class APIMiddleware {
             .catch(() => {});
         return response_promise;
     };
-
-    sendRequestsStatistic = is_bot_running => {
-        REQUESTS.forEach(req_type => {
-            const measure = performance.getEntriesByName(req_type);
-            if (measure && measure.length) {
-                if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
-                    this.log(measure, is_bot_running, req_type);
-                }
-            }
-        });
-        performance.clearMeasures();
-    };
-
-    addGlobalMethod() {
-        if (window) window.sendRequestsStatistic = this.sendRequestsStatistic;
-    }
 }
 
 export default APIMiddleware;
