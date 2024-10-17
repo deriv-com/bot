@@ -1,9 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv-com/translations';
-import { CONTRACT_TYPES, shouldShowCancellation, shouldShowExpiration, TRADE_TYPES } from '../contract';
+import { CONTRACT_TYPES, TRADE_TYPES } from '../contract';
 import { TContractOptions } from '../contract/contract-types';
-import { cloneObject } from '../object';
-import { LocalStore } from '../storage';
 
 export const getLocalizedBasis = () =>
     ({
@@ -15,21 +13,6 @@ export const getLocalizedBasis = () =>
         stake: localize('Stake'),
         turbos: localize('Turbos'),
     }) as const;
-
-/**
- * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
- *     ['duration', 'amount'] are omitted, as they're available in all contract types
- */
-type TContractTypesConfig = {
-    title: string;
-    trade_types: string[];
-    basis: string[];
-    components: string[];
-    barrier_count?: number;
-    config?: { hide_duration?: boolean };
-};
-
-type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
 
 type TContractConfig = {
     button_name?: React.ReactNode;
@@ -52,210 +35,6 @@ export type TTradeTypesCategories = {
         categories: Array<string | TTextValueStrings>;
     };
 };
-
-export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
-    [TRADE_TYPES.RISE_FALL]: {
-        title: localize('Rise/Fall'),
-        trade_types: [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
-        basis: ['stake', 'payout'],
-        components: ['start_date'],
-        barrier_count: 0,
-    },
-    [TRADE_TYPES.RISE_FALL_EQUAL]: {
-        title: localize('Rise/Fall'),
-        trade_types: [CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUTE],
-        basis: ['stake', 'payout'],
-        components: ['start_date'],
-        barrier_count: 0,
-    },
-    [TRADE_TYPES.HIGH_LOW]: {
-        title: localize('Higher/Lower'),
-        trade_types: [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
-        barrier_count: 1,
-    },
-    [TRADE_TYPES.TOUCH]: {
-        title: localize('Touch/No Touch'),
-        trade_types: [CONTRACT_TYPES.TOUCH.ONE_TOUCH, CONTRACT_TYPES.TOUCH.NO_TOUCH],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
-    },
-    [TRADE_TYPES.END]: {
-        title: localize('Ends In/Ends Out'),
-        trade_types: [CONTRACT_TYPES.END.IN, CONTRACT_TYPES.END.OUT],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
-    },
-    [TRADE_TYPES.STAY]: {
-        title: localize('Stays In/Goes Out'),
-        trade_types: [CONTRACT_TYPES.STAY.IN, CONTRACT_TYPES.STAY.OUT],
-        basis: ['stake', 'payout'],
-        components: ['barrier'],
-    },
-    [TRADE_TYPES.ASIAN]: {
-        title: localize('Asian Up/Asian Down'),
-        trade_types: [CONTRACT_TYPES.ASIAN.UP, CONTRACT_TYPES.ASIAN.DOWN],
-        basis: ['stake', 'payout'],
-        components: [],
-    },
-    [TRADE_TYPES.MATCH_DIFF]: {
-        title: localize('Matches/Differs'),
-        trade_types: [CONTRACT_TYPES.MATCH_DIFF.MATCH, CONTRACT_TYPES.MATCH_DIFF.DIFF],
-        basis: ['stake', 'payout'],
-        components: ['last_digit'],
-    },
-    [TRADE_TYPES.EVEN_ODD]: {
-        title: localize('Even/Odd'),
-        trade_types: [CONTRACT_TYPES.EVEN_ODD.ODD, CONTRACT_TYPES.EVEN_ODD.EVEN],
-        basis: ['stake', 'payout'],
-        components: [],
-    },
-    [TRADE_TYPES.OVER_UNDER]: {
-        title: localize('Over/Under'),
-        trade_types: [CONTRACT_TYPES.OVER_UNDER.OVER, CONTRACT_TYPES.OVER_UNDER.UNDER],
-        basis: ['stake', 'payout'],
-        components: ['last_digit'],
-    },
-    [TRADE_TYPES.LB_CALL]: {
-        title: localize('Close-to-Low'),
-        trade_types: [CONTRACT_TYPES.LB_CALL],
-        basis: ['multiplier'],
-        components: [],
-    },
-    [TRADE_TYPES.LB_PUT]: {
-        title: localize('High-to-Close'),
-        trade_types: [CONTRACT_TYPES.LB_PUT],
-        basis: ['multiplier'],
-        components: [],
-    },
-    [TRADE_TYPES.LB_HIGH_LOW]: {
-        title: localize('High-to-Low'),
-        trade_types: [CONTRACT_TYPES.LB_HIGH_LOW],
-        basis: ['multiplier'],
-        components: [],
-    },
-    [TRADE_TYPES.TICK_HIGH_LOW]: {
-        title: localize('High Tick/Low Tick'),
-        trade_types: [CONTRACT_TYPES.TICK_HIGH_LOW.HIGH, CONTRACT_TYPES.TICK_HIGH_LOW.LOW],
-        basis: [],
-        components: [],
-    },
-    [TRADE_TYPES.RUN_HIGH_LOW]: {
-        title: localize('Only Ups/Only Downs'),
-        trade_types: [CONTRACT_TYPES.RUN_HIGH_LOW.HIGH, CONTRACT_TYPES.RUN_HIGH_LOW.LOW],
-        basis: [],
-        components: [],
-    },
-    [TRADE_TYPES.RESET]: {
-        title: localize('Reset Up/Reset Down'),
-        trade_types: [CONTRACT_TYPES.RESET.CALL, CONTRACT_TYPES.RESET.PUT],
-        basis: [],
-        components: [],
-    },
-    [TRADE_TYPES.CALL_PUT_SPREAD]: {
-        title: localize('Spread Up/Spread Down'),
-        trade_types: [CONTRACT_TYPES.CALL_PUT_SPREAD.CALL, CONTRACT_TYPES.CALL_PUT_SPREAD.PUT],
-        basis: [],
-        components: [],
-    },
-    [TRADE_TYPES.ACCUMULATOR]: {
-        title: localize('Accumulators'),
-        trade_types: [CONTRACT_TYPES.ACCUMULATOR],
-        basis: ['stake'],
-        components: ['take_profit', 'accumulator', 'accu_info_display'],
-        barrier_count: 2,
-        config: { hide_duration: true },
-    },
-    [TRADE_TYPES.MULTIPLIER]: {
-        title: localize('Multipliers'),
-        trade_types: [CONTRACT_TYPES.MULTIPLIER.UP, CONTRACT_TYPES.MULTIPLIER.DOWN],
-        basis: ['stake'],
-        components: [
-            'take_profit',
-            'stop_loss',
-            ...(shouldShowCancellation(symbol) ? ['cancellation'] : []),
-            ...(shouldShowExpiration(symbol) ? ['expiration'] : []),
-        ],
-        config: { hide_duration: true },
-    }, // hide Duration for Multiplier contracts for now
-    [TRADE_TYPES.TURBOS.LONG]: {
-        title: localize('Turbos'),
-        trade_types: [CONTRACT_TYPES.TURBOS.LONG],
-        basis: ['stake'],
-        barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
-    },
-    [TRADE_TYPES.TURBOS.SHORT]: {
-        title: localize('Turbos'),
-        trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
-        basis: ['stake'],
-        barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
-    },
-    [TRADE_TYPES.VANILLA.CALL]: {
-        title: localize('Call/Put'),
-        trade_types: [CONTRACT_TYPES.VANILLA.CALL],
-        basis: ['stake'],
-        components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
-        barrier_count: 1,
-    },
-    [TRADE_TYPES.VANILLA.PUT]: {
-        title: localize('Call/Put'),
-        trade_types: [CONTRACT_TYPES.VANILLA.PUT],
-        basis: ['stake'],
-        components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
-        barrier_count: 1,
-    },
-});
-
-// Config for rendering trade options
-export const getContractCategoriesConfig = () =>
-    ({
-        Turbos: { name: localize('Turbos'), categories: [TRADE_TYPES.TURBOS.LONG, TRADE_TYPES.TURBOS.SHORT] },
-        Multipliers: { name: localize('Multipliers'), categories: [TRADE_TYPES.MULTIPLIER] },
-        'Ups & Downs': {
-            name: localize('Ups & Downs'),
-            categories: [
-                TRADE_TYPES.RISE_FALL,
-                TRADE_TYPES.RISE_FALL_EQUAL,
-                TRADE_TYPES.HIGH_LOW,
-                TRADE_TYPES.RUN_HIGH_LOW,
-                TRADE_TYPES.RESET,
-                TRADE_TYPES.ASIAN,
-                TRADE_TYPES.CALL_PUT_SPREAD,
-            ],
-        },
-        'Highs & Lows': {
-            name: localize('Highs & Lows'),
-            categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
-        },
-        'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
-        'Look Backs': {
-            name: localize('Look Backs'),
-            categories: [TRADE_TYPES.LB_HIGH_LOW, TRADE_TYPES.LB_PUT, TRADE_TYPES.LB_CALL],
-        },
-        Digits: {
-            name: localize('Digits'),
-            categories: [TRADE_TYPES.MATCH_DIFF, TRADE_TYPES.EVEN_ODD, TRADE_TYPES.OVER_UNDER],
-        },
-        Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
-        Accumulators: { name: localize('Accumulators'), categories: [TRADE_TYPES.ACCUMULATOR] },
-    }) as const;
-
-export const unsupported_contract_types_list = [
-    // TODO: remove these once all contract types are supported
-    TRADE_TYPES.CALL_PUT_SPREAD,
-    TRADE_TYPES.RUN_HIGH_LOW,
-    TRADE_TYPES.RESET,
-    TRADE_TYPES.ASIAN,
-    TRADE_TYPES.TICK_HIGH_LOW,
-    TRADE_TYPES.END,
-    TRADE_TYPES.STAY,
-    TRADE_TYPES.LB_CALL,
-    TRADE_TYPES.LB_PUT,
-    TRADE_TYPES.LB_HIGH_LOW,
-] as const;
 
 export const getCardLabels = () =>
     ({
@@ -564,39 +343,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('High-Low'),
             position: 'top',
         },
-        // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:
-        // SHARKFIN: {
-        //     feature_flag: 'sharkfin',
-        //     name: localize('Sharkfin'),
-        //     position: 'top',
-        // }
-        // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
     }) as const;
-
-export const TRADE_FEATURE_FLAGS = ['sharkfin', 'dtrader_v2'];
-
-export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
-    const categories_copy: TTradeTypesCategories = cloneObject(categories);
-    const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
-        .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
-        .map(([key]) => key);
-
-    return Object.keys(categories_copy).reduce((acc, key) => {
-        const category = categories_copy[key].categories?.filter(item => {
-            return (
-                typeof item === 'object' &&
-                // hide trade types with disabled feature flag:
-                hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
-            );
-        });
-        if (category?.length === 0) {
-            delete acc[key];
-        } else {
-            acc[key].categories = category;
-        }
-        return acc;
-    }, categories_copy);
-};
 
 export const getContractConfig = (is_high_low?: boolean) => ({
     ...getSupportedContracts(is_high_low),

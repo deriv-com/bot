@@ -1,57 +1,24 @@
-import { reaction } from 'mobx';
 import { TStatistics } from '@/components/transaction-details/transaction-details.types';
 import { ProposalOpenContract } from '@deriv/api-types';
-import { TCoreStores, TStores } from '@deriv/stores/types';
-import RootStore from 'Stores/root-store';
 
-type TGTM = {
-    core: {
-        client: {
-            loginid: string;
-        };
-        server_time: {
-            unix: () => number;
-        };
-        gtm: {
-            pushDataLayer: (data: Record<string, unknown>) => void;
-        };
-    };
-};
+declare global {
+    interface Window {
+        dataLayer?: any[];
+    }
+}
 
 const GTM = (() => {
-    let root_store: RootStore & TGTM;
-
-    const getLoginId = (): string => {
-        return root_store.core.client.loginid;
-    };
-
-    const getServerTime = (): number => {
-        return root_store?.core?.server_time?.unix() || Date.now();
-    };
-
     const pushDataLayer = (data: Record<string, unknown>): void => {
-        return root_store?.core?.gtm?.pushDataLayer(data);
+        window.dataLayer?.push(data);
     };
 
-    const init = (_root_store: RootStore & TStores & TCoreStores & { core: TGTM['core'] }): void => {
-        try {
-            root_store = _root_store;
-            const { run_panel, transactions } = root_store;
-            const run_statistics = transactions.statistics;
-
-            reaction(
-                () => run_panel.is_running,
-                () => run_panel.is_running && onRunBot(run_statistics)
-            );
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.warn('Error initializing GTM reactions ', error); // eslint-disable-line no-console
-        }
+    const init = () => {
+        // TODO:  initialize GTM - STANDALONE
     };
 
-    const onRunBot = (statistics: TStatistics): void => {
+    const onRunBot = (login_id: string, server_time: number, statistics: TStatistics): void => {
         try {
-            const run_id = `${getLoginId()}-${getServerTime()}`;
+            const run_id = `${login_id}-${server_time}`;
             const counters = `tr:${statistics.number_of_runs},\
                 ts:${statistics.total_stake},\
                 py:${statistics.total_payout},\

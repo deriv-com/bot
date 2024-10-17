@@ -1,4 +1,5 @@
 import React, { KeyboardEvent } from 'react';
+import parse from 'html-react-parser';
 import Accordion from '@/components/shared_ui/accordion';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
@@ -29,8 +30,9 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
             className='faq__description'
             weight='normal'
             key={content}
-            dangerouslySetInnerHTML={{ __html: content }}
-        />
+        >
+            {parse(content)}
+        </Text>
     );
 };
 

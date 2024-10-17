@@ -83,9 +83,9 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings?.country_code, client.clients_country]);
 
     const init = () => {
-        GTM.init(store);
+        GTM.init();
         ServerTime.init(common);
-        app.setDBotEngineStores(store);
+        app.setDBotEngineStores();
         ApiHelpers.setInstance(app.api_helpers_store);
     };
 
@@ -106,6 +106,7 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
     React.useEffect(() => {
         if (client.is_logged_in && client.is_landing_company_loaded) {
             changeActiveSymbolLoadingState();

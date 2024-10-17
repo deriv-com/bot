@@ -1,4 +1,3 @@
-// TODO: need to convert Dbot class to TS and write complete types
 export type TBotSkeleton = {
     interpreter: unknown;
     workspace: window.Blockly.WorkspaceSvg | null;
