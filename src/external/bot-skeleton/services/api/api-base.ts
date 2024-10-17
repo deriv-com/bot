@@ -1,3 +1,4 @@
+import CommonStore from '@/stores/common-store';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
@@ -15,6 +16,8 @@ type SubscriptionPromise = Promise<{
 type Api = {
     connection: {
         readyState: keyof typeof socket_state;
+        addEventListener: (event: string, callback: () => void) => void;
+        removeEventListener: (event: string, callback: () => void) => void;
     };
     send: (data: unknown) => void;
     disconnect: () => void;
@@ -37,6 +40,7 @@ class APIBase {
     current_auth_subscriptions: SubscriptionPromise[] = [];
     is_authorized = false;
     active_symbols_promise: Promise<void> | null = null;
+    common_store: CommonStore | undefined;
 
     unsubscribeAllSubscriptions = () => {
         this.current_auth_subscriptions?.forEach(subscription_promise => {
@@ -51,15 +55,33 @@ class APIBase {
         this.current_auth_subscriptions = [];
     };
 
-    async init() {
+    onsocketopen() {
+        if (this.common_store) {
+            this.common_store.setSocketOpened(true);
+        }
+    }
+
+    onsocketclose() {
+        if (this.common_store) {
+            this.common_store.setSocketOpened(false);
+        }
+    }
+
+    async init(common_store?: CommonStore) {
         this.toggleRunButton(true);
 
         if (this.api) {
             this.unsubscribeAllSubscriptions();
         }
 
-        if (!this.api || this.getConnectionStatus() === socket_state[3]) {
+        if (!this.api || this.api?.connection.readyState !== 1) {
+            if (this.api?.connection) {
+                this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
+                this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
+            }
             this.api = generateDerivApiInstance();
+            this.api?.connection.addEventListener('open', this.onsocketopen.bind(this));
+            this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
         }
 
         if (!this.has_active_symbols) {
@@ -77,6 +99,11 @@ class APIBase {
         }
 
         chart_api.init();
+
+        if (common_store) {
+            this.common_store = common_store;
+            this.onsocketopen();
+        }
     }
 
     getConnectionStatus() {
