@@ -120,12 +120,12 @@ export const deriv_urls = Object.freeze({
 });
 
 export const domain_app_ids = {
-    // these domains as supported "production domains"
-    'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
+    // Supported "production domains"
+    'deriv.app': 16929,
     'app.deriv.com': 16929,
     'staging-app.deriv.com': 16303,
     'app.deriv.me': 1411,
-    'staging-app.deriv.me': 1411, // TODO: setup staging for deriv.me
+    'staging-app.deriv.me': 1411,
     'app.deriv.be': 30767,
     'staging-app.deriv.be': 31186,
     'binary.com': 1,
