@@ -1,12 +1,43 @@
-import { useMemo } from 'react';
-import { useBalance as useAPIBalance } from '@deriv-com/api-hooks';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuthData, useBalance as useApiBalance, useSubscribe } from '@deriv-com/api-hooks';
+
+type BalanceData = ReturnType<typeof useApiBalance>['data'];
 
 const useBalance = () => {
-    const { data, ...rest } = useAPIBalance({
-        payload: { account: 'all' },
-    });
+    const { isAuthorized } = useAuthData();
+    const { data, subscribe, ...rest } = useSubscribe('balance');
+    const [allBalanceData, setAllBalanceData] = useState<BalanceData | null>(null);
 
-    const modifiedBalance = useMemo(() => ({ ...data }), [data]);
+    useEffect(() => {
+        if (isAuthorized) {
+            subscribe({
+                account: 'all',
+            });
+        }
+    }, [isAuthorized, subscribe]);
+
+    useEffect(() => {
+        if (data?.balance?.accounts) {
+            setAllBalanceData(data.balance);
+        } else if (data?.balance?.loginid) {
+            setAllBalanceData(prevData => {
+                if (!prevData?.accounts || !data?.balance?.loginid) return prevData;
+                const accounts = { ...prevData.accounts };
+                const currentLoggedInBalance = accounts[data.balance.loginid];
+                currentLoggedInBalance.balance = data.balance.balance;
+
+                return {
+                    ...prevData,
+                    accounts: {
+                        ...prevData.accounts,
+                        [data.balance.loginid]: currentLoggedInBalance,
+                    },
+                };
+            });
+        }
+    }, [data]);
+
+    const modifiedBalance = useMemo(() => ({ ...allBalanceData }), [allBalanceData]);
 
     return { data: modifiedBalance, ...rest };
 };

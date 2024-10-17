@@ -7,7 +7,7 @@ import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StoreProvider } from '../hooks/useStore';
-import AuthProvider from './AuthProvider';
+import CoreStoreProvider from './CoreStoreProvider';
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
@@ -30,9 +30,9 @@ const router = createBrowserRouter(
                             <AppDataProvider>
                                 <StoreProvider>
                                     <RoutePromptDialog />
-                                    <AuthProvider>
+                                    <CoreStoreProvider>
                                         <Layout />
-                                    </AuthProvider>
+                                    </CoreStoreProvider>
                                 </StoreProvider>
                             </AppDataProvider>
                         </TranslationProvider>

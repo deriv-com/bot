@@ -1,8 +1,8 @@
-import moment from 'moment';
 import AppStore from './app-store';
 import BlocklyStore from './blockly-store';
 import ChartStore from './chart-store';
 import ClientStore from './client-store';
+import CommonStore from './common-store';
 import DashboardStore from './dashboard-store';
 import DataCollectionStore from './data-collection-store';
 import FlyoutHelpStore from './flyout-help-store';
@@ -45,24 +45,14 @@ export default class RootStore {
 
     public ui: UiStore;
     public client: ClientStore;
+    public common: CommonStore;
 
     ws = null;
     core = {
-        client: {
-            // check client-store.ts
-        },
-        common: {
-            is_socket_opened: false,
-            current_language: 'en',
-            server_time: moment(),
-            ws: this.ws,
-        },
-        ui: {
-            // check ui-store.ts
-        },
-        gtm: {},
+        ui: {},
+        client: {},
+        common: {},
     };
-    common = this.core.common;
     gtm = {
         pushDataLayer: () => {},
     };
@@ -70,6 +60,15 @@ export default class RootStore {
     constructor(dbot: unknown, ws: any) {
         this.ws = ws;
         this.dbot = dbot;
+
+        // Need to fix later without using this.core
+        this.ui = new UiStore();
+        this.client = new ClientStore();
+        this.common = new CommonStore();
+        this.core.ui = this.ui;
+        this.core.client = this.client;
+        this.core.common = this.common;
+
         this.app = new AppStore(this, this.core);
         this.summary_card = new SummaryCardStore(this, this.core);
         this.flyout = new FlyoutStore(this);
@@ -85,16 +84,10 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.self_exclusion = new SelfExclusionStore(this, this.core);
         this.dashboard = new DashboardStore(this, this.core);
-        this.ui = new UiStore();
-        this.client = new ClientStore();
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);
         this.blockly_store = new BlocklyStore(this);
         this.data_collection_store = new DataCollectionStore(this, this.core);
-
-        this.core.ui = this.ui;
-        this.core.client = this.client;
-        this.core.gtm = this.gtm;
     }
 }
