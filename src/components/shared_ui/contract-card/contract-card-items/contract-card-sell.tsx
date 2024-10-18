@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { hasContractEntered, isForwardStarting, isOpen, isValidToSell } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
-import Button from '../../button';
+import { Button } from '@deriv-com/ui';
 import { TGetCardLables } from '../../types';
 
 export type TContractCardSellProps = {
@@ -34,10 +34,11 @@ const ContractCardSell = ({ contract_info, getCardLabels, is_sell_requested, onC
                     })}
                     data-testid='dt_contract_card_sell'
                     disabled={is_sell_requested}
-                    label={getCardLabels().SELL}
                     onClick={onClick}
                     variant='outlined'
-                />
+                >
+                    {getCardLabels().SELL}
+                </Button>
             ) : (
                 <div className='dc-contract-card__no-resale-msg'>{getCardLabels().RESALE_NOT_OFFERED}</div>
             )}

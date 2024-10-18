@@ -1,11 +1,16 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { getIndicativePrice, isAccumulatorContract, isEqualObject, isMultiplierContract } from '@/components/shared';
+import {
+    getIndicativePrice,
+    isAccumulatorContract,
+    isEqualObject,
+    isMultiplierContract,
+    Validator,
+} from '@/components/shared';
 import { TContractInfo } from '@/components/summary/summary-card.types';
 import { getValidationRules, TValidationRuleIndex, TValidationRules } from '@/constants/contract';
 import { contract_stages } from '@/constants/contract-stage';
 import { api_base } from '@/external/bot-skeleton';
 import { getContractUpdateConfig } from '@/utils/multiplier';
-import Validator from '@/utils/tmp/validator';
 import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
 import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
