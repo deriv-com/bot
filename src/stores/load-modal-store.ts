@@ -251,19 +251,6 @@ export default class LoadModalStore {
         }
     };
 
-    getRecentFileIcon = (save_type: { [key: string]: string } | string): string => {
-        switch (save_type) {
-            case save_types.UNSAVED:
-                return 'IcReports';
-            case save_types.LOCAL:
-                return 'IcMyComputer';
-            case save_types.GOOGLE_DRIVE:
-                return 'IcGoogleDrive';
-            default:
-                return 'IcReports';
-        }
-    };
-
     getSaveType = (save_type: { [key: string]: string } | string): string => {
         switch (save_type) {
             case save_types.UNSAVED:

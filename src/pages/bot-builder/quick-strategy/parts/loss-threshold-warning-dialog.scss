@@ -9,6 +9,10 @@
         color: var(--text-general);
     }
 
+    &.dc-dialog__wrapper--has-portal {
+        background-color: var(--overlay-outside-dialog);
+    }
+
     .dc-dialog {
         &__header {
             &--title {
@@ -24,7 +28,7 @@
         }
 
         &__button {
-            @include mobile {
+            @include mobile-screen {
                 margin-inline-start: 0;
             }
         }

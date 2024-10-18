@@ -34,7 +34,7 @@ const LossThresholdWarningDialog = observer(() => {
 
     return (
         <Dialog
-            portal_element_id='modal_root_absolute'
+            portal_element_id='modal_root'
             title={localize('Are you sure you want to continue?')}
             is_visible={loss_threshold_warning_data.show}
             confirm_button_text={localize('Yes, continue')}
