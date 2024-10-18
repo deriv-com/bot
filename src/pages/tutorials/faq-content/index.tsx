@@ -1,4 +1,5 @@
 import React, { KeyboardEvent } from 'react';
+import parse from 'html-react-parser';
 import Accordion from '@/components/shared_ui/accordion';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
@@ -29,8 +30,9 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
             className='faq__description'
             weight='normal'
             key={content}
-            dangerouslySetInnerHTML={{ __html: content }}
-        />
+        >
+            {parse(content)}
+        </Text>
     );
 };
 
@@ -79,7 +81,10 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
             const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
             if (faq_wrapper_element.current && open_accordion_element) {
                 const offset = previous_sibling_element ? previous_sibling_element.offsetTop - 80 : 0;
-                scrollToElement(faq_wrapper_element?.current, offset);
+                const desktop_scroll_element = document.querySelector('.dc-tabs__content--tutorials') as HTMLElement;
+                const mobile_scroll_element = document.querySelector('.tutorials-mobile__faq') as HTMLElement;
+                const scroll_element = isDesktop ? desktop_scroll_element : mobile_scroll_element;
+                scrollToElement(scroll_element, offset);
             }
             if (timer_id?.current) clearTimeout(timer_id.current);
         }, 5);

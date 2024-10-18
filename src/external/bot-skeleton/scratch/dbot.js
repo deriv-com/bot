@@ -26,7 +26,7 @@ class DBot {
     async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
         await loadBlockly(is_dark_mode);
         const recent_files = await getSavedWorkspaces();
-        api_base.init();
+        api_base.init(store?.common);
         this.interpreter = Interpreter();
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         var that = this;

@@ -1,0 +1,85 @@
+name: Build Production and deploy to Cloudflare pages
+
+on:
+  push:
+    tags:
+      - production_v*
+
+concurrency:
+    group: cloudflare-pages-build-production
+    cancel-in-progress: true
+
+jobs:
+    build_to_cloudflare_pages:
+        timeout-minutes: 30
+        runs-on: ubuntu-latest
+        environment: production
+        steps:
+            - name: Checkout to main branch
+              uses: actions/checkout@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
+                  cache: 'npm'
+
+            - name: Get cached dependencies
+              id: cache-npm
+              uses: actions/cache/restore@e12d46a63a90f2fae62d114769bbf2a179198b5c
+              with:
+                  path: node_modules
+                  key: npm-${{ hashFiles('./package-lock.json') }}
+
+            - name: Install dependencies
+              if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+              run: npm ci
+              shell: bash
+
+            - name: Build Production
+              run: npm run build
+              env:
+                  R2_PROJECT_NAME: ${{ vars.R2_PROJECT_NAME }}
+                  TRANSLATIONS_CDN_URL: ${{ vars.TRANSLATIONS_CDN_URL }}
+                  CROWDIN_BRANCH_NAME: production
+
+            - name: Run tests for Eslint
+              run: npm run test:lint
+
+            - name: Run unit tests and coverage report
+              run: npm run test
+
+            - name: Publish to Cloudflare Pages
+              id: publish-to-pages
+              env:
+                  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                  HEAD_BRANCH: ${{ github.head_ref }}
+                  CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+              run: |
+                  echo "Installing Wrangler CLI"
+                  npm i -g wrangler
+                  echo "Deploying build to Cloudflare Pages"
+                  directory='dist/'
+                  projectName=$CLOUDFLARE_PROJECT_NAME
+                  branch=main
+                  cf_preview_url=$(wrangler pages deploy $directory --project-name=$projectName --branch=$branch > log.txt 2>&1; echo $?)
+                  echo "------"
+                  preview_url=https://$branch.$projectName.pages.dev
+                  cat log.txt
+                  if grep -q "Deployment complete" log.txt; then
+                    echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "Deployment to Cloudflare Pages failed."
+                    exit 1
+                  fi
+
+            - name: Upload to vercel
+              uses: 'deriv-com/shared-actions/.github/actions/vercel_DR_publish@master'
+              with:
+                VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+                VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+                VERCEL_TOKEN: ${{ secrets.VERCEL_API_TOKEN }}
+                ENVIRONMENT: Production
+                VERCEL_SCOPE: deriv
+                ALIAS_DOMAIN_URL: 'dbot-dr.binary.sx'

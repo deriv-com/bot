@@ -1,14 +1,13 @@
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
-import { isSafari, mobileOSDetect } from '@/components/shared';
+import { isSafari, mobileOSDetect, routes } from '@/components/shared';
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
-import { journalError, switch_account_notification } from '@/utils/bot-notifications';
+// import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
-import { routes } from '@/utils/tmp/dummy';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
@@ -433,17 +432,19 @@ export default class RunPanelStore {
     };
 
     registerReactions = () => {
-        const { client, common, notifications } = this.core;
+        const { client, common } = this.core;
         // eslint-disable-next-line prefer-const
         let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {
+            // TODO: fix notifications and is_socket_opened
             if (common.is_socket_opened) {
                 disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     loginid => {
                         if (loginid && this.is_running) {
-                            notifications.addNotificationMessage(switch_account_notification());
+                            // TODO: fix notifications
+                            // notifications.addNotificationMessage(switch_account_notification());
                         }
                         this.dbot.terminateBot();
                         this.unregisterBotListeners();
@@ -627,26 +628,28 @@ export default class RunPanelStore {
 
     showErrorMessage = (data: string | Error) => {
         const { journal } = this.root_store;
-        const { notifications, ui } = this.core;
+        const { ui } = this.core;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === MessageTypes.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
             ui.setPromptHandler(false);
         } else {
-            notifications.addNotificationMessage(journalError(this.switchToJournal));
-            notifications.removeNotificationMessage({ key: 'bot_error' });
+            // TODO: fix notifications
+            // notifications.addNotificationMessage(journalError(this.switchToJournal));
+            // notifications.removeNotificationMessage({ key: 'bot_error' });
         }
     };
 
     switchToJournal = () => {
         const { journal } = this.root_store;
-        const { notifications } = this.core;
         journal.journal_filters.push(MessageTypes.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
-        notifications.toggleNotificationsModal();
-        notifications.removeNotificationByKey({ key: 'bot_error' });
+
+        // TODO: fix notifications
+        // notifications.toggleNotificationsModal();
+        // notifications.removeNotificationByKey({ key: 'bot_error' });
     };
 
     unregisterBotListeners = () => {
@@ -669,7 +672,6 @@ export default class RunPanelStore {
 
     setIsRunning = (is_running: boolean) => {
         this.is_running = is_running;
-        this.core.ui.setIsAccountsSwitcherOn(!is_running);
     };
 
     onMount = () => {

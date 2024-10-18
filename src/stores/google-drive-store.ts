@@ -3,8 +3,7 @@ import { botNotification } from '@/components/bot-notification/bot-notification'
 import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
-import { getLanguage } from '@/utils/tmp/dummy';
-import { localize } from '@deriv-com/translations';
+import { getInitialLanguage, localize } from '@deriv-com/translations';
 import RootStore from './root-store';
 
 export type TErrorWithStatus = Error & { status?: number; result?: { error: { message: string } } };
@@ -149,7 +148,7 @@ export default class GoogleDriveStore {
 
     // eslint-disable-next-line class-methods-use-this
     getPickerLanguage() {
-        const language = getLanguage();
+        const language = getInitialLanguage();
 
         if (language === 'zhTw') {
             return 'zh-TW';
