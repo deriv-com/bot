@@ -49,6 +49,8 @@
         .deriv-account-switcher__balance + svg > path {
             fill: var(--text-general);
         }
+
+        margin-inline-end: 0.8rem;
     }
 
     &__balance {
@@ -129,4 +131,8 @@
         font-weight: 400;
         margin-right: 1.6rem;
     }
+}
+
+.deposit-button {
+    margin-inline-end: 1.6rem;
 }

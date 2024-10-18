@@ -54,7 +54,7 @@ const InfoPanel = observer(() => {
                                     'db-info-panel__content': link,
                                 })}
                                 color='prominent'
-                                lineHeight='3xl'
+                                lineHeight='xl'
                                 as='p'
                                 onClick={() => switchTab(link, label, text.faq_id)}
                                 size={isDesktop ? 's' : 'xxs'}

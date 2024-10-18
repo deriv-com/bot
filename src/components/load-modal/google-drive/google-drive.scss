@@ -8,6 +8,7 @@
             padding: 2.4rem;
             background-color: var(--general-main-2);
         }
+
         &__content {
             .load-strategy {
                 &__container {
@@ -15,11 +16,13 @@
                 }
             }
         }
+
         &__footer {
             display: none;
         }
     }
 }
+
 .picker-dialog {
     z-index: 9999 !important;
 }

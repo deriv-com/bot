@@ -11,8 +11,8 @@ import {
 } from '@/components/shared';
 import { TContractInfo, TContractStore } from '@/components/shared/utils/contract/contract-types';
 import { Localize } from '@deriv-com/translations';
+import { Button } from '@deriv-com/ui';
 import ArrowIndicator from '../../arrow-indicator';
-import Button from '../../button';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
@@ -249,10 +249,12 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                 {is_multiplier && <div className='dc-contract-card-dialog__input'>{stop_loss_input}</div>}
                 <div className='dc-contract-card-dialog__button'>
                     <Button
-                        label={getCardLabels().APPLY}
                         onClick={onClick}
                         disabled={has_validation_errors || !is_valid_contract_update || isStateUnchanged()}
-                    />
+                        isFullWidth
+                    >
+                        {getCardLabels().APPLY}
+                    </Button>
                 </div>
             </div>
         </React.Fragment>

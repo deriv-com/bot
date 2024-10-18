@@ -1,4 +1,6 @@
 import { memo, useEffect } from 'react';
+import { FORM_ERROR_MESSAGES } from '@/components/shared/constants/form-error-messages';
+import { initFormErrorMessages } from '@/components/shared/utils/validation/declarative-validation-rules';
 import { useStore } from '@/hooks/useStore';
 import { GetLandingCompanyResult } from '@/stores/client-store';
 import { toMoment } from '@/utils/time';
@@ -44,6 +46,10 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = memo(({ child
             setCurrentLanguage: () => {},
         },
     };
+
+    useEffect(() => {
+        initFormErrorMessages(FORM_ERROR_MESSAGES());
+    }, []);
 
     useEffect(() => {
         if (common && currentLang) {

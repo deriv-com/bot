@@ -1,5 +1,5 @@
-@use 'components/shared/styles/constants' as *;
 @use 'components/shared/styles/mixins' as *;
+@use 'components/shared/styles/constants' as *;
 
 .dc-modal {
     $save-modal: 'modal--save';

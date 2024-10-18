@@ -46,12 +46,13 @@ const AppHeader = () => {
                     <AccountSwitcher activeAccount={activeAccount} />
                     {isDesktop && (
                         <Button
+                            primary
                             onClick={() => {
                                 window.location.assign('https://app.deriv.com/cashier/deposit');
                             }}
                             className='deposit-button'
                         >
-                            <Button primary>{localize('Deposit')}</Button>
+                            {localize('Deposit')}
                         </Button>
                     )}
                 </>

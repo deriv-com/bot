@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { isValidToCancel } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
-import Button from '../../button';
+import { Button } from '@deriv-com/ui';
 import RemainingTime from '../../remaining-time';
 import { TGetCardLables } from '../../types';
 
@@ -37,14 +37,15 @@ const MultiplierCloseActions = ({
                     'dc-btn--loading': is_sell_requested,
                 })}
                 disabled={is_sell_requested || (Number(profit) < 0 && is_valid_to_cancel)}
-                label={getCardLabels().CLOSE}
                 onClick={ev => {
                     onClickSell(contract_id);
                     ev.stopPropagation();
                     ev.preventDefault();
                 }}
                 variant='outlined'
-            />
+            >
+                {getCardLabels().CLOSE}
+            </Button>
             {is_valid_to_cancel && (
                 <Button
                     id={`dc_contract_card_${contract_id}_cancel_button`}
