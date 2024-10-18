@@ -1,7 +1,9 @@
 import localForage from 'localforage';
 import LZString from 'lz-string';
+import { config } from '../constants';
 import { save_types } from '../constants/save-type';
 import DBotStore from '../scratch/dbot-store';
+
 /**
  * Save workspace to localStorage
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
@@ -32,7 +34,7 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
         workspaces.push({
             id: workspace_id,
             timestamp: current_timestamp,
-            name: save_modal.bot_name,
+            name: config().default_file_name,
             xml: current_xml,
             save_type,
         });

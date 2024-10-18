@@ -1,8 +1,7 @@
 import crc32 from 'crc-32/crc32';
 import { action, makeObservable, observable, reaction } from 'mobx';
-import { cloneObject } from '@/components/shared';
-import { convertStrategyToIsDbot, DBot } from '@/external/bot-skeleton';
-import { isProduction } from '@/utils/tmp/dummy';
+import { cloneObject, isProduction } from '@/components/shared';
+import { DBot } from '@/external/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
 

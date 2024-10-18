@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { useLocation } from 'react-router-dom';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
@@ -47,14 +48,13 @@ const AppWrapper = observer(() => {
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
-    const { ui } = useStore();
-    const { url_hashed_values } = ui;
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
     const { isDesktop } = useDevice();
+    const location = useLocation();
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
-        tab_value = url_hashed_values?.split('#')[1];
+        tab_value = location.hash?.split('#')[1];
         if (!tab_value) return tab;
         return Number(hash.indexOf(String(tab_value)));
     };

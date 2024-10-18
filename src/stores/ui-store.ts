@@ -6,9 +6,7 @@ export default class UiStore {
     is_tablet = false;
     is_chart_layout_default = true;
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
-    url_hashed_values = '';
     account_switcher_disabled_message = '';
-    is_accounts_switcher_on = true;
     show_prompt = false;
 
     // TODO: fix - need to implement this feature
@@ -21,11 +19,9 @@ export default class UiStore {
             is_mobile: observable,
             is_desktop: observable,
             is_tablet: observable,
-            is_accounts_switcher_on: observable,
             account_switcher_disabled_message: observable,
             setDarkMode: action,
             setDevice: action,
-            setIsAccountsSwitcherOn: action,
             setAccountSwitcherDisabledMessage: action,
             setPromptHandler: action,
         });
@@ -41,10 +37,6 @@ export default class UiStore {
         } else {
             this.account_switcher_disabled_message = '';
         }
-    };
-
-    setIsAccountsSwitcherOn = (value: boolean) => {
-        this.is_accounts_switcher_on = value;
     };
 
     setDarkMode = (value: boolean) => {

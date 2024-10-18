@@ -1,8 +1,12 @@
 import { action, makeObservable, reaction, when } from 'mobx';
 import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
-import { isEuResidenceWithOnlyVRTC } from '@/components/shared';
+import {
+    ContentFlag,
+    isEuResidenceWithOnlyVRTC,
+    routes,
+    showDigitalOptionsUnavailableError,
+} from '@/components/shared';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { ContentFlag, routes, showDigitalOptionsUnavailableError } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -23,7 +27,6 @@ export default class AppStore {
         makeObservable(this, {
             onMount: action,
             onUnmount: action,
-            registerReloadOnLanguageChange: action,
             registerCurrencyReaction: action,
             registerOnAccountSwitch: action,
             registerLandingCompanyChangeReaction: action,
@@ -48,15 +51,33 @@ export default class AppStore {
         link: localize('Switch to another account'),
     });
 
-    getErrorForEuClients = (is_logged_in = false) => {
+    getErrorForEuClients = (is_logged_in = false, country: string | undefined = undefined) => {
         return {
             text: ' ',
             title: is_logged_in
-                ? localize('Deriv Bot is not available for EU clients')
-                : localize('Deriv Bot is unavailable in the EU'),
+                ? localize(`Deriv Bot is not available for ${country || 'EU'} clients`)
+                : localize(`Deriv Bot is unavailable in ${country || 'the EU'}`),
             link: is_logged_in ? localize("Back to Trader's Hub") : '',
             route: routes.traders_hub,
         };
+    };
+
+    throwErrorForExceptionCountries = (client_country: string) => {
+        const { client, common } = this.core;
+
+        const not_allowed_clients_country: { [key: string]: string } = {
+            au: 'Australian',
+            sg: 'Singaporean',
+        };
+
+        const country_name = not_allowed_clients_country[client_country];
+
+        if (country_name) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForEuClients(client.is_logged_in, country_name)
+            );
+        }
     };
 
     handleErrorForEu = (show_default_error = false) => {
@@ -64,6 +85,11 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
+            if (client?.has_logged_out) {
+                window.location.href = routes.traders_hub;
+            }
+
+            this.throwErrorForExceptionCountries(client?.clients_country);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
@@ -71,7 +97,8 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname === routes.bot) {
+        if (window.location.pathname.includes(routes.bot)) {
+            this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
             if (client.should_show_eu_error) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
@@ -117,7 +144,7 @@ export default class AppStore {
 
     onMount = async () => {
         const { blockly_store, run_panel } = this.root_store;
-        const { client, ui, traders_hub } = this.core;
+        const { client, ui } = this.core;
         this.showDigitalOptionsMaltainvestError();
 
         let timer_counter = 1;
@@ -142,7 +169,6 @@ export default class AppStore {
         blockly_store.setContainerSize();
         blockly_store.setLoading(false);
 
-        this.registerReloadOnLanguageChange();
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
@@ -158,7 +184,7 @@ export default class AppStore {
         );
 
         reaction(
-            () => traders_hub?.content_flag,
+            () => client?.content_flag,
             () => this.showDigitalOptionsMaltainvestError()
         );
     };
@@ -197,20 +223,6 @@ export default class AppStore {
 
         if (this.timer) clearInterval(this.timer);
         performance.clearMeasures();
-    };
-
-    registerReloadOnLanguageChange = () => {
-        this.disposeReloadOnLanguageChangeReaction = reaction(
-            () => this.core.common.current_language,
-            () => {
-                // temporarily added this to refresh just dbot in case of changing language,
-                // otherwise it should change language without refresh.
-                const { pathname } = window.location;
-                const is_bot =
-                    /^\/bot/.test(pathname) || (/^\/(br_)/.test(pathname) && pathname.split('/')[2] === 'bot');
-                if (is_bot) window.location.reload();
-            }
-        );
     };
 
     registerCurrencyReaction = () => {
@@ -285,10 +297,9 @@ export default class AppStore {
     };
 
     setDBotEngineStores = () => {
-        // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store and pass it through.
         const { flyout, toolbar, save_modal, dashboard, load_modal, run_panel, blockly_store, summary_card } =
             this.root_store;
-        const { client } = this.core;
+        const { client, common } = this.core;
         const { handleFileChange } = load_modal;
         const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
@@ -308,6 +319,7 @@ export default class AppStore {
             setContractUpdateConfig,
             handleFileChange,
             is_mobile,
+            common,
         };
 
         this.api_helpers_store = {
