@@ -44,8 +44,15 @@ const OnboardingTourMobile = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tour_step]);
 
-    const token = getSetting('onboard_tour_token');
-    if (!token && active_tab === 0) setActiveTour('onboarding');
+    React.useEffect(() => {
+        const checkTokenForTour = () => {
+            const token = getSetting('onboard_tour_token');
+            if (!token && active_tab === 0) {
+                setActiveTour('onboarding');
+            }
+        };
+        checkTokenForTour();
+    }, [active_tab, active_tour]);
 
     if (!active_tour) {
         return null;

@@ -10,7 +10,6 @@ import { LegacyReportsIcon } from '@deriv/quill-icons/Legacy';
 type TRecentWorkspaceProps = {
     workspace: { [key: string]: any };
 };
-
 type TIcons = {
     [key: string]: React.ReactElement;
 };

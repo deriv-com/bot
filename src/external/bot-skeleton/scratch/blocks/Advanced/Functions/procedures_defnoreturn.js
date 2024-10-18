@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { modifyContextMenu, removeExtraInput } from '../../../utils';
+import { appendCollapsedProcedureBlocksFields, modifyContextMenu } from '../../../utils';
 import { plusIconLight } from '../../images';
 
 window.Blockly.Blocks.procedures_defnoreturn = {
@@ -94,7 +94,7 @@ window.Blockly.Blocks.procedures_defnoreturn = {
                     block.setFieldValue(event.newValue, 'NAME');
                 });
             }
-            removeExtraInput(this);
+            appendCollapsedProcedureBlocksFields(this);
         }
     },
     /**

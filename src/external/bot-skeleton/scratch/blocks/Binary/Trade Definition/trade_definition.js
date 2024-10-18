@@ -2,7 +2,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { initErrorHandlingListener, removeErrorHandlingEventListener } from '../../../../utils';
 import DBotStore from '../../../dbot-store';
-import { modifyContextMenu, removeExtraInput, runIrreversibleEvents } from '../../../utils';
+import { appendCollapsedMainBlocksFields, modifyContextMenu, runIrreversibleEvents } from '../../../utils';
 import { defineContract } from '../../images';
 
 window.Blockly.Blocks.trade_definition = {
@@ -146,7 +146,9 @@ window.Blockly.Blocks.trade_definition = {
                 });
             }
         }
-        removeExtraInput(this);
+        if (this.isCollapsed()) {
+            appendCollapsedMainBlocksFields(this);
+        }
     },
 };
 

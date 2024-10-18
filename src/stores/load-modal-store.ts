@@ -10,10 +10,10 @@ import {
 } from '@/external/bot-skeleton';
 import { inject_workspace_options, updateXmlValues } from '@/external/bot-skeleton/scratch/utils';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { waitForDomElement } from '@/utils/dom-observer';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TStrategy } from 'Types';
+import { waitForDomElement } from '../utils/dom-observer';
 import RootStore from './root-store';
 
 export default class LoadModalStore {
@@ -21,7 +21,7 @@ export default class LoadModalStore {
     core: TStores;
     imported_strategy_type = 'pending';
 
-    constructor(root_store: RootStore, core: TStores) {
+    constructor(root_store: RootStore, core: any) {
         makeObservable(this, {
             active_index: observable,
             is_load_modal_open: observable,
@@ -442,9 +442,12 @@ export default class LoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            await load(load_options);
+            if (this.local_workspace) {
+                this.local_workspace.dispose();
+                this.local_workspace = null;
+            }
             this.loadStrategyOnModalLocalPreview(load_options);
-            this.is_open_button_loading = false;
+            this.setOpenButtonDisabled(false);
         });
 
         reader.readAsText(file);
@@ -510,9 +513,11 @@ export default class LoadModalStore {
     loadStrategyOnModalLocalPreview = async load_options => {
         this.setOpenButtonDisabled(true);
         const injectWorkspace = { ...inject_workspace_options, theme: window?.Blockly?.Themes?.zelos_renderer };
-        const ref = document?.getElementById('load-strategy__blockly-container');
 
-        this.local_workspace = window.Blockly.inject(ref, injectWorkspace);
+        await waitForDomElement('#load-strategy__blockly-container');
+        const ref_preview = document.getElementById('load-strategy__blockly-container');
+        if (!this.local_workspace) this.local_workspace = await window.Blockly.inject(ref_preview, injectWorkspace);
+
         load_options.workspace = this.local_workspace;
 
         if (load_options.workspace) {
