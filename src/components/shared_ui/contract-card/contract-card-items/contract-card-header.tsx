@@ -14,8 +14,7 @@ import {
 } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
 import { Icon } from '@/utils/tmp/dummy';
-import { useDevice } from '@deriv-com/ui';
-import Button from '../../button';
+import { Button, useDevice } from '@deriv-com/ui';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ProgressSlider from '../../progress-slider';
@@ -163,10 +162,11 @@ const ContractCardHeader = ({
                                         'dc-btn--loading': is_sell_requested,
                                     })}
                                     disabled={!is_valid_to_sell || is_sell_requested}
-                                    label={getCardLabels().SELL}
                                     onClick={() => onClickSell(id)}
                                     variant='outlined'
-                                />
+                                >
+                                    {getCardLabels().SELL}
+                                </Button>
                             </div>
                         </CSSTransition>
                     ) : null}

@@ -178,9 +178,9 @@ const initPreBuildDVRs = () => ({
     },
 });
 
-export const initFormErrorMessages = (all_form_error_messages: TFormErrorMessagesTypes) => {
+export const initFormErrorMessages = (all_form_error_messages: Partial<TFormErrorMessagesTypes>) => {
     if (!pre_build_dvrs) {
-        form_error_messages = all_form_error_messages;
+        form_error_messages = all_form_error_messages as TFormErrorMessagesTypes;
         pre_build_dvrs = initPreBuildDVRs();
     }
 };
