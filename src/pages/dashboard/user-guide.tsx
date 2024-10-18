@@ -21,7 +21,12 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
                 }}
                 data-testid='btn-user-guide'
             >
-                <StandaloneMapBoldIcon className='user-guide__icon' height='26px' width='26px' />
+                <StandaloneMapBoldIcon
+                    className='user-guide__icon'
+                    height='26px'
+                    width='26px'
+                    fill='var(--text-general)'
+                />
                 {!is_mobile && (
                     <Text size='xs' className='user-guide__label'>
                         <Localize i18n_default_text='User Guide' />

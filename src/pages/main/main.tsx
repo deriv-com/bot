@@ -162,7 +162,11 @@ const AppWrapper = observer(() => {
                         <div
                             label={
                                 <>
-                                    <LabelPairedObjectsColumnCaptionRegularIcon height='24px' width='24px' />
+                                    <LabelPairedObjectsColumnCaptionRegularIcon
+                                        height='24px'
+                                        width='24px'
+                                        fill='var(--text-general)'
+                                    />
                                     <Localize i18n_default_text='Dashboard' />
                                 </>
                             }
@@ -173,7 +177,11 @@ const AppWrapper = observer(() => {
                         <div
                             label={
                                 <>
-                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon height='24px' width='24px' />
+                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                        height='24px'
+                                        width='24px'
+                                        fill='var(--text-general)'
+                                    />
                                     <Localize i18n_default_text='Bot Builder' />
                                 </>
                             }
@@ -182,7 +190,11 @@ const AppWrapper = observer(() => {
                         <div
                             label={
                                 <>
-                                    <LabelPairedChartLineCaptionRegularIcon height='24px' width='24px' />
+                                    <LabelPairedChartLineCaptionRegularIcon
+                                        height='24px'
+                                        width='24px'
+                                        fill='var(--text-general)'
+                                    />
                                     <Localize i18n_default_text='Charts' />
                                 </>
                             }
@@ -197,7 +209,12 @@ const AppWrapper = observer(() => {
                         <div
                             label={
                                 <>
-                                    <LegacyGuide1pxIcon height='16px' width='16px' />
+                                    <LegacyGuide1pxIcon
+                                        height='16px'
+                                        width='16px'
+                                        fill='var(--text-general)'
+                                        className='icon-general-fill-g-path'
+                                    />
                                     <Localize i18n_default_text='Tutorials' />
                                 </>
                             }

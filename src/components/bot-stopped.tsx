@@ -36,7 +36,7 @@ const BotStopped = observer(() => {
                     }}
                     tabIndex={0}
                 >
-                    <LegacyClose1pxIcon height='20px' width='20px' />
+                    <LegacyClose1pxIcon height='20px' width='20px' fill='var(--text-general)' />
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>

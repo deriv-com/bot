@@ -19,13 +19,13 @@
 
         &__chevron {
             position: absolute;
-            right: 0;
-            top: 0.3rem;
+            right: 1rem;
+            top: 0;
             transition: transform 0.3s ease;
 
             &--active {
                 transform: rotate(180deg);
-                top: -0.2rem;
+                top: -0.5rem;
             }
         }
     }
@@ -116,9 +116,11 @@
         height: 16px;
         margin-right: $category-text-spacing;
         transition: transform 0.3s ease;
+        position: relative;
 
         &--active {
             transform: rotate(180deg);
+            top: 0.5rem;
         }
     }
 

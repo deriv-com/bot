@@ -7,7 +7,7 @@ type TToggleButton = {
 
 const ToggleButton = ({ onClick }: TToggleButton) => (
     <button className='h-full px-4 border-r border-[#f2f3f4]' onClick={onClick}>
-        <LegacyMenuHamburger1pxIcon iconSize='xs' />
+        <LegacyMenuHamburger1pxIcon iconSize='xs' fill='var(--text-general)' />
     </button>
 );
 

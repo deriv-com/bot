@@ -51,28 +51,30 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
                     ))}
             </UIAccountSwitcher.AccountsPanel>
 
-            <Divider color='#f2f3f4' height='4px' />
+            <Divider color='var(--du-general-active)' height='2px' />
 
             <div className='account-switcher-footer'>
-                <Divider color='#f2f3f4' height='4px' />
                 {/* TODO: need to handle total assets */}
                 {/* <UIAccountSwitcher.TotalAsset
                     title={localize('Total assets')}
                     description={localize('Total assets in your Deriv accounts.')}
                     value={`${activeAccount.balance} ${activeAccount.currency}`}
                 /> */}
-                <Divider color='#f2f3f4' height='4px' />
                 <UIAccountSwitcher.TradersHubLink href='https://app.deriv.com'>
                     {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
                 </UIAccountSwitcher.TradersHubLink>
-                <Divider color='#f2f3f4' height='4px' />
+                <Divider color='var(--du-general-active)' height='2px' />
 
                 <UIAccountSwitcher.Footer>
                     <div id='dt_logout_button' className='deriv-account-switcher__logout' onClick={client.logout}>
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
                             {localize('Log out')}
                         </Text>
-                        <LegacyLogout1pxIcon iconSize='xs' />
+                        <LegacyLogout1pxIcon
+                            iconSize='xs'
+                            fill='var(--text-general)'
+                            className='icon-general-fill-path'
+                        />
                     </div>
                 </UIAccountSwitcher.Footer>
             </div>

@@ -33,7 +33,7 @@ const HelpBase = observer(() => {
         <React.Fragment>
             <div className='flyout__help-header' data-testid='dt_flyout_help_base'>
                 <button className='dc-btn flyout__button-back' onClick={onBackClick}>
-                    <LabelPairedArrowLeftCaptionRegularIcon height='16px' width='16px' />
+                    <LabelPairedArrowLeftCaptionRegularIcon height='16px' width='16px' fill='var(--text-general)' />
                 </button>
                 <Text weight='bold' className='flyout__help-title'>
                     {title}

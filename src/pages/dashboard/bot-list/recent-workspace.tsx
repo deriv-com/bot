@@ -21,17 +21,26 @@ import './index.scss';
 export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
-        icon: <LabelPairedPageCircleArrowRightSmRegularIcon />,
+        icon: <LabelPairedPageCircleArrowRightSmRegularIcon fill='var(--text-general)' height='16px' width='16px' />,
         label: <Localize i18n_default_text='Open' />,
     },
     {
         type: STRATEGY.SAVE,
-        icon: <LegacySave1pxIcon iconSize='xs' />,
+        icon: (
+            <LegacySave1pxIcon
+                fill='var(--text-general)'
+                className='icon-general-fill-path'
+                height='16px'
+                width='16px'
+                path=''
+                opacity={0.6}
+            />
+        ),
         label: <Localize i18n_default_text='Save' />,
     },
     {
         type: STRATEGY.DELETE,
-        icon: <LabelPairedTrashSmRegularIcon />,
+        icon: <LabelPairedTrashSmRegularIcon fill='var(--text-general)' height='16px' width='16px' />,
         label: <Localize i18n_default_text='Delete' />,
     },
 ];

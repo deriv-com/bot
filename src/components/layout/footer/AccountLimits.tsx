@@ -8,7 +8,7 @@ const AccountLimits = () => {
 
     return (
         <Tooltip as='a' className='app-footer__icon' href={ACCOUNT_LIMITS} tooltipContent={localize('Account limits')}>
-            <LegacyAccountLimitsIcon iconSize='xs' />
+            <LegacyAccountLimitsIcon iconSize='xs' fill='var(--text-general)' />
         </Tooltip>
     );
 };
