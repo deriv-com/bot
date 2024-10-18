@@ -12,13 +12,13 @@
     background-color: var(--bg-section-message-warning);
 
     .icon {
-        .dc-icon {
-            --fill-color1: rgb(225 141 0);
-        }
-
         height: 16px;
         width: 16px;
         margin-right: 8px;
+
+        .dc-icon {
+            --fill-color1: rgb(225 141 0);
+        }
     }
 
     .text {
