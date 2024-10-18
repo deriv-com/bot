@@ -91,6 +91,10 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
     };
     const { account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
+    const tabs_labels = {
+        demo: localize('Demo'),
+        real: localize('Real'),
+    };
 
     return (
         activeAccount && (
@@ -101,7 +105,11 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
                 message={account_switcher_disabled_message}
                 zIndex='5'
             >
-                <UIAccountSwitcher activeAccount={activeAccount} isDisabled={is_stop_button_visible}>
+                <UIAccountSwitcher
+                    activeAccount={activeAccount}
+                    isDisabled={is_stop_button_visible}
+                    tabsLabels={tabs_labels}
+                >
                     <UIAccountSwitcher.Tab title={localize('Real')}>
                         <RenderAccountItems activeAccount={activeAccount} />
                     </UIAccountSwitcher.Tab>
