@@ -73,7 +73,7 @@ const Toolbox = observer(() => {
                                     'db-toolbox__title__chevron--active': is_open,
                                 })}
                             >
-                                <LabelPairedChevronDownMdFillIcon />
+                                <LabelPairedChevronDownMdFillIcon fill='var(--text-general)' />
                             </span>
                         </div>
                     </div>
@@ -122,7 +122,7 @@ const Toolbox = observer(() => {
                                                                         is_sub_category_open,
                                                                 })}
                                                             >
-                                                                <LabelPairedChevronDownMdFillIcon />
+                                                                <LabelPairedChevronDownMdFillIcon fill='var(--text-general)' />
                                                             </div>
                                                         )}
                                                     </div>

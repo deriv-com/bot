@@ -214,6 +214,8 @@ const ModalElement = ({
                                 width='20px'
                                 color={close_icon_color}
                                 data-testid='dt_modal_close_icon'
+                                fill='var(--text-general)'
+                                className='icon-general-fill-path'
                             />
                         </div>
                     )}

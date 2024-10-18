@@ -30,7 +30,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 onClick={() => window.Blockly.derivWorkspace.addBlockNode(block_node)}
                 type='button'
             >
-                <LabelPairedPlusLgFillIcon height='24px' width='24px' />
+                <LabelPairedPlusLgFillIcon height='24px' width='24px' fill='var(--text-general)' />
             </Button>
         </div>
     );

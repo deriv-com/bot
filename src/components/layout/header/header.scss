@@ -41,6 +41,16 @@
 }
 
 .deriv-account-switcher {
+    &__button {
+        .deriv-context-menu {
+            box-shadow: 0 0 2px 0 var(--du-shadow-box, #00000014);
+        }
+
+        .deriv-account-switcher__balance + svg > path {
+            fill: var(--text-general);
+        }
+    }
+
     &__balance {
         padding: 0 1rem 0.1rem 0;
     }
@@ -50,8 +60,14 @@
             padding: 2rem 0.8rem 1rem;
         }
 
-        .deriv-accordion__text {
-            margin-top: 1rem;
+        .deriv-accordion {
+            &__content {
+                background: unset;
+            }
+
+            &__text {
+                margin-top: 1rem;
+            }
         }
     }
 
@@ -75,7 +91,7 @@
         display: flex;
         grid-column: 2 / 3;
         justify-content: flex-end;
-        justify-self: start;
+        justify-self: end;
         padding: 1.6em 1.3em;
 
         &-text {

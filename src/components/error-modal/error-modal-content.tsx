@@ -10,7 +10,7 @@ type TErrorModalContent = {
 const ErrorModalContent = ({ error_message }: TErrorModalContent) => {
     return (
         <div className='unhandled-error'>
-            <DerivLightUserErrorIcon height='120px' width='120px' />
+            <DerivLightUserErrorIcon height='120px' width='120px' fill='var(--text-general)' />
             <Text className='da-icon-with-message__text' as='p' lineHeight='xxl' align='center' weight='bold'>
                 <Localize i18n_default_text='Sorry for the interruption' />
             </Text>

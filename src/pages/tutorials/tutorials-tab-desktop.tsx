@@ -41,6 +41,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     width='20px'
                     className='search-icon'
                     data-testid='id-test-search'
+                    fill='var(--text-general)'
                 />
                 <SearchInput
                     faq_value={faq_search_value}
@@ -54,6 +55,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                         className='close-icon'
                         data-testid='id-test-close'
                         onClick={onCloseHandleSearch}
+                        fill='var(--text-general)'
                     />
                 )}
             </div>

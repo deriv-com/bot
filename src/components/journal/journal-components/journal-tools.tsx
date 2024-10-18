@@ -24,7 +24,7 @@ const JournalTools = ({
                     <Text size='xs' className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
                     </Text>
-                    <LabelPairedBarsFilterCaptionFillIcon height='16px' width='16px' />
+                    <LabelPairedBarsFilterCaptionFillIcon height='16px' width='16px' fill='var(--text-general)' />
                 </div>
             </div>
             <CSSTransition

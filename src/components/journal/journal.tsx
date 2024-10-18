@@ -61,8 +61,9 @@ const Journal = observer(() => {
                                 <DerivLightEmptyCardboardBoxIcon
                                     height='64px'
                                     width='64px'
-                                    className='journal-empty__icon'
+                                    className='journal-empty__icon icon-general-fill-g-path'
                                     color='secondary'
+                                    fill='var(--text-general)'
                                 />
                                 <Text
                                     as='h4'

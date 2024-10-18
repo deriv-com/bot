@@ -221,7 +221,12 @@ const Draggable: React.FC<TDraggableProps> = ({
                         data-testid='dt_react_draggable-close-modal'
                         onClick={onClose}
                     >
-                        <LegacyClose1pxIcon height='20px' width='20px' />
+                        <LegacyClose1pxIcon
+                            height='20px'
+                            width='20px'
+                            fill='var(--text-general)'
+                            className='icon-general-fill-path'
+                        />
                     </div>
                 </div>
                 <span className='draggable-content__body' id='draggable-content-body'>

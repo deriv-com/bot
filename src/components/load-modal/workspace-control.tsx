@@ -18,6 +18,7 @@ const WorkspaceControl = observer(({ mockZoomInOut }: TWorkspaceControlProps) =>
                     mockZoomInOut ? mockZoomInOut(true) : onZoomInOutClick(true);
                 }}
                 data-testid='zoom-in'
+                fill='var(--text-general)'
             />
             <LabelPairedMinusCaptionRegularIcon
                 className='load-strategy__preview-workspace-icon'
@@ -25,6 +26,7 @@ const WorkspaceControl = observer(({ mockZoomInOut }: TWorkspaceControlProps) =>
                     mockZoomInOut ? mockZoomInOut(false) : onZoomInOutClick(false);
                 }}
                 data-testid='zoom-out'
+                fill='var(--text-general)'
             />
         </div>
     );

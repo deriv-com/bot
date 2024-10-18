@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import moment from 'moment';
-import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
 import { DATE_TIME_FORMAT_WITH_GMT, DATE_TIME_FORMAT_WITH_OFFSET } from '@/utils/time';
-import { Tooltip } from '@deriv-com/ui';
+import { Text, Tooltip } from '@deriv-com/ui';
 import { useDevice } from '@deriv-com/ui';
 
 const ServerTime = observer(() => {

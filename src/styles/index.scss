@@ -5,3 +5,17 @@ body {
     font-family: 'IBM Plex Sans', sans-serif;
     background: var(--general-main-1);
 }
+
+.icon-general-fill-path {
+    path {
+        fill: var(--text-general);
+    }
+}
+
+.icon-general-fill-g-path {
+    g {
+        path {
+            fill: var(--text-general);
+        }
+    }
+}
