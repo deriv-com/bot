@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Button from '@/components/shared_ui/button';
 import { useStore } from '@/hooks/useStore';
 import { DerivLightLocalDeviceIcon, DerivLightMyComputerIcon } from '@deriv/quill-icons/Illustration';
-import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
+import { LegacyClose1pxIcon, LegacyInfo1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { botNotification } from '../bot-notification/bot-notification';
@@ -84,7 +84,7 @@ const LocalComponent = observer(() => {
                     message={localize(
                         'Importing XML files from Binary Bot and other third-party platforms may take longer.'
                     )}
-                    // icon='IcInfoOutline'
+                    icon={<LegacyInfo1pxIcon fill='#e18d00' iconSize='xs' />}
                     className='load-strategy__section_message'
                 />
 
