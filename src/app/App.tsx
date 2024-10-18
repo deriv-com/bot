@@ -48,10 +48,10 @@ const router = createBrowserRouter(
 );
 
 function App() {
-    React.useEffect(() => {
-        window?.dataLayer?.push({ event: 'page_load' });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // React.useEffect(() => {
+    //     window?.dataLayer?.push({ event: 'page_load' });
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     return (
         <Fragment>
