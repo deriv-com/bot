@@ -68,6 +68,7 @@
     background-color: var(--general-main-2);
 
     @include mobile-or-tablet-screen {
+        border-radius: 0;
         height: 100svh;
     }
 

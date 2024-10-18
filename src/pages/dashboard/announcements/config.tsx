@@ -1,7 +1,7 @@
 import React from 'react';
 import OpenLiveChatLink from '@/components/shared_ui/open-livechat-link';
+import { DBOT_TABS } from '@/constants/bot-contents';
 import { Localize, localize } from '@deriv-com/translations';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import { handleOnConfirmAccumulator } from './utils/accumulator-helper-functions';
 import { IconAnnounce } from './announcement-components';
 

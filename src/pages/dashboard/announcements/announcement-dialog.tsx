@@ -36,7 +36,7 @@ const AnnouncementDialog = ({
     } = announcement;
     return (
         <Dialog
-            portal_element_id='modal_root_absolute'
+            portal_element_id='modal_root'
             title={main_title}
             is_visible={is_announce_dialog_open}
             confirm_button_text={confirm_button_text}

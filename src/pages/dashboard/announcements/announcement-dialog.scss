@@ -69,6 +69,10 @@
                 }
             }
         }
+
+        &__button:last-child {
+            margin-left: 0.8rem;
+        }
     }
 
     &--tablet {
