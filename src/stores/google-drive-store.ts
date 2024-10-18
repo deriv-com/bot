@@ -1,11 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
-import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
+import { botNotification } from '@/components/bot-notification/bot-notification';
+import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
 import { getInitialLanguage, localize } from '@deriv-com/translations';
 import RootStore from './root-store';
 
-export type TErrorWithStatus = Error & { status?: number };
+export type TErrorWithStatus = Error & { status?: number; result?: { error: { message: string } } };
 
 export type TFileOptions = {
     content: string;
@@ -15,35 +16,10 @@ export type TFileOptions = {
 
 export type TPickerCallbackResponse = {
     action: string;
-    docs: { id: string; name: string }[];
+    docs: { id: string; name: string; driveError?: string }[];
 };
 
-export interface IGoogleDriveStore {
-    is_authorised: boolean;
-    updateSigninStatus: (is_signed_in: boolean) => void;
-    saveFile: (options: { content: string; mimeType: string; name: string }) => Promise<void>;
-    loadFile: () => Promise<unknown>;
-    setKey: () => void;
-    initialise: () => void;
-    signIn: () => void;
-    signOut: () => void;
-    getPickerLanguage: () => string;
-    checkFolderExists: () => Promise<void>;
-    createSaveFilePicker: (
-        mime_type: string,
-        title: string,
-        options: { content: string; mimeType: string; name: string }
-    ) => Promise<void>;
-    createLoadFilePicker: (mime_type: string, title: string) => Promise<unknown>;
-    showGoogleDriveFilePicker: (
-        is_save: boolean,
-        mime_type: string,
-        title: string,
-        callback: (data: TPickerCallbackResponse) => void
-    ) => void;
-}
-
-export default class GoogleDriveStore implements IGoogleDriveStore {
+export default class GoogleDriveStore {
     root_store: RootStore;
     bot_folder_name: string;
     client_id: string | undefined;
@@ -54,11 +30,14 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     client: any;
     access_token: string;
+    upload_id?: string;
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
             is_authorised: observable,
-            updateSigninStatus: action.bound,
+            upload_id: observable,
+            is_google_drive_token_valid: observable,
+            setIsAuthorized: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
             setKey: action.bound,
@@ -70,6 +49,9 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             createSaveFilePicker: action.bound,
             createLoadFilePicker: action.bound,
             showGoogleDriveFilePicker: action.bound,
+            setGoogleDriveTokenValid: action.bound,
+            verifyGoogleDriveAccessToken: action.bound,
+            onDriveConnect: action,
         });
 
         this.root_store = root_store;
@@ -81,7 +63,12 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         importExternal('https://apis.google.com/js/api.js').then(() => this.initialise());
     }
 
+    is_google_drive_token_valid = true;
     is_authorised = !!localStorage.getItem('google_access_token');
+
+    setGoogleDriveTokenValid = (is_google_drive_token_valid: boolean) => {
+        this.is_google_drive_token_valid = is_google_drive_token_valid;
+    };
 
     setKey = () => {
         const { SCOPE, DISCOVERY_DOCS } = config().GOOGLE_DRIVE;
@@ -96,23 +83,52 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
         gapi.load('client:picker', () => gapi.client.load(this.discovery_docs));
     };
 
+    setGoogleDriveTokenExpiry = (seconds: number) => {
+        const currentEpochTime = Math.floor(Date.now() / 1000);
+        const expiry_time = currentEpochTime + seconds;
+        localStorage.setItem('google_access_token_expiry', expiry_time.toString());
+    };
+
     initialiseClient = () => {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
             scope: this.scope,
-            callback: (response: { access_token: string; error?: TErrorWithStatus }) => {
+            callback: (response: { expires_in: number; access_token: string; error?: TErrorWithStatus }) => {
                 if (response?.access_token && !response?.error) {
                     this.access_token = response.access_token;
-                    this.updateSigninStatus(true);
+                    this.setIsAuthorized(true);
                     localStorage.setItem('google_access_token', response.access_token);
+                    this.setGoogleDriveTokenExpiry(response?.expires_in);
                 }
             },
         });
     };
 
-    updateSigninStatus(is_signed_in: boolean) {
-        this.is_authorised = is_signed_in;
+    setIsAuthorized(is_authorized: boolean) {
+        this.is_authorised = is_authorized;
     }
+
+    verifyGoogleDriveAccessToken = async () => {
+        const expiry_time = localStorage?.getItem('google_access_token_expiry');
+        if (expiry_time) {
+            const current_epoch_time = Math.floor(Date.now() / 1000);
+            if (current_epoch_time > Number(expiry_time)) {
+                try {
+                    //request new access token if invalid
+                    await this.client.requestAccessToken({ prompt: '' });
+                } catch (error) {
+                    this.signOut();
+                    this.setGoogleDriveTokenValid(false);
+                    localStorage.removeItem('google_access_token_expiry');
+                    botNotification(notification_message().google_drive_error, undefined, {
+                        closeButton: false,
+                    });
+                    return 'not_verified';
+                }
+            }
+        }
+        return 'verified';
+    };
 
     async signIn() {
         if (!this.is_authorised) {
@@ -122,12 +138,12 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
     async signOut() {
         if (this.access_token) {
-            await gapi.client.setToken({ access_token: '' });
-            await google.accounts.oauth2.revoke(this.access_token);
-            localStorage.removeItem('google_access_token');
+            await window?.gapi?.client?.setToken({ access_token: '' });
+            await window?.google?.accounts?.oauth2?.revoke(this.access_token);
+            localStorage?.removeItem('google_access_token');
             this.access_token = '';
         }
-        this.updateSigninStatus(false);
+        this.setIsAuthorized(false);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -156,6 +172,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
     }
 
     async loadFile() {
+        if (!this.is_google_drive_token_valid) return;
         await this.signIn();
 
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
@@ -246,6 +263,14 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
             this.showGoogleDriveFilePicker(true, mime_type, title, savePickerCallback);
         });
     }
+
+    onDriveConnect = async () => {
+        if (this.is_authorised) {
+            this.signOut();
+        } else {
+            this.signIn();
+        }
+    };
 
     createLoadFilePicker(mime_type: string, title: string) {
         return new Promise(resolve => {
