@@ -1,6 +1,5 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { v4 as uuidv4 } from 'uuid';
 import { tabs_title } from '@/constants/load-modal';
 import {
     getSavedWorkspaces,
@@ -11,6 +10,7 @@ import {
 } from '@/external/bot-skeleton';
 import { inject_workspace_options, updateXmlValues } from '@/external/bot-skeleton/scratch/utils';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TStrategy } from 'Types';
 import { waitForDomElement } from '../utils/dom-observer';
@@ -18,7 +18,7 @@ import RootStore from './root-store';
 
 export default class LoadModalStore {
     root_store: RootStore;
-    core: any;
+    core: TStores;
     imported_strategy_type = 'pending';
 
     constructor(root_store: RootStore, core: any) {
@@ -163,10 +163,6 @@ export default class LoadModalStore {
         const { verifyGoogleDriveAccessToken } = google_drive;
         const result = await verifyGoogleDriveAccessToken();
         if (result === 'not_verified') return;
-
-        if (google_drive) {
-            google_drive.upload_id = uuidv4();
-        }
 
         const { loadFile } = this.root_store.google_drive;
         const load_file = await loadFile();
@@ -408,7 +404,6 @@ export default class LoadModalStore {
         is_body = true
     ): boolean => {
         this.imported_strategy_type = 'pending';
-        this.upload_id = uuidv4();
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -452,7 +447,7 @@ export default class LoadModalStore {
                 this.local_workspace = null;
             }
             this.loadStrategyOnModalLocalPreview(load_options);
-            this.is_open_button_loading = false;
+            this.setOpenButtonDisabled(false);
         });
 
         reader.readAsText(file);

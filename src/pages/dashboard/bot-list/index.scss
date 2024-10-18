@@ -1,8 +1,5 @@
-@use 'components/shared/styles/constants' as *;
 @use 'components/shared/styles/mixins' as *;
-@import './google-drive';
-@import './delete-dialog';
-@import './save-modal';
+@use 'components/shared/styles/constants' as *;
 
 .load-strategy {
     &__wrapper {
@@ -144,13 +141,13 @@
             }
 
             &-area {
+                @include flex-center;
+
                 flex-direction: column;
                 border: dashed 0.2rem var(--border-normal);
                 border-radius: $BORDER_RADIUS;
                 height: 100%;
                 padding: 1.6rem;
-
-                @include flex-center;
             }
         }
 
@@ -208,9 +205,9 @@
     }
 
     &__google-drive {
-        flex-direction: column;
-
         @include flex-center;
+
+        flex-direction: column;
 
         @include mobile-or-tablet-screen {
             border: dashed 0.2rem var(--border-normal);
@@ -377,7 +374,7 @@
         overflow: auto;
 
         @include mobile-screen {
-            height: calc(100vh - 46rem);
+            height: calc(100vh - 55rem);
         }
     }
 
@@ -438,10 +435,6 @@
         user-select: none;
         position: relative;
 
-        &:hover {
-            cursor: pointer;
-        }
-
         &__label {
             padding: 0.8rem 1.6rem;
             width: 35%;
@@ -488,16 +481,20 @@
         }
 
         &__actions {
+            @include flex-center(center);
+
             width: 20%;
             padding: 0.8rem 1.6rem;
-
-            @include flex-center(center);
 
             &__action-item {
                 margin-inline-end: 1.6rem;
 
                 &:last-child {
                     margin-inline: 0;
+                }
+
+                &:hover {
+                    cursor: pointer;
                 }
             }
 
@@ -536,7 +533,7 @@
                 height: 4rem;
                 padding: 0.8rem 1.1rem;
 
-                svg {
+                .dc-icon {
                     margin-inline-end: 0.8rem;
                 }
             }
@@ -551,10 +548,6 @@
                     inset-inline-end: 6rem;
                 }
             }
-        }
-
-        &--selected {
-            background-color: var(--general-section-1);
         }
     }
 }

@@ -1,8 +1,7 @@
 import DOMPurify from 'dompurify';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { action, makeObservable, observable, reaction } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
-import { clearInjectionDiv } from '@/constants/load-modal';
 import { TStores } from '@deriv/stores/types';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
@@ -87,7 +86,6 @@ export default class DashboardStore implements IDashboardStore {
             is_preview_on_popup: observable,
             is_tour_dialog_visible: observable,
             is_web_socket_intialised: observable,
-            is_dark_mode: computed,
             tutorials_combined_content: observable,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
@@ -328,9 +326,7 @@ export default class DashboardStore implements IDashboardStore {
         if (!el_ref) {
             // eslint-disable-next-line no-console
             console.warn('Could not find preview workspace element.');
-            return;
         }
-        clearInjectionDiv(el_ref);
     };
 
     onCloseDialog = (): void => {
@@ -339,6 +335,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        localStorage.setItem('active_tab', active_tab.toString());
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

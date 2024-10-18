@@ -1,18 +1,19 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { tabs_title } from '@/constants/load-modal';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import MobileFullPageModal from '../shared_ui/mobile-full-page-modal';
 import Modal from '../shared_ui/modal';
 import Tabs from '../shared_ui/tabs';
+import GoogleDrive from './google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';
 import RecentFooter from './recent-footer';
 
-const LoadModal = observer(() => {
+const LoadModal: React.FC = observer(() => {
     const { load_modal, dashboard } = useStore();
     const {
         active_index,
@@ -28,6 +29,10 @@ const LoadModal = observer(() => {
     const { isDesktop } = useDevice();
     const header_text = localize('Load strategy');
 
+    const handleTabItemClick = (active_index: number) => {
+        setActiveTabIndex(active_index);
+    };
+
     if (!isDesktop) {
         return (
             <MobileFullPageModal
@@ -41,7 +46,7 @@ const LoadModal = observer(() => {
                 height_offset='80px'
                 page_overlay
             >
-                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
+                <Tabs active_index={active_index} onTabItemClick={handleTabItemClick} top>
                     <div label={localize('Local')}>
                         <Local />
                     </div>
@@ -63,12 +68,14 @@ const LoadModal = observer(() => {
             width='1000px'
             height='80vh'
             is_open={is_load_modal_open}
-            toggleModal={toggleLoadModal}
+            toggleModal={() => {
+                toggleLoadModal();
+            }}
             onEntered={onEntered}
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
             <Modal.Body>
-                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top header_fit_content>
+                <Tabs active_index={active_index} onTabItemClick={handleTabItemClick} top header_fit_content>
                     <div label={localize('Recent')}>
                         <Recent />
                     </div>
