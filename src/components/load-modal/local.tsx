@@ -34,7 +34,9 @@ const LocalComponent = observer(() => {
                         <div id='load-strategy__blockly-container' style={{ height: '100%' }}>
                             <div className='load-strategy__local-preview-close'>
                                 <LegacyClose1pxIcon
-                                    onClick={() => setLoadedLocalFile(null)}
+                                    onClick={() => {
+                                        setLoadedLocalFile(null);
+                                    }}
                                     data-testid='dt_load-strategy__local-preview-close'
                                     height='20px'
                                     width='20px'

@@ -3,7 +3,6 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from '@/constants/load-modal';
-import { setColors } from '@/external/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
@@ -168,37 +167,6 @@ export default class DashboardStore implements IDashboardStore {
             ...getQuickStrategyContent,
         ];
 
-        const {
-            load_modal: { previewRecentStrategy, current_workspace_id },
-        } = this.root_store;
-
-        const refreshBotBuilderTheme = () => {
-            window.Blockly.derivWorkspace.asyncClear();
-            window.Blockly.Xml.domToWorkspace(
-                window.Blockly.utils.xml.textToDom(window.Blockly.derivWorkspace.strategy_to_load),
-                window.Blockly.derivWorkspace
-            );
-        };
-
-        const setCurrentXML = () => {
-            const xml = Blockly?.Xml.workspaceToDom(Blockly?.derivWorkspace);
-            const current_xml = Blockly?.Xml.domToText(xml);
-            if (Blockly) window.Blockly.derivWorkspace.strategy_to_load = current_xml;
-        };
-
-        reaction(
-            () => this.is_dark_mode,
-            () => {
-                if (Blockly) setCurrentXML();
-                setColors(this.is_dark_mode);
-                if (this.active_tab === 1) {
-                    refreshBotBuilderTheme();
-                } else {
-                    refreshBotBuilderTheme();
-                    previewRecentStrategy(current_workspace_id);
-                }
-            }
-        );
         reaction(
             () => this.is_preview_on_popup,
             async is_preview_on_popup => {

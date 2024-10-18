@@ -1,7 +1,7 @@
 import crc32 from 'crc-32/crc32';
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { cloneObject } from '@/components/shared';
-import { DBot } from '@/external/bot-skeleton';
+import { convertStrategyToIsDbot, DBot } from '@/external/bot-skeleton';
 import { isProduction } from '@/utils/tmp/dummy';
 import { TStores } from '@deriv/stores/types';
 import RootStore from './root-store';
@@ -57,7 +57,10 @@ export default class DataCollectionStore {
     transaction_ids: Record<string, unknown> = {};
 
     async trackRun() {
-        const xml_dom = this.cleanXmlDom(window.Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
+        const converted_workspace_to_dom = this.cleanXmlDom(
+            window.Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true)
+        );
+        const xml_dom = convertStrategyToIsDbot(converted_workspace_to_dom);
         const xml_string = window.Blockly.Xml.domToText(xml_dom);
         const xml_hash = this.getHash(xml_string);
 

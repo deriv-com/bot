@@ -3,25 +3,33 @@ import { observer } from 'mobx-react-lite';
 import { NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
 import Button from '../shared_ui/button';
 
 const LocalFooter = observer(() => {
-    const { load_modal, dashboard } = useStore();
-    const { is_open_button_loading, loadFileFromLocal, setLoadedLocalFile, toggleLoadModal } = load_modal;
+    const { ui, load_modal, dashboard } = useStore();
+    const {
+        is_open_button_loading,
+        is_open_button_disabled,
+        loadStrategyOnBotBuilder,
+        setLoadedLocalFile,
+        saveStrategyToLocalStorage,
+        toggleLoadModal,
+    } = load_modal;
     const { setOpenSettings, setPreviewOnPopup } = dashboard;
-    const { isDesktop } = useDevice();
-    const Wrapper = !isDesktop ? Button.Group : React.Fragment;
+    const { is_desktop } = ui;
+    const Wrapper = is_desktop ? React.Fragment : Button.Group;
 
     return (
         <Wrapper>
-            {!isDesktop && (
+            {!is_desktop && (
                 <Button text={localize('Cancel')} onClick={() => setLoadedLocalFile(null)} has_effect secondary large />
             )}
             <Button
                 text={localize('Open')}
                 onClick={() => {
-                    loadFileFromLocal();
+                    loadStrategyOnBotBuilder();
+                    saveStrategyToLocalStorage();
+                    setLoadedLocalFile(null);
                     toggleLoadModal();
                     setPreviewOnPopup(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
@@ -30,6 +38,7 @@ const LocalFooter = observer(() => {
                 has_effect
                 primary
                 large
+                disabled={is_open_button_disabled}
             />
         </Wrapper>
     );

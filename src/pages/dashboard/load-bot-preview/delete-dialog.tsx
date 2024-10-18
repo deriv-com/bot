@@ -17,10 +17,7 @@ const DeleteDialog = observer(() => {
         onToggleDeleteDialog,
         selected_strategy_id,
         setDashboardStrategies,
-        setSelectedStrategyId,
         loadStrategyToBuilder,
-        previewed_strategy_id,
-        setPreviewedStrategyId,
         refreshStrategiesTheme,
         resetBotBuilderStrategy,
     } = load_modal;
@@ -28,19 +25,8 @@ const DeleteDialog = observer(() => {
 
     const resetStrategiesAfterDelete = async (deleted_strategy_id: string, updated_workspaces: Array<TStrategy>) => {
         if (updated_workspaces.length) {
-            const current_previewed_strategy = updated_workspaces?.filter(
-                (strategy: TStrategy) => strategy.id === previewed_strategy_id
-            );
             if (selected_strategy_id === deleted_strategy_id) {
-                setSelectedStrategyId(updated_workspaces?.[0]?.id);
-                // Change bot builder strategy to the first strategy in the list
                 await loadStrategyToBuilder(updated_workspaces?.[0]);
-            }
-            if (current_previewed_strategy.length) {
-                setPreviewedStrategyId(previewed_strategy_id);
-                setSelectedStrategyId(previewed_strategy_id);
-            } else {
-                setPreviewedStrategyId(updated_workspaces?.[0]?.id);
             }
             // Change preview strategy to the one that was previously previewed
             await refreshStrategiesTheme();
@@ -60,7 +46,6 @@ const DeleteDialog = observer(() => {
         await resetStrategiesAfterDelete(strategy_id, updated_workspaces);
         onToggleDeleteDialog(false);
     };
-
     return (
         <div>
             <Dialog

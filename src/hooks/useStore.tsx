@@ -42,7 +42,7 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
 const useStore = () => {
     const store = useContext(StoreContext);
 
-    return store;
+    return store as RootStore;
 };
 
 export { StoreProvider, useStore };
