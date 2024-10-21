@@ -25,7 +25,7 @@ const Summary = observer(({ is_drawer_open }: TSummary) => {
         >
             <ThemedScrollbars
                 className={classnames({
-                    summary: !is_contract_loading && !contract_info,
+                    summary: (!is_contract_loading && !contract_info) || is_bot_running,
                     'summary--loading':
                         (!isDesktop && is_contract_loading) || (!isDesktop && !is_contract_loading && contract_info),
                 })}

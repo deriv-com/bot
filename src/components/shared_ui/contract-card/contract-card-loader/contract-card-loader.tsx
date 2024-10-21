@@ -1,23 +1,43 @@
 import ContentLoader from 'react-content-loader';
+import { contract_stages } from '@/constants/contract-stage';
+import ContractCardRunningBot from './contract-card-running-bot';
 
-const ContractCardLoader = ({ speed }: { speed: number }) => (
-    <ContentLoader height={173} width={218} speed={speed}>
-        <rect x='43' y='19' rx='0' ry='0' width='56' height='8' />
-        <rect x='147' y='19' rx='0' ry='0' width='56' height='8' />
-        <rect x='12' y='50' rx='0' ry='0' width='44' height='8' />
-        <rect x='13' y='68' rx='0' ry='0' width='192' height='8' />
-        <rect x='5' y='89' rx='0' ry='0' width='208' height='1' />
-        <rect x='12' y='104' rx='0' ry='0' width='44' height='8' />
-        <rect x='12' y='9' rx='0' ry='0' width='24' height='24' />
-        <rect x='116' y='11' rx='0' ry='0' width='24' height='24' />
-        <rect x='12' y='118' rx='0' ry='0' width='88' height='8' />
-        <rect x='116' y='104' rx='0' ry='0' width='44' height='8' />
-        <rect x='116' y='118' rx='0' ry='0' width='88' height='8' />
-        <rect x='12' y='139' rx='0' ry='0' width='44' height='8' />
-        <rect x='12' y='153' rx='0' ry='0' width='88' height='8' />
-        <rect x='116' y='139' rx='0' ry='0' width='44' height='8' />
-        <rect x='116' y='153' rx='0' ry='0' width='88' height='8' />
-    </ContentLoader>
+type TContractCardLoader = {
+    speed?: number;
+    contract_stage?: number;
+};
+
+const ContractCardLoader = ({ speed = 3, contract_stage }: TContractCardLoader) => (
+    <>
+        {contract_stage === contract_stages.RUNNING ? (
+            <ContractCardRunningBot />
+        ) : (
+            <ContentLoader
+                height={153}
+                width={334}
+                speed={speed}
+                backgroundColor={'var(--general-section-2)'}
+                foregroundColor={'var(--general-hover)'}
+                data-testid='contract-card-loader'
+            >
+                <rect x='12' y='15' rx='0' ry='0' width='41' height='25' />
+                <rect x='61' y='24' rx='0' ry='0' width='91' height='8' />
+                <rect x='180' y='15' rx='0' ry='0' width='41' height='25' />
+                <rect x='229' y='24' rx='0' ry='0' width='91' height='8' />
+                <rect x='12' y='48' rx='0' ry='0' width='60' height='8' />
+                <rect x='12' y='64' rx='0' ry='0' width='308' height='8' />
+                <rect x='12' y='80' rx='0' ry='0' width='308' height='1' />
+                <rect x='12' y='89' rx='0' ry='0' width='140' height='8' />
+                <rect x='12' y='105' rx='0' ry='0' width='60' height='8' />
+                <rect x='12' y='121' rx='0' ry='0' width='140' height='8' />
+                <rect x='12' y='137' rx='0' ry='0' width='60' height='8' />
+                <rect x='180' y='89' rx='0' ry='0' width='140' height='8' />
+                <rect x='180' y='105' rx='0' ry='0' width='60' height='8' />
+                <rect x='180' y='121' rx='0' ry='0' width='140' height='8' />
+                <rect x='180' y='137' rx='0' ry='0' width='60' height='8' />
+            </ContentLoader>
+        )}
+    </>
 );
 
 export default ContractCardLoader;

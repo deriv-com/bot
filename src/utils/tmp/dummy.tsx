@@ -8,6 +8,7 @@ type TIconComponent = {
     height?: number | string;
     width?: number | string;
     id?: string;
+    style?: { height?: number | string; width?: number | string };
 };
 
 const IconComponent: React.FC<TIconComponent> = ({ icon, ...rest }) => {

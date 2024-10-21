@@ -27,7 +27,6 @@ import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
 import Tutorial from '../tutorials';
-import { tour_list } from '../tutorials/dbot-tours/utils';
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useStore();
@@ -89,7 +88,7 @@ const AppWrapper = observer(() => {
         } else {
             window.location.hash = hash[active_tab] || hash[0];
         }
-        if (tour_list[active_tab] !== active_tour) {
+        if (active_tour !== '') {
             setActiveTour('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
