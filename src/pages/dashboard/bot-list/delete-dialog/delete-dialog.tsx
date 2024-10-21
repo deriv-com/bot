@@ -47,7 +47,6 @@ const DeleteDialog = observer(() => {
         await resetStrategiesAfterDelete(strategy_id, updated_workspaces);
         onToggleDeleteDialog(false);
     };
-
     return (
         <div>
             <Dialog
