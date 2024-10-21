@@ -49,22 +49,7 @@ const router = createBrowserRouter(
 
 function App() {
     React.useEffect(() => {
-        const loadGTM = () => {
-            if (!window.dataLayer) {
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-                const script = document.createElement('script');
-                script.async = true;
-                script.src = `https://www.googletagmanager.com/gtm.js?id='GTM-NF7884S'`;
-                document.head.appendChild(script);
-            }
-        };
-
-        setTimeout(() => {
-            loadGTM();
-            window?.dataLayer?.push({ event: 'page_load' });
-        }, 10000);
+        window?.dataLayer?.push({ event: 'page_load' });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
