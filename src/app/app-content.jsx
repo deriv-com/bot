@@ -28,6 +28,13 @@ const AppContent = observer(() => {
     const init_api_interval = React.useRef(null);
     const msg_listener = React.useRef(null);
 
+    const { current_language } = common;
+    const html = document.documentElement;
+    React.useEffect(() => {
+        html?.setAttribute('lang', current_language.toLowerCase());
+        html?.setAttribute('dir', current_language.toLowerCase() === 'ar' ? 'rtl' : 'ltr');
+    }, [current_language]);
+
     const handleMessage = React.useCallback(
         ({ data }) => {
             if (data?.msg_type === 'proposal_open_contract' && !data?.error) {
