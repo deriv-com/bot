@@ -1,4 +1,4 @@
-import { Localize, localize } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 
 const generateErrorMessage = (block_type, missing_space = 'workspace') => {
     return {
@@ -40,14 +40,11 @@ const generateErrorMessage = (block_type, missing_space = 'workspace') => {
 };
 
 export const error_message_map = {
-    trade_definition: generateErrorMessage(localize('Trade parameters')),
-    trade_parameters: generateErrorMessage(localize('Trade parameters')),
-    before_purchase: generateErrorMessage(localize('Purchase conditions')),
-    purchase_conditions: generateErrorMessage(localize('Purchase conditions')),
-    purchase: generateErrorMessage(localize('Purchase'), localize('purchase conditions')),
-    trade_definition_tradeoptions: generateErrorMessage(localize('Trade options'), localize('trade parameters')),
-    trade_definition_multiplier: generateErrorMessage(
-        localize('Trade options multipliers'),
-        localize('trade parameters')
-    ),
+    trade_definition: generateErrorMessage('Trade parameters'),
+    trade_parameters: generateErrorMessage('Trade parameters'),
+    before_purchase: generateErrorMessage('Purchase conditions'),
+    purchase_conditions: generateErrorMessage('Purchase conditions'),
+    purchase: generateErrorMessage('Purchase', 'purchase conditions'),
+    trade_definition_tradeoptions: generateErrorMessage('Trade options', 'trade parameters'),
+    trade_definition_multiplier: generateErrorMessage('Trade options multipliers', 'trade parameters'),
 };
