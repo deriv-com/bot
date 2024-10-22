@@ -5,7 +5,6 @@ import { getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import GTM from '@/utils/gtm';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
@@ -90,7 +89,10 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings?.country_code, client.clients_country]);
 
     const init = () => {
-        GTM.init();
+        // TODO: TBD
+        // import('@/utils/gtm').then(({ default: GTM }) => {
+        //     GTM.init();
+        // });
         ServerTime.init(common);
         app.setDBotEngineStores();
         ApiHelpers.setInstance(app.api_helpers_store);
