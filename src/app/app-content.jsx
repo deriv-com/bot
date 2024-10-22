@@ -1,6 +1,8 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { ToastContainer } from 'react-toastify';
 import { getUrlBase } from '@/components/shared';
+import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
@@ -13,9 +15,6 @@ import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
-
-const LazyToastContainer = lazy(() => import('react-toastify').then(module => ({ default: module.ToastContainer })));
-const TransactionDetailsModal = lazy(() => import('@/components/transaction-details'));
 
 const AppContent = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
@@ -33,7 +32,6 @@ const AppContent = observer(() => {
     React.useEffect(() => {
         html?.setAttribute('lang', current_language.toLowerCase());
         html?.setAttribute('dir', current_language.toLowerCase() === 'ar' ? 'rtl' : 'ltr');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [current_language]);
 
     const handleMessage = React.useCallback(
@@ -147,12 +145,8 @@ const AppContent = observer(() => {
                 <Main />
                 <BotBuilder />
                 <BotStopped />
-                <Suspense fallback={<div>Loading...</div>}>
-                    <TransactionDetailsModal />
-                </Suspense>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <LazyToastContainer limit={3} draggable={false} />
-                </Suspense>
+                <TransactionDetailsModal />
+                <ToastContainer limit={3} draggable={false} />
             </div>
         </>
     );

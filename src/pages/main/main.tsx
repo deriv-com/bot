@@ -24,11 +24,10 @@ import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
 // import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
-// import Dashboard from '../dashboard';
+import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
 // import Tutorial from '../tutorials';
 
-const Dashboard = lazy(() => import('../dashboard'));
 const Chart = lazy(() => import('../chart'));
 const Tutorial = lazy(() => import('../tutorials'));
 
@@ -176,9 +175,7 @@ const AppWrapper = observer(() => {
                             }
                             id='id-dbot-dashboard'
                         >
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <Dashboard handleTabChange={handleTabChange} />
-                            </Suspense>
+                            <Dashboard handleTabChange={handleTabChange} />
                         </div>
                         <div
                             label={
