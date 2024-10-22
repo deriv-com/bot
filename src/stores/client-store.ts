@@ -9,7 +9,7 @@ import {
     useWebsiteStatus,
 } from '@deriv-com/api-hooks';
 
-type TAccountList = NonNullable<ReturnType<typeof useAccountList>['data']>;
+export type TAccountList = NonNullable<ReturnType<typeof useAccountList>['data']>;
 
 type GetAccountStatusResult = NonNullable<ReturnType<typeof useGetAccountStatus>['data']>;
 

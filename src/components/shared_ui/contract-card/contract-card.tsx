@@ -1,5 +1,6 @@
 import React from 'react';
-import { getTotalProfit } from '@/components/shared/utils/contract';
+import ContractCardLoader from '@/components/contract-card-loading';
+import { getTotalProfit, TContractInfo } from '@/components/shared/utils/contract';
 import DesktopWrapper from '../desktop-wrapper';
 import { TGetCardLables, TGetContractPath } from '../types';
 import ContractCardBody from './contract-card-items/contract-card-body';
@@ -8,7 +9,6 @@ import ContractCardHeader from './contract-card-items/contract-card-header';
 import ContractCardSell from './contract-card-items/contract-card-sell';
 import ContractTypeCell from './contract-card-items/contract-type-cell';
 import MultiplierCloseActions from './contract-card-items/multiplier-close-actions';
-import ContractCardLoader from './contract-card-loader';
 import ResultOverlay from './result-overlay';
 
 type TContractCardProps = {

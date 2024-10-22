@@ -127,6 +127,9 @@
 }
 
 .auth-actions {
+    display: flex;
+    padding-block: 8px;
+
     button {
         font-weight: 400;
         margin-right: 1.6rem;
