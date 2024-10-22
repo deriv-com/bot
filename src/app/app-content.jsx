@@ -89,9 +89,10 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings?.country_code, client.clients_country]);
 
     const init = () => {
-        import('@/utils/gtm').then(({ default: GTM }) => {
-            GTM.init();
-        });
+        // TODO: TBD
+        // import('@/utils/gtm').then(({ default: GTM }) => {
+        //     GTM.init();
+        // });
         ServerTime.init(common);
         app.setDBotEngineStores();
         ApiHelpers.setInstance(app.api_helpers_store);
