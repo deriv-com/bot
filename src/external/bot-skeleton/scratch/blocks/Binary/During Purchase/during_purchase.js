@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { modifyContextMenu, removeExtraInput } from '../../../utils';
+import { appendCollapsedMainBlocksFields, modifyContextMenu } from '../../../utils';
 import { sellContract } from '../../images';
 
 window.Blockly.Blocks.during_purchase = {
@@ -63,7 +63,9 @@ window.Blockly.Blocks.during_purchase = {
             event.type === window.Blockly.Events.BLOCK_CHANGE ||
             (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
-            removeExtraInput(this);
+            if (this.isCollapsed()) {
+                appendCollapsedMainBlocksFields(this);
+            }
         }
     },
     customContextMenu(menu) {

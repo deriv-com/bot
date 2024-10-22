@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
@@ -27,7 +27,6 @@ import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
 import Tutorial from '../tutorials';
-import { tour_list } from '../tutorials/dbot-tours/utils';
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useStore();
@@ -52,6 +51,7 @@ const AppWrapper = observer(() => {
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
     const { isDesktop } = useDevice();
     const location = useLocation();
+    const navigate = useNavigate();
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -87,9 +87,9 @@ const AppWrapper = observer(() => {
             if (!isDesktop) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
-            window.location.hash = hash[active_tab] || hash[0];
+            navigate(`#${hash[active_tab] || hash[0]}`);
         }
-        if (tour_list[active_tab] !== active_tour) {
+        if (active_tour !== '') {
             setActiveTour('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

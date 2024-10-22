@@ -10,7 +10,6 @@ import { LegacyReportsIcon } from '@deriv/quill-icons/Legacy';
 type TRecentWorkspaceProps = {
     workspace: { [key: string]: any };
 };
-
 type TIcons = {
     [key: string]: React.ReactElement;
 };
@@ -33,13 +32,8 @@ export const getRecentFileIcon = (save_type: string, class_name: string = ''): R
 const RecentWorkspace = observer(({ workspace }: TRecentWorkspaceProps) => {
     const { load_modal, blockly_store } = useStore();
     const { setLoading } = blockly_store;
-    const {
-        getRecentFileIcon,
-        getSaveType,
-        loadStrategyOnModalRecentPreview,
-        selected_strategy_id,
-        updateXmlValuesOnStrategySelection,
-    } = load_modal;
+    const { getSaveType, loadStrategyOnModalRecentPreview, selected_strategy_id, updateXmlValuesOnStrategySelection } =
+        load_modal;
 
     const onRecentWorkspaceClick = () => {
         if (selected_strategy_id === workspace.id) return;
