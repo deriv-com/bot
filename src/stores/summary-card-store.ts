@@ -240,15 +240,21 @@ export default class SummaryCardStore {
         const limit_order = this.getLimitOrder();
 
         if (this.contract_info?.contract_id) {
-            api_base.api.contractUpdate(this.contract_info?.contract_id, limit_order).then(response => {
-                if (response.error) {
-                    this.root_store.run_panel.showContractUpdateErrorDialog(response.error.message);
-                    return;
-                }
-
-                // Update contract store
-                this.populateContractUpdateConfig(response);
-            });
+            if (this.contract_info?.contract_id) {
+                api_base.api
+                    ?.send({
+                        contract_update: 1,
+                        contract_id: this.contract_info?.contract_id,
+                        limit_order,
+                    })
+                    .then(response => {
+                        // Update contract store
+                        this.populateContractUpdateConfig(response);
+                    })
+                    .catch((error: { error: Error }) => {
+                        this.root_store.run_panel.showContractUpdateErrorDialog(error?.error?.message);
+                    });
+            }
         }
     }
 

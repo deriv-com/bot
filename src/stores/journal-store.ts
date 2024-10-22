@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { formatDate } from '@/components/shared';
 import { LogTypes, MessageTypes } from '@/external/bot-skeleton';
 import { config } from '@/external/bot-skeleton/constants/config';
-import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 import { getSetting, storeSetting } from '../utils/settings';
+import { TAccountList } from './client-store';
 import RootStore from './root-store';
 
 type TExtra = {
@@ -62,9 +62,9 @@ export interface IJournalStore {
 
 export default class JournalStore {
     root_store: RootStore;
-    core: TStores;
+    core: RootStore['core'];
     disposeReactionsFn: () => void;
-    constructor(root_store: RootStore, core: TStores) {
+    constructor(root_store: RootStore, core: RootStore['core']) {
         makeObservable(this, {
             is_filter_dialog_visible: observable,
             journal_filters: observable.shallow,
@@ -104,7 +104,8 @@ export default class JournalStore {
     unfiltered_messages: TMessageItem[] = [];
 
     restoreStoredJournals() {
-        const { loginid } = this.core?.client ?? {};
+        const client = this.core.client as RootStore['client'];
+        const { loginid } = client;
         this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
         this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
     }
@@ -160,11 +161,11 @@ export default class JournalStore {
         extra: { current_currency?: string; currency?: string } = {}
     ) {
         const { client } = this.core;
-        const { loginid, account_list } = client;
+        const { loginid, account_list } = client as RootStore['client'];
 
         if (loginid) {
             const current_account = account_list?.find(account => account?.loginid === loginid);
-            extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.title;
+            extra.current_currency = current_account?.is_virtual ? 'Demo' : current_account?.currency;
         } else if (message === LogTypes.WELCOME) {
             return;
         }
@@ -208,7 +209,7 @@ export default class JournalStore {
     }
 
     registerReactions() {
-        const { client } = this.core;
+        const client = this.core.client as RootStore['client'];
 
         // Write journal messages to session storage on each change in unfiltered messages.
         const disposeWriteJournalMessageListener = reaction(
@@ -225,7 +226,9 @@ export default class JournalStore {
             () => client?.loginid,
             async loginid => {
                 await when(() => {
-                    const has_account = client.account_list?.find(account => account.loginid === loginid)?.title;
+                    const has_account = client.account_list?.find(
+                        (account: TAccountList[number]) => account.loginid === loginid
+                    );
                     return !!has_account;
                 });
                 this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
