@@ -68,6 +68,7 @@ const FlyoutContent = (props: TFlyoutContent) => {
                                 className='flyout__content-disclaimer__warning-icon'
                                 height='24px'
                                 width='24px'
+                                fill='var(--text-general)'
                             />
                         </span>
                         <span className='flyout__content-disclaimer-text'>

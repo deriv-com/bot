@@ -147,7 +147,12 @@ const Dialog = ({
                             )}
                             {has_close_icon && (
                                 <div onClick={handleClose} className='dc-dialog__header--close'>
-                                    <LegacyClose1pxIcon height='20px' width='20px' />
+                                    <LegacyClose1pxIcon
+                                        height='20px'
+                                        width='20px'
+                                        fill='var(--text-general)'
+                                        className='icon-general-fill-path'
+                                    />
                                 </div>
                             )}
                         </div>

@@ -185,8 +185,9 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                                                 <DerivLightEmptyCardboardBoxIcon
                                                     height='64px'
                                                     width='64px'
-                                                    className='transactions-empty__icon'
+                                                    className='transactions-empty__icon icon-general-fill-g-path'
                                                     color='secondary'
+                                                    fill='var(--text-general)'
                                                 />
                                             </div>
                                             <Text

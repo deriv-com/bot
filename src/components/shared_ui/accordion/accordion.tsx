@@ -34,9 +34,15 @@ const Accordion = ({ className, list }: TAccordionProps) => {
                         {item.header}
                         <div className='dc-accordion__item-header-icon-wrapper'>
                             {open_idx === idx ? (
-                                <LabelPairedMinusCaptionRegularIcon className='dc-accordion__item-header-icon' />
+                                <LabelPairedMinusCaptionRegularIcon
+                                    className='dc-accordion__item-header-icon'
+                                    fill='var(--text-general)'
+                                />
                             ) : (
-                                <LabelPairedPlusCaptionRegularIcon className='dc-accordion__item-header-icon' />
+                                <LabelPairedPlusCaptionRegularIcon
+                                    className='dc-accordion__item-header-icon'
+                                    fill='var(--text-general)'
+                                />
                             )}
                         </div>
                     </div>
