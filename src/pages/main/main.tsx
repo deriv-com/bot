@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,11 +22,15 @@ import { LegacyGuide1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
-import Chart from '../chart';
+// import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
-import Dashboard from '../dashboard';
+// import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
-import Tutorial from '../tutorials';
+// import Tutorial from '../tutorials';
+
+const Dashboard = lazy(() => import('../dashboard'));
+const Chart = lazy(() => import('../chart'));
+const Tutorial = lazy(() => import('../tutorials'));
 
 const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useStore();
@@ -172,7 +176,9 @@ const AppWrapper = observer(() => {
                             }
                             id='id-dbot-dashboard'
                         >
-                            <Dashboard handleTabChange={handleTabChange} />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Dashboard handleTabChange={handleTabChange} />
+                            </Suspense>
                         </div>
                         <div
                             label={
@@ -204,7 +210,9 @@ const AppWrapper = observer(() => {
                                     : 'id-charts'
                             }
                         >
-                            <Chart show_digits_stats={false} />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <Chart show_digits_stats={false} />
+                            </Suspense>
                         </div>
                         <div
                             label={
@@ -221,7 +229,9 @@ const AppWrapper = observer(() => {
                             id='id-tutorials'
                         >
                             <div className='tutorials-wrapper'>
-                                <Tutorial handleTabChange={handleTabChange} />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Tutorial handleTabChange={handleTabChange} />
+                                </Suspense>
                             </div>
                         </div>
                     </Tabs>
