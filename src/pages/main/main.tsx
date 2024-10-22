@@ -63,9 +63,10 @@ const AppWrapper = observer(() => {
 
     const checkAndHandleConnection = () => {
         const api_status = api_base.getConnectionStatus();
+        const web_socket_status = ['Connecting', 'Closing', 'Closed'];
         //added this check because after sleep mode all the store values refresh and is_running is false.
         const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
-        if (is_bot_running && (api_status === 'Closed' || api_status === 'Closing')) {
+        if (is_bot_running && web_socket_status.includes(api_status)) {
             dbot.terminateBot();
             clear();
             setWebSocketState(false);
