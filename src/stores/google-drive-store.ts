@@ -4,6 +4,11 @@ import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notifi
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
 import { getInitialLanguage, localize } from '@deriv-com/translations';
+import {
+    rudderStackSendUploadStrategyCompletedEvent,
+    rudderStackSendUploadStrategyFailedEvent,
+} from '../analytics/rudderstack-common-events';
+import { getStrategyType } from '../analytics/utils';
 import RootStore from './root-store';
 
 export type TErrorWithStatus = Error & { status?: number; result?: { error: { message: string } } };
@@ -196,6 +201,13 @@ export default class GoogleDriveStore {
                     }
                 }
             }
+            rudderStackSendUploadStrategyFailedEvent({
+                upload_provider: 'google_drive',
+                upload_id: this.upload_id,
+                upload_type: 'not_found',
+                error_message: (err as TErrorWithStatus)?.result?.error?.message,
+                error_code: (err as TErrorWithStatus)?.status?.toString(),
+            });
         }
 
         const xml_doc = await this.createLoadFilePicker(
@@ -277,6 +289,16 @@ export default class GoogleDriveStore {
             const loadPickerCallback = async (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
+                    if (file?.driveError === 'NETWORK') {
+                        rudderStackSendUploadStrategyFailedEvent({
+                            upload_provider: 'google_drive',
+                            upload_id: this.upload_id,
+                            upload_type: 'not_found',
+                            error_message: 'File not found',
+                            error_code: '404',
+                        });
+                    }
+
                     const file_name = file.name;
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
@@ -289,6 +311,12 @@ export default class GoogleDriveStore {
 
                     resolve({ xml_doc: response.body, file_name });
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                    const upload_type = getStrategyType(response.body);
+                    rudderStackSendUploadStrategyCompletedEvent({
+                        upload_provider: 'google_drive',
+                        upload_type,
+                        upload_id: this.upload_id,
+                    });
                 }
             };
 

@@ -17,6 +17,8 @@ import {
 } from '@deriv/quill-icons/Illustration';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { rudderStackSendOpenEvent } from '../../analytics/rudderstack-common-events';
+import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
 import DashboardBotList from './bot-list/dashboard-bot-list';
 
 type TCardProps = {
@@ -28,7 +30,7 @@ type TCardArray = {
     id: string;
     icon: React.ReactElement;
     content: React.ReactElement;
-    method: () => void;
+    callback: () => void;
 };
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
@@ -59,29 +61,54 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                 <DerivLightMyComputerIcon height='48px' width='48px' />
             ),
             content: is_mobile ? <Localize i18n_default_text='Local' /> : <Localize i18n_default_text='My computer' />,
-            method: openFileLoader,
+            callback: () => {
+                openFileLoader();
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'load_strategy',
+                    load_strategy_tab: 'local',
+                });
+            },
         },
         {
             id: 'google-drive',
             icon: <DerivLightGoogleDriveIcon height='48px' width='48px' />,
             content: <Localize i18n_default_text='Google Drive' />,
-            method: openGoogleDriveDialog,
+            callback: () => {
+                openGoogleDriveDialog();
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'load_strategy',
+                    load_strategy_tab: 'google drive',
+                });
+            },
         },
         {
             id: 'bot-builder',
             icon: <DerivLightBotBuilderIcon height='48px' width='48px' />,
             content: <Localize i18n_default_text='Bot builder' />,
-            method: () => {
+            callback: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
+                rudderStackSendDashboardClickEvent({
+                    dashboard_click_name: 'bot_builder',
+                    subpage_name: 'bot_builder',
+                });
             },
         },
         {
             id: 'quick-strategy',
             icon: <DerivLightQuickStrategyIcon height='48px' width='48px' />,
             content: <Localize i18n_default_text='Quick strategy' />,
-            method: () => {
+            callback: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
+                rudderStackSendOpenEvent({
+                    subpage_name: 'bot_builder',
+                    subform_source: 'dashboard',
+                    subform_name: 'quick_strategy',
+                });
             },
         },
     ];
@@ -100,7 +127,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method, id } = icons;
+                        const { icon, content, callback, id } = icons;
                         return (
                             <div
                                 key={id}
@@ -117,7 +144,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     icon={icon}
                                     id={id}
                                     onClick={() => {
-                                        method();
+                                        callback();
                                     }}
                                 >
                                     {icon}

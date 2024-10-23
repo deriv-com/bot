@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { tabs_title } from '@/constants/load-modal';
+import { v4 as uuidv4 } from 'uuid';
 import {
     getSavedWorkspaces,
     load,
@@ -13,6 +13,13 @@ import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TStrategy } from 'Types';
+import {
+    rudderStackSendUploadStrategyCompletedEvent,
+    rudderStackSendUploadStrategyFailedEvent,
+    rudderStackSendUploadStrategyStartEvent,
+} from '../analytics/rudderstack-common-events';
+import { getStrategyType } from '../analytics/utils';
+import { tabs_title } from '../constants/load-modal';
 import { waitForDomElement } from '../utils/dom-observer';
 import RootStore from './root-store';
 
@@ -163,6 +170,15 @@ export default class LoadModalStore {
         const { verifyGoogleDriveAccessToken } = google_drive;
         const result = await verifyGoogleDriveAccessToken();
         if (result === 'not_verified') return;
+
+        if (google_drive) {
+            google_drive.upload_id = uuidv4();
+        }
+
+        rudderStackSendUploadStrategyStartEvent({
+            upload_provider: 'google_drive',
+            upload_id: google_drive.upload_id,
+        });
 
         const { loadFile } = this.root_store.google_drive;
         const load_file = await loadFile();
@@ -391,6 +407,7 @@ export default class LoadModalStore {
         is_body = true
     ): boolean => {
         this.imported_strategy_type = 'pending';
+        this.upload_id = uuidv4();
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -451,13 +468,24 @@ export default class LoadModalStore {
     };
 
     loadStrategyOnBotBuilder = async () => {
-        const { strategy_id = window.Blockly.utils.idGenerator.genUid(), convertedDom } = window.Blockly.xmlValues;
+        const {
+            strategy_id = window.Blockly.utils.idGenerator.genUid(),
+            convertedDom,
+            block_string,
+        } = window.Blockly.xmlValues;
         const derivWorkspace = window.Blockly.derivWorkspace;
 
         window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id;
+
+        const upload_type = getStrategyType(block_string ?? '');
+        rudderStackSendUploadStrategyCompletedEvent({
+            upload_provider: 'my_computer',
+            upload_type,
+            upload_id: this.upload_id,
+        });
     };
 
     updateXmlValuesOnStrategySelection = () => {
@@ -511,6 +539,17 @@ export default class LoadModalStore {
             (load_options.workspace as any).RTL = isDbotRTL();
         }
 
-        await load(load_options);
+        const upload_type = getStrategyType(load_options?.block_string ?? '');
+        const result = await load(load_options);
+        if (!result?.error) {
+            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
+        } else if (result?.error) {
+            rudderStackSendUploadStrategyFailedEvent({
+                upload_provider: 'my_computer',
+                upload_id: this.upload_id,
+                upload_type,
+                error_message: result.error,
+            });
+        }
     };
 }

@@ -15,6 +15,7 @@ import {
 } from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarIcon from './toolbar-icon';
 
 const WorkspaceGroup = observer(() => {
@@ -51,6 +52,12 @@ const WorkspaceGroup = observer(() => {
                             onClick={() => {
                                 setPreviewOnPopup(true);
                                 toggleLoadModal();
+                                rudderStackSendOpenEvent({
+                                    subpage_name: 'bot_builder',
+                                    subform_source: 'bot_builder',
+                                    subform_name: 'load_strategy',
+                                    load_strategy_tab: 'recent',
+                                });
                             }}
                         >
                             <LabelPairedFolderOpenMdRegularIcon />

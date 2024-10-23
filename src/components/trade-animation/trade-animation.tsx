@@ -6,6 +6,7 @@ import { contract_stages } from '@/constants/contract-stage';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize } from '@deriv-com/translations';
+import { rudderStackSendRunBotEvent } from '../../analytics/rudderstack-common-events';
 import Button from '../shared_ui/button';
 import CircularWrapper from './circular-wrapper';
 import ContractStageText from './contract-stage-text';
@@ -16,8 +17,9 @@ type TTradeAnimation = {
 };
 
 const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnimation) => {
-    const { run_panel, summary_card } = useStore();
+    const { dashboard, run_panel, summary_card } = useStore();
     const { client } = useStore();
+    const { active_tab } = dashboard;
     const { is_contract_completed, profit } = summary_card;
     const {
         contract_stage,
@@ -85,6 +87,10 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         };
     }, [is_stop_button_visible]);
     const show_overlay = should_show_overlay && is_contract_completed;
+
+    const TAB_NAMES = ['dashboard', 'bot_builder', 'charts', 'tutorials'] as const;
+    const getTabName = (index: number) => TAB_NAMES[index];
+
     return (
         <div className={classNames('animation__wrapper', className)}>
             <Button
@@ -99,6 +105,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                         return;
                     }
                     onRunButtonClick();
+                    rudderStackSendRunBotEvent({ subpage_name: getTabName(active_tab) });
                 }}
                 has_effect
                 {...(is_stop_button_visible || !is_unavailable_for_payment_agent ? { primary: true } : { green: true })}

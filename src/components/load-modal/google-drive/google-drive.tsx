@@ -7,6 +7,10 @@ import { useStore } from '@/hooks/useStore';
 import { DerivLightGoogleDriveIcon } from '@deriv/quill-icons/Illustration';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import {
+    rudderStackSendGoogleDriveConnectEvent,
+    rudderStackSendGoogleDriveDisconnectEvent,
+} from '../../../analytics/rudderstack-common-events';
 import './google-drive.scss';
 
 const GoogleDrive: React.FC = observer(() => {
@@ -38,6 +42,7 @@ const GoogleDrive: React.FC = observer(() => {
                         <Button
                             onClick={() => {
                                 signOut();
+                                rudderStackSendGoogleDriveDisconnectEvent();
                             }}
                             has_effect
                             secondary
@@ -80,6 +85,7 @@ const GoogleDrive: React.FC = observer(() => {
                         <Button
                             onClick={() => {
                                 signIn();
+                                rudderStackSendGoogleDriveConnectEvent();
                             }}
                             has_effect
                             primary
