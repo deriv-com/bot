@@ -22,7 +22,7 @@ import './index.scss';
 export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
-        icon: <LabelPairedPageCircleArrowRightSmRegularIcon fill='var(--text-general)' height='16px' width='16px' />,
+        icon: <LabelPairedPageCircleArrowRightSmRegularIcon fill='var(--text-general)' />,
         label: <Localize i18n_default_text='Open' />,
     },
     {
@@ -31,17 +31,16 @@ export const CONTEXT_MENU = [
             <LegacySave1pxIcon
                 fill='var(--text-general)'
                 className='icon-general-fill-path'
-                height='16px'
-                width='16px'
+                iconSize='xs'
                 path=''
-                opacity={0.6}
+                opacity={0.8}
             />
         ),
         label: <Localize i18n_default_text='Save' />,
     },
     {
         type: STRATEGY.DELETE,
-        icon: <LabelPairedTrashSmRegularIcon fill='var(--text-general)' height='16px' width='16px' />,
+        icon: <LabelPairedTrashSmRegularIcon fill='var(--text-general)' />,
         label: <Localize i18n_default_text='Delete' />,
     },
 ];
