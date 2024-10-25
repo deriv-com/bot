@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { getAppId, LocalStore, MAX_MOBILE_WIDTH } from '@/components/shared';
 import { Analytics } from '@deriv-com/analytics';
+import getCountry from '../getCountry';
 import FIREBASE_INIT_DATA from '../remote_config.json';
 
 export const AnalyticsInitializer = async () => {
@@ -33,7 +34,7 @@ export const AnalyticsInitializer = async () => {
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                         device_language: navigator?.language || 'en-EN',
                         user_language: JSON.parse(LocalStore?.get('i18n_language').toLowerCase()),
-                        // country: await getCountry(),
+                        country: await getCountry(),
                         utm_source: ppc_campaign_cookies?.utm_source,
                         utm_medium: ppc_campaign_cookies?.utm_medium,
                         utm_campaign: ppc_campaign_cookies?.utm_campaign,
