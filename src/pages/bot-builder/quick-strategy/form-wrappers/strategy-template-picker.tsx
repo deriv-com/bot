@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
 import { Chip, SearchField } from '@deriv-com/quill-ui';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
 import './strategy-template-picker.scss';
