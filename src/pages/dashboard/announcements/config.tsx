@@ -159,7 +159,7 @@ export type TAnnouncementItem = {
 };
 
 export type TNotifications = {
-    key: string;
+    id: string;
     icon: React.ReactNode;
     title: React.ReactNode;
     message: React.ReactNode;
