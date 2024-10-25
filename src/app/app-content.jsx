@@ -5,7 +5,9 @@ import { getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
+import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
+import { ThemeProvider } from '@deriv-com/quill-ui';
 import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
@@ -21,6 +23,7 @@ const AppContent = observer(() => {
     const store = useStore();
     const { app, transactions, common, client } = store;
     const { showDigitalOptionsMaltainvestError } = app;
+    const { is_dark_mode_on } = useThemeSwitcher();
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
@@ -140,15 +143,17 @@ const AppContent = observer(() => {
         <Loader />
     ) : (
         <>
-            <BlocklyLoading />
-            <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
-                <Audio />
-                <Main />
-                <BotBuilder />
-                <BotStopped />
-                <TransactionDetailsModal />
-                <ToastContainer limit={3} draggable={false} />
-            </div>
+            <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
+                <BlocklyLoading />
+                <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
+                    <Audio />
+                    <Main />
+                    <BotBuilder />
+                    <BotStopped />
+                    <TransactionDetailsModal />
+                    <ToastContainer limit={3} draggable={false} />
+                </div>
+            </ThemeProvider>
         </>
     );
 });
