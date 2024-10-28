@@ -9,7 +9,7 @@ import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
+import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import { QsSteps } from './form-wrappers/trade-constants';
@@ -210,7 +210,7 @@ const QuickStrategy = observer(() => {
             active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'
                 ? 'learn more'
                 : 'trade parameters';
-        rudderStackSendQsCloseEvent({
+        rudderStackSendCloseEvent({
             subform_name: 'quick_strategy',
             quick_strategy_tab: active_tab,
             selected_strategy,

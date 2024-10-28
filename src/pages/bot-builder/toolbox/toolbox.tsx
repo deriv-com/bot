@@ -6,7 +6,7 @@ import { useStore } from '@/hooks/useStore';
 import { LabelPairedChevronDownMdFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
@@ -44,7 +44,11 @@ const Toolbox = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (desktop)
-        rudderStackSendQsOpenEventFromBotBuilder();
+        rudderStackSendOpenEvent({
+            subpage_name: 'bot_builder',
+            subform_source: 'bot_builder',
+            subform_name: 'quick_strategy',
+        });
     };
 
     if (isDesktop) {

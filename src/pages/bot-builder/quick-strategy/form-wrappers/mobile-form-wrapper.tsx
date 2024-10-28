@@ -7,7 +7,7 @@ import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { rudderStackSendQsRunStrategyEvent } from '../analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import QSStepper from './qs-stepper';

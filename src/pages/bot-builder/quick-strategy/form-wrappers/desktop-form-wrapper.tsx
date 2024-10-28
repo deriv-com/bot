@@ -5,9 +5,9 @@ import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
-import { rudderStackSendQsEditStrategyEvent } from '../analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsEditStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../config';
 import { TFormData, TFormValues } from '../types';
 import QSStepper from './qs-stepper';
@@ -34,18 +34,18 @@ const QuickSelectionPanel = ({
     <>
         <div className='qs__selected-options'>
             <div className='qs__selected-options__item'>
-                <Text size='xs' line_height='s'>
+                <Text size='xs' lineHeight='s'>
                     {localize('Trade type')}
                 </Text>
-                <Text size='xs' weight='bold' line_height='s'>
+                <Text size='xs' weight='bold' lineHeight='s'>
                     {selected_trade_type}
                 </Text>
             </div>
             <div className='qs__selected-options__item'>
-                <Text size='xs' line_height='s'>
+                <Text size='xs' lineHeight='s'>
                     {localize('Strategy')}
                 </Text>
-                <Text size='xs' weight='bold' line_height='s'>
+                <Text size='xs' weight='bold' lineHeight='s'>
                     {selected_startegy_label}
                 </Text>
             </div>
@@ -164,7 +164,7 @@ const FormWrapper = observer(
                                     }
                                 }}
                             >
-                                <Icon icon='IcCross' />
+                                <LegacyClose1pxIcon height='20px' width='20px' />
                             </span>
                         </div>
                     </div>

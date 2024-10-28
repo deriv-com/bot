@@ -12,6 +12,7 @@ import {
     onboarding_tour_header,
 } from '../tour-content';
 import { setTourSettings, tour_list } from '../utils';
+import './tour-start-dialog.scss';
 
 const TourStartDialog = observer(() => {
     const { dashboard } = useStore();
@@ -77,6 +78,7 @@ const TourStartDialog = observer(() => {
                 is_mobile_full_width
                 className={'dc-dialog tour-dialog'}
                 has_close_icon={false}
+                portal_element_id='modal_root'
             >
                 <div className='dc-dialog__content__header'>
                     <Text weight='bold' color='prominent' size={header_text_size}>
