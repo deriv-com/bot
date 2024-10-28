@@ -26,6 +26,7 @@
         "@deriv-com/utils": "latest",
         "@deriv/deriv-charts": "^2.5.1",
         "@deriv/js-interpreter": "^3.0.0",
+        "@deriv-com/quill-ui": "1.18.1",
         "@deriv/quill-icons": "~1.23.3",
         "@rsbuild/plugin-basic-ssl": "^1.1.1",
         "@svgr/core": "^8.1.0",

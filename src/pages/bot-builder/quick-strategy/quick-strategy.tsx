@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import * as Yup from 'yup';
 import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal';
 import Modal from '@/components/shared_ui/modal';
+import Text from '@/components/shared_ui/text';
 import { config as qs_config } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
@@ -11,6 +12,7 @@ import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
+import { QsSteps } from './form-wrappers/trade-constants';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
@@ -200,6 +202,8 @@ const QuickStrategy = observer(() => {
     const { is_open, setFormVisibility, form_data, selected_strategy } = quick_strategy;
 
     const active_tab_ref = useRef<HTMLDivElement>(null);
+    const [current_step, setCurrentStep] = React.useState(QsSteps.StrategySelect);
+    const [selected_trade_type, setSelectedTradeType] = React.useState('');
 
     const sendRudderStackQsFormCloseData = () => {
         const active_tab =
@@ -225,7 +229,13 @@ const QuickStrategy = observer(() => {
                 <LossThresholdWarningDialog />
                 {isDesktop ? (
                     <Modal className='modal--strategy' is_open={is_open} width='72rem'>
-                        <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
+                        <DesktopFormWrapper
+                            onClickClose={handleClose}
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
                             <Form />
                         </DesktopFormWrapper>
                     </Modal>
@@ -233,11 +243,22 @@ const QuickStrategy = observer(() => {
                     <MobileFullPageModal
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
-                        header={localize('Quick Strategy')}
+                        header={
+                            <Text size='xs' weight='bold'>
+                                {localize(
+                                    `Step ${current_step === QsSteps.StrategyCompleted ? 2 : 1}/2: Choose your strategy`
+                                )}
+                            </Text>
+                        }
                         onClickClose={handleClose}
                         height_offset='8rem'
                     >
-                        <MobileFormWrapper active_tab_ref={active_tab_ref}>
+                        <MobileFormWrapper
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
                             <Form />
                         </MobileFormWrapper>
                     </MobileFullPageModal>
