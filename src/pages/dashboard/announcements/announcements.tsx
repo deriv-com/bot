@@ -75,7 +75,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                 is_not_read = data[item.id];
             }
             tmp_notifications.push({
-                key: item.id,
+                id: item.id,
                 icon: <item.icon announce={is_not_read} />,
                 title: <TitleAnnounce title={item.title} announce={is_not_read} />,
                 message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,

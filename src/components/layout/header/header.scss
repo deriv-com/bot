@@ -42,6 +42,8 @@
 
 .deriv-account-switcher {
     &__button {
+        margin-inline-end: 0.8rem;
+
         .deriv-context-menu {
             box-shadow: 0 0 2px 0 var(--du-shadow-box, #00000014);
         }
@@ -49,8 +51,6 @@
         .deriv-account-switcher__balance + svg > path {
             fill: var(--text-general);
         }
-
-        margin-inline-end: 0.8rem;
     }
 
     &__balance {
