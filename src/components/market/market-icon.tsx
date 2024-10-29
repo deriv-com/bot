@@ -306,7 +306,7 @@ const MARKET_ICONS = {
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyLtcusdIcon }))
     ),
     unknown: lazy(() =>
-        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedJump100Icon }))
+        import('@deriv/quill-icons/Illustrative').then(module => ({ default: module.IllustrativeMarketsIcon }))
     ),
 };
 
