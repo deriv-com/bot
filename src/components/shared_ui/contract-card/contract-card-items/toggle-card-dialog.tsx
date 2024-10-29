@@ -1,7 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import React from 'react';
 import { isDesktop, isMobile } from '@/components/shared';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyEdit1pxIcon } from '@deriv/quill-icons';
 import DesktopWrapper from '../../desktop-wrapper';
 import Div100vhContainer from '../../div100vh-container';
 import MobileDialog from '../../mobile-dialog';
@@ -98,12 +98,9 @@ const ToggleCardDialog = ({
     const toggleDialogWrapper = React.useCallback(toggleDialog, [toggleDialog]);
 
     const edit_icon = (
-        <Icon
-            className='dc-contract-card-dialog-toggle__icon'
-            icon='IcEdit'
-            color={is_valid_to_cancel ? 'disabled' : ''}
-            size={12}
-        />
+        <div className='dc-contract-card-dialog-toggle__icon'>
+            <LegacyEdit1pxIcon height={12} width={12} />
+        </div>
     );
 
     return (

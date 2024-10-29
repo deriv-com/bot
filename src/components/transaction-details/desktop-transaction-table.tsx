@@ -4,7 +4,8 @@ import ContentLoader from 'react-content-loader';
 import { transaction_elements } from '@/constants/transactions';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
+import { IconTradeTypes } from '@/utils/tmp/dummy';
+import { MarketIcon } from '../market/market-icon';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
@@ -95,7 +96,7 @@ export default function DesktopTransactionTable({
                                     label={
                                         <IconWrapper
                                             message={data?.display_name}
-                                            icon={<Icon icon={`IcUnderlying${data?.underlying}`} size={24} />}
+                                            icon={<MarketIcon type={data?.underlying} size='sm' />}
                                         />
                                     }
                                 />

@@ -1,22 +1,12 @@
 @use 'components/shared/styles/devices' as *;
 
-.db-summary-card--inactive {
-    display: flex !important;
-    color: var(--text-general);
-    font-size: 14px;
-    justify-content: center;
-    margin: auto;
-    padding: 0 3rem;
-    text-align: center;
-}
+.db-summary-card {
+    $contract-card: &;
 
-.summary {
+    box-sizing: border-box;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    justify-content: center;
-    background: linear-gradient(180deg, var(--general-section-2) 0%, rgb(242 243 244 / 0%) 80%);
-    width: 100%;
+    position: relative;
 
     @include desktop-screen {
         width: 100%;
@@ -26,36 +16,13 @@
         color: var(--text-general);
         font-size: 14px;
         justify-content: center;
-    }
-
-    &__tiles {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 24px 0;
-    }
-
-    &__tile {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border-radius: 0.4rem;
-        width: 32%;
-        max-width: 32%;
+        margin: auto;
         text-align: center;
-        background-color: var(--general-section-1);
-        padding: 8px 8px 0;
-        margin-bottom: 2%;
-        height: 56px;
+        line-height: 2rem;
+        padding: 0 3rem;
 
-        &-title {
-            height: 18px;
-            margin-bottom: 4px;
-        }
-
-        &-content {
-            height: 18px;
-            margin-bottom: 4px;
+        & .dc-text {
+            text-align: center;
         }
     }
 
@@ -93,28 +60,12 @@
             padding: 1.5rem 3.4rem;
         }
 
-        &--negative {
-            font-weight: bold;
-            color: var(--text-loss-danger);
+        .dc-contract-card__grid-underlying-trade--mobile {
+            grid-template-columns: 1fr 1.25fr;
         }
-    }
-}
 
-.run-panel {
-    &-tab {
-        &__content {
-            .summary-panel-inactive {
-                color: var(--text-general);
-                font-size: 14px;
-                line-height: 2rem;
-                margin: auto;
-                padding: 0 3rem;
-                text-align: center;
-
-                &__strong {
-                    font-weight: bold;
-                }
-            }
+        .dc-contract-card-items-wrapper {
+            grid-template-columns: 1fr 1fr;
         }
     }
 

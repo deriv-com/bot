@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import { MarketIcon } from '@/components/market/market-icon';
 import {
     getCurrentTick,
     getGrowthRatePercentage,
@@ -13,7 +14,6 @@ import {
     isTurbosContract,
 } from '@/components/shared';
 import { TContractInfo } from '@/components/shared/utils/contract/contract-types';
-import { Icon } from '@/utils/tmp/dummy';
 import { Button, useDevice } from '@deriv-com/ui';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
@@ -113,11 +113,7 @@ const ContractCardHeader = ({
                         'dc-contract-card__underlying-name--accumulator': is_accumulator,
                     })}
                 >
-                    <Icon
-                        icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'}
-                        width={is_accumulator ? 46 : 40}
-                        size={32}
-                    />
+                    <MarketIcon type={underlying ?? ''} size='md' />
                     <Text
                         size='xxs'
                         className={classNames('dc-contract-card__symbol', {

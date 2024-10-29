@@ -12,17 +12,19 @@
         &--warning {
             stroke: var(--status-warning);
         }
+
         &--danger {
             stroke: var(--status-danger);
         }
     }
+
     &--clockwise {
         transform: rotate(-90deg);
     }
+
     &__icon {
         position: absolute;
         width: 1.6rem;
-        height: 100%;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
