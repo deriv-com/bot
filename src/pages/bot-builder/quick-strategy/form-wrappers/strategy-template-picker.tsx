@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
+import { localize } from '@deriv/translations';
 import { Chip, SearchField } from '@deriv-com/quill-ui';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
@@ -42,7 +43,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                         setFAQSearchValue(event.target.value);
                         filterTuotrialTab(event.target.value);
                     }}
-                    placeholder='Search'
+                    placeholder={localize('Search')}
                     type='text'
                     value={search_value}
                     inputSize='sm'
