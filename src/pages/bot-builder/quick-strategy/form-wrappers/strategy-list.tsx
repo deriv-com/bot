@@ -1,7 +1,7 @@
 import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { Link } from '@deriv-com/quill-ui';
-import { localize } from '@deriv-com/translations';
+import { useTranslations } from '@deriv-com/translations';
 import {
     STRATEGY_TRADE_ASSOCIATIONS,
     TRADE_TYPE_INDEX,
@@ -42,6 +42,7 @@ const StrategyBlock = ({ title, items, onSelectStrategy }: TStrategyBlock) => {
 };
 
 const StrategyList = ({ selector_chip_value, search_value, is_searching, onSelectStrategy }: TStrategyListProps) => {
+    const { localize } = useTranslations();
     const result: TStrategyTradeAssociations = [];
     let is_parent_match_value = false;
 
