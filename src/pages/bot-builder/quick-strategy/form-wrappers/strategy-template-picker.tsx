@@ -4,7 +4,7 @@ import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
 import { Chip, SearchField } from '@deriv-com/quill-ui';
-import { useTranslations } from '@deriv-com/translations';
+import { localize } from '@deriv-com/translations';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
 import './strategy-template-picker.scss';
@@ -15,7 +15,6 @@ type TStrategyTemplatePicker = {
 };
 
 const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType }: TStrategyTemplatePicker) => {
-    const { localize } = useTranslations();
     const { dashboard, quick_strategy } = useStore();
     const { setActiveTabTutorial, setActiveTab, setFAQSearchValue, filterTuotrialTab } = dashboard;
     const { setFormVisibility, setSelectedStrategy } = quick_strategy;

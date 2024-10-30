@@ -1,6 +1,6 @@
 import React from 'react';
 import { VerticalStepper } from '@deriv-com/quill-ui';
-import { useTranslations } from '@deriv-com/translations';
+import { localize } from '@deriv-com/translations';
 import { LinearProgressBar } from '@deriv-com/ui';
 import { QsSteps } from './trade-constants';
 
@@ -11,7 +11,6 @@ type TQSStepper = {
 
 const QSStepper = ({ current_step, is_mobile = false }: TQSStepper) => {
     const percentage = current_step === QsSteps.StrategyCompleted ? 100 : 50;
-    const { localize } = useTranslations();
     return is_mobile ? (
         <LinearProgressBar percentage={percentage} label='' danger_limit={101} is_loading={false} warning_limit={0} />
     ) : (

@@ -1,7 +1,5 @@
-import { useTranslations } from '@deriv-com/translations';
+import { localize } from '@deriv-com/translations';
 import { STRATEGIES } from '../config';
-
-const { localize } = useTranslations();
 
 export enum QsSteps {
     StrategySelect,
@@ -35,7 +33,7 @@ export type TStrategyTradeAssociations = Array<TTStrategyTradeAssociation>;
 export const STRATEGY_TRADE_ASSOCIATIONS: TStrategyTradeAssociations = [
     {
         name: 'MARTINGALE',
-        display_name: STRATEGIES()().MARTINGALE.label,
+        display_name: STRATEGIES().MARTINGALE.label,
         id: 0,
         parent: [localize('Options'), localize('Multipliers'), localize('Accumulators')],
     },
