@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Icon } from '@/utils/tmp/dummy';
+import { LegacyTimeIcon } from '@deriv/quill-icons';
 
 type TCircularProgressProps = {
     className?: string;
@@ -15,7 +15,6 @@ type TCircularProgressProps = {
 const CircularProgress = ({
     className,
     danger_limit = 20,
-    icon = '',
     is_clockwise = false,
     progress = 0,
     radius = 22,
@@ -27,7 +26,9 @@ const CircularProgress = ({
     const strokeDashoffset = circumference - (progress / 100) * circumference;
     return (
         <div className={classNames('dc-circular-progress', className)}>
-            <Icon icon={icon} className='dc-circular-progress__icon' />
+            <div className='dc-circular-progress__icon'>
+                <LegacyTimeIcon iconSize='xs' />
+            </div>
             <svg height={radius * 2} width={radius * 2}>
                 <circle
                     className={classNames('dc-circular-progress__bar', {

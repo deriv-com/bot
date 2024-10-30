@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@/utils/tmp/dummy';
+import { StandaloneSortDownFillIcon, StandaloneSortUpFillIcon } from '@deriv/quill-icons';
 
 type TArrowIndicatorProps = {
     className?: string;
@@ -27,7 +27,13 @@ const ArrowIndicator = ({ className, value }: TArrowIndicatorProps) => {
         setIsVisible(true);
         setData(prev_data => {
             const has_increased = Number(prev_data.value) < Number(value);
-            const icon_name = has_increased ? 'IcProfit' : 'IcLoss';
+            const icon_name = has_increased ? (
+                <StandaloneSortUpFillIcon fill='var(--text-profit-success)' iconSize='sm' />
+            ) : (
+                <div style={{ position: 'relative', top: '-0.7rem' }}>
+                    <StandaloneSortDownFillIcon fill='var(--text-loss-danger)' iconSize='sm' />
+                </div>
+            );
             return {
                 icon: has_comparable_values ? icon_name : '',
                 previous_icon: prev_data.icon,
@@ -47,7 +53,7 @@ const ArrowIndicator = ({ className, value }: TArrowIndicatorProps) => {
     return (
         <div className={className} data-testid='dt_arrow_indicator'>
             {has_comparable_values && is_visible ? (
-                <Icon icon={previous_value === Number(value) ? previous_icon : icon} />
+                <div>{previous_value === Number(value) ? previous_icon : icon}</div>
             ) : null}
         </div>
     );

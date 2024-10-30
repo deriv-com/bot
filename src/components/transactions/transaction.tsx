@@ -6,8 +6,10 @@ import { TContractInfo } from '@/components/summary/summary-card.types';
 import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
+import { IconTradeTypes } from '@/utils/tmp/dummy';
+import { LegacyRadioOffIcon, LegacyRadioOnIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
+import { MarketIcon } from '../market/market-icon';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 
@@ -173,7 +175,7 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                     <div className='transactions__loader-container'>
                         {contract ? (
                             <TransactionIconWithText
-                                icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
+                                icon={<MarketIcon type={contract.underlying} />}
                                 title={contract.display_name || ''}
                             />
                         ) : (
@@ -193,14 +195,14 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                 </div>
                 <div className='transactions__cell transactions__entry-spot'>
                     <TransactionIconWithText
-                        icon={<Icon icon='IcContractEntrySpot' />}
+                        icon={<LegacyRadioOnIcon height={10} width={10} />}
                         title={localize('Entry spot')}
                         message={contract?.entry_tick ?? <TransactionFieldLoader />}
                     />
                 </div>
                 <div className='transactions__cell transactions__exit-spot'>
                     <TransactionIconWithText
-                        icon={<Icon icon='IcContractExitSpot' />}
+                        icon={<LegacyRadioOffIcon height={10} width={10} />}
                         title={localize('Exit spot')}
                         message={contract?.exit_tick ?? <TransactionFieldLoader />}
                     />

@@ -1,16 +1,13 @@
 import { ReactNode } from 'react';
 import {
     LegacyCashierIcon as CashierLogo,
-    LegacyHomeOldIcon as TradershubLogo,
+    LegacyHomeNewIcon as TradershubLogo,
     LegacyReportsIcon as ReportsLogo,
 } from '@deriv/quill-icons/Legacy';
 import {
-    PartnersProductBinaryBotBrandLightLogoWordmarkHorizontalIcon as BinaryBotLogo,
-    PartnersProductSmarttraderBrandLightLogoWordmarkIcon as SmarttraderLogo,
-} from '@deriv/quill-icons/Logo';
-import {
-    DerivProductDerivBotBrandLightLogoWordmarkHorizontalIcon as DerivBotLogo,
-    DerivProductDerivTraderBrandLightLogoWordmarkHorizontalIcon as DerivTraderLogo,
+    DerivProductBrandLightDerivBotLogoWordmarkIcon as DerivBotLogo,
+    DerivProductBrandLightDerivTraderLogoWordmarkIcon as DerivTraderLogo,
+    PartnersProductBrandLightSmarttraderLogoWordmarkIcon as SmarttraderLogo,
 } from '@deriv/quill-icons/Logo';
 
 export type PlatformsConfig = {
@@ -64,15 +61,6 @@ export const platformsConfig: PlatformsConfig[] = [
         description: 'Trade the world’s markets with our popular user-friendly platform.',
         href: 'https://smarttrader.deriv.com/en/trading',
         icon: <SmarttraderLogo height={32} width={153} />,
-        showInEU: false,
-    },
-    {
-        active: false,
-        buttonIcon: <BinaryBotLogo height={24} width={100} />,
-        description:
-            'Our classic “drag-and-drop” tool for creating trading bots, featuring pop-up trading charts, for advanced users.',
-        href: 'https://bot.deriv.com',
-        icon: <BinaryBotLogo height={32} width={133} />,
         showInEU: false,
     },
 ];

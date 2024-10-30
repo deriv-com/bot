@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { Icon, IconTradeTypes } from '@/utils/tmp/dummy';
+import { IconTradeTypes } from '@/utils/tmp/dummy';
 import { localize } from '@deriv-com/translations';
+import { MarketIcon } from '../market/market-icon';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
 import { TTransaction } from './transaction-details.types';
@@ -78,7 +79,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                         <div className={`${PARENT_CLASS}__icon-wrapper`}>
                             <IconContainer
                                 message={transaction?.display_name}
-                                icon={<Icon icon={`IcUnderlying${transaction?.underlying}`} size={32} />}
+                                icon={<MarketIcon type={transaction?.underlying} size='md' />}
                             />
                             <IconContainer
                                 message={getContractTypeName(transaction)}

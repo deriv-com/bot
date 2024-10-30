@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@/utils/tmp/dummy';
+import { StandaloneFlagCheckeredFillIcon } from '@deriv/quill-icons';
 import Money from '../../money';
 import Text from '../../text';
 import { TGetCardLables, TGetContractPath } from '../../types';
@@ -32,7 +32,12 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
             'dc-result__caption--lost': !is_contract_won,
         })}
     >
-        <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
+        <div className='dc-result__icon'>
+            <StandaloneFlagCheckeredFillIcon
+                iconSize='sm'
+                fill={is_contract_won ? 'var(--text-profit-success)' : 'var(--text-loss-danger)'}
+            />
+        </div>
         {getCardLabels().CLOSED}
     </span>
 );
