@@ -1,43 +1,20 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
 import { getDecimalPlaces } from '@/components/shared';
-import { useStore } from '@/hooks/useStore';
-import { useAccountList, useAuthData } from '@deriv-com/api-hooks';
+import { useApiBase } from '@/hooks/useApiBase';
+import { Balance } from '@deriv/api-types';
 import { localize } from '@deriv-com/translations';
-import useBalance from './useBalance';
 
 /** A custom hook that returns the account object for the current active account. */
-const useActiveAccount = () => {
-    const { data, ...rest } = useAccountList();
-    const { activeLoginid } = useAuthData();
-    const { data: allBalanceData } = useBalance();
-    const { client } = useStore() ?? {
-        client: {
-            setLoginId: () => {},
-            setAccountList: () => {},
-            setBalance: () => {},
-            setCurrency: () => {},
-            setIsLoggedIn: () => {},
-        },
-    };
-    const { setLoginId, setAccountList, setBalance, setCurrency, setIsLoggedIn } = client;
+const useActiveAccount = ({ allBalanceData }: { allBalanceData: Balance | null }) => {
+    const { accountList, activeLoginid } = useApiBase();
 
     const activeAccount = useMemo(
-        () => data?.find(account => account.loginid === activeLoginid),
-        [activeLoginid, data]
+        () => accountList?.find(account => account.loginid === activeLoginid),
+        [activeLoginid, accountList]
     );
 
     const currentBalanceData = allBalanceData?.accounts?.[activeAccount?.loginid ?? ''];
-
-    useEffect(() => {
-        if (currentBalanceData) {
-            setLoginId(activeLoginid);
-            setAccountList(data);
-            setBalance(currentBalanceData.balance.toFixed(getDecimalPlaces(currentBalanceData.currency)));
-            setCurrency(currentBalanceData.currency);
-            setIsLoggedIn(true);
-        }
-    }, [currentBalanceData, activeLoginid, data, setLoginId, setAccountList, setBalance, setCurrency, setIsLoggedIn]);
 
     const modifiedAccount = useMemo(() => {
         return activeAccount
@@ -61,7 +38,6 @@ const useActiveAccount = () => {
     return {
         /** User's current active account. */
         data: modifiedAccount,
-        ...rest,
     };
 };
 

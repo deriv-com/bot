@@ -5,7 +5,7 @@ export type TBotSkeleton = {
     initWorkspace: (
         public_path: string,
         store: unknown,
-        api_helpers_store: unknown,
+        // api_helpers_store: unknown,
         is_mobile: boolean
     ) => Promise<void>;
     saveRecentWorkspace: () => void;

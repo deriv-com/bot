@@ -13,6 +13,10 @@ class ApiHelpers {
         this.account_limits = new AccountLimits(api_helpers_store);
     }
 
+    static disposeInstance() {
+        this.singleton = null;
+    }
+
     static setInstance(api_helpers_store) {
         if (!this.singleton) {
             this.singleton = new ApiHelpers(api_helpers_store);

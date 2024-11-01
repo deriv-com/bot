@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { getAppId, getSocketURL } from '@/components/shared';
+import { getAppId, getDefaultAppIdAndUrl, getSocketURL } from '@/components/shared';
 import { Button, Input, Text } from '@deriv-com/ui';
 import { LocalStorageConstants, LocalStorageUtils } from '@deriv-com/utils';
 import './endpoint.scss';
@@ -62,15 +62,14 @@ const Endpoint = () => {
                         className='endpoint__button'
                         color='black'
                         onClick={() => {
-                            // TODO: fix - get default server and app id from the backend
-                            const defaultServer = 'blue.derivws.com';
-                            const defaultAppId = 19111;
-                            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, defaultServer);
-                            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, defaultAppId);
+                            const { server_url, app_id } = getDefaultAppIdAndUrl();
+                            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, server_url);
+                            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, app_id);
+
                             formik.resetForm({
                                 values: {
-                                    appId: defaultAppId,
-                                    serverUrl: defaultServer,
+                                    appId: app_id,
+                                    serverUrl: server_url,
                                 },
                             });
                             window.location.reload();

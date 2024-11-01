@@ -3,8 +3,11 @@ import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 class ChartAPI {
     api;
 
-    init = async () => {
-        if (!this.api) {
+    init = async (force_create_connection = false) => {
+        if (!this.api || force_create_connection) {
+            if (this.api?.connection) {
+                this.api.disconnect();
+            }
             this.api = await generateDerivApiInstance();
         }
         if (getLoginId()) {

@@ -1,21 +1,27 @@
-import { isBot } from '../platform';
 import { isStaging } from '../url/helpers';
 
 export const APP_IDS = {
     LOCALHOST: 36300,
-    STAGING: 64584,
-    // STAGING_ME: 64584,
-    // STAGING_BE: 64584,
+    TMP_STAGING: 64584,
+    STAGING: 29934,
+    STAGING_ME: 29934,
+    STAGING_BE: 29934,
     PRODUCTION: 19111,
-    // PRODUCTION_ME: 64584,
-    // PRODUCTION_BE: 64584,
+    PRODUCTION_ME: 19111,
+    PRODUCTION_BE: 19111,
 };
 
 export const livechat_license_id = 12049137;
 export const livechat_client_id = '66aa088aad5a414484c1fd1fa8a5ace7';
 
 export const domain_app_ids = {
-    'master.bot-standalone.pages.dev': APP_IDS.STAGING,
+    'master.bot-standalone.pages.dev': APP_IDS.TMP_STAGING,
+    'staging-dbot.deriv.com': APP_IDS.STAGING,
+    'staging-dbot.deriv.be': APP_IDS.STAGING_BE,
+    'staging-dbot.deriv.me': APP_IDS.STAGING_ME,
+    'dbot.deriv.com': APP_IDS.PRODUCTION,
+    'dbot.deriv.be': APP_IDS.PRODUCTION_BE,
+    'dbot.deriv.me': APP_IDS.PRODUCTION_ME,
 };
 
 export const getCurrentProductionDomain = () =>
@@ -33,25 +39,49 @@ export const isTestLink = () => {
 
 export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
+const getDefaultServerURL = () => {
+    let active_loginid_from_url;
+    const search = window.location.search;
+    if (search) {
+        const params = new URLSearchParams(document.location.search.substring(1));
+        active_loginid_from_url = params.get('acct1');
+    }
+
+    const loginid = window.localStorage.getItem('active_loginid') ?? active_loginid_from_url;
+    const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
+
+    const server = is_real ? 'green' : 'blue';
+    const server_url = `${server}.derivws.com`;
+
+    return server_url;
+};
+
+export const getDefaultAppIdAndUrl = () => {
+    const server_url = getDefaultServerURL();
+
+    if (/localhost/i.test(window.location.hostname)) {
+        return { app_id: APP_IDS.LOCALHOST, server_url };
+    }
+
+    const current_domain = getCurrentProductionDomain() ?? '';
+    const app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
+
+    return { app_id, server_url };
+};
+
 export const getAppId = () => {
     let app_id = null;
     const config_app_id = window.localStorage.getItem('config.app_id');
-    const current_domain = getCurrentProductionDomain() || '';
-
-    const is_bot = isBot();
+    const current_domain = getCurrentProductionDomain() ?? '';
 
     if (config_app_id) {
         app_id = config_app_id;
     } else if (isStaging()) {
-        window.localStorage.removeItem('config.default_app_id');
         app_id = APP_IDS.STAGING;
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = APP_IDS.LOCALHOST;
     } else {
-        window.localStorage.removeItem('config.default_app_id');
-        app_id = is_bot
-            ? APP_IDS.PRODUCTION
-            : domain_app_ids[current_domain as keyof typeof domain_app_ids] || APP_IDS.PRODUCTION;
+        app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
     }
 
     return app_id;
@@ -61,18 +91,7 @@ export const getSocketURL = () => {
     const local_storage_server_url = window.localStorage.getItem('config.server_url');
     if (local_storage_server_url) return local_storage_server_url;
 
-    let active_loginid_from_url;
-    const search = window.location.search;
-    if (search) {
-        const params = new URLSearchParams(document.location.search.substring(1));
-        active_loginid_from_url = params.get('acct1');
-    }
-
-    const loginid = window.localStorage.getItem('active_loginid') || active_loginid_from_url;
-    const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
-
-    const server = is_real ? 'green' : 'blue';
-    const server_url = `${server}.derivws.com`;
+    const server_url = getDefaultServerURL();
 
     return server_url;
 };

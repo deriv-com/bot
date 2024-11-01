@@ -1,20 +1,19 @@
 import { action, makeObservable, reaction, when } from 'mobx';
-import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 import {
     ContentFlag,
     isEuResidenceWithOnlyVRTC,
     routes,
     showDigitalOptionsUnavailableError,
 } from '@/components/shared';
-import { ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
-import { TStores } from '@deriv/stores/types';
+import { api_base, ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
+import { TApiHelpersStore } from '@/types/stores.types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
 
 export default class AppStore {
     root_store: RootStore;
-    core: TStores;
-    dbot_store: TDbotStore | null;
+    core: RootStore['core'];
+    dbot_store: RootStore | null;
     api_helpers_store: TApiHelpersStore | null;
     timer: ReturnType<typeof setInterval> | null;
     disposeReloadOnLanguageChangeReaction: unknown;
@@ -23,7 +22,7 @@ export default class AppStore {
     disposeLandingCompanyChangeReaction: unknown;
     disposeResidenceChangeReaction: unknown;
 
-    constructor(root_store: RootStore, core: TStores) {
+    constructor(root_store: RootStore, core: RootStore['core']) {
         makeObservable(this, {
             onMount: action,
             onUnmount: action,
@@ -81,7 +80,7 @@ export default class AppStore {
     };
 
     handleErrorForEu = (show_default_error = false) => {
-        const { client, common, ui, traders_hub } = this.core;
+        const { client, common, ui } = this.core;
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
@@ -89,7 +88,7 @@ export default class AppStore {
                 window.location.href = routes.traders_hub;
             }
 
-            this.throwErrorForExceptionCountries(client?.clients_country);
+            this.throwErrorForExceptionCountries(client?.clients_country as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
@@ -106,11 +105,11 @@ export default class AppStore {
                 );
             }
 
-            if (traders_hub.content_flag === ContentFlag.HIGH_RISK_CR) {
+            if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
                 return false;
             }
 
-            if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+            if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
                     this.getErrorForNonEuClients(),
@@ -161,7 +160,7 @@ export default class AppStore {
             }
         }, 10000);
 
-        if (!this.dbot_store || !this.api_helpers_store) return;
+        if (!this.dbot_store) return;
 
         blockly_store.setLoading(true);
         await DBot.initWorkspace('/', this.dbot_store, this.api_helpers_store, ui.is_mobile, false);
@@ -247,12 +246,19 @@ export default class AppStore {
     };
 
     registerOnAccountSwitch = () => {
-        const { client } = this.core;
-
         this.disposeSwitchAccountListener = reaction(
-            () => client.switch_broadcast,
-            switch_broadcast => {
-                if (!switch_broadcast) return;
+            () => this.root_store.common?.is_socket_opened,
+            is_socket_opened => {
+                if (!is_socket_opened) return;
+                this.api_helpers_store = {
+                    server_time: this.root_store.common.server_time,
+                    ws: api_base.api,
+                };
+
+                if (!ApiHelpers.instance) {
+                    ApiHelpers.setInstance(this.api_helpers_store);
+                }
+
                 this.showDigitalOptionsMaltainvestError();
 
                 if (ApiHelpers.instance) {
@@ -324,7 +330,7 @@ export default class AppStore {
 
         this.api_helpers_store = {
             server_time: this.core.common.server_time,
-            ws: this.root_store.ws,
+            ws: api_base.api,
         };
     };
 

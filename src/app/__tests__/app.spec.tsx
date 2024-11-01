@@ -12,12 +12,6 @@ jest.mock('react-router-dom', () => ({
     ),
 }));
 
-jest.mock('@deriv-com/api-hooks', () => ({
-    AppDataProvider: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid='app-data-provider'>{children}</div>
-    ),
-}));
-
 jest.mock('@deriv-com/translations', () => ({
     TranslationProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid='translation-provider'>{children}</div>

@@ -1,6 +1,16 @@
 import CommonStore from '@/stores/common-store';
+import { TAuthData } from '@/types/api-types';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
+import {
+    CONNECTION_STATUS,
+    setAccountList,
+    setAuthData,
+    setConnectionStatus,
+    setIsAuthorized,
+    setIsAuthorizing,
+} from './observables/connection-status-stream';
+import ApiHelpers from './api-helpers';
 import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
 import chart_api from './chart-api';
 
@@ -13,7 +23,7 @@ type SubscriptionPromise = Promise<{
     subscription: CurrentSubscription;
 }>;
 
-type Api = {
+type TApiBaseApi = {
     connection: {
         readyState: keyof typeof socket_state;
         addEventListener: (event: string, callback: () => void) => void;
@@ -21,12 +31,17 @@ type Api = {
     };
     send: (data: unknown) => void;
     disconnect: () => void;
-    authorize: (token: string) => Promise<{ authorize: string; error: unknown }>;
+    authorize: (token: string) => Promise<{ authorize: TAuthData; error: unknown }>;
     getSelfExclusion: () => Promise<unknown>;
-};
+    onMessage: () => {
+        subscribe: (callback: (message: unknown) => void) => {
+            unsubscribe: () => void;
+        };
+    };
+} & ReturnType<typeof generateDerivApiInstance>;
 
 class APIBase {
-    api: Api | null = null;
+    api: TApiBaseApi | null = null;
     token: string = '';
     account_id: string = '';
     pip_sizes = {};
@@ -56,26 +71,26 @@ class APIBase {
     };
 
     onsocketopen() {
-        if (this.common_store) {
-            this.common_store.setSocketOpened(true);
-        }
+        setConnectionStatus(CONNECTION_STATUS.OPENED);
     }
 
     onsocketclose() {
-        if (this.common_store) {
-            this.common_store.setSocketOpened(false);
-        }
+        setConnectionStatus(CONNECTION_STATUS.CLOSED);
+        this.reconnectIfNotConnected();
     }
 
-    async init(common_store?: CommonStore) {
+    async init(force_create_connection = false) {
         this.toggleRunButton(true);
 
         if (this.api) {
             this.unsubscribeAllSubscriptions();
         }
 
-        if (!this.api || this.api?.connection.readyState !== 1) {
+        if (!this.api || this.api?.connection.readyState !== 1 || force_create_connection) {
             if (this.api?.connection) {
+                ApiHelpers.disposeInstance();
+                setConnectionStatus(CONNECTION_STATUS.CLOSED);
+                this.api.disconnect();
                 this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
                 this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
             }
@@ -95,28 +110,23 @@ class APIBase {
         this.getTime();
 
         if (V2GetActiveToken()) {
+            setIsAuthorizing(true);
             await this.authorizeAndSubscribe();
         }
 
-        chart_api.init();
-
-        if (common_store) {
-            this.common_store = common_store;
-            this.onsocketopen();
-        }
+        chart_api.init(force_create_connection);
     }
 
     getConnectionStatus() {
         if (this.api?.connection) {
             const ready_state = this.api.connection.readyState;
-            return socket_state[ready_state] || 'Unknown';
+            return socket_state[ready_state as keyof typeof socket_state] || 'Unknown';
         }
         return 'Socket not initialized';
     }
 
     terminate() {
         // eslint-disable-next-line no-console
-        console.log('connection terminated');
         if (this.api) this.api.disconnect();
     }
 
@@ -135,11 +145,11 @@ class APIBase {
 
     reconnectIfNotConnected = () => {
         // eslint-disable-next-line no-console
-        console.log('connection state: ', this.api?.connection.readyState);
-        if (this.api?.connection.readyState !== 1) {
+        console.log('connection state: ', this.api?.connection?.readyState);
+        if (this.api?.connection?.readyState && this.api?.connection?.readyState > 1) {
             // eslint-disable-next-line no-console
             console.log('Info: Connection to the server was closed, trying to reconnect.');
-            this.init();
+            this.init(true);
         }
     };
 
@@ -161,12 +171,18 @@ class APIBase {
                     this.active_symbols_promise = this.getActiveSymbols();
                 }
                 this.account_info = authorize;
+                setAccountList(authorize.account_list);
+                setAuthData(authorize);
+                setIsAuthorized(true);
                 this.is_authorized = true;
                 this.subscribe();
                 this.getSelfExclusion();
             } catch (e) {
                 this.is_authorized = false;
+                setIsAuthorized(false);
                 globalObserver.emit('Error', e);
+            } finally {
+                setIsAuthorizing(false);
             }
         }
     }
@@ -181,7 +197,11 @@ class APIBase {
         const subscribeToStream = (streamName: string) => {
             return doUntilDone(
                 () => {
-                    const subscription = this.api?.send({ [streamName]: 1, subscribe: 1 });
+                    const subscription = this.api?.send({
+                        [streamName]: 1,
+                        subscribe: 1,
+                        ...(streamName === 'balance' ? { account: 'all' } : {}),
+                    });
                     if (subscription) {
                         this.current_auth_subscriptions.push(subscription);
                     }

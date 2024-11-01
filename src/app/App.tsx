@@ -1,18 +1,15 @@
-import { Fragment, lazy, Suspense } from 'react';
+import { Fragment, lazy, Suspense, useEffect } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import Endpoint from '@/pages/endpoint';
-import { AppDataProvider } from '@deriv-com/api-hooks';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
-
-const queryClient = new QueryClient();
 
 const { TRANSLATIONS_CDN_URL, R2_PROJECT_NAME, CROWDIN_BRANCH_NAME } = process.env;
 const i18nInstance = initializeI18n({
@@ -25,18 +22,14 @@ const router = createBrowserRouter(
             path='/'
             element={
                 <Suspense fallback={<div>Please wait while we load the app...</div>}>
-                    <QueryClientProvider client={queryClient}>
-                        <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
-                            <AppDataProvider>
-                                <StoreProvider>
-                                    <RoutePromptDialog />
-                                    <CoreStoreProvider>
-                                        <Layout />
-                                    </CoreStoreProvider>
-                                </StoreProvider>
-                            </AppDataProvider>
-                        </TranslationProvider>
-                    </QueryClientProvider>
+                    <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
+                        <StoreProvider>
+                            <RoutePromptDialog />
+                            <CoreStoreProvider>
+                                <Layout />
+                            </CoreStoreProvider>
+                        </StoreProvider>
+                    </TranslationProvider>
                 </Suspense>
             }
         >
@@ -48,9 +41,35 @@ const router = createBrowserRouter(
 );
 
 function App() {
+    const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
+
+    useEffect(() => {
+        // Set login info to local storage and remove params from url
+        if (loginInfo.length) {
+            try {
+                const defaultActiveAccount = URLUtils.getDefaultActiveAccount(loginInfo);
+                if (!defaultActiveAccount) return;
+
+                const accountsList: Record<string, string> = {};
+
+                loginInfo.forEach(account => {
+                    accountsList[account.loginid] = account.token;
+                });
+
+                localStorage.setItem('accountsList', JSON.stringify(accountsList));
+
+                URLUtils.filterSearchParams(paramsToDelete);
+
+                localStorage.setItem('authToken', loginInfo[0].token);
+                localStorage.setItem('active_loginid', loginInfo[0].loginid);
+            } catch (error) {
+                console.error('Error setting up login info:', error);
+            }
+        }
+    }, [loginInfo, paramsToDelete]);
+
     React.useEffect(() => {
         window?.dataLayer?.push({ event: 'page_load' });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

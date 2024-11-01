@@ -1,4 +1,5 @@
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@/components/shared';
+import { isAuthorizing$ } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
@@ -238,6 +239,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
     updateAmountLimits() {
         const { account_limits } = ApiHelpers.instance;
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        if (isAuthorizing$.getValue()) return;
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
             if (!this.getField('AMOUNT_LIMITS')) {
                 return;
