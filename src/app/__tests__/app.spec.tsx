@@ -17,6 +17,8 @@ jest.mock('@deriv-com/translations', () => ({
         <div data-testid='translation-provider'>{children}</div>
     ),
     initializeI18n: jest.fn(),
+    localize: jest.fn(),
+    Localize: jest.fn(),
 }));
 
 jest.mock('@tanstack/react-query', () => ({
