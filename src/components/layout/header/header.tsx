@@ -1,8 +1,10 @@
 import clsx from 'clsx';
+import { observer } from 'mobx-react-lite';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useApiBase } from '@/hooks/useApiBase';
+import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
-import { useAuthData } from '@deriv-com/api-hooks';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
@@ -18,10 +20,12 @@ import './header.scss';
 
 const { getOauthURL } = URLUtils;
 
-const AppHeader = () => {
+const AppHeader = observer(() => {
     const { isDesktop } = useDevice();
-    const { activeLoginid, isAuthorizing } = useAuthData();
-    const { data: activeAccount } = useActiveAccount();
+    const { isAuthorizing, activeLoginid } = useApiBase();
+    const { client } = useStore() ?? {};
+
+    const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
 
     const { localize } = useTranslations();
 
@@ -98,6 +102,6 @@ const AppHeader = () => {
             <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
         </Header>
     );
-};
+});
 
 export default AppHeader;

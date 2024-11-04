@@ -10,12 +10,6 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
-jest.mock('@deriv-com/api-hooks', () => ({
-    useAuthData: jest.fn().mockReturnValue({
-        isAuthorized: true,
-    }),
-}));
-
 jest.mock('../../platform-switcher', () => jest.fn(() => <div>Mock Platform Switcher</div>));
 
 describe('MenuContent Component', () => {

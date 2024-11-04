@@ -1,28 +1,44 @@
+import { useMemo } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
+import { CurrencyIcon } from '@/components/currency/currency-icon';
+import { getDecimalPlaces } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
-import useModifiedAccountList from '@/hooks/api/account/useAccountList';
+import { api_base } from '@/external/bot-skeleton';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
-import { useAuthData } from '@deriv-com/api-hooks';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
 
-type TActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
-type TAccountSwitcherProps = {
-    activeAccount: TActiveAccount | undefined;
-    isVirtual?: boolean;
+type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
+    balance: string;
+    currencyLabel: string;
+    icon: React.ReactNode;
+    isVirtual: boolean;
+    isActive: boolean;
+    loginid: number;
+    currency: string;
 };
 
-const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
-    const { data: modifiedAccountList } = useModifiedAccountList();
-    const { switchAccount } = useAuthData();
-    const { client } = useStore() ?? {
-        client: {
-            logout: () => {},
-        },
-    };
+type TAccountSwitcherProps = {
+    isVirtual?: boolean;
+    modifiedAccountList: TModifiedAccount[];
+    switchAccount: (loginId: number) => void;
+};
+
+type TAccountSwitcher = {
+    activeAccount: ReturnType<typeof useActiveAccount>['data'];
+};
+
+const tabs_labels = {
+    demo: localize('Demo'),
+    real: localize('Real'),
+};
+
+const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
+    const { client } = useStore();
 
     return (
         <>
@@ -30,7 +46,7 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
                 isOpen
                 title={localize('Deriv accounts')}
                 className='account-switcher-panel'
-                key={isVirtual ? 'demo' : 'real'}
+                key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
             >
                 {modifiedAccountList
                     ?.filter(account => (isVirtual ? account.is_virtual : !account.is_virtual))
@@ -66,7 +82,14 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
                 <Divider color='var(--du-general-active)' height='2px' />
 
                 <UIAccountSwitcher.Footer>
-                    <div id='dt_logout_button' className='deriv-account-switcher__logout' onClick={client.logout}>
+                    <div
+                        id='dt_logout_button'
+                        className='deriv-account-switcher__logout'
+                        onClick={() => {
+                            client.logout();
+                            api_base?.api?.logout();
+                        }}
+                    >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
                             {localize('Log out')}
                         </Text>
@@ -82,20 +105,57 @@ const RenderAccountItems = ({ isVirtual }: Partial<TAccountSwitcherProps>) => {
     );
 };
 
-const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
-    const { ui, run_panel } = useStore() ?? {
+const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
+    const { accountList } = useApiBase();
+    const { ui, run_panel, client } = useStore() ?? {
         ui: {
             account_switcher_disabled_message: '',
         },
         run_panel: {
             is_stop_button_visible: false,
         },
+        client: {
+            all_accounts_balance: {},
+        },
     };
     const { account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
-    const tabs_labels = {
-        demo: localize('Demo'),
-        real: localize('Real'),
+
+    const modifiedAccountList = useMemo(() => {
+        return accountList?.map(account => {
+            return {
+                ...account,
+                balance:
+                    client.all_accounts_balance?.accounts?.[account?.loginid]?.balance?.toFixed(
+                        getDecimalPlaces(account.currency)
+                    ) ?? '0',
+                currencyLabel: account?.is_virtual
+                    ? tabs_labels.demo
+                    : (client.website_status?.currencies_config?.[account?.currency]?.name ?? account?.currency),
+                icon: (
+                    <CurrencyIcon
+                        currency={account?.currency?.toLowerCase()}
+                        isVirtual={Boolean(account?.is_virtual)}
+                    />
+                ),
+                isVirtual: Boolean(account?.is_virtual),
+                isActive: account?.loginid === activeAccount?.loginid,
+            };
+        });
+    }, [
+        accountList,
+        client.all_accounts_balance?.accounts,
+        client.website_status?.currencies_config,
+        activeAccount?.loginid,
+    ]);
+
+    const switchAccount = async (loginId: number) => {
+        const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+        const token = account_list[loginId];
+        if (!token) return;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('active_loginid', loginId.toString());
+        await api_base?.init(true);
     };
 
     return (
@@ -112,11 +172,18 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcherProps) => {
                     isDisabled={is_stop_button_visible}
                     tabsLabels={tabs_labels}
                 >
-                    <UIAccountSwitcher.Tab title={localize('Real')}>
-                        <RenderAccountItems activeAccount={activeAccount} />
+                    <UIAccountSwitcher.Tab title={tabs_labels.real}>
+                        <RenderAccountItems
+                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
+                            switchAccount={switchAccount}
+                        />
                     </UIAccountSwitcher.Tab>
-                    <UIAccountSwitcher.Tab title={localize('Demo')}>
-                        <RenderAccountItems activeAccount={activeAccount} isVirtual />
+                    <UIAccountSwitcher.Tab title={tabs_labels.demo}>
+                        <RenderAccountItems
+                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
+                            switchAccount={switchAccount}
+                            isVirtual
+                        />
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>
             </Popover>

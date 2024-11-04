@@ -47,7 +47,6 @@ export default class RootStore {
     public client: ClientStore;
     public common: CommonStore;
 
-    ws = null;
     core = {
         ui: {},
         client: {},
@@ -57,8 +56,7 @@ export default class RootStore {
         pushDataLayer: () => {},
     };
 
-    constructor(dbot: unknown, ws: any) {
-        this.ws = ws;
+    constructor(dbot: unknown) {
         this.dbot = dbot;
 
         // Need to fix later without using this.core

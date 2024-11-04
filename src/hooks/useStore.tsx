@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { api_base } from '@/external/bot-skeleton';
 import RootStore from '@/stores/root-store';
 import { TWebSocket } from '@/Types';
 import Bot from '../external/bot-skeleton/scratch/dbot';
@@ -17,9 +16,7 @@ const StoreProvider: React.FC<TStoreProvider> = ({ children, mockStore }) => {
 
     useEffect(() => {
         const initializeStore = async () => {
-            await api_base.init();
-            const ws = api_base.api;
-            const rootStore = new RootStore(Bot, ws);
+            const rootStore = new RootStore(Bot);
             setStore(rootStore);
         };
 

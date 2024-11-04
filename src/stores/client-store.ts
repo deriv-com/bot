@@ -2,56 +2,29 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { ContentFlag, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
 import {
-    useAccountList,
-    useGetAccountStatus,
-    useGetSettings,
-    useLandingCompany,
-    useWebsiteStatus,
-} from '@deriv-com/api-hooks';
-
-export type TAccountList = NonNullable<ReturnType<typeof useAccountList>['data']>;
-
-type GetAccountStatusResult = NonNullable<ReturnType<typeof useGetAccountStatus>['data']>;
-
-type GetSettingsResult = NonNullable<ReturnType<typeof useGetSettings>['data']>;
-
-type GetWebsiteStatusResult = NonNullable<ReturnType<typeof useWebsiteStatus>['data']>;
-
-export type GetLandingCompanyResult = NonNullable<ReturnType<typeof useLandingCompany>['data']> & {
-    gaming_company: {
-        shortcode: string;
-    };
-    financial_company: {
-        shortcode: string;
-    };
-    mt_gaming_company: {
-        financial: {
-            shortcode: string;
-        };
-        swap_free: {
-            shortcode: string;
-        };
-    };
-};
+    setAccountList,
+    setAuthData,
+    setIsAuthorized,
+} from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
+import type { TAuthData, TLandingCompany } from '@/types/api-types';
+import type { Balance, GetAccountStatus, GetSettings, WebsiteStatus } from '@deriv/api-types';
 
 const eu_shortcode_regex = /^maltainvest$/;
 const eu_excluded_regex = /^mt$/;
-
 export default class ClientStore {
     loginid = '';
-    account_list: TAccountList = [];
+    account_list: TAuthData['account_list'] = [];
     balance = '0';
     currency = 'USD';
     is_logged_in = false;
-    account_status: GetAccountStatusResult | undefined;
-    account_settings: GetSettingsResult | undefined;
-    website_status: GetWebsiteStatusResult | undefined;
-    landing_companies: GetLandingCompanyResult | undefined;
+    account_status: GetAccountStatus | undefined;
+    account_settings: GetSettings | undefined;
+    website_status: WebsiteStatus | undefined;
+    landing_companies: TLandingCompany | undefined;
     upgradeable_landing_companies: string[] = [];
-    accounts: Record<string, TAccountList[number]> = {};
+    accounts: Record<string, TAuthData['account_list'][number]> = {};
     is_landing_company_loaded = false;
-    apiHookLogout = () => {};
-    switch_broadcast = false;
+    all_accounts_balance: Balance | null = null;
 
     // TODO: fix with self exclusion
     updateSelfExclusion = () => {};
@@ -61,14 +34,13 @@ export default class ClientStore {
             account_list: observable,
             account_settings: observable,
             account_status: observable,
-            apiHookLogout: observable,
+            all_accounts_balance: observable,
             balance: observable,
             currency: observable,
             is_landing_company_loaded: observable,
             is_logged_in: observable,
             landing_companies: observable,
             loginid: observable,
-            switch_broadcast: observable,
             upgradeable_landing_companies: observable,
             website_status: observable,
             active_accounts: computed,
@@ -88,13 +60,12 @@ export default class ClientStore {
             setAccountList: action,
             setAccountSettings: action,
             setAccountStatus: action,
-            setApiHookLogout: action,
+            setAllAccountsBalance: action,
             setBalance: action,
             setCurrency: action,
             setIsLoggedIn: action,
             setLandingCompany: action,
             setLoginId: action,
-            setSwitchBroadcast: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
         });
@@ -237,7 +208,7 @@ export default class ClientStore {
         this.loginid = loginid;
     };
 
-    setAccountList = (account_list?: TAccountList) => {
+    setAccountList = (account_list?: TAuthData['account_list']) => {
         this.accounts = {};
         account_list?.forEach(account => {
             this.accounts[account.loginid] = account;
@@ -262,36 +233,36 @@ export default class ClientStore {
         return accountList[this.loginid] ?? '';
     };
 
-    setAccountStatus(status: GetAccountStatusResult) {
+    setAccountStatus(status: GetAccountStatus | undefined) {
         this.account_status = status;
     }
 
-    setAccountSettings(settings: GetSettingsResult) {
-        const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
-        if (!is_equal_settings) {
-            this.account_settings = settings;
+    setAccountSettings(settings: GetSettings | undefined) {
+        try {
+            const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
+            if (!is_equal_settings) {
+                this.account_settings = settings;
+            }
+        } catch (error) {
+            console.error('setAccountSettings error', error);
         }
     }
 
-    setWebsiteStatus(status: GetWebsiteStatusResult) {
+    setWebsiteStatus(status: WebsiteStatus | undefined) {
         this.website_status = status;
     }
 
-    setLandingCompany(landing_companies: GetLandingCompanyResult) {
+    setLandingCompany(landing_companies: TLandingCompany) {
         this.landing_companies = landing_companies;
         this.is_landing_company_loaded = true;
     }
-
-    setApiHookLogout = (logout: () => void) => {
-        this.apiHookLogout = logout;
-    };
 
     setUpgradeableLandingCompanies = (upgradeable_landing_companies: string[]) => {
         this.upgradeable_landing_companies = upgradeable_landing_companies;
     };
 
-    setSwitchBroadcast = (switch_broadcast: boolean) => {
-        this.switch_broadcast = switch_broadcast;
+    setAllAccountsBalance = (all_accounts_balance: Balance | undefined) => {
+        this.all_accounts_balance = all_accounts_balance ?? null;
     };
 
     logout = () => {
@@ -307,8 +278,15 @@ export default class ClientStore {
         this.currency = 'USD';
 
         this.is_landing_company_loaded = false;
-        this.switch_broadcast = false;
 
-        this.apiHookLogout();
+        this.all_accounts_balance = null;
+
+        localStorage.removeItem('active_loginid');
+        localStorage.removeItem('accountsList');
+        localStorage.removeItem('authToken');
+
+        setIsAuthorized(false);
+        setAccountList([]);
+        setAuthData(null);
     };
 }
