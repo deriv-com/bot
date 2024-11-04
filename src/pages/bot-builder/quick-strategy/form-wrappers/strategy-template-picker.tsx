@@ -51,7 +51,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                     className='strategy-template-picker__icon'
                     onClick={() => {
                         setActiveTab(DBOT_TABS.TUTORIAL);
-                        setActiveTabTutorial(3);
+                        setActiveTabTutorial(2);
                         setFormVisibility(false);
                     }}
                 >

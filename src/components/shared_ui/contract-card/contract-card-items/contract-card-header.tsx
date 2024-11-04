@@ -67,7 +67,7 @@ const ContractCardHeader = ({
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const is_turbos = isTurbosContract(contract_type);
     const is_multipliers = isMultiplierContract(contract_type);
     const is_high_low = isHighLow({ shortcode });
@@ -102,7 +102,8 @@ const ContractCardHeader = ({
             <div
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--trader': !is_bot,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator': isDesktop && is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator':
+                        !(isMobile || is_bot) && is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader--sold':
                         (is_accumulator || is_turbos || is_multipliers) && is_sold,
                 })}

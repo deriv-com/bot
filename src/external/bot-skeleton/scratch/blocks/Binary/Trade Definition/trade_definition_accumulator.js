@@ -2,6 +2,7 @@ import { getCurrencyDisplayCode, getDecimalPlaces } from '@/components/shared';
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
+import { handleProposalRequestForAccumulators } from '../../../accumulators-proposal-handler';
 import DBotStore from '../../../dbot-store';
 import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 
@@ -102,6 +103,7 @@ window.Blockly.Blocks.trade_definition_accumulator = {
             return;
         }
 
+        handleProposalRequestForAccumulators(this);
         const trade_definition_block = this.workspace
             .getAllBlocks(true)
             .find(block => block.type === 'trade_definition');
