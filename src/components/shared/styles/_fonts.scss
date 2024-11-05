@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 /*
     Constants
 */
@@ -53,7 +55,7 @@ $LINEHEIGHTS: (
                     $typeface: (
                         $key: $val,
                     );
-                    $typeface_list: map-merge($typeface_list, $typeface);
+                    $typeface_list: map.merge($typeface_list, $typeface);
                 }
             }
         }

@@ -6,7 +6,7 @@
     border-width: 1px;
     margin-inline-end: 2.4rem;
 
-    @include mobile-screen {
+    @include mobile-or-tablet-screen {
         margin-inline-end: 0;
     }
 

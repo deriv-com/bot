@@ -38,7 +38,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             border-radius: $BORDER_RADIUS;
         }
     }
@@ -74,7 +74,7 @@
             color: var(--text-prominent);
             line-height: 2rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.2rem;
             }
         }

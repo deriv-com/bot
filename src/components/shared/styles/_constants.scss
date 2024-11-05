@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 /* ------------------------------------*
  *  # Constants
  *------------------------------------ */
@@ -78,36 +80,36 @@ $color-status-announcement: rgb(75 180 179 / 16%);
 $color-status-error: rgb(236 63 63 / 16%);
 
 /* alpha colors */
-$alpha-color-black-1: transparentize($color-black-7, 0.28);
-$alpha-color-black-2: transparentize($color-black, 0.04);
-$alpha-color-black-3: transparentize($color-black-7, 0.92);
-$alpha-color-black-4: transparentize($color-black-7, 0.84);
-$alpha-color-black-5: transparentize($color-black-7, 0.16);
-$alpha-color-black-6: transparentize($color-black-7, 0.36);
-$alpha-color-black-7: transparentize($color-black, 0.5);
-$alpha-color-blue-1: transparentize($color-blue, 0.84);
-$alpha-color-blue-2: transparentize($color-blue-3, 0.84);
-$alpha-color-blue-3: transparentize($color-blue, 0.92);
-$alpha-color-white-1: transparentize($color-white, 0.04);
-$alpha-color-white-2: transparentize($color-white, 0.84);
-$alpha-color-white-3: transparentize($color-white, 0.92);
-$alpha-color-white-4: transparentize($color-white, 0.3);
-$alpha-color-red-1: transparentize($color-red, 0.92);
-$alpha-color-red-2: transparentize($color-red, 0.84);
-$alpha-color-red-3: transparentize($color-red, 0.76);
-$alpha-color-green-1: transparentize($color-green-1, 0.08);
-$alpha-color-green-2: transparentize($color-green-3, 0.08);
-$alpha-color-yellow-1: transparentize($color-yellow, 0.84);
+$alpha-color-black-1: color.scale($color-black-7, $alpha: -28%);
+$alpha-color-black-2: color.scale($color-black, $alpha: -4%);
+$alpha-color-black-3: color.scale($color-black-7, $alpha: -92%);
+$alpha-color-black-4: color.scale($color-black-7, $alpha: -84%);
+$alpha-color-black-5: color.scale($color-black-7, $alpha: -16%);
+$alpha-color-black-6: color.scale($color-black-7, $alpha: -36%);
+$alpha-color-black-7: color.scale($color-black, $alpha: -50%);
+$alpha-color-blue-1: color.scale($color-blue, $alpha: -84%);
+$alpha-color-blue-2: color.scale($color-blue-3, $alpha: -84%);
+$alpha-color-blue-3: color.scale($color-blue, $alpha: -92%);
+$alpha-color-white-1: color.scale($color-white, $alpha: -4%);
+$alpha-color-white-2: color.scale($color-white, $alpha: -84%);
+$alpha-color-white-3: color.scale($color-white, $alpha: -92%);
+$alpha-color-white-4: color.scale($color-white, $alpha: -30%);
+$alpha-color-red-1: color.scale($color-red, $alpha: -92%);
+$alpha-color-red-2: color.scale($color-red, $alpha: -84%);
+$alpha-color-red-3: color.scale($color-red, $alpha: -76%);
+$alpha-color-green-1: color.scale($color-green-1, $alpha: -8%);
+$alpha-color-green-2: color.scale($color-green-3, $alpha: -8%);
+$alpha-color-yellow-1: color.scale($color-yellow, $alpha: -84%);
 
 /* gradient colors */
-$gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($color-green-1, 0.84));
-$gradient-color-green-2: linear-gradient(to top, $color-black, transparentize($color-green-3, 0.84));
-$gradient-color-red-1: linear-gradient(to top, $color-white, transparentize($color-red, 0.84));
-$gradient-color-red-2: linear-gradient(to top, $color-black, transparentize($color-red, 0.84));
-$contract-gradient-color-red-1: linear-gradient(to top, $color-white 85%, transparentize($color-red, 0.84));
-$contract-gradient-color-red-2: linear-gradient(to top, $color-black 85%, transparentize($color-red, 0.84));
-$gradient-color-white: linear-gradient(to right, transparentize($color-white, 1) -5%, $color-white 71%);
-$gradient-color-black: linear-gradient(to right, transparentize($color-black, 1) -5%, $color-black 71%);
+$gradient-color-green-1: linear-gradient(to top, $color-white, color.scale($color-green-1, $alpha: -84%));
+$gradient-color-green-2: linear-gradient(to top, $color-black, color.scale($color-green-3, $alpha: -84%));
+$gradient-color-red-1: linear-gradient(to top, $color-white, color.scale($color-red, $alpha: -84%));
+$gradient-color-red-2: linear-gradient(to top, $color-black, color.scale($color-red, $alpha: -84%));
+$contract-gradient-color-red-1: linear-gradient(to top, $color-white 85%, color.scale($color-red, $alpha: -84%));
+$contract-gradient-color-red-2: linear-gradient(to top, $color-black 85%, color.scale($color-red, $alpha: -84%));
+$gradient-color-white: linear-gradient(to right, color.scale($color-white, $alpha: -100%) -5%, $color-white 71%);
+$gradient-color-black: linear-gradient(to right, color.scale($color-black, $alpha: -100%) -5%, $color-black 71%);
 $gradient-color-purple: linear-gradient(274.73deg, #5a205d 3.82%, #7f3883 88.49%);
 $gradient-color-blue: linear-gradient(274.73deg, #1a205e 3.82%, #122d96 88.49%);
 $gradient-color-orange: linear-gradient(90deg, #eb001b 0%, #f79e1b 100%);

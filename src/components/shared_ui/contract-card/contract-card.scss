@@ -279,7 +279,7 @@
         &--smarttrader-contract {
             width: 7rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: initial;
             }
         }
@@ -291,7 +291,7 @@
         flex-direction: column;
         margin: 0.5em 0.2em;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0 8px;
         }
     }
@@ -307,7 +307,7 @@
             width: 100%;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 8px;
 
             &-wrapper {
@@ -368,7 +368,7 @@
         .dc-contract-card {
             &-item {
                 &__body {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         padding-left: 0;
                     }
                 }
@@ -409,7 +409,7 @@
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-template-columns: 1fr 1fr 1fr;
         }
     }
@@ -458,7 +458,7 @@
             max-width: calc(100% - 2rem);
             line-height: 1.4;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 max-width: unset;
             }
         }
@@ -474,7 +474,7 @@
                 margin-left: -6px;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-left: 0.4rem;
             }
         }
@@ -510,7 +510,7 @@
                 align-self: center;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: row;
                 justify-content: center;
                 grid-column: 1 / 4;
@@ -600,7 +600,7 @@
                 font-size: 1.2rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: 3.2rem;
             }
         }
@@ -754,7 +754,7 @@
         &--multipliers {
             width: 7rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 9rem;
             }
         }
@@ -762,7 +762,7 @@
         &--lookbacks-contract {
             width: 5rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: initial;
             }
         }
@@ -799,7 +799,7 @@
         margin: 0.8rem 0;
         border-bottom: 1px solid var(--general-section-1);
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -816,7 +816,7 @@
         margin-bottom: 0.8rem;
         width: 100%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
