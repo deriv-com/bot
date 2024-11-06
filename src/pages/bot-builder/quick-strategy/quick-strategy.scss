@@ -48,6 +48,12 @@
                 &:hover {
                     cursor: pointer;
                 }
+
+                svg {
+                    path {
+                        fill: var(--text-general);
+                    }
+                }
             }
         }
     }

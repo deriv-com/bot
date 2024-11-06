@@ -14,17 +14,21 @@
         transition: transform 0.2s ease;
         transform: rotate(0deg);
         transform-origin: 50% 45%;
+        fill: var(--text-general);
 
         &--opened {
             transform: rotate(-180deg);
         }
+
         &--disabled {
             --fill-color1: var(--text-less-prominent) !important;
         }
+
         .color1-fill {
             fill: var(--text-less-prominent);
         }
     }
+
     .dc-input {
         margin-bottom: 0;
 
@@ -36,14 +40,17 @@
             }
         }
     }
+
     .dc-input__field {
         white-space: nowrap;
         text-overflow: ellipsis;
     }
+
     .dc-dropdown-list {
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         background: var(--general-main-2);
     }
+
     &:focus,
     &:focus-within,
     &:active {
