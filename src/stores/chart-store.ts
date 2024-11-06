@@ -70,10 +70,8 @@ export default class ChartStore {
             return block.type === 'trade_definition_market';
         });
 
-        if (market_block && market_block !== 'na') {
-            const symbol = market_block.getFieldValue('SYMBOL_LIST');
-            this.symbol = symbol;
-        }
+        const symbol = market_block?.getFieldValue('SYMBOL_LIST') || '1HZ10V';
+        this.symbol = symbol;
     };
 
     onSymbolChange = (symbol: string) => {
