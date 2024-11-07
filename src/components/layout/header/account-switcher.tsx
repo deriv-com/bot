@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
@@ -11,6 +12,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import { checkSwitcherType } from './utils';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
@@ -39,6 +41,19 @@ const tabs_labels = {
 
 const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
     const { client } = useStore();
+    const account_data = useRef();
+
+    const fetchAccountSwitcherData = useCallback(async () => {
+        if (account_data.current || !client?.loginid || !modifiedAccountList) return;
+        const account_info = await checkSwitcherType(modifiedAccountList, client.loginid, isVirtual);
+        if (account_data) account_data.current = account_info;
+    }, [client, modifiedAccountList]);
+
+    console.log('test', account_data.current);
+
+    useEffect(() => {
+        fetchAccountSwitcherData();
+    }, []);
 
     return (
         <>
@@ -70,12 +85,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
             <Divider color='var(--du-general-active)' height='2px' />
 
             <div className='account-switcher-footer'>
-                {/* TODO: need to handle total assets */}
-                {/* <UIAccountSwitcher.TotalAsset
-                    title={localize('Total assets')}
-                    description={localize('Total assets in your Deriv accounts.')}
-                    value={`${activeAccount.balance} ${activeAccount.currency}`}
-                /> */}
                 <UIAccountSwitcher.TradersHubLink href='https://app.deriv.com'>
                     {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
                 </UIAccountSwitcher.TradersHubLink>
