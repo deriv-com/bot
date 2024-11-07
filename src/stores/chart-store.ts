@@ -70,7 +70,7 @@ export default class ChartStore {
             return block.type === 'trade_definition_market';
         });
 
-        const symbol = market_block?.getFieldValue('SYMBOL_LIST') || '1HZ10V';
+        const symbol = market_block?.getFieldValue('SYMBOL_LIST') ?? '1HZ10V';
         this.symbol = symbol;
     };
 
