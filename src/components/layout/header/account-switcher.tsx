@@ -49,8 +49,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
         if (account_data) account_data.current = account_info;
     }, [client, modifiedAccountList]);
 
-    console.log('test', account_data.current);
-
     useEffect(() => {
         fetchAccountSwitcherData();
     }, []);
