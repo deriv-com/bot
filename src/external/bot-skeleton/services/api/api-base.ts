@@ -58,6 +58,7 @@ class APIBase {
     common_store: CommonStore | undefined;
     landing_company: string | null = null;
 
+    //TODO : Need to remove this
     async getLandingCompany() {
         if (!this.api || !this.account_info?.country) {
             return null;
