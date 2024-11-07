@@ -6,12 +6,12 @@ import { TContractInfo } from '@/components/summary/summary-card.types';
 import { popover_zindex } from '@/constants/z-indexes';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { IconTradeTypes } from '@/utils/tmp/dummy';
 import { LegacyRadioOffIcon, LegacyRadioOnIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { MarketIcon } from '../market/market-icon';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
+import { TradeTypeIcon } from '../trade-type/trade-type-icon';
 
 type TTransactionIconWithText = {
     icon: React.ReactElement;
@@ -185,7 +185,7 @@ const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TT
                     <div className='transactions__loader-container'>
                         {contract ? (
                             <TransactionIconWithText
-                                icon={<IconTradeTypes type={contract.contract_type || ''} size={16} />}
+                                icon={<TradeTypeIcon type={contract.contract_type || ''} size='sm' />}
                                 title={getContractTypeName(contract)}
                             />
                         ) : (
