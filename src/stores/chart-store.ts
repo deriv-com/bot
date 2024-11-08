@@ -1,5 +1,6 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { LocalStore } from '@/components/shared';
+import { api_base } from '@/external/bot-skeleton';
 import RootStore from './root-store';
 
 type TSubscription = {
@@ -70,7 +71,7 @@ export default class ChartStore {
             return block.type === 'trade_definition_market';
         });
 
-        const symbol = market_block?.getFieldValue('SYMBOL_LIST') ?? '1HZ10V';
+        const symbol = market_block?.getFieldValue('SYMBOL_LIST') ?? api_base?.active_symbols[0]?.symbol;
         this.symbol = symbol;
     };
 
