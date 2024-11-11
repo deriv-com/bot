@@ -39,14 +39,31 @@ const tabs_labels = {
     real: localize('Real'),
 };
 
+interface AccountSwitcherData {
+    renderCountryIsLowRiskAndHasNoRealAccount: boolean;
+    renderCountryIsEuAndNoRealAccount: boolean;
+    renderCountryIsNonEuAndNoRealAccount: boolean;
+    renderCountryIsEuHasOnlyRealAccount: boolean;
+    renderCountryIsNonEuHasOnlyRealAccount: boolean;
+    renderCountryIsLowRiskAndHasRealAccount: boolean;
+}
+
 const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
     const { client } = useStore();
-    const account_data = useRef();
+    const { landing_companies } = client;
+
+    const account_switcher_data = useRef<AccountSwitcherData | null>(null);
 
     const fetchAccountSwitcherData = useCallback(async () => {
-        if (account_data.current || !client?.loginid || !modifiedAccountList) return;
-        const account_info = await checkSwitcherType(modifiedAccountList, client.loginid, isVirtual);
-        if (account_data) account_data.current = account_info;
+        if (account_switcher_data.current || !client?.loginid || !modifiedAccountList) return;
+        const account_data = {
+            login_id: client.loginid,
+            modifiedAccountList,
+            landing_companies,
+            is_virtual: isVirtual,
+        };
+        const account_info = await checkSwitcherType(account_data);
+        account_switcher_data.current = account_info;
     }, [client, modifiedAccountList]);
 
     useEffect(() => {

@@ -70,7 +70,9 @@ const isMultiplier = landing_company_list => {
     };
 };
 
-export const checkSwitcherType = async (client_accounts = {}, activeLoginid, isVirtual) => {
+export const checkSwitcherType = async account_data => {
+    const { client_accounts = {}, activeLoginid, isVirtual, landing_company } = account_data;
+
     const virtual_accounts = [];
     const non_eu_accounts = [];
     const eu_accounts = [];
@@ -79,7 +81,6 @@ export const checkSwitcherType = async (client_accounts = {}, activeLoginid, isV
     const account_info = { ...api_base.account_info };
 
     if (!account_info) return null;
-    const landing_company = await api_base.getLandingCompany();
 
     const account_status = { ...api_base.account_status };
 
@@ -87,7 +88,8 @@ export const checkSwitcherType = async (client_accounts = {}, activeLoginid, isV
     const is_eu = isEu(country);
     const { country_code } = isMultiplier(landing_company);
     //TODO: check if this is needed
-    // const { is_multiplier } = isMultiplier(landing_company);
+    //is_multiplier
+    // const is_high_risk_or_eu = is_eu && is_high_risk;
 
     const { financial_company, gaming_company } = landing_company;
 
