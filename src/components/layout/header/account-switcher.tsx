@@ -87,7 +87,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                         className='deriv-account-switcher__logout'
                         onClick={() => {
                             client.logout();
-                            api_base?.api?.logout();
                         }}
                     >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
@@ -107,17 +106,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
-    const { ui, run_panel, client } = useStore() ?? {
-        ui: {
-            account_switcher_disabled_message: '',
-        },
-        run_panel: {
-            is_stop_button_visible: false,
-        },
-        client: {
-            all_accounts_balance: {},
-        },
-    };
+    const { ui, run_panel, client } = useStore();
     const { account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
 

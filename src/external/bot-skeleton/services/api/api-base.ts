@@ -107,7 +107,6 @@ class APIBase {
 
         if (this.time_interval) clearInterval(this.time_interval);
         this.time_interval = null;
-        this.getTime();
 
         if (V2GetActiveToken()) {
             setIsAuthorizing(true);
@@ -257,14 +256,6 @@ class APIBase {
         global_timeouts.forEach((_: unknown, i: number) => {
             clearTimeout(i);
         });
-    }
-
-    getTime() {
-        if (!this.time_interval) {
-            this.time_interval = setInterval(() => {
-                this.api?.send({ time: 1 });
-            }, 30000);
-        }
     }
 }
 
