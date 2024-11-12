@@ -42,6 +42,8 @@ jobs:
                   R2_PROJECT_NAME: ${{ vars.R2_PROJECT_NAME }}
                   TRANSLATIONS_CDN_URL: ${{ vars.TRANSLATIONS_CDN_URL }}
                   CROWDIN_BRANCH_NAME: production
+                  RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
+                  REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
 
             - name: Run tests for Eslint
               run: npm run test:lint
