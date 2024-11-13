@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
@@ -11,6 +12,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import { checkSwitcherType } from './utils';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
@@ -37,8 +39,36 @@ const tabs_labels = {
     real: localize('Real'),
 };
 
+interface AccountSwitcherData {
+    renderCountryIsLowRiskAndHasNoRealAccount: boolean;
+    renderCountryIsEuAndNoRealAccount: boolean;
+    renderCountryIsNonEuAndNoRealAccount: boolean;
+    renderCountryIsEuHasOnlyRealAccount: boolean;
+    renderCountryIsNonEuHasOnlyRealAccount: boolean;
+    renderCountryIsLowRiskAndHasRealAccount: boolean;
+}
+
 const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
     const { client } = useStore();
+    const { landing_companies } = client;
+
+    const account_switcher_data = useRef<AccountSwitcherData | null>(null);
+
+    const fetchAccountSwitcherData = useCallback(async () => {
+        if (account_switcher_data.current || !client?.loginid || !modifiedAccountList) return;
+        const account_data = {
+            login_id: client.loginid,
+            modifiedAccountList,
+            landing_companies,
+            is_virtual: isVirtual,
+        };
+        const account_info = await checkSwitcherType(account_data);
+        account_switcher_data.current = account_info;
+    }, [client, modifiedAccountList]);
+
+    useEffect(() => {
+        fetchAccountSwitcherData();
+    }, []);
 
     return (
         <>
@@ -70,12 +100,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
             <Divider color='var(--du-general-active)' height='2px' />
 
             <div className='account-switcher-footer'>
-                {/* TODO: need to handle total assets */}
-                {/* <UIAccountSwitcher.TotalAsset
-                    title={localize('Total assets')}
-                    description={localize('Total assets in your Deriv accounts.')}
-                    value={`${activeAccount.balance} ${activeAccount.currency}`}
-                /> */}
                 <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
                     {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
                 </UIAccountSwitcher.TradersHubLink>
@@ -87,7 +111,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                         className='deriv-account-switcher__logout'
                         onClick={() => {
                             client.logout();
-                            api_base?.api?.logout();
                         }}
                     >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
@@ -107,17 +130,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
-    const { ui, run_panel, client } = useStore() ?? {
-        ui: {
-            account_switcher_disabled_message: '',
-        },
-        run_panel: {
-            is_stop_button_visible: false,
-        },
-        client: {
-            all_accounts_balance: {},
-        },
-    };
+    const { ui, run_panel, client } = useStore();
     const { account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
 

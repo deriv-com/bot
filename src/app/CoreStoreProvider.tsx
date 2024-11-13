@@ -81,11 +81,15 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
         }
     }, [client, common, isAuthorizing]);
 
-    const handleMessage = useCallback(
+    const handleMessages = useCallback(
         (res: Record<string, unknown>) => {
             if (!res) return;
             const data = res.data as TSocketResponseData<'balance'>;
             const { msg_type, error } = data;
+
+            if (error?.code === 'AuthorizationRequired') {
+                client.logout();
+            }
 
             if (msg_type === 'balance' && data && !error) {
                 const balance = data.balance;
@@ -94,7 +98,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 } else if (balance?.loginid) {
                     if (!client?.all_accounts_balance?.accounts || !balance?.loginid) return;
                     const accounts = { ...client.all_accounts_balance.accounts };
-                    const currentLoggedInBalance = accounts[balance.loginid];
+                    const currentLoggedInBalance = { ...accounts[balance.loginid] };
                     currentLoggedInBalance.balance = balance.balance;
 
                     const updatedAccounts = {
@@ -112,9 +116,9 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
     );
 
     useEffect(() => {
-        if (!isAuthorizing && isAuthorized && client) {
-            const subscription = api_base.api.onMessage().subscribe(handleMessage);
-            msg_listener.current = { unsubscribe: subscription.unsubscribe };
+        if (!isAuthorizing && client) {
+            const subscription = api_base?.api?.onMessage().subscribe(handleMessages);
+            msg_listener.current = { unsubscribe: subscription?.unsubscribe };
         }
 
         return () => {
@@ -122,7 +126,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 msg_listener.current.unsubscribe();
             }
         };
-    }, [connectionStatus, handleMessage, isAuthorizing, isAuthorized, client]);
+    }, [connectionStatus, handleMessages, isAuthorizing, isAuthorized, client]);
 
     useEffect(() => {
         if (!isAuthorizing && isAuthorized && !accountInitialization.current && client) {

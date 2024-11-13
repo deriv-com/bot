@@ -1,3 +1,4 @@
+@use 'sass:string';
 @use 'components/shared/styles/mixins' as *;
 
 .transactions {
@@ -76,7 +77,7 @@
         height: 5rem;
         align-items: center;
 
-        $header-grid-items: (unquote('type'), unquote('spot'), unquote('profit'));
+        $header-grid-items: (string.unquote('type'), string.unquote('spot'), string.unquote('profit'));
 
         @each $item in $header-grid-items {
             &-#{$item} {
@@ -137,11 +138,11 @@
     }
 
     $grid-items: (
-        unquote('trade-type'),
-        unquote('entry-spot'),
-        unquote('exit-spot'),
-        unquote('stake'),
-        unquote('profit')
+        string.unquote('trade-type'),
+        string.unquote('entry-spot'),
+        string.unquote('exit-spot'),
+        string.unquote('stake'),
+        string.unquote('profit')
     );
 
     @each $item in $grid-items {
@@ -186,6 +187,7 @@
         &-container {
             @include flex-center;
 
+            align-items: flex-start;
             width: 2.4rem;
             height: 2.4rem;
             margin-right: 0.4rem;

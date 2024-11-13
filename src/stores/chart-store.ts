@@ -1,5 +1,6 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { LocalStore } from '@/components/shared';
+import { api_base } from '@/external/bot-skeleton';
 import RootStore from './root-store';
 
 type TSubscription = {
@@ -66,14 +67,12 @@ export default class ChartStore {
 
     updateSymbol = () => {
         const workspace = window.Blockly.derivWorkspace;
-        const market_block = workspace.getAllBlocks().find((block: window.Blockly.Block) => {
+        const market_block = workspace?.getAllBlocks().find((block: window.Blockly.Block) => {
             return block.type === 'trade_definition_market';
         });
 
-        if (market_block && market_block !== 'na') {
-            const symbol = market_block.getFieldValue('SYMBOL_LIST');
-            this.symbol = symbol;
-        }
+        const symbol = market_block?.getFieldValue('SYMBOL_LIST') ?? api_base?.active_symbols[0]?.symbol;
+        this.symbol = symbol;
     };
 
     onSymbolChange = (symbol: string) => {

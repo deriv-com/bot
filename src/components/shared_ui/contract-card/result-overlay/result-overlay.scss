@@ -41,7 +41,7 @@
             align-items: center;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             pointer-events: none;
         }
     }

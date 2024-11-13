@@ -25,7 +25,7 @@
                 top: 2rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 left: 2.4rem;
                 width: calc(100vw - 4.8rem) !important;
             }
@@ -145,7 +145,7 @@
                 border: none;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 font-size: 1.4rem;
                 padding: 1.6rem;
                 line-height: 1.2;
@@ -168,7 +168,7 @@
             width: 32px;
             margin: 1.2rem 1.6rem 1.2rem auto;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0.8rem;
             }
         }
@@ -181,7 +181,7 @@
                 justify-content: center;
                 width: 100%;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     position: absolute;
                 }
             }
@@ -217,7 +217,7 @@
             padding: 1.6rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             font-size: 1.2rem;
             padding: 0.8rem 2.4rem;
         }

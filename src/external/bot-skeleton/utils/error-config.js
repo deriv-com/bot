@@ -4,7 +4,7 @@ const generateErrorMessage = (block_type, missing_space = 'workspace') => {
     return {
         missing: (
             <Localize
-                i18n_default_text={`The {{block_type}} block is mandatory and cannot be deleted /disabled.`}
+                i18n_default_text={`The {{block_type}} block is missing.`}
                 values={{
                     block_type,
                 }}
@@ -47,4 +47,5 @@ export const error_message_map = {
     purchase: generateErrorMessage('Purchase', 'purchase conditions'),
     trade_definition_tradeoptions: generateErrorMessage('Trade options', 'trade parameters'),
     trade_definition_multiplier: generateErrorMessage('Trade options multipliers', 'trade parameters'),
+    trade_definition_accumulator: generateErrorMessage('Trade options accumulators', 'trade parameters'),
 };

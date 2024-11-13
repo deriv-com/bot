@@ -1,4 +1,4 @@
-@import './../../shared/styles/constants';
+@use 'components/shared/styles/constants' as *;
 
 .dc-mobile-full-page-modal {
     height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - #{$MOBILE_WRAPPER_HEADER_HEIGHT});

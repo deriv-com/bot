@@ -29,12 +29,12 @@ const LoggedInPreloader = ({ isMobile }: Pick<TAccountsInfoLoaderProps, 'isMobil
 
 const AccountsInfoLoader = ({ isMobile, speed }: TAccountsInfoLoaderProps) => (
     <ContentLoader
-        backgroundColor={'#f2f3f4'}
         data-testid='dt_accounts_info_loader'
-        foregroundColor={'#e6e9e9'}
         height={isMobile ? 42 : 46}
         speed={speed}
         width={isMobile ? 216 : 350}
+        backgroundColor={'var(--general-section-1)'}
+        foregroundColor={'var(--general-hover)'}
     >
         <LoggedInPreloader isMobile={isMobile} />
     </ContentLoader>

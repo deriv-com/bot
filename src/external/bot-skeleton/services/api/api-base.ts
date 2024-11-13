@@ -56,6 +56,22 @@ class APIBase {
     is_authorized = false;
     active_symbols_promise: Promise<void> | null = null;
     common_store: CommonStore | undefined;
+    landing_company: string | null = null;
+
+    //TODO : Need to remove this api call because we have it in client store
+    async getLandingCompany() {
+        if (!this.api || !this.account_info?.country) {
+            return null;
+        }
+        try {
+            const landing_company = await this.api.send({ landing_company: this.account_info.country });
+            this.landing_company = landing_company;
+        } catch (error) {
+            console.error('Error fetching landing company:', error);
+            this.landing_company = null;
+        }
+        return this.landing_company;
+    }
 
     unsubscribeAllSubscriptions = () => {
         this.current_auth_subscriptions?.forEach(subscription_promise => {
@@ -107,7 +123,6 @@ class APIBase {
 
         if (this.time_interval) clearInterval(this.time_interval);
         this.time_interval = null;
-        this.getTime();
 
         if (V2GetActiveToken()) {
             setIsAuthorizing(true);
@@ -257,14 +272,6 @@ class APIBase {
         global_timeouts.forEach((_: unknown, i: number) => {
             clearTimeout(i);
         });
-    }
-
-    getTime() {
-        if (!this.time_interval) {
-            this.time_interval = setInterval(() => {
-                this.api?.send({ time: 1 });
-            }, 30000);
-        }
     }
 }
 

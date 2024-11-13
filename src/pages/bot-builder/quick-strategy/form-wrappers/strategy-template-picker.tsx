@@ -4,6 +4,7 @@ import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
 import { Chip, SearchField } from '@deriv-com/quill-ui';
+import { localize } from '@deriv-com/translations';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
 import './strategy-template-picker.scss';
@@ -42,7 +43,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                         setFAQSearchValue(event.target.value);
                         filterTuotrialTab(event.target.value);
                     }}
-                    placeholder='Search'
+                    placeholder={localize('Search')}
                     type='text'
                     value={search_value}
                     inputSize='sm'
@@ -51,7 +52,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                     className='strategy-template-picker__icon'
                     onClick={() => {
                         setActiveTab(DBOT_TABS.TUTORIAL);
-                        setActiveTabTutorial(3);
+                        setActiveTabTutorial(2);
                         setFormVisibility(false);
                     }}
                 >

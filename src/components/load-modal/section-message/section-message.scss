@@ -13,6 +13,14 @@
 
     .icon {
         margin: 0.5rem 0.8rem 0 0;
+
+        svg {
+            g {
+                path {
+                    fill: #e18d00; // until <LegacyInfo1pxIcon in quill icons will be updated with ability to define the <path fill color
+                }
+            }
+        }
     }
 
     .text {
