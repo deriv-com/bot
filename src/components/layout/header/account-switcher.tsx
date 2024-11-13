@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
-import { getDecimalPlaces } from '@/components/shared';
+import { getDecimalPlaces, standalone_routes } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
 import { api_base } from '@/external/bot-skeleton';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
@@ -76,7 +76,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                     description={localize('Total assets in your Deriv accounts.')}
                     value={`${activeAccount.balance} ${activeAccount.currency}`}
                 /> */}
-                <UIAccountSwitcher.TradersHubLink href='https://app.deriv.com'>
+                <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
                     {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
                 </UIAccountSwitcher.TradersHubLink>
                 <Divider color='var(--du-general-active)' height='2px' />

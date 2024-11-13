@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from 'react';
+import { standalone_routes } from '@/components/shared';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
@@ -56,19 +57,19 @@ const useMobileMenuConfig = () => {
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/dtrader`,
+                href: standalone_routes.trade,
                 label: localize('Trade'),
                 LeftComponent: LegacyChartsIcon,
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/account/personal-details`,
+                href: standalone_routes.personal_details,
                 label: localize('Account Settings'),
                 LeftComponent: LegacyProfileSmIcon,
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/cashier/deposit`,
+                href: standalone_routes.cashier_deposit,
                 label: localize('Cashier'),
                 LeftComponent: LegacyCashierIcon,
             },

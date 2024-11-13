@@ -1,4 +1,4 @@
-import { website_name } from '../config/app-config';
+import { website_name } from '@/utils/site-config';
 import { domain_app_ids, getAppId } from '../config/config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { getStaticUrl, urlForCurrentDomain } from '../url';

@@ -2,8 +2,8 @@ import { action, makeObservable, reaction, when } from 'mobx';
 import {
     ContentFlag,
     isEuResidenceWithOnlyVRTC,
-    routes,
     showDigitalOptionsUnavailableError,
+    standalone_routes,
 } from '@/components/shared';
 import { api_base, ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
 import { TApiHelpersStore } from '@/types/stores.types';
@@ -57,7 +57,7 @@ export default class AppStore {
                 ? localize(`Deriv Bot is not available for ${country || 'EU'} clients`)
                 : localize(`Deriv Bot is unavailable in ${country || 'the EU'}`),
             link: is_logged_in ? localize("Back to Trader's Hub") : '',
-            route: routes.traders_hub,
+            route: standalone_routes.traders_hub,
         };
     };
 
@@ -85,7 +85,7 @@ export default class AppStore {
 
         if (!client?.is_logged_in && client?.is_eu_country) {
             if (client?.has_logged_out) {
-                window.location.href = routes.traders_hub;
+                window.location.href = standalone_routes.traders_hub;
             }
 
             this.throwErrorForExceptionCountries(client?.clients_country as string);
@@ -96,43 +96,38 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname.includes(routes.bot)) {
-            this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
-            if (client.should_show_eu_error) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForEuClients(client.is_logged_in)
-                );
-            }
+        this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
+        if (client.should_show_eu_error) {
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
+        }
 
-            if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
-                return false;
-            }
+        if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
+            return false;
+        }
 
-            if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForNonEuClients(),
-                    toggleAccountsDialog,
-                    false,
-                    false
-                );
-            }
+        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForNonEuClients(),
+                toggleAccountsDialog,
+                false,
+                false
+            );
+        }
 
-            if (
-                ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
-                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                    client.is_options_blocked) &&
-                toggleAccountsDialog
-            ) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForNonEuClients(),
-                    toggleAccountsDialog,
-                    false,
-                    false
-                );
-            }
+        if (
+            ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+                isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+                client.is_options_blocked) &&
+            toggleAccountsDialog
+        ) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForNonEuClients(),
+                toggleAccountsDialog,
+                false,
+                false
+            );
         }
 
         if (show_default_error && common.has_error) {
