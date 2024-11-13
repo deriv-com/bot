@@ -34,7 +34,7 @@ export const isProduction = () => {
 };
 
 export const isTestLink = () => {
-    return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
+    return /^((.*)\.binary\.sx|(.*)\.pages\.dev)$/i.test(window.location.hostname);
 };
 
 export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
