@@ -1,3 +1,4 @@
+import { standalone_routes } from '@/components/shared';
 import { useTranslations } from '@deriv-com/translations';
 import { PlatformSwitcher as UIPlatformSwitcher, PlatformSwitcherItem } from '@deriv-com/ui';
 import { platformsConfig } from '../header-config';
@@ -11,6 +12,9 @@ const PlatformSwitcher = () => {
             bottomLinkLabel={localize('Looking for CFDs? Go to Trader’s Hub')}
             buttonProps={{
                 icon: platformsConfig[1].buttonIcon,
+            }}
+            bottomLinkProps={{
+                href: standalone_routes.traders_hub,
             }}
         >
             {platformsConfig.map(({ active, description, href, icon }) => (

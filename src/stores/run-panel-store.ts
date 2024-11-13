@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
-import { isSafari, mobileOSDetect, routes } from '@/components/shared';
+import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared';
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
@@ -137,7 +137,7 @@ export default class RunPanelStore {
         if (show_bot_stop_message)
             botNotification(notification_message().bot_stop, {
                 label: localize('Reports'),
-                onClick: () => (window.location.href = routes.reports),
+                onClick: () => window.location.assign(standalone_routes.reports),
             });
     };
 

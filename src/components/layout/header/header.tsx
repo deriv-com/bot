@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
+import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useApiBase } from '@/hooks/useApiBase';
@@ -39,7 +40,7 @@ const AppHeader = observer(() => {
                     {isDesktop && (
                         <Tooltip
                             as='a'
-                            href='https://app.deriv.com/account/personal-details'
+                            href={standalone_routes.personal_details}
                             tooltipContent={localize('Manage account settings')}
                             tooltipPosition='bottom'
                             className='app-header__account-settings'
@@ -52,7 +53,7 @@ const AppHeader = observer(() => {
                         <Button
                             primary
                             onClick={() => {
-                                window.location.assign('https://app.deriv.com/cashier/deposit');
+                                window.location.assign(standalone_routes.cashier_deposit);
                             }}
                             className='deposit-button'
                         >

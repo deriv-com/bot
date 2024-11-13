@@ -4,11 +4,11 @@ export const APP_IDS = {
     LOCALHOST: 36300,
     TMP_STAGING: 64584,
     STAGING: 29934,
-    STAGING_ME: 29934,
     STAGING_BE: 29934,
-    PRODUCTION: 19111,
-    PRODUCTION_ME: 19111,
-    PRODUCTION_BE: 19111,
+    STAGING_ME: 29934,
+    PRODUCTION: 65555,
+    PRODUCTION_BE: 65556,
+    PRODUCTION_ME: 65557,
 };
 
 export const livechat_license_id = 12049137;
@@ -34,7 +34,11 @@ export const isProduction = () => {
 };
 
 export const isTestLink = () => {
-    return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
+    return (
+        window.location.origin?.includes('.binary.sx') ||
+        window.location.origin?.includes('bot-65f.pages.dev') ||
+        isLocal()
+    );
 };
 
 export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
@@ -78,7 +82,7 @@ export const getAppId = () => {
         app_id = config_app_id;
     } else if (isStaging()) {
         app_id = APP_IDS.STAGING;
-    } else if (/localhost/i.test(window.location.hostname)) {
+    } else if (isTestLink()) {
         app_id = APP_IDS.LOCALHOST;
     } else {
         app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
