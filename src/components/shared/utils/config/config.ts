@@ -34,12 +34,6 @@ export const isProduction = () => {
 };
 
 export const isTestLink = () => {
-    console.log(
-        'test 3',
-        window.location.origin?.includes('.binary.sx') ||
-            window.location.origin?.includes('bot-65f.pages.dev') ||
-            isLocal()
-    );
     return (
         window.location.origin?.includes('.binary.sx') ||
         window.location.origin?.includes('bot-65f.pages.dev') ||
@@ -89,10 +83,8 @@ export const getAppId = () => {
     } else if (isStaging()) {
         app_id = APP_IDS.STAGING;
     } else if (isTestLink()) {
-        console.log('test 1');
         app_id = APP_IDS.LOCALHOST;
     } else {
-        console.log('test 2');
         app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
     }
 
