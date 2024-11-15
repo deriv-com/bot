@@ -533,7 +533,8 @@
                 height: 4rem;
                 padding: 0.8rem 1.1rem;
 
-                .dc-icon {
+                .dc-icon,
+                &__icon {
                     margin-inline-end: 0.8rem;
                 }
             }
