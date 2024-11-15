@@ -13,7 +13,7 @@ import './tnc-status-update-modal.scss';
 const TncStatusUpdateModal: React.FC = observer(() => {
     const { isAuthorized } = useApiBase();
     const { client } = useStore();
-    const { is_cr_account, setTNC } = client;
+    const { is_cr_account } = client;
     const [is_tnc_open, setIsTncOpen] = React.useState(false);
     const { isDesktop } = useDevice();
     const is_tnc_needed = useIsTNCNeeded();
@@ -26,8 +26,7 @@ const TncStatusUpdateModal: React.FC = observer(() => {
 
     const onClick = async () => {
         if (isAuthorized) {
-            setTNC();
-            api_base.api.send({ tnc_approval: 1 });
+            await api_base.api.send({ tnc_approval: 1 });
             setIsTncOpen(false);
         }
     };
