@@ -58,21 +58,6 @@ class APIBase {
     common_store: CommonStore | undefined;
     landing_company: string | null = null;
 
-    //TODO : Need to remove this api call because we have it in client store
-    async getLandingCompany() {
-        if (!this.api || !this.account_info?.country) {
-            return null;
-        }
-        try {
-            const landing_company = await this.api.send({ landing_company: this.account_info.country });
-            this.landing_company = landing_company;
-        } catch (error) {
-            console.error('Error fetching landing company:', error);
-            this.landing_company = null;
-        }
-        return this.landing_company;
-    }
-
     unsubscribeAllSubscriptions = () => {
         this.current_auth_subscriptions?.forEach(subscription_promise => {
             subscription_promise.then(({ subscription }) => {
