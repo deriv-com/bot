@@ -78,6 +78,15 @@ window.Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = 
 window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const { flyout } = DBotStore.instance;
     const block = window.Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
+    const top_blocks = this.getTopBlocks(true);
+
+    if (top_blocks.length) {
+        const last_block = top_blocks[top_blocks.length - 1];
+        const last_block_xy = last_block.getRelativeToSurfaceXY();
+        const extra_spacing = last_block.startHat_ ? window.Blockly.BlockSvg.START_HAT_HEIGHT : 0;
+        const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
+        block.moveBy(last_block_xy.x, y);
+    }
 
     // Call svgResize to avoid glitching workspace.
     window.Blockly.svgResize(block.workspace);
