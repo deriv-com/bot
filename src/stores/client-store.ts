@@ -68,6 +68,7 @@ export default class ClientStore {
             setLoginId: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
+            is_cr_account: computed,
         });
     }
 
@@ -195,6 +196,10 @@ export default class ClientStore {
             if (this.is_virtual) return ContentFlag.CR_DEMO;
         }
         return ContentFlag.LOW_RISK_CR_NON_EU;
+    }
+
+    get is_cr_account() {
+        return this.loginid?.startsWith('CR');
     }
 
     isBotAllowed = () => {
