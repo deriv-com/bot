@@ -1,18 +1,18 @@
 import { memo } from 'react';
-import { isDesktop } from '@/components/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
     position?: string | null;
+    isDesktop?: boolean;
 };
 
-const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ updateChartType, updateGranularity, position, isDesktop }: TToolbarWidgetsProps) => {
     return (
         <ToolbarWidget position={position}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {isDesktop() && (
+            {isDesktop && (
                 <>
                     <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
                     <Views
