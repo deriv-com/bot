@@ -26,10 +26,10 @@ const AppContent = observer(() => {
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
-    const { app, transactions, common, client, ui } = store;
+    const { app, transactions, common, client, ui, dashboard } = store;
     const { showDigitalOptionsMaltainvestError } = app;
     const { is_dark_mode_on } = useThemeSwitcher();
-    const { is_tour_dialog_visible, is_info_panel_visible, active_tour } = store.dashboard;
+    const { is_tour_dialog_visible, is_info_panel_visible, active_tour } = dashboard;
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
@@ -178,7 +178,7 @@ const AppContent = observer(() => {
                     <BotStopped />
                     <TransactionDetailsModal />
                     <ToastContainer limit={3} draggable={false} />
-                    {shouldShowTradingAssessmentModal() && <TradingAssesmentModal is_mobile={false} />}
+                    {shouldShowTradingAssessmentModal() && <TradingAssesmentModal />}
                 </div>
             </ThemeProvider>
         </>
