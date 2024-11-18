@@ -1,9 +1,11 @@
+@import '@deriv-com/ui/src/styles/devices';
+
 .dc-modal__container_tnc-status-update-modal-wrapper {
     padding: 2.4rem;
 
-    // @include mobile-screen {
-    //     padding: 1.6rem;
-    // }
+    @include mobile-screen {
+        padding: 1.6rem;
+    }
 }
 
 .tnc-status-update-modal {
@@ -22,9 +24,9 @@
         align-self: flex-end;
     }
 
-    // @include mobile-screen {
-    //     gap: 1.6rem;
-    // }
+    @include mobile-screen {
+        gap: 1.6rem;
+    }
 }
 
 .tnc-link {
