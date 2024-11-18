@@ -8,6 +8,7 @@ export default class UiStore {
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
     account_switcher_disabled_message = '';
     show_prompt = false;
+    is_trading_assessment_for_new_user_enabled = false;
 
     // TODO: fix - need to implement this feature
     is_onscreen_keyboard_active = false;
@@ -24,6 +25,8 @@ export default class UiStore {
             setDevice: action,
             setAccountSwitcherDisabledMessage: action,
             setPromptHandler: action,
+            setIsTradingAssessmentForNewUserEnabled: action.bound,
+            is_trading_assessment_for_new_user_enabled: observable,
         });
     }
 
@@ -38,6 +41,9 @@ export default class UiStore {
             this.account_switcher_disabled_message = '';
         }
     };
+    setIsTradingAssessmentForNewUserEnabled(value: boolean) {
+        this.is_trading_assessment_for_new_user_enabled = value;
+    }
 
     setDarkMode = (value: boolean) => {
         this.is_dark_mode_on = value;

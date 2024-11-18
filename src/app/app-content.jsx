@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { ContentFlag, getUrlBase } from '@/components/shared';
+import TradingAssesmentModal from '@/components/trading-assesment-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
@@ -11,7 +12,7 @@ import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
 import BotStopped from '../components/bot-stopped';
@@ -20,41 +21,30 @@ import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
-import TradingAssesmentModal from '@/components/trading-assesment-modal';
 
 const AppContent = observer(() => {
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
-    const { app, transactions, common, client ,ui} = store;
+    const { app, transactions, common, client, ui } = store;
     const { showDigitalOptionsMaltainvestError } = app;
     const { is_dark_mode_on } = useThemeSwitcher();
+    const { is_tour_dialog_visible, is_info_panel_visible, active_tour } = store.dashboard;
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
     const { connectionStatus } = useApiBase();
+    const { isDesktop } = useDevice();
 
     const {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
+        content_flag,
+        is_logged_in,
     } = client;
 
-    const {
-        is_trading_assessment_for_new_user_enabled,
-    } = ui;
-
-
-    const should_show_trading_assessment_existing_user_form =
-    client.is_logged_in &&
-    active_account_landing_company === 'maltainvest' &&
-    !ui.is_trading_assessment_for_new_user_enabled &&
-    client.is_trading_experience_incomplete &&
-    client.content_flag !== ContentFlag.LOW_RISK_CR_EU &&
-    client.content_flag !== ContentFlag.LOW_RISK_CR_NON_EU;
-    console.log(should_show_trading_assessment_existing_user_form,'wwwe',client.content_flag)
-
-    console.log('www',client,ui,ui.is_trading_assessment_for_new_user_enabled ,client.is_logged_in,is_trading_assessment_for_new_user_enabled,is_trading_experience_incomplete,active_account_landing_company,active_account_landing_company,!is_trading_assessment_for_new_user_enabled,is_trading_experience_incomplete,client.content_flag)
+    const { is_trading_assessment_for_new_user_enabled } = ui;
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
@@ -130,6 +120,27 @@ const AppContent = observer(() => {
         });
     };
 
+    const should_show_trading_assessment_existing_user_form =
+        is_logged_in &&
+        active_account_landing_company === 'maltainvest' &&
+        !is_trading_assessment_for_new_user_enabled &&
+        is_trading_experience_incomplete &&
+        content_flag !== ContentFlag.LOW_RISK_CR_EU &&
+        content_flag !== ContentFlag.LOW_RISK_CR_NON_EU;
+
+    const shouldShowTradingAssessmentModal = () => {
+        if (isDesktop) {
+            return should_show_trading_assessment_existing_user_form && !is_tour_dialog_visible && !active_tour;
+        }
+
+        return (
+            should_show_trading_assessment_existing_user_form &&
+            !is_tour_dialog_visible &&
+            !active_tour &&
+            !is_info_panel_visible
+        );
+    };
+
     React.useEffect(() => {
         if (is_api_initialized) {
             init();
@@ -167,7 +178,7 @@ const AppContent = observer(() => {
                     <BotStopped />
                     <TransactionDetailsModal />
                     <ToastContainer limit={3} draggable={false} />
-               {should_show_trading_assessment_existing_user_form &&  <TradingAssesmentModal is_mobile={false}/>}    
+                    {shouldShowTradingAssessmentModal() && <TradingAssesmentModal is_mobile={false} />}
                 </div>
             </ThemeProvider>
         </>
