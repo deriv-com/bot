@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
-import { getUrlBase } from '@/components/shared';
+import { ContentFlag, getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
@@ -20,12 +20,13 @@ import Main from '../pages/main';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
+import TradingAssesmentModal from '@/components/trading-assesment-modal';
 
 const AppContent = observer(() => {
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
-    const { app, transactions, common, client } = store;
+    const { app, transactions, common, client ,ui} = store;
     const { showDigitalOptionsMaltainvestError } = app;
     const { is_dark_mode_on } = useThemeSwitcher();
 
@@ -33,6 +34,27 @@ const AppContent = observer(() => {
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
     const { connectionStatus } = useApiBase();
+
+    const {
+        landing_company_shortcode: active_account_landing_company,
+        is_trading_experience_incomplete,
+    } = client;
+
+    const {
+        is_trading_assessment_for_new_user_enabled,
+    } = ui;
+
+
+    const should_show_trading_assessment_existing_user_form =
+    client.is_logged_in &&
+    active_account_landing_company === 'maltainvest' &&
+    !ui.is_trading_assessment_for_new_user_enabled &&
+    client.is_trading_experience_incomplete &&
+    client.content_flag !== ContentFlag.LOW_RISK_CR_EU &&
+    client.content_flag !== ContentFlag.LOW_RISK_CR_NON_EU;
+    console.log(should_show_trading_assessment_existing_user_form,'wwwe',client.content_flag)
+
+    console.log('www',client,ui,ui.is_trading_assessment_for_new_user_enabled ,client.is_logged_in,is_trading_assessment_for_new_user_enabled,is_trading_experience_incomplete,active_account_landing_company,active_account_landing_company,!is_trading_assessment_for_new_user_enabled,is_trading_experience_incomplete,client.content_flag)
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
@@ -145,6 +167,7 @@ const AppContent = observer(() => {
                     <BotStopped />
                     <TransactionDetailsModal />
                     <ToastContainer limit={3} draggable={false} />
+               {should_show_trading_assessment_existing_user_form &&  <TradingAssesmentModal is_mobile={false}/>}    
                 </div>
             </ThemeProvider>
         </>

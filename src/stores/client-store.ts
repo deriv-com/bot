@@ -68,6 +68,7 @@ export default class ClientStore {
             setLoginId: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
+            is_trading_experience_incomplete: computed,
         });
     }
 
@@ -83,6 +84,9 @@ export default class ClientStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+    get is_trading_experience_incomplete() {
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
     get is_eu() {
