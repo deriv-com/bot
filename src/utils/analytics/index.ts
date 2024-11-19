@@ -14,14 +14,14 @@ export const AnalyticsInitializer = async () => {
             .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
             const ppc_campaign_cookies =
-                Cookies.getJSON('utm_data') === 'null'
+                Cookies.get('utm_data') === 'null'
                     ? {
                           utm_source: 'no source',
                           utm_medium: 'no medium',
                           utm_campaign: 'no campaign',
                           utm_content: 'no content',
                       }
-                    : Cookies.getJSON('utm_data');
+                    : Cookies.get('utm_data');
 
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,

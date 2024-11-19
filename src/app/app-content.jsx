@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import { getUrlBase } from '@/components/shared';
+import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TradingAssesmentModal from '@/components/trading-assesment-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
@@ -147,6 +148,7 @@ const AppContent = observer(() => {
                     <TransactionDetailsModal />
                     <ToastContainer limit={3} draggable={false} />
                     <TradingAssesmentModal />
+                    <TncStatusUpdateModal />
                 </div>
             </ThemeProvider>
         </>

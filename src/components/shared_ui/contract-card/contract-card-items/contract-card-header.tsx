@@ -7,7 +7,6 @@ import {
     getGrowthRatePercentage,
     getLocalizedTurbosSubtype,
     isAccumulatorContract,
-    isBot,
     isHighLow,
     isMultiplierContract,
     isSmartTraderContract,
@@ -63,7 +62,7 @@ const ContractCardHeader = ({
         tick_count,
         tick_passed,
     } = contract_info;
-    const is_bot = isBot();
+    const is_bot = true;
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
