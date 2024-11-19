@@ -27,7 +27,7 @@ const ErrorComponent = ({
     should_show_refresh = true,
     should_redirect = true,
 }: Partial<TErrorComponent>) => {
-    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.123') : '';
+    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
 
     return (
         <>
