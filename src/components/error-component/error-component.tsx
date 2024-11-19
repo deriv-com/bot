@@ -31,7 +31,6 @@ const ErrorComponent = ({
 
     return (
         <>
-            <TradingAssesmentModal />
             <PageErrorContainer
                 error_header={header ?? ''}
                 error_messages={message ? [message, refresh_message] : []}
@@ -42,6 +41,7 @@ const ErrorComponent = ({
                 setError={setError}
                 should_redirect={should_redirect}
             />
+            <TradingAssesmentModal />
         </>
     );
 };
