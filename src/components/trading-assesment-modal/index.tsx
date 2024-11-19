@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Button from '@/components/shared_ui/button';
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
@@ -12,7 +12,6 @@ const TradingAssesmentModal = () => {
     const store = useStore();
     const { client, ui, dashboard } = store;
     const { is_tour_dialog_visible, is_info_panel_visible, active_tour } = dashboard;
-
     const { isDesktop } = useDevice();
 
     const {
@@ -32,7 +31,7 @@ const TradingAssesmentModal = () => {
         content_flag !== ContentFlag.LOW_RISK_CR_EU &&
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const shouldShowTradingAssessmentModal = () => {
+    const shouldShowTradingAssessmentModal = useMemo(() => {
         if (isDesktop) {
             return should_show_trading_assessment_existing_user_form && !is_tour_dialog_visible && !active_tour;
         }
@@ -43,9 +42,16 @@ const TradingAssesmentModal = () => {
             !active_tour &&
             !is_info_panel_visible
         );
-    };
+    }, [
+        isDesktop,
+        should_show_trading_assessment_existing_user_form,
+        is_tour_dialog_visible,
+        active_tour,
+        is_info_panel_visible,
+    ]);
+
     return (
-        <Modal is_open={shouldShowTradingAssessmentModal() || false} width='44rem' className='trade-modal-wrapper'>
+        <Modal is_open={shouldShowTradingAssessmentModal || false} width='44rem' className='trade-modal-wrapper'>
             <Modal.Body>
                 <Icon icon={'ic-currency-eur-check'} className='currency-icon' size={95} />
                 <Text as='p' align='center' weight='bold' className='verified-account__text'>
