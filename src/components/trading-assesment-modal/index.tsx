@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { observer } from 'mobx-react-lite';
 import Button from '@/components/shared_ui/button';
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
@@ -7,7 +8,7 @@ import { Icon } from '@/utils/tmp/dummy';
 import { Localize, localize } from '@deriv-com/translations';
 import { ContentFlag } from '../shared';
 
-const TradingAssesmentModal = () => {
+const TradingAssesmentModal: React.FC = observer(() => {
     const store = useStore();
     const { client, ui } = store;
 
@@ -67,6 +68,6 @@ const TradingAssesmentModal = () => {
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default TradingAssesmentModal;
