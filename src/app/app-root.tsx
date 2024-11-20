@@ -10,7 +10,7 @@ import './app-root.scss';
 
 const AppContent = lazy(() => import('./app-content'));
 
-const AppRootLoader = () => {
+export const AppRootLoader = () => {
     return (
         <div className='app-root'>
             <Loader />
