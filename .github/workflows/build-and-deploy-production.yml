@@ -50,7 +50,7 @@ jobs:
                   GD_API_KEY: ${{ secrets.GD_API_KEY }}
                   GD_APP_ID: ${{ secrets.GD_APP_ID }}
                   GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-
+                  TRACKJS_TOKEN: ${{ secrets.TRACKJS_TOKEN }}
             - name: Run tests for Eslint
               run: npm run test:lint
 
