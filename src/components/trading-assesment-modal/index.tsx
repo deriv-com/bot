@@ -12,19 +12,14 @@ const TradingAssesmentModal: React.FC = observer(() => {
     const store = useStore();
     const { client, ui } = store;
 
-    const {
-        landing_company_shortcode: active_account_landing_company,
-        is_trading_experience_incomplete,
-        content_flag,
-        is_logged_in,
-    } = client;
+    const { is_trading_experience_incomplete, content_flag, is_logged_in, accounts, loginid } = client;
 
     const { is_trading_assessment_for_new_user_enabled } = ui;
 
     const should_show_trading_assessment_existing_user_form = useMemo(() => {
         return (
             is_logged_in &&
-            active_account_landing_company === 'maltainvest' &&
+            accounts?.[loginid]?.landing_company_name === 'maltainvest' &&
             !is_trading_assessment_for_new_user_enabled &&
             is_trading_experience_incomplete &&
             content_flag !== ContentFlag.LOW_RISK_CR_EU &&
@@ -32,10 +27,11 @@ const TradingAssesmentModal: React.FC = observer(() => {
         );
     }, [
         is_logged_in,
-        active_account_landing_company,
         is_trading_assessment_for_new_user_enabled,
         is_trading_experience_incomplete,
         content_flag,
+        accounts,
+        loginid,
     ]);
     return (
         <Modal
