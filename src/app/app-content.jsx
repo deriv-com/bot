@@ -9,6 +9,7 @@ import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observab
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
+import useTrackjs from '@/hooks/useTrackjs';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
@@ -23,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = observer(() => {
+    const { initTrackJS } = useTrackjs();
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
@@ -34,6 +36,8 @@ const AppContent = observer(() => {
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
     const { connectionStatus } = useApiBase();
+
+    initTrackJS();
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
