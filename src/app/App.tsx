@@ -4,9 +4,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import Endpoint from '@/pages/endpoint';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { Loader } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
-import { AppRootLoader } from './app-root';
 import CoreStoreProvider from './CoreStoreProvider';
 import './app-root.scss';
 
@@ -23,7 +23,13 @@ const router = createBrowserRouter(
         <Route
             path='/'
             element={
-                <Suspense fallback={<AppRootLoader />}>
+                <Suspense
+                    fallback={
+                        <div className='app-root'>
+                            <Loader />
+                        </div>
+                    }
+                >
                     <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <StoreProvider>
                             <RoutePromptDialog />
