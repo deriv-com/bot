@@ -14,7 +14,7 @@ const AppRootLoader = () => {
     return (
         <div className='app-root'>
             <Loader />
-            <div>{localize('Please wait while we connect to the server...')}</div>
+            <div className='main-text'>{localize('Please wait while we connect to the server...')}</div>
         </div>
     );
 };
