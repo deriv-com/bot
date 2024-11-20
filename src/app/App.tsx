@@ -3,7 +3,8 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import Endpoint from '@/pages/endpoint';
-import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
+import { Loader } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
@@ -21,7 +22,14 @@ const router = createBrowserRouter(
         <Route
             path='/'
             element={
-                <Suspense fallback={<div>Please wait while we load the app...</div>}>
+                <Suspense
+                    fallback={
+                        <div className='app-root'>
+                            <Loader />
+                            <div>{localize('Please wait while we connect to the server...')}</div>
+                        </div>
+                    }
+                >
                     <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <StoreProvider>
                             <RoutePromptDialog />
