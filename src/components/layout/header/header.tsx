@@ -76,7 +76,7 @@ const AppHeader = observer(() => {
                     <Button
                         primary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            window.open(standalone_routes.signup);
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />
