@@ -35,7 +35,6 @@ const Livechat = observer(() => {
     }, 10);
 
     const liveChatClickHandler = () => {
-        console.log('test is_livechat_available', is_livechat_available);
         featureFlagValue ? widget.open() : window.LiveChatWidget?.call('maximize');
     };
 

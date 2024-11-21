@@ -5,7 +5,6 @@ const useIsLiveChatWidgetAvailable = () => {
 
     useEffect(() => {
         window.LiveChatWidget?.on('ready', data => {
-            console.log('test data', data);
             if (data.state.availability === 'online') setIsLivechatAvailable(true);
         });
     }, []);

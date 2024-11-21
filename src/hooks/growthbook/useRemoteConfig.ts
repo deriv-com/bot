@@ -30,9 +30,9 @@ function useRemoteConfig(enabled = false) {
                     }
                 })
                 .catch(error => {
-                    // eslint-disable-next-line no-console
-                    console.log('Remote Config error: ', error);
+                    console.error('Remote Config error: ', error);
                 });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [enabled]);
 
     return { data };
