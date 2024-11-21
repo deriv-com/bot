@@ -51,7 +51,7 @@ export const platformsConfig: PlatformsConfig[] = [
     },
     {
         active: true,
-        buttonIcon: <DerivBotLogo height={24} width={91} />,
+        buttonIcon: <DerivBotLogo height={25} width={94} />,
         description: localize('Automated trading at your fingertips. No coding needed.'),
         href: standalone_routes.bot,
         icon: <DerivBotLogo height={32} width={121} />,

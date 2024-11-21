@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { MarketIcon } from '@/components/market/market-icon';
 import Autocomplete from '@/components/shared_ui/autocomplete';
 import { TItem } from '@/components/shared_ui/dropdown-list';
 import Text from '@/components/shared_ui/text';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { Icon } from '@/utils/tmp/dummy';
 import { useDevice } from '@deriv-com/ui';
 import { TFormData } from '../types';
 
@@ -22,7 +22,7 @@ type TMarketOption = {
 
 const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
     <div key={symbol.value} className='qs__select__option'>
-        <Icon data_testid='dt_symbol_icon' icon={`IcUnderlying${symbol.value}`} size={32} />
+        <MarketIcon type={symbol.value} size='sm' />
         <Text className='qs__select__option__text' size='xs' color='prominent'>
             {symbol.text}
         </Text>
@@ -125,7 +125,7 @@ const SymbolSelect: React.FC = () => {
                             onChange={handleInputChange}
                             onFocus={handleFocus}
                             onHideDropdownList={handleHideDropdownList}
-                            leading_icon={<Icon icon={`IcUnderlying${input_value.value}`} size={24} />}
+                            leading_icon={<MarketIcon type={input_value.value} size='sm' />}
                         />
                     </>
                 )}
