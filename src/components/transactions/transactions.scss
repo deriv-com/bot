@@ -49,6 +49,14 @@
             display: flex;
             justify-content: center;
             margin-top: 0.3rem;
+
+            svg {
+                g {
+                    path {
+                        fill: var(--text-less-prominent);
+                    }
+                }
+            }
         }
 
         &__icon {
