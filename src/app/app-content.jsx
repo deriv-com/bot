@@ -37,9 +37,7 @@ const AppContent = observer(() => {
     const { connectionStatus } = useApiBase();
     const { initTrackJS } = useTrackjs();
 
-    console.log(client);
-    console.log('before initTrackJS');
-    initTrackJS();
+    initTrackJS(client.loginid);
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {

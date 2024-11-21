@@ -7,9 +7,8 @@ const { TRACKJS_TOKEN } = process.env;
  * @returns {Object} An object containing the `init` function.
  */
 const useTrackjs = () => {
-    const activeLoginid = '';
     const isProduction = process.env.NODE_ENV === 'production';
-    const initTrackJS = () => {
+    const initTrackJS = (loginid: string) => {
         try {
             if (!TrackJS.isInstalled()) {
                 TrackJS.install({
@@ -17,7 +16,7 @@ const useTrackjs = () => {
                     dedupe: false,
                     enabled: isProduction,
                     token: TRACKJS_TOKEN!,
-                    userId: activeLoginid ?? 'undefined',
+                    userId: loginid,
                     version: (document.querySelector('meta[name=version]') as HTMLMetaElement)?.content ?? 'undefined',
                 });
             }
