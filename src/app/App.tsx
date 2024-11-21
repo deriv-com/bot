@@ -3,7 +3,7 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import Endpoint from '@/pages/endpoint';
-import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
@@ -27,6 +27,9 @@ const router = createBrowserRouter(
                     fallback={
                         <div className='app-root'>
                             <Loader />
+                            <div className='load-message'>
+                                {localize('Please wait while we connect to the server...')}
+                            </div>
                         </div>
                     }
                 >
