@@ -297,5 +297,13 @@ export default class ClientStore {
         setIsAuthorized(false);
         setAccountList([]);
         setAuthData(null);
+
+        // disable livechat
+        window.LC_API?.close_chat?.();
+        window.LiveChatWidget?.call('hide');
+
+        // disable freshchat
+        window.fcWidget?.close?.();
+        window.fcWidget?.user?.clear?.();
     };
 }

@@ -44,6 +44,10 @@ export const isTestLink = () => {
 export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
 const getDefaultServerURL = () => {
+    if (isTestLink()) {
+        return 'ws.derivws.com';
+    }
+
     let active_loginid_from_url;
     const search = window.location.search;
     if (search) {
@@ -63,7 +67,7 @@ const getDefaultServerURL = () => {
 export const getDefaultAppIdAndUrl = () => {
     const server_url = getDefaultServerURL();
 
-    if (/localhost/i.test(window.location.hostname)) {
+    if (isTestLink()) {
         return { app_id: APP_IDS.LOCALHOST, server_url };
     }
 
