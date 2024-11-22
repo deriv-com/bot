@@ -8,10 +8,11 @@ import './layout.scss';
 
 const Layout = () => {
     const { isDesktop } = useDevice();
+    const isCallbackPage = window.location.pathname === '/callback';
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            <AppHeader />
+            {!isCallbackPage && <AppHeader />}
             <Body>
                 <Outlet />
             </Body>
