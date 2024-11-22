@@ -10,6 +10,7 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import useTrackjs from '@/hooks/useTrackjs';
+import initDatadog from '@/utils/datadog';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
@@ -24,7 +25,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../components/bot-notification/bot-notification.scss';
 
 const AppContent = observer(() => {
-    const { initTrackJS } = useTrackjs();
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
@@ -36,8 +36,9 @@ const AppContent = observer(() => {
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
     const { connectionStatus } = useApiBase();
+    const { initTrackJS } = useTrackjs();
 
-    initTrackJS();
+    initTrackJS(client.loginid);
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
@@ -131,6 +132,14 @@ const AppContent = observer(() => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_landing_company_loaded, is_api_initialized]);
+
+    // TODO: fix
+    // const isMounted = useIsMounted();
+    // const { data: remote_config_data } = useRemoteConfig(isMounted());
+    // const { tracking_datadog } = data;
+    useEffect(() => {
+        initDatadog(true); // (tracking_datadog);
+    }, []); // [tracking_datadog])
 
     if (common?.error) return null;
 

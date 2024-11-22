@@ -20,6 +20,7 @@
         "build:analyze": "BUNDLE_ANALYZE=true rsbuild build"
     },
     "dependencies": {
+        "@datadog/browser-rum": "^5.31.1",
         "@deriv-com/analytics": "^1.5.3",
         "@deriv-com/quill-ui": "1.18.1",
         "@deriv-com/translations": "^1.3.9",
