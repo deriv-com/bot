@@ -1,9 +1,9 @@
+import React from 'react';
 import { useFormik } from 'formik';
 import { getAppId, getDefaultAppIdAndUrl, getSocketURL } from '@/components/shared';
 import { Button, Input, Text } from '@deriv-com/ui';
 import { LocalStorageConstants, LocalStorageUtils } from '@deriv-com/utils';
 import './endpoint.scss';
-
 const Endpoint = () => {
     const formik = useFormik({
         initialValues: {
@@ -14,7 +14,6 @@ const Endpoint = () => {
             LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, values.serverUrl);
             LocalStorageUtils.setValue(LocalStorageConstants.configAppId, values.appId);
             formik.resetForm({ values });
-            window.location.reload();
         },
         validate: values => {
             const errors: { [key: string]: string } = {};

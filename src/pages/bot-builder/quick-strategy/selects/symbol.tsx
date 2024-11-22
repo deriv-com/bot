@@ -8,6 +8,7 @@ import { useStore } from '@/hooks/useStore';
 import { Icon } from '@/utils/tmp/dummy';
 import { useDevice } from '@deriv-com/ui';
 import { TFormData } from '../types';
+import { V2_QS_STRATEGIES } from '../utils';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -32,20 +33,23 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useStore();
     const { isDesktop } = useDevice();
-    const { setValue } = quick_strategy;
+    const { setValue, selected_strategy } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
+    const is_strategy_accumulator = V2_QS_STRATEGIES.includes(selected_strategy);
 
     const symbols = useMemo(
         () =>
-            active_symbols.map((symbol: TSymbol) => ({
-                component: <MarketOption key={symbol.text} symbol={symbol} />,
-                ...symbol,
-            })),
-        [active_symbols]
+            active_symbols
+                .map((symbol: TSymbol) => ({
+                    component: <MarketOption key={symbol.text} symbol={symbol} />,
+                    ...symbol,
+                }))
+                .filter(symbol => !is_strategy_accumulator || symbol?.group?.startsWith('Continuous Indices')),
+        [active_symbols, is_strategy_accumulator]
     );
 
     useEffect(() => {

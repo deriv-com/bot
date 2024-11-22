@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -17,6 +18,7 @@ import CustomNotifications from './custom-notifications';
 import MenuItems from './menu-items';
 import MobileMenu from './mobile-menu';
 import PlatformSwitcher from './platform-switcher';
+import { generateOAuthURL } from './utils';
 import './header.scss';
 
 const { getOauthURL } = URLUtils;
@@ -68,7 +70,8 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            const oauth_url = generateOAuthURL();
+                            window.location.replace(oauth_url);
                         }}
                     >
                         <Localize i18n_default_text='Log in' />

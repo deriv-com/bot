@@ -45,7 +45,7 @@ const QuickSelectionPanel = ({
                 <Text size='xs' lineHeight='s'>
                     {localize('Strategy')}
                 </Text>
-                <Text size='xs' weight='bold' lineHeight='s'>
+                <Text className='qs__selected-options__item__description' weight='bold' lineHeight='s'>
                     {selected_startegy_label}
                 </Text>
             </div>
