@@ -1,7 +1,9 @@
+import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import useModalManager from '@/hooks/useModalManager';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
 import { DesktopLanguagesModal } from '@deriv-com/ui';
+import Livechat from '../../chat/Livechat';
 import AccountLimits from './AccountLimits';
 import ChangeTheme from './ChangeTheme';
 import Deriv from './Deriv';
@@ -9,7 +11,6 @@ import Endpoint from './Endpoint';
 import FullScreen from './FullScreen';
 import HelpCentre from './HelpCentre';
 import LanguageSettings from './LanguageSettings';
-import Livechat from './Livechat';
 import NetworkStatus from './NetworkStatus';
 import ResponsibleTrading from './ResponsibleTrading';
 import ServerTime from './ServerTime';
@@ -22,6 +23,9 @@ const Footer = () => {
 
     const openLanguageSettingModal = () => showModal('DesktopLanguagesModal');
 
+    const { data } = useRemoteConfig(true);
+    const { cs_chat_whatsapp } = data;
+
     return (
         <footer className='app-footer'>
             <FullScreen />
@@ -33,7 +37,7 @@ const Footer = () => {
             <ResponsibleTrading />
             <Deriv />
             <Livechat />
-            <WhatsApp />
+            {cs_chat_whatsapp && <WhatsApp />}
             <div className='app-footer__vertical-line' />
             <ServerTime />
             <div className='app-footer__vertical-line' />

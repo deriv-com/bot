@@ -8,20 +8,22 @@ export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
         ?.match(/[a-zA-Z]+/g)
         ?.join('');
+
     if (process.env.REMOTE_CONFIG_URL) {
         const flags = await fetch(process.env.REMOTE_CONFIG_URL)
             .then(res => res.json())
             .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
-            const ppc_campaign_cookies =
-                Cookies.get('utm_data') === 'null'
-                    ? {
-                          utm_source: 'no source',
-                          utm_medium: 'no medium',
-                          utm_campaign: 'no campaign',
-                          utm_content: 'no content',
-                      }
-                    : Cookies.get('utm_data');
+            let ppc_campaign_cookies = Cookies.get('utm_data') as unknown as Record<string, string> | null;
+
+            if (!ppc_campaign_cookies) {
+                ppc_campaign_cookies = {
+                    utm_source: 'no source',
+                    utm_medium: 'no medium',
+                    utm_campaign: 'no campaign',
+                    utm_content: 'no content',
+                };
+            }
 
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
@@ -33,7 +35,9 @@ export const AnalyticsInitializer = async () => {
                         app_id: String(getAppId()),
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                         device_language: navigator?.language || 'en-EN',
-                        user_language: JSON.parse(LocalStore?.get('i18n_language').toLowerCase()),
+                        user_language: LocalStore?.get('i18n_language')
+                            ? JSON.parse(LocalStore.get('i18n_language')?.toLowerCase())
+                            : undefined,
                         country: await getCountry(),
                         utm_source: ppc_campaign_cookies?.utm_source,
                         utm_medium: ppc_campaign_cookies?.utm_medium,
