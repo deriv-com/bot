@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "^1.5.3",
-        "@deriv-com/auth-client": "/Users/thisyahlennair/Deriv/auth-client",
+        "@deriv-com/auth-client": "^1.2.8",
         "@deriv-com/quill-ui": "1.18.1",
         "@deriv-com/translations": "^1.3.9",
         "@deriv-com/ui": "^1.36.4",
