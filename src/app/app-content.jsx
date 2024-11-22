@@ -10,6 +10,7 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import useTrackjs from '@/hooks/useTrackjs';
+import initDatadog from '@/utils/datadog';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
@@ -131,6 +132,14 @@ const AppContent = observer(() => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_landing_company_loaded, is_api_initialized]);
+
+    // TODO: fix
+    // const isMounted = useIsMounted();
+    // const { data: remote_config_data } = useRemoteConfig(isMounted());
+    // const { tracking_datadog } = data;
+    useEffect(() => {
+        initDatadog(true); // (tracking_datadog);
+    }, []); // [tracking_datadog])
 
     if (common?.error) return null;
 
