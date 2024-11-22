@@ -43,6 +43,10 @@
     &__button {
         margin-inline-end: 0.8rem;
 
+        @include mobile-or-tablet-screen {
+            margin-inline-end: 0;
+        }
+
         .deriv-context-menu {
             box-shadow: 0 0 2px 0 var(--du-shadow-box, #00000014);
         }
