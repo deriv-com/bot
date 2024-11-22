@@ -1,0 +1,207 @@
+@mixin container-space($parent, $space) {
+    #{$parent}__top-icon {
+        top: $space * 1rem;
+        left: $space * 1rem;
+    }
+
+    #{$parent}__bottom-icon {
+        bottom: $space * 1rem;
+        right: $space * 1rem;
+    }
+}
+
+.app-icon {
+    $p-app-icon: &;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 4rem;
+    height: 2.5rem;
+
+    @include container-space($p-app-icon, 0.14);
+
+    &__top-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    &__bottom-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        .wallet-icon img {
+            width: 32px;
+            height: 20px;
+        }
+    }
+
+    .acc-info {
+        &__wallets-container {
+            width: 4rem;
+            height: 2.5rem;
+
+            &.is_menu {
+                background-color: var(--brand-red-coral);
+            }
+        }
+    }
+}
+
+.acc-info {
+    &__wallets-container {
+        &.is_menu {
+            width: 40px !important;
+            height: 24px !important;
+
+            .app-icon {
+                &__top-icon {
+                    top: 1px;
+                    left: 1px;
+
+                    .wallet-icon {
+                        img {
+                            width: 16px;
+                            height: 16px;
+                        }
+
+                        &--small {
+                            width: 24px;
+                            height: 14px;
+
+                            img {
+                                height: 12px;
+                                width: 12px;
+                            }
+                        }
+                    }
+                }
+
+                &__bottom-icon {
+                    bottom: 1px;
+                    right: 1px;
+
+                    .wallet-icon {
+                        &--small {
+                            width: 24px;
+                            height: 14px;
+
+                            img {
+                                height: 12px;
+                                width: 12px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.wallet-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &__default-bg {
+        // Default Background
+        background: radial-gradient(100% 4130.74% at 0% 100%, rgb(244 67 54 / 24%) 0%, rgb(40 57 145 / 48%) 100%)
+            #fff;
+    }
+
+    &--small {
+        width: 2.5rem;
+        height: 1.5rem;
+    }
+
+    img {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0 !important;
+    }
+}
+
+.wallet-card {
+    &__usd-bg {
+        background: radial-gradient(100% 4130.74% at 0% 100%, rgb(244 67 54 / 24%) 0%, rgb(40 57 145 / 48%) 100%)
+            #fff;
+
+        img {
+            height: 16px !important;
+        }
+    }
+
+    &__demo-bg {
+        background: radial-gradient(100% 277.78% at 0% 100%, rgb(255 100 68 / 24%) 0%, rgb(255 68 79 / 48%) 100%)
+            #212329;
+    }
+
+    &__btc-bg {
+        background: radial-gradient(
+                100% 277.78% at 0% 100%,
+                rgb(247 147 27 / 24%) 0%,
+                rgb(247 199 27 / 47.7%) 99.99%
+            )
+            #fff;
+    }
+
+    &__eusdt-bg,
+    &__tusdt-bg {
+        background: radial-gradient(100% 277.78% at 0% 100%, rgb(0 147 147 / 24%) 0%, rgb(0 147 147 / 48%) 100%)
+            #fff;
+    }
+
+    &__eth-bg {
+        background: radial-gradient(100% 277.78% at 0% 100%, rgb(82 86 127 / 24%) 0%, rgb(130 140 173 / 48%) 100%)
+            #fff;
+    }
+
+    &__ltc-bg {
+        background: radial-gradient(
+                100% 277.78% at 0% 100%,
+                rgb(165 168 169 / 24%) 0%,
+                rgb(193 204 207 / 48%) 100%
+            )
+            #fff;
+    }
+
+    &__usdc-bg {
+        background: radial-gradient(100% 277.78% at 0% 100%, rgb(39 117 202 / 24%) 0%, rgb(34 76 225 / 48%) 100%)
+            #fff;
+    }
+
+    &__usdt-bg {
+        background: radial-gradient(100% 277.78% at 0% 100%, rgb(39 117 202 / 24%) 0%, rgb(34 76 225 / 48%) 100%)
+            #fff;
+    }
+}
+
+.dc-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff !important;
+    border-radius: 2px;
+    font-size: 10px;
+    height: 0.9rem;
+    padding-inline: 0.28rem;
+    font-weight: 600;
+
+    &--blue {
+        background-color: #377cfc;
+    }
+
+    &--bordered {
+        border: 1px solid var(--text-prominent);
+        color: var(--text-prominent) !important;
+    }
+}

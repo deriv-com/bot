@@ -308,6 +308,18 @@ const MARKET_ICONS = {
     unknown: lazy(() =>
         import('@deriv/quill-icons/Illustrative').then(module => ({ default: module.IllustrativeMarketsIcon }))
     ),
+    USD: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyLtcusdIcon }))
+    ),
+    tUSDT: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyLtcusdIcon }))
+    ),
+    LTC: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyLtcusdIcon }))
+    ),
+    USDC: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyBtcusdIcon }))
+    ),
 };
 
 export const MarketIcon = ({ type, size }: { type: string; size?: IconSize }) => {

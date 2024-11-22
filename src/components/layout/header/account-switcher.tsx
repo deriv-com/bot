@@ -12,6 +12,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import AccountWalletDropdown from './wallet-account-switcher/account-wallet-dropdown';
 import { checkSwitcherType } from './utils';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
@@ -50,7 +51,7 @@ interface AccountSwitcherData {
 
 const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
     const { client } = useStore();
-    const { landing_companies } = client;
+    const { landing_companies, has_wallet } = client;
 
     const account_switcher_data = useRef<AccountSwitcherData | null>(null);
 
@@ -70,7 +71,9 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
         fetchAccountSwitcherData();
     }, []);
 
-    return (
+    return has_wallet ? (
+        <AccountWalletDropdown setIsAccDropdownOpen={() => {}} />
+    ) : (
         <>
             <UIAccountSwitcher.AccountsPanel
                 isOpen

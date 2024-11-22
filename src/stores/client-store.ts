@@ -70,6 +70,7 @@ export default class ClientStore {
             setUpgradeableLandingCompanies: action,
             is_trading_experience_incomplete: computed,
             is_cr_account: computed,
+            has_wallet: computed,
         });
     }
 
@@ -204,6 +205,10 @@ export default class ClientStore {
 
     get is_cr_account() {
         return this.loginid?.startsWith('CR');
+    }
+
+    get has_wallet() {
+        return Object.values(this.accounts).some(account => account.account_category === 'wallet');
     }
 
     isBotAllowed = () => {
