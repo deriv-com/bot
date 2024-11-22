@@ -6,6 +6,7 @@ import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
@@ -67,8 +68,11 @@ const AppHeader = observer(() => {
                 <div className='auth-actions'>
                     <Button
                         tertiary
-                        onClick={() => {
-                            window.location.assign(getOauthURL());
+                        onClick={async () => {
+                            // window.location.assign(getOauthURL());
+                            await requestOidcAuthentication({
+                                redirectCallbackUri: `${window.location.origin}/callback`,
+                            });
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
