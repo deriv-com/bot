@@ -29,6 +29,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
     const {
         load_modal: { toggleLoadModal },
         dashboard: { showVideoDialog },
+        quick_strategy: { setFormVisibility },
     } = useStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
@@ -44,18 +45,20 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         localStorage?.setItem('bot-announcements', JSON.stringify(updated_local_storage_data));
     };
 
+    const updateLocalStorage = (announce_id: string) => {
+        let data: Record<string, boolean> | null = null;
+        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+        storeDataInLocalStorage({ ...data, [announce_id]: false });
+        const temp_notifications = updateNotifications();
+        setReadAnnouncementsMap(temp_notifications);
+    };
+
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
         rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
-
-        let data: Record<string, boolean> | null = null;
-        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
-
-        storeDataInLocalStorage({ ...data, [announce_id]: false });
-        const temp_notifications = updateNotifications();
-        setReadAnnouncementsMap(temp_notifications);
+        updateLocalStorage(announce_id);
     };
 
     const handleRedirect = (url: string) => () => {
@@ -130,6 +133,9 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         });
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
+        }
+        if (selected_announcement?.should_toggle_qs_modal) {
+            setFormVisibility(true);
         }
         if (selected_announcement?.should_toggle_modal) {
             toggleLoadModal();
