@@ -2,6 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
+import { TAccount } from './common/types';
 
 type TSwitcherContent = {
     isVirtual: boolean;
@@ -9,7 +10,7 @@ type TSwitcherContent = {
         demo: string;
         real: string;
     };
-    account_list: any[];
+    account_list: TAccount;
     switchAccount: (loginId: number) => void;
 };
 const DefaultAccountSwitcher = ({ isVirtual, tabs_labels, account_list, switchAccount }: TSwitcherContent) => (
