@@ -94,7 +94,6 @@ export const checkSwitcherType = async account_data => {
     const { financial_company, gaming_company } = landing_companies;
 
     const { risk_classification } = account_status || {};
-    console.log(country_code);
     const is_country_low_risk = LOW_RISK_COUNTRIES().includes(country_code);
 
     let is_low_risk = isLowRisk(financial_company, gaming_company, upgradeable_landing_companies);
@@ -116,7 +115,6 @@ export const checkSwitcherType = async account_data => {
     });
 
     const real_accounts = eu_accounts.length + non_eu_accounts.length;
-    console.log('real_accounts', real_accounts);
     const renderCountryIsLowRiskAndHasNoRealAccount = !isVirtual && is_country_low_risk && real_accounts === 0;
     const renderCountryIsEuAndNoRealAccount = !isVirtual && !is_country_low_risk && is_eu && real_accounts === 0;
     const renderCountryIsNonEuAndNoRealAccount = !isVirtual && !is_country_low_risk && !is_eu && real_accounts === 0;

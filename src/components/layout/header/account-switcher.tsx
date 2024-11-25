@@ -55,13 +55,11 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcher
             landing_companies,
             is_virtual: isVirtual,
         };
-        console.log(isVirtual);
         const account_info = await checkSwitcherType(account_data);
         account_switcher_data.current = account_info;
         setAccountDataFetched(true);
     }, [client, modifiedAccountList]);
 
-    console.log(account_switcher_data.current);
     useEffect(() => {
         fetchAccountSwitcherData();
     }, [modifiedAccountList, is_account_data_fetched]);
