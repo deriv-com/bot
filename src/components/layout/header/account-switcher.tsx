@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import React from 'react';
-import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
 import { getDecimalPlaces } from '@/components/shared';
@@ -12,6 +11,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import AccountSwitcherContent from './account-switcher-content';
 import { checkSwitcherType } from './utils';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
@@ -45,14 +45,15 @@ interface AccountSwitcherData {
     renderCountryIsNonEuAndNoRealAccount: boolean;
     renderCountryIsEuHasOnlyRealAccount: boolean;
     renderCountryIsNonEuHasOnlyRealAccount: boolean;
-    renderCountryIsLowRiskAndHasRealAccount: boolean;
+    renderCountryIsLowRiskAndHasOnlyRealAccount: boolean;
 }
 
-const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
+const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcherProps) => {
     const { client } = useStore();
     const { landing_companies } = client;
 
     const account_switcher_data = useRef<AccountSwitcherData | null>(null);
+    const [is_account_data_fetched, setAccountDataFetched] = useState(false);
 
     const fetchAccountSwitcherData = useCallback(async () => {
         if (account_switcher_data.current || !client?.loginid || !modifiedAccountList) return;
@@ -64,39 +65,23 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
         };
         const account_info = await checkSwitcherType(account_data);
         account_switcher_data.current = account_info;
+        setAccountDataFetched(true);
     }, [client, modifiedAccountList]);
 
     useEffect(() => {
         fetchAccountSwitcherData();
-    }, []);
+    }, [modifiedAccountList, is_account_data_fetched]);
 
     return (
         <>
-            <UIAccountSwitcher.AccountsPanel
-                isOpen
-                title={localize('Deriv accounts')}
-                className='account-switcher-panel'
-                key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
-            >
-                {modifiedAccountList
-                    ?.filter(account => (isVirtual ? account.is_virtual : !account.is_virtual))
-                    .map(account => (
-                        <span
-                            className={clsx('account-switcher__item', {
-                                'account-switcher__item--disabled': account.is_disabled,
-                            })}
-                            key={account.loginid}
-                        >
-                            <UIAccountSwitcher.AccountsItem
-                                account={account}
-                                onSelectAccount={() => {
-                                    if (!account.is_disabled) switchAccount(account.loginid);
-                                }}
-                            />
-                        </span>
-                    ))}
-            </UIAccountSwitcher.AccountsPanel>
-
+            {
+                <AccountSwitcherContent
+                    ref={account_switcher_data}
+                    isVirtual={isVirtual ?? false}
+                    tabs_labels={tabs_labels}
+                    account_list={modifiedAccountList}
+                />
+            }
             <Divider color='var(--du-general-active)' height='2px' />
 
             <div className='account-switcher-footer'>
