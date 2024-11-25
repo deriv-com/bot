@@ -78,3 +78,15 @@ export type TNonEuAccounts = {
     non_eu_accounts: any[];
     switchAccount: (loginId: number) => void;
 };
+
+export const updateNestedProperty = (accounts, nestedProperty, newValue) => {
+    return accounts.map(account => {
+        return {
+            ...account,
+            account: {
+                ...account.account,
+                [nestedProperty]: newValue,
+            },
+        };
+    });
+};

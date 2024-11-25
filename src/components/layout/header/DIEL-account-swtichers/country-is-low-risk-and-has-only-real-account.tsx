@@ -4,7 +4,7 @@ import EuAccounts from './common/eu-accounts';
 import NoEuAccounts from './common/no-eu-accounts';
 import NoNonEuAccounts from './common/no-non-eu-accounts';
 import NonEuAccounts from './common/non-eu-accounts';
-import { TSwitcherContent } from './common/utils';
+import { TSwitcherContent, updateNestedProperty } from './common/utils';
 
 const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
     account_switcher_data,
@@ -14,16 +14,7 @@ const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
     switchAccount,
 }: TSwitcherContent) => {
     const { non_eu_accounts, eu_accounts } = account_switcher_data.current;
-    let eu_update_account = [...eu_accounts];
-    eu_update_account = eu_update_account.map(account => {
-        return {
-            ...account,
-            account: {
-                ...account.account,
-                currencyLabel: 'Multipliers',
-            },
-        };
-    });
+    const eu_update_account = updateNestedProperty(eu_accounts, 'currencyLabel', 'multiplier');
 
     return (
         <>
