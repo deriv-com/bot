@@ -11,7 +11,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
-import { TSwitcherData } from './DIEL-account-swtichers/common/utils';
+import { TSwitcherData } from './DIEL-account-swtichers/common/types';
 import AccountSwitcherContent from './account-switcher-content';
 import { checkSwitcherType } from './utils';
 
