@@ -1,6 +1,7 @@
+import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useApiBase } from '@/hooks/useApiBase';
@@ -68,7 +69,7 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            window.location.replace(generateOAuthURL());
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
