@@ -11,6 +11,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import { TSwitcherData } from './DIEL-account-swtichers/common/utils';
 import AccountSwitcherContent from './account-switcher-content';
 import { checkSwitcherType } from './utils';
 
@@ -39,20 +40,11 @@ const tabs_labels = {
     real: localize('Real'),
 };
 
-interface AccountSwitcherData {
-    renderCountryIsLowRiskAndHasNoRealAccount: boolean;
-    renderCountryIsEuAndNoRealAccount: boolean;
-    renderCountryIsNonEuAndNoRealAccount: boolean;
-    renderCountryIsEuHasOnlyRealAccount: boolean;
-    renderCountryIsNonEuHasOnlyRealAccount: boolean;
-    renderCountryIsLowRiskAndHasOnlyRealAccount: boolean;
-}
-
 const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcherProps) => {
     const { client } = useStore();
     const { landing_companies } = client;
 
-    const account_switcher_data = useRef<AccountSwitcherData | null>(null);
+    const account_switcher_data = useRef<TSwitcherData | null>(null);
     const [is_account_data_fetched, setAccountDataFetched] = useState(false);
 
     const fetchAccountSwitcherData = useCallback(async () => {
