@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 export const no_account = {
     currency: ' ',
     currencyLabel: 'You have no real accounts',
@@ -38,4 +40,41 @@ export type TSwitcherContent = {
     account_list: unknown[];
     switchAccount: (loginId: number) => void;
     account_switcher_data: MutableRefObject<TSwitcherData | null>;
+};
+
+export type TEuAccounts = {
+    isVirtual: boolean;
+    tabs_labels: {
+        demo: string;
+        real: string;
+    };
+    eu_accounts: any[];
+    switchAccount: (loginId: number) => void;
+};
+
+export type TNoEuAccounts = {
+    isVirtual: boolean;
+    tabs_labels: {
+        demo: string;
+        real: string;
+    };
+};
+
+export type TNoNonEuAccounts = {
+    isVirtual: boolean;
+    tabs_labels: {
+        demo: string;
+        real: string;
+    };
+    switchAccount?: (loginId: number) => void;
+};
+
+export type TNonEuAccounts = {
+    isVirtual: boolean;
+    tabs_labels: {
+        demo: string;
+        real: string;
+    };
+    non_eu_accounts: any[];
+    switchAccount: (loginId: number) => void;
 };

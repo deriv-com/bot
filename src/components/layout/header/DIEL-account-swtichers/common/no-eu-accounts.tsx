@@ -1,15 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-import { no_account } from './utils';
-
-type TNoEuAccounts = {
-    isVirtual: boolean;
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-};
+import { no_account, TNoEuAccounts } from './utils';
 
 const NoEuAccounts = ({ isVirtual, tabs_labels }: TNoEuAccounts) => {
     return (

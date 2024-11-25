@@ -2,16 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-
-type TNonEuAccounts = {
-    isVirtual: boolean;
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-    non_eu_accounts: any[];
-    switchAccount: (loginId: number) => void;
-};
+import { TNonEuAccounts } from './utils';
 const NonEuAccounts = ({ isVirtual, tabs_labels, non_eu_accounts, switchAccount }: TNonEuAccounts) => {
     return (
         <UIAccountSwitcher.AccountsPanel
