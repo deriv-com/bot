@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
+import GTM from '@/utils/gtm';
 import { help_content_config } from '@/utils/help-content/help-content.config';
 import { LabelPairedCircleExclamationCaptionFillIcon } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
@@ -182,7 +183,6 @@ const FlyoutContent = (props: TFlyoutContent) => {
 
 const Flyout = observer(() => {
     const { flyout, flyout_help } = useStore();
-    const { gtm } = useStore();
     const { active_helper, initFlyoutHelp, setHelpContent } = flyout_help;
     const {
         flyout_content,
@@ -197,15 +197,13 @@ const Flyout = observer(() => {
         first_get_variable_block_index,
     } = flyout;
 
-    const { pushDataLayer } = gtm;
-
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
     if (is_visible && is_search_flyout) {
-        pushDataLayer({ event: 'dbot_search_results', value: true });
+        GTM?.pushDataLayer?.({ event: 'dbot_search_results', value: true });
     }
 
     const total_result = Object.keys(flyout_content).length;

@@ -1,5 +1,6 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { scrollWorkspace } from '@/external/bot-skeleton';
+import GTM from '@/utils/gtm';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -61,8 +62,7 @@ export default class ToolboxStore {
                 if (is_toolbox_open) {
                     //this.adjustWorkspace();
                     // Emit event to GTM
-                    const { gtm } = this.core;
-                    gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
+                    GTM?.pushDataLayer?.({ event: 'dbot_toolbox_visible', value: true });
                 }
             }
         );
