@@ -62,6 +62,9 @@ const MARKET_ICONS = {
     FRXGBPUSD: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketForexGbpusdIcon }))
     ),
+    FRXGBPNZD: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketForexGbpnzdIcon }))
+    ),
     FRXNZDJPY: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketForexNzdjpnIcon }))
     ),
@@ -85,6 +88,9 @@ const MARKET_ICONS = {
     ),
     FRXUSDSEK: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketForexUsdsekIcon }))
+    ),
+    FRXUSDMXN: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketForexUsdmxnIcon }))
     ),
     FRXXAGUSD: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCommoditySilverusdIcon }))

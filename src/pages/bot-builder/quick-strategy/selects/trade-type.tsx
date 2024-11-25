@@ -3,9 +3,9 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import Autocomplete from '@/components/shared_ui/autocomplete';
 import { TItem } from '@/components/shared_ui/dropdown-list';
 import Text from '@/components/shared_ui/text';
+import { TradeTypeIcon } from '@/components/trade-type/trade-type-icon';
 import { ApiHelpers } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
-import { IconTradeTypes } from '@/utils/tmp/dummy';
 import { TApiHelpersInstance, TFormData, TTradeType } from '../types';
 
 type TTradeTypeOption = {
@@ -17,7 +17,7 @@ const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type: { value, icon
         <div key={value} className='qs__select__option'>
             {icon?.length
                 ? icon.map((ic, idx) => (
-                      <IconTradeTypes type={ic} className='qs__select__option__icon' key={`${ic}id-${idx}`} />
+                      <TradeTypeIcon type={ic} className='qs__select__option__icon' key={`${ic}id-${idx}`} size='sm' />
                   ))
                 : null}
             <Text className='qs__select__option__text' size='xs' color='prominent'>
@@ -89,8 +89,8 @@ const TradeTypeSelect: React.FC = () => {
                             }}
                             leading_icon={
                                 <Text>
-                                    <IconTradeTypes type={selected_trade_type?.icon?.[0] || 'CALL'} />
-                                    <IconTradeTypes type={selected_trade_type?.icon?.[1] || 'PUT'} />
+                                    <TradeTypeIcon type={selected_trade_type?.icon?.[0] || 'CALL'} size='sm' />
+                                    <TradeTypeIcon type={selected_trade_type?.icon?.[1] || 'PUT'} size='sm' />
                                 </Text>
                             }
                         />
