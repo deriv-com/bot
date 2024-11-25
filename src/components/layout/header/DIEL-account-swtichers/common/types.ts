@@ -1,13 +1,33 @@
-import { MutableRefObject } from 'react';
+import React, { MutableRefObject } from 'react';
 
+export type TAccount = {
+    account: {
+        account_category: string;
+        account_type: string;
+        balance: string;
+        broker: string;
+        created_at: number;
+        currency: string;
+        currencyLabel: string;
+        currency_type: string;
+        icon: React.ReactNode;
+        isActive: boolean;
+        isVirtual: boolean;
+        is_disabled: number;
+        is_virtual: number;
+        landing_company_name: string;
+        linked_to: [];
+        loginid: string;
+    };
+};
 export type TDemoAccount = {
     isVirtual: boolean;
     tabs_labels: {
         demo: string;
         real: string;
     };
-    account_list: any[];
-    switchAccount: (loginId: number) => void;
+    account_list: TAccount[];
+    switchAccount?: (loginId: string) => void;
 };
 
 export type TSwitcherData = {
@@ -25,9 +45,9 @@ export type TSwitcherContent = {
         demo: string;
         real: string;
     };
-    account_list: unknown[];
-    switchAccount: (loginId: number) => void;
-    account_switcher_data: MutableRefObject<TSwitcherData | null>;
+    account_list: TAccount[];
+    switchAccount: (loginId: string) => void;
+    account_switcher_data?: MutableRefObject<TSwitcherData | null>;
 };
 
 export type TEuAccounts = {
@@ -36,8 +56,8 @@ export type TEuAccounts = {
         demo: string;
         real: string;
     };
-    eu_accounts: any[];
-    switchAccount: (loginId: number) => void;
+    eu_accounts?: TAccount;
+    switchAccount: (loginId: string) => void;
 };
 
 export type TNoEuAccounts = {
@@ -54,8 +74,8 @@ export type TNoNonEuAccounts = {
         demo: string;
         real: string;
     };
-    switchAccount?: (loginId: number) => void;
-    non_eu_accounts?: any[];
+    switchAccount?: (loginId: string) => void;
+    non_eu_accounts?: TAccount;
 };
 
 export type TNonEuAccounts = {
@@ -64,6 +84,6 @@ export type TNonEuAccounts = {
         demo: string;
         real: string;
     };
-    non_eu_accounts: any[];
-    switchAccount: (loginId: number) => void;
+    non_eu_accounts?: TAccount;
+    switchAccount?: (loginId: string) => void;
 };
