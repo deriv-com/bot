@@ -10,6 +10,16 @@ export const no_account = {
     isVirtual: true,
 };
 
+export type TDemoAccount = {
+    isVirtual: boolean;
+    tabs_labels: {
+        demo: string;
+        real: string;
+    };
+    account_list: any[];
+    switchAccount: (loginId: number) => void;
+};
+
 export type TSwitcherData = {
     renderCountryIsLowRiskAndHasNoRealAccount: boolean;
     renderCountryIsEuAndNoRealAccount: boolean;

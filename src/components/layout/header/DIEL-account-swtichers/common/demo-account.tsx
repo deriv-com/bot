@@ -2,16 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
+import { TDemoAccount } from './utils';
 
-type TDemoAccount = {
-    isVirtual: boolean;
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-    account_list: any[];
-    switchAccount: (loginId: number) => void;
-};
 const DemoAccount = ({ isVirtual, tabs_labels, account_list, switchAccount }: TDemoAccount) => {
     return (
         <>
