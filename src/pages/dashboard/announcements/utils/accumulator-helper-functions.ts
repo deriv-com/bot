@@ -40,7 +40,6 @@ export const performButtonAction = (
 ) => {
     switch (item.buttonAction) {
         case BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION: {
-            // console.log('item.id', item.id, ANNOUNCEMENTS[item.id]);
             return modalButtonAction(item.id, ANNOUNCEMENTS[item.id]);
         }
         case BUTTON_ACTION_TYPE.REDIRECT_BUTTON_ACTION: {

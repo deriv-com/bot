@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
+import useLiveChat from '@/components/chat/useLiveChat';
 import { getUrlBase } from '@/components/shared';
+import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
 import { api_base, ApiHelpers, ServerTime } from '@/external/bot-skeleton';
 import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
+import useTrackjs from '@/hooks/useTrackjs';
+import initDatadog from '@/utils/datadog';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
@@ -33,6 +37,23 @@ const AppContent = observer(() => {
     const is_subscribed_to_msg_listener = React.useRef(false);
     const msg_listener = React.useRef(null);
     const { connectionStatus } = useApiBase();
+    const { initTrackJS } = useTrackjs();
+
+    initTrackJS(client.loginid);
+
+    const livechat_client_information = {
+        is_client_store_initialized: client?.is_logged_in ? !!client?.account_settings?.email : !!client,
+        is_logged_in: client?.is_logged_in,
+        loginid: client?.loginid,
+        landing_company_shortcode: client?.landing_company_shortcode,
+        currency: client?.currency,
+        residence: client?.residence,
+        email: client?.account_settings?.email,
+        first_name: client?.account_settings?.first_name,
+        last_name: client?.account_settings?.last_name,
+    };
+
+    useLiveChat(livechat_client_information);
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
@@ -127,6 +148,14 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_landing_company_loaded, is_api_initialized]);
 
+    // TODO: fix
+    // const isMounted = useIsMounted();
+    // const { data: remote_config_data } = useRemoteConfig(isMounted());
+    // const { tracking_datadog } = data;
+    useEffect(() => {
+        initDatadog(true); // (tracking_datadog);
+    }, []); // [tracking_datadog])
+
     if (common?.error) return null;
 
     return is_loading ? (
@@ -145,6 +174,7 @@ const AppContent = observer(() => {
                     <BotStopped />
                     <TransactionDetailsModal />
                     <ToastContainer limit={3} draggable={false} />
+                    <TncStatusUpdateModal />
                 </div>
             </ThemeProvider>
         </>

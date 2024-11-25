@@ -1,14 +1,15 @@
+import { LocalStorageConstants, LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 import { isStaging } from '../url/helpers';
 
 export const APP_IDS = {
     LOCALHOST: 36300,
     TMP_STAGING: 64584,
     STAGING: 29934,
-    STAGING_ME: 29934,
     STAGING_BE: 29934,
-    PRODUCTION: 19111,
-    PRODUCTION_ME: 19111,
-    PRODUCTION_BE: 19111,
+    STAGING_ME: 29934,
+    PRODUCTION: 65555,
+    PRODUCTION_BE: 65556,
+    PRODUCTION_ME: 65557,
 };
 
 export const livechat_license_id = 12049137;
@@ -34,12 +35,20 @@ export const isProduction = () => {
 };
 
 export const isTestLink = () => {
-    return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
+    return (
+        window.location.origin?.includes('.binary.sx') ||
+        window.location.origin?.includes('bot-65f.pages.dev') ||
+        isLocal()
+    );
 };
 
 export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
 const getDefaultServerURL = () => {
+    if (isTestLink()) {
+        return 'ws.derivws.com';
+    }
+
     let active_loginid_from_url;
     const search = window.location.search;
     if (search) {
@@ -59,7 +68,7 @@ const getDefaultServerURL = () => {
 export const getDefaultAppIdAndUrl = () => {
     const server_url = getDefaultServerURL();
 
-    if (/localhost/i.test(window.location.hostname)) {
+    if (isTestLink()) {
         return { app_id: APP_IDS.LOCALHOST, server_url };
     }
 
@@ -78,7 +87,7 @@ export const getAppId = () => {
         app_id = config_app_id;
     } else if (isStaging()) {
         app_id = APP_IDS.STAGING;
-    } else if (/localhost/i.test(window.location.hostname)) {
+    } else if (isTestLink()) {
         app_id = APP_IDS.LOCALHOST;
     } else {
         app_id = domain_app_ids[current_domain as keyof typeof domain_app_ids] ?? APP_IDS.PRODUCTION;
@@ -131,4 +140,18 @@ export const getDebugServiceWorker = () => {
     if (debug_service_worker_flag) return !!parseInt(debug_service_worker_flag);
 
     return false;
+};
+
+export const generateOAuthURL = () => {
+    const { getOauthURL } = URLUtils;
+    const oauth_url = getOauthURL();
+    const original_url = new URL(oauth_url);
+    const configured_server_url = (LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ||
+        original_url.hostname) as string;
+
+    const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
+    if (!valid_server_urls.includes(configured_server_url)) {
+        original_url.hostname = configured_server_url;
+    }
+    return original_url.toString() || oauth_url;
 };

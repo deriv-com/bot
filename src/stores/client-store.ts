@@ -15,7 +15,7 @@ export default class ClientStore {
     loginid = '';
     account_list: TAuthData['account_list'] = [];
     balance = '0';
-    currency = 'USD';
+    currency = 'AUD';
     is_logged_in = false;
     account_status: GetAccountStatus | undefined;
     account_settings: GetSettings | undefined;
@@ -68,6 +68,8 @@ export default class ClientStore {
             setLoginId: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
+            is_trading_experience_incomplete: computed,
+            is_cr_account: computed,
         });
     }
 
@@ -83,6 +85,9 @@ export default class ClientStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+    get is_trading_experience_incomplete() {
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
     get is_eu() {
@@ -197,6 +202,10 @@ export default class ClientStore {
         return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
+    get is_cr_account() {
+        return this.loginid?.startsWith('CR');
+    }
+
     isBotAllowed = () => {
         // Stop showing Bot, DBot, DSmartTrader for logged out EU IPs
         if (!this.is_logged_in && this.is_eu_country) return false;
@@ -288,5 +297,13 @@ export default class ClientStore {
         setIsAuthorized(false);
         setAccountList([]);
         setAuthData(null);
+
+        // disable livechat
+        window.LC_API?.close_chat?.();
+        window.LiveChatWidget?.call('hide');
+
+        // disable freshchat
+        window.fcWidget?.close?.();
+        window.fcWidget?.user?.clear?.();
     };
 }

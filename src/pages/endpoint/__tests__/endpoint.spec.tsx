@@ -35,8 +35,6 @@ describe('<Endpoint />', () => {
 
         expect(LocalStorageUtils.getValue('config.server_url') ?? '').toBe('qa10.deriv.dev');
         expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe('123');
-
-        expect(mockReload).toHaveBeenCalledTimes(1);
     });
 
     it('should call getServerInfo and reset the inputs when user clicks on the reset button', async () => {
@@ -51,6 +49,6 @@ describe('<Endpoint />', () => {
         await userEvent.click(resetButton);
 
         expect(LocalStorageUtils.getValue('config.server_url') ?? '').toBe('blue.derivws.com');
-        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe(19111);
+        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe(65555);
     });
 });

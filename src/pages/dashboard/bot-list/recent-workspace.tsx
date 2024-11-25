@@ -207,7 +207,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                                     viewRecentStrategy(item.type);
                                 }}
                             >
-                                <div>{item.icon}</div>
+                                <div className='bot-list__item__responsive__menu__icon'>{item.icon}</div>
                                 <Text
                                     color='prominent'
                                     className='bot-list__item__responsive__menu__item'

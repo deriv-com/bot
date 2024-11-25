@@ -158,7 +158,7 @@ export default class FlyoutStore implements IFlyoutStore {
 
         this.block_listeners.push(
             window?.Blockly?.browserEvents?.conditionalBind(block_svg_root, 'mousedown', null, event => {
-                GTM.pushDataLayer({
+                GTM?.pushDataLayer?.({
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });

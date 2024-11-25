@@ -15,6 +15,18 @@
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
 
+        &_trade-modal-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .currency-icon {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 4rem;
+            }
+        }
+
         &--is-vertical-centered {
             position: absolute;
             top: 50vh;

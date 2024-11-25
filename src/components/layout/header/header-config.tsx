@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { standalone_routes } from '@/components/shared';
 import {
     LegacyCashierIcon as CashierLogo,
     LegacyHomeNewIcon as TradershubLogo,
@@ -9,6 +10,7 @@ import {
     DerivProductBrandLightDerivTraderLogoWordmarkIcon as DerivTraderLogo,
     PartnersProductBrandLightSmarttraderLogoWordmarkIcon as SmarttraderLogo,
 } from '@deriv/quill-icons/Logo';
+import { localize } from '@deriv-com/translations';
 
 export type PlatformsConfig = {
     active: boolean;
@@ -40,26 +42,26 @@ export type TAccount = {
 
 export const platformsConfig: PlatformsConfig[] = [
     {
-        active: true,
+        active: false,
         buttonIcon: <DerivTraderLogo height={25} width={114.97} />,
-        description: 'A whole new trading experience on a powerful yet easy to use platform.',
-        href: 'https://app.deriv.com',
+        description: localize('A whole new trading experience on a powerful yet easy to use platform.'),
+        href: standalone_routes.root,
         icon: <DerivTraderLogo height={32} width={148} />,
         showInEU: true,
     },
     {
-        active: false,
-        buttonIcon: <DerivBotLogo height={24} width={91} />,
-        description: 'Automated trading at your fingertips. No coding needed.',
-        href: 'https://app.deriv.com/bot',
+        active: true,
+        buttonIcon: <DerivBotLogo height={25} width={94} />,
+        description: localize('Automated trading at your fingertips. No coding needed.'),
+        href: standalone_routes.bot,
         icon: <DerivBotLogo height={32} width={121} />,
         showInEU: false,
     },
     {
         active: false,
         buttonIcon: <SmarttraderLogo height={24} width={115} />,
-        description: 'Trade the world’s markets with our popular user-friendly platform.',
-        href: 'https://smarttrader.deriv.com/en/trading',
+        description: localize('Trade the world’s markets with our popular user-friendly platform.'),
+        href: standalone_routes.smarttrader,
         icon: <SmarttraderLogo height={32} width={153} />,
         showInEU: false,
     },
@@ -67,7 +69,7 @@ export const platformsConfig: PlatformsConfig[] = [
 
 export const TRADERS_HUB_LINK_CONFIG = {
     as: 'a',
-    href: 'https://app.deriv.com/appstore/traders-hub',
+    href: standalone_routes.traders_hub,
     icon: <TradershubLogo iconSize='xs' />,
     label: "Trader's Hub",
 };
@@ -75,14 +77,14 @@ export const TRADERS_HUB_LINK_CONFIG = {
 export const MenuItems: MenuItemsConfig[] = [
     {
         as: 'a',
-        href: 'https://app.deriv.com/appstore/reports',
+        href: standalone_routes.reports,
         icon: <ReportsLogo iconSize='xs' />,
-        label: 'Reports',
+        label: localize('Reports'),
     },
     {
         as: 'a',
-        href: 'https://app.deriv.com/appstore/cashier',
+        href: standalone_routes.cashier,
         icon: <CashierLogo iconSize='xs' />,
-        label: 'Cashier',
+        label: localize('Cashier'),
     },
 ];

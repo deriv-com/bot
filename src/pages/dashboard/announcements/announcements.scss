@@ -68,7 +68,6 @@
     background-color: var(--general-main-2);
 
     @include mobile-or-tablet-screen {
-        border-radius: 0;
         height: 100svh;
     }
 
@@ -125,21 +124,11 @@
     }
 
     .notification {
-        display: flex;
-        border-radius: 4px;
-        width: 100%;
-        max-width: 40rem;
-        padding: 1.6rem;
-        color: var(--text-prominent);
-        overflow: hidden;
-        transition:
-            transform 0.25s ease,
-            opacity 0.25s linear;
-
         --notification-icon-color: rgb(44 154 255 / 8%);
 
         position: relative;
         height: 9.8rem;
+        border-radius: none;
         box-shadow: none;
         background-color: var(--general-main-2);
 

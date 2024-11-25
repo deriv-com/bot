@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@/external/bot-skeleton';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
-import { IconTradeTypes } from '@/utils/tmp/dummy';
 import { localize } from '@deriv-com/translations';
 import { MarketIcon } from '../market/market-icon';
 import { convertDateFormat } from '../shared';
 import Popover from '../shared_ui/popover';
+import { TradeTypeIcon } from '../trade-type/trade-type-icon';
 import { TTransaction } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-mobile';
@@ -83,7 +83,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                             />
                             <IconContainer
                                 message={getContractTypeName(transaction)}
-                                icon={<IconTradeTypes type={transaction?.contract_type} size={24} />}
+                                icon={<TradeTypeIcon type={transaction?.contract_type} size='md' />}
                             />
                         </div>
                     }

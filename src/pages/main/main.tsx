@@ -8,10 +8,10 @@ import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
 import Tabs from '@/components/shared_ui/tabs/tabs';
 import TradingViewModal from '@/components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from '@/constants/bot-contents';
-import { updateWorkspaceName } from '@/external/bot-skeleton';
-import dbot from '@/external/bot-skeleton/scratch/dbot';
-import { api_base } from '@/external/bot-skeleton/services/api/api-base';
+import { api_base, updateWorkspaceName } from '@/external/bot-skeleton';
+import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import {
     LabelPairedChartLineCaptionRegularIcon,
@@ -30,6 +30,7 @@ const Chart = lazy(() => import('../chart'));
 const Tutorial = lazy(() => import('../tutorials'));
 
 const AppWrapper = observer(() => {
+    const { connectionStatus } = useApiBase();
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useStore();
     const {
         active_tab,
@@ -42,8 +43,15 @@ const AppWrapper = observer(() => {
         setTourDialogVisibility,
     } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
-    const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
-        run_panel;
+    const {
+        is_dialog_open,
+        is_drawer_open,
+        dialog_options,
+        onCancelButtonClick,
+        onCloseDialog,
+        onOkButtonClick,
+        stopBot,
+    } = run_panel;
     const { is_open } = quick_strategy;
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
@@ -62,22 +70,17 @@ const AppWrapper = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
-    const checkAndHandleConnection = () => {
-        const api_status = api_base.getConnectionStatus();
-        const web_socket_status = ['Connecting', 'Closing', 'Closed'];
-        //added this check because after sleep mode all the store values refresh and is_running is false.
-        const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
-        if (is_bot_running && web_socket_status.includes(api_status)) {
-            dbot.terminateBot();
-            clear();
-            setWebSocketState(false);
-        }
-    };
-
     React.useEffect(() => {
-        window.addEventListener('focus', checkAndHandleConnection);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (connectionStatus !== CONNECTION_STATUS.OPENED) {
+            const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
+            if (is_bot_running) {
+                clear();
+                stopBot();
+                api_base.setIsRunning(false);
+                setWebSocketState(false);
+            }
+        }
+    }, [clear, connectionStatus, setWebSocketState, stopBot]);
 
     React.useEffect(() => {
         if (is_open) {
@@ -100,7 +103,7 @@ const AppWrapper = observer(() => {
     React.useEffect(() => {
         const trashcan_init_id = setTimeout(() => {
             if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
-                const trashcanY = 648;
+                const trashcanY = window.innerHeight - 250;
                 let trashcanX;
                 if (is_drawer_open) {
                     trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;

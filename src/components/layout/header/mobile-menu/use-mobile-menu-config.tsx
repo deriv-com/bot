@@ -1,4 +1,7 @@
 import { ComponentProps, ReactNode } from 'react';
+import Livechat from '@/components/chat/Livechat';
+import { standalone_routes } from '@/components/shared';
+import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
@@ -8,7 +11,6 @@ import {
     LegacyChartsIcon,
     LegacyHelpCentreIcon,
     LegacyHomeOldIcon,
-    LegacyLiveChatOutlineIcon,
     LegacyLogout1pxIcon,
     LegacyProfileSmIcon,
     LegacyResponsibleTradingIcon,
@@ -40,6 +42,9 @@ const useMobileMenuConfig = () => {
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
     const { client } = useStore();
 
+    const { data } = useRemoteConfig(true);
+    const { cs_chat_whatsapp } = data;
+
     const menuConfig: TMenuConfig[] = [
         [
             {
@@ -56,19 +61,19 @@ const useMobileMenuConfig = () => {
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/dtrader`,
+                href: standalone_routes.trade,
                 label: localize('Trade'),
                 LeftComponent: LegacyChartsIcon,
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/account/personal-details`,
+                href: standalone_routes.personal_details,
                 label: localize('Account Settings'),
                 LeftComponent: LegacyProfileSmIcon,
             },
             {
                 as: 'a',
-                href: `${URLConstants.derivAppProduction}/cashier/deposit`,
+                href: standalone_routes.cashier_deposit,
                 label: localize('Cashier'),
                 LeftComponent: LegacyCashierIcon,
             },
@@ -79,38 +84,47 @@ const useMobileMenuConfig = () => {
                 RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
             },
         ],
-        [
-            {
-                as: 'a',
-                href: HELP_CENTRE,
-                label: localize('Help center'),
-                LeftComponent: LegacyHelpCentreIcon,
-            },
-            {
-                as: 'a',
-                href: ACCOUNT_LIMITS,
-                label: localize('Account limits'),
-                LeftComponent: LegacyAccountLimitsIcon,
-            },
-            {
-                as: 'a',
-                href: RESPONSIBLE,
-                label: localize('Responsible trading'),
-                LeftComponent: LegacyResponsibleTradingIcon,
-            },
-            {
-                as: 'a',
-                href: URLConstants.whatsApp,
-                label: localize('WhatsApp'),
-                LeftComponent: LegacyWhatsappIcon,
-                target: '_blank',
-            },
-            {
-                as: 'button',
-                label: localize('Live chat'),
-                LeftComponent: LegacyLiveChatOutlineIcon,
-            },
-        ],
+        (
+            [
+                {
+                    as: 'a',
+                    href: HELP_CENTRE,
+                    label: localize('Help center'),
+                    LeftComponent: LegacyHelpCentreIcon,
+                },
+                {
+                    as: 'a',
+                    href: ACCOUNT_LIMITS,
+                    label: localize('Account limits'),
+                    LeftComponent: LegacyAccountLimitsIcon,
+                },
+                {
+                    as: 'a',
+                    href: RESPONSIBLE,
+                    label: localize('Responsible trading'),
+                    LeftComponent: LegacyResponsibleTradingIcon,
+                },
+                cs_chat_whatsapp
+                    ? {
+                          as: 'a',
+                          href: URLConstants.whatsApp,
+                          label: localize('WhatsApp'),
+                          LeftComponent: LegacyWhatsappIcon,
+                          target: '_blank',
+                      }
+                    : null,
+                {
+                    as: 'button',
+                    label: localize('Live chat'),
+                    LeftComponent: Livechat,
+                    onClick: () => {
+                        window.enable_freshworks_live_chat
+                            ? window.fcWidget.open()
+                            : window.LiveChatWidget?.call('maximize');
+                    },
+                },
+            ] as TMenuConfig
+        ).filter(Boolean),
         [
             {
                 as: 'button',

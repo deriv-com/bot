@@ -34,7 +34,7 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
         workspaces.push({
             id: workspace_id,
             timestamp: current_timestamp,
-            name: config().default_file_name,
+            name: save_modal.bot_name || config().default_file_name,
             xml: current_xml,
             save_type,
         });

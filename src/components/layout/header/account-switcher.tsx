@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
-import { getDecimalPlaces } from '@/components/shared';
+import { getDecimalPlaces, standalone_routes } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
 import { api_base } from '@/external/bot-skeleton';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
@@ -77,7 +77,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcher
             <Divider color='var(--du-general-active)' height='2px' />
 
             <div className='account-switcher-footer'>
-                <UIAccountSwitcher.TradersHubLink href='https://app.deriv.com'>
+                <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
                     {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
                 </UIAccountSwitcher.TradersHubLink>
                 <Divider color='var(--du-general-active)' height='2px' />
@@ -88,7 +88,6 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcher
                         className='deriv-account-switcher__logout'
                         onClick={() => {
                             client.logout();
-                            api_base?.api?.logout();
                         }}
                     >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
@@ -108,17 +107,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList }: TAccountSwitcher
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
-    const { ui, run_panel, client } = useStore() ?? {
-        ui: {
-            account_switcher_disabled_message: '',
-        },
-        run_panel: {
-            is_stop_button_visible: false,
-        },
-        client: {
-            all_accounts_balance: {},
-        },
-    };
+    const { ui, run_panel, client } = useStore();
     const { account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
 
