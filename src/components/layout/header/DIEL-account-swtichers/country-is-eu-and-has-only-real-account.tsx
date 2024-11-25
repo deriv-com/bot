@@ -3,6 +3,7 @@ import DemoAccount from './common/demo-account';
 import EuAccounts from './common/eu-accounts';
 import NoNonEuAccounts from './common/no-non-eu-accounts';
 import { TSwitcherContent } from './common/types';
+import { updateNestedProperty } from './common/utils';
 
 const RenderCountryIsEuHasOnlyRealAccount = ({
     isVirtual,
@@ -12,16 +13,8 @@ const RenderCountryIsEuHasOnlyRealAccount = ({
     account_switcher_data,
 }: TSwitcherContent) => {
     const { eu_accounts } = account_switcher_data.current;
-    let eu_update_account = [...eu_accounts];
-    eu_update_account = eu_update_account.map(account => {
-        return {
-            ...account,
-            account: {
-                ...account.account,
-                currencyLabel: 'Multipliers',
-            },
-        };
-    });
+    const eu_update_account = updateNestedProperty(eu_accounts, 'currencyLabel', 'multiplier');
+
     return (
         <>
             {!isVirtual ? (
