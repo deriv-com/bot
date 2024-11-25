@@ -125,7 +125,6 @@
     }
 
     .notification {
-        position: relative;
         display: flex;
         border-radius: 4px;
         width: 100%;
@@ -139,6 +138,7 @@
 
         --notification-icon-color: rgb(44 154 255 / 8%);
 
+        position: relative;
         height: 9.8rem;
         box-shadow: none;
         background-color: var(--general-main-2);
