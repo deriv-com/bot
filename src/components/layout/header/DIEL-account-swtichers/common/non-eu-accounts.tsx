@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-import { TNonEuAccounts } from './utils';
+import { TNonEuAccounts } from './types';
 const NonEuAccounts = ({ isVirtual, tabs_labels, non_eu_accounts, switchAccount }: TNonEuAccounts) => {
     return (
         <UIAccountSwitcher.AccountsPanel
@@ -21,7 +21,7 @@ const NonEuAccounts = ({ isVirtual, tabs_labels, non_eu_accounts, switchAccount 
                     <UIAccountSwitcher.AccountsItem
                         account={account.account}
                         onSelectAccount={() => {
-                            if (!account.account.is_disabled) switchAccount(account.account.loginid);
+                            if (!account.account.is_disabled && switchAccount) switchAccount(account.account.loginid);
                         }}
                     />
                 </span>

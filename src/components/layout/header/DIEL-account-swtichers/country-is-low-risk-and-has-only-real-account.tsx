@@ -4,7 +4,8 @@ import EuAccounts from './common/eu-accounts';
 import NoEuAccounts from './common/no-eu-accounts';
 import NoNonEuAccounts from './common/no-non-eu-accounts';
 import NonEuAccounts from './common/non-eu-accounts';
-import { TSwitcherContent, updateNestedProperty } from './common/utils';
+import { TSwitcherContent } from './common/types';
+import { updateNestedProperty } from './common/utils';
 
 const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
     account_switcher_data,

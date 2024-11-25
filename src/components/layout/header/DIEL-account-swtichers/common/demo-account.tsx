@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-import { TDemoAccount } from './utils';
+import { TDemoAccount } from './types';
 
 const DemoAccount = ({ isVirtual, tabs_labels, account_list, switchAccount }: TDemoAccount) => {
     return (

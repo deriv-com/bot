@@ -1,7 +1,7 @@
 import React from 'react';
 import DemoAccount from './common/demo-account';
 import NoNonEuAccounts from './common/no-non-eu-accounts';
-import { TSwitcherContent } from './common/utils';
+import { TSwitcherContent } from './common/types';
 const RenderCountryIsNonEuAndNoRealAccount = ({
     isVirtual,
     tabs_labels,
