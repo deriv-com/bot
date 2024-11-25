@@ -20,7 +20,18 @@ const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
     account_list,
     switchAccount,
 }: TSwitcherContent) => {
-    const { non_eu_accounts, eu_accounts } = account_switcher_data;
+    const { non_eu_accounts, eu_accounts } = account_switcher_data.current;
+    let eu_update_account = [...eu_accounts];
+    eu_update_account = eu_update_account.map(account => {
+        return {
+            ...account,
+            account: {
+                ...account.account,
+                currencyLabel: 'Multipliers',
+            },
+        };
+    });
+    console.log(eu_update_account);
     const no_account = {
         currency: ' ',
         currencyLabel: 'You have no real accounts',
@@ -39,21 +50,21 @@ const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
                     {non_eu_accounts.length > 0 ? (
                         <UIAccountSwitcher.AccountsPanel
                             isOpen
-                            title={localize('Non Eu Accounts')}
+                            title={localize('Non-Eu Deriv accounts')}
                             className='account-switcher-panel'
                             key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
                         >
                             {non_eu_accounts.map(account => (
                                 <span
                                     className={clsx('account-switcher__item', {
-                                        'account-switcher__item--disabled': account.is_disabled,
+                                        'account-switcher__item--disabled': account.account.is_disabled,
                                     })}
-                                    key={account.loginid}
+                                    key={account.account.loginid}
                                 >
                                     <UIAccountSwitcher.AccountsItem
-                                        account={account}
+                                        account={account.account}
                                         onSelectAccount={() => {
-                                            if (!account.is_disabled) switchAccount(account.loginid);
+                                            if (!account.account.is_disabled) switchAccount(account.account.loginid);
                                         }}
                                     />
                                 </span>
@@ -62,7 +73,7 @@ const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
                     ) : (
                         <UIAccountSwitcher.AccountsPanel
                             isOpen
-                            title={localize('Non Eu Accounts')}
+                            title={localize('Non Eu Deriv accounts')}
                             className='account-switcher-panel'
                             key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
                         >
@@ -70,24 +81,24 @@ const RenderCountryIsLowRiskAndHasOnlyRealAccount = ({
                         </UIAccountSwitcher.AccountsPanel>
                     )}
 
-                    {eu_accounts.length > 0 ? (
+                    {eu_update_account.length > 0 ? (
                         <UIAccountSwitcher.AccountsPanel
                             isOpen
                             title={localize('Eu Accounts')}
                             className='account-switcher-panel'
                             key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
                         >
-                            {eu_accounts.map(account => (
+                            {eu_update_account.map(account => (
                                 <span
                                     className={clsx('account-switcher__item', {
-                                        'account-switcher__item--disabled': account.is_disabled,
+                                        'account-switcher__item--disabled': account.account.is_disabled,
                                     })}
-                                    key={account.loginid}
+                                    key={account.account.loginid}
                                 >
                                     <UIAccountSwitcher.AccountsItem
-                                        account={account}
+                                        account={account.account}
                                         onSelectAccount={() => {
-                                            if (!account.is_disabled) switchAccount(account.loginid);
+                                            if (!account.account.is_disabled) switchAccount(account.account.loginid);
                                         }}
                                     />
                                 </span>

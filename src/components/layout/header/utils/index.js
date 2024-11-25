@@ -71,12 +71,11 @@ const isMultiplier = landing_company_list => {
 };
 
 export const checkSwitcherType = async account_data => {
-    const { client_accounts = {}, login_id, isVirtual, landing_companies } = account_data;
+    const { client_accounts = {}, login_id, isVirtual = false, landing_companies } = account_data;
 
     const virtual_accounts = [];
     const non_eu_accounts = [];
     const eu_accounts = [];
-    const real_accounts = [...eu_accounts, ...non_eu_accounts];
     if (!login_id) return null;
     const account_info = { ...api_base.account_info };
 
@@ -95,6 +94,7 @@ export const checkSwitcherType = async account_data => {
     const { financial_company, gaming_company } = landing_companies;
 
     const { risk_classification } = account_status || {};
+    console.log(country_code);
     const is_country_low_risk = LOW_RISK_COUNTRIES().includes(country_code);
 
     let is_low_risk = isLowRisk(financial_company, gaming_company, upgradeable_landing_companies);
@@ -115,19 +115,19 @@ export const checkSwitcherType = async account_data => {
         if (account.loginid.startsWith('CR')) non_eu_accounts.push({ ...client_accounts[account], account });
     });
 
-    const renderCountryIsLowRiskAndHasNoRealAccount = !isVirtual && is_country_low_risk && !real_accounts.length === 0;
-    const renderCountryIsEuAndNoRealAccount = !isVirtual && !is_country_low_risk && is_eu && !real_accounts.length;
-    const renderCountryIsNonEuAndNoRealAccount =
-        !isVirtual && !is_country_low_risk && !is_eu && !real_accounts.length === 0;
-    const renderCountryIsEuHasOnlyRealAccount = !isVirtual && is_country_low_risk && is_eu && real_accounts.length > 0;
+    const real_accounts = eu_accounts.length + non_eu_accounts.length;
+    console.log('real_accounts', real_accounts);
+    const renderCountryIsLowRiskAndHasNoRealAccount = !isVirtual && is_country_low_risk && real_accounts === 0;
+    const renderCountryIsEuAndNoRealAccount = !isVirtual && !is_country_low_risk && is_eu && real_accounts === 0;
+    const renderCountryIsNonEuAndNoRealAccount = !isVirtual && !is_country_low_risk && !is_eu && real_accounts === 0;
+    const renderCountryIsEuHasOnlyRealAccount = !isVirtual && is_country_low_risk && is_eu && real_accounts > 0;
     const renderCountryIsNonEuHasOnlyRealAccount =
         !isVirtual && is_country_low_risk && !is_eu && real_accounts.length > 0;
-    const renderCountryIsLowRiskAndHasOnlyRealAccount = !isVirtual && is_country_low_risk && real_accounts.length > 0;
+    const renderCountryIsLowRiskAndHasOnlyRealAccount = !isVirtual && is_country_low_risk && real_accounts > 0;
 
     return {
         non_eu_accounts,
         eu_accounts,
-        real_accounts,
         virtual_accounts,
         renderCountryIsLowRiskAndHasNoRealAccount,
         renderCountryIsEuAndNoRealAccount,

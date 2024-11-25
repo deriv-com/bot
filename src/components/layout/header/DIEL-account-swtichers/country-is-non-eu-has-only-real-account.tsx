@@ -28,7 +28,7 @@ const RenderCountryIsNonEuHasOnlyRealAccount = ({
     tabs_labels,
     account_list,
 }: TSwitcherContent) => {
-    const { non_eu_accounts = [] } = account_switcher_data;
+    const { non_eu_accounts } = account_switcher_data.current;
     const no_account = {
         currency: ' ',
         currencyLabel: 'You have no real accounts',
@@ -56,12 +56,12 @@ const RenderCountryIsNonEuHasOnlyRealAccount = ({
                                     className={clsx('account-switcher__item', {
                                         'account-switcher__item--disabled': account.is_disabled,
                                     })}
-                                    key={account.loginid}
+                                    key={account.account.loginid}
                                 >
                                     <UIAccountSwitcher.AccountsItem
-                                        account={account}
+                                        account={account.account}
                                         onSelectAccount={() => {
-                                            if (!account.is_disabled) switchAccount(account.loginid);
+                                            if (!account.account.is_disabled) switchAccount(account.account.loginid);
                                         }}
                                     />
                                 </span>
