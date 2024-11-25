@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import debounce from 'debounce';
 import { Field, FieldProps, useFormikContext } from 'formik';
@@ -8,14 +8,9 @@ import { TItem } from '@/components/shared_ui/dropdown-list';
 import Text from '@/components/shared_ui/text';
 import { api_base } from '@/external/bot-skeleton';
 import { requestProposalForQS } from '@/external/bot-skeleton/scratch/accumulators-proposal-handler';
-import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
-import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
 import { TDropdownItems, TFormData } from '../types';
-// TODO need to check the currency
-// import { currency } from '@deriv/components/src/components/icon/icons-manifest';
-const currency = 'USD';
 
 type TContractTypes = {
     name: string;
@@ -38,17 +33,8 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy } = useStore();
-    const [ws, setWs] = useState(null);
     const { setValue, setAdditionalData } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
-
-    const { connectionStatus } = useApiBase();
-
-    useEffect(() => {
-        if (connectionStatus === CONNECTION_STATUS.OPENED) {
-            setWs(api_base.api);
-        }
-    }, [connectionStatus]);
 
     const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
     const ref_max_payout = React.useRef<TProposalRequest | null>(null);
@@ -82,7 +68,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
             setFieldError('tick_count', undefined);
         }
-    }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count]);
+    }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count, setFieldValue, setFieldError]);
 
     const validateMinMaxForAccumulators = async values => {
         const growth_rate = Number(values.growth_rate);
@@ -100,7 +86,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
 
         prev_proposal_payload.current = { ...request_proposal, boolean_tick_count: values.boolean_tick_count };
         try {
-            const response = await requestProposalForQS(request_proposal, ws);
+            const response = await requestProposalForQS(request_proposal, api_base.api);
             const min_ticks = 1;
             const max_ticks = response?.proposal?.validation_params?.max_ticks;
             let min_error = '';
@@ -159,13 +145,22 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             prev_proposal_payload.current?.symbol !== values.symbol ||
             prev_proposal_payload.current?.amount !== values.stake ||
             prev_proposal_payload.current?.limit_order?.take_profit !== values.take_profit ||
-            prev_proposal_payload.current?.currency !== client.currency ||
+            prev_proposal_payload.current?.currency !== client?.currency ||
             prev_proposal_payload.current?.growth_rate !== values.growth_rate ||
             prev_proposal_payload.current?.boolean_tick_count !== values.boolean_tick_count
         ) {
             debounceChange(values);
         }
-    }, [values.take_profit, values.tick_count, values.stake, values.growth_rate, currency, values.boolean_tick_count]);
+    }, [
+        values.take_profit,
+        values.tick_count,
+        values.stake,
+        values.growth_rate,
+        client?.currency,
+        values.boolean_tick_count,
+        values,
+        debounceChange,
+    ]);
 
     const handleChange = async (value: string) => {
         setFieldValue?.(name, value);
