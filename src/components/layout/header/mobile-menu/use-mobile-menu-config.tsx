@@ -1,6 +1,7 @@
 import { ComponentProps, ReactNode } from 'react';
 import Livechat from '@/components/chat/Livechat';
 import { standalone_routes } from '@/components/shared';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
@@ -26,7 +27,7 @@ export type TSubmenuSection = 'accountSettings' | 'cashier';
 
 //IconTypes
 type TMenuConfig = {
-    LeftComponent: any;
+    LeftComponent: ReactNode | React.ElementType;
     RightComponent?: ReactNode;
     as: 'a' | 'button';
     href?: string;
@@ -41,6 +42,8 @@ const useMobileMenuConfig = () => {
     const { localize } = useTranslations();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
     const { client } = useStore();
+
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
 
     const { data } = useRemoteConfig(true);
     const { cs_chat_whatsapp } = data;
@@ -130,7 +133,7 @@ const useMobileMenuConfig = () => {
                 as: 'button',
                 label: localize('Log out'),
                 LeftComponent: LegacyLogout1pxIcon,
-                onClick: client.logout,
+                onClick: oAuthLogout,
                 removeBorderBottom: true,
             },
         ],

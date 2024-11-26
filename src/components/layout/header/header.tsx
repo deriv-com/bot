@@ -3,9 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
@@ -26,6 +28,8 @@ const AppHeader = observer(() => {
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
 
     const { localize } = useTranslations();
+
+    const { isOAuth2Enabled } = useOauth2();
 
     const renderAccountSection = () => {
         if (isAuthorizing) {
@@ -64,8 +68,14 @@ const AppHeader = observer(() => {
                 <div className='auth-actions'>
                     <Button
                         tertiary
-                        onClick={() => {
-                            window.location.replace(generateOAuthURL());
+                        onClick={async () => {
+                            if (!isOAuth2Enabled) {
+                                window.location.replace(generateOAuthURL());
+                            } else {
+                                await requestOidcAuthentication({
+                                    redirectCallbackUri: `${window.location.origin}/callback`,
+                                });
+                            }
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
