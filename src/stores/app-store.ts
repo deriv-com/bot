@@ -100,7 +100,7 @@ export default class AppStore {
         console.log(client);
         console.log(client?.account_settings?.country_code);
         this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
-        if (client.should_show_eu_error) {
+        if (client.is_eu) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
