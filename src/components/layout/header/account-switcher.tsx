@@ -7,6 +7,7 @@ import { getDecimalPlaces, standalone_routes } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
 import { api_base } from '@/external/bot-skeleton';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
@@ -66,6 +67,8 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
         account_switcher_data.current = account_info;
     }, [client, modifiedAccountList]);
 
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
+
     useEffect(() => {
         fetchAccountSwitcherData();
     }, []);
@@ -109,8 +112,8 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                     <div
                         id='dt_logout_button'
                         className='deriv-account-switcher__logout'
-                        onClick={() => {
-                            client.logout();
+                        onClick={async () => {
+                            await oAuthLogout();
                         }}
                     >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>

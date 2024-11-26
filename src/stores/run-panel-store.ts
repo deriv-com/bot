@@ -437,7 +437,7 @@ export default class RunPanelStore {
         let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {
-            // TODO: fix notifications and is_socket_opened
+            // TODO: fix notifications
             if (common.is_socket_opened) {
                 disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
@@ -575,7 +575,7 @@ export default class RunPanelStore {
                 const { is_virtual } = this.core.client;
 
                 if (!is_virtual && buy) {
-                    this.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
+                    GTM?.pushDataLayer?.({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
 
                 break;
@@ -700,8 +700,6 @@ export default class RunPanelStore {
     };
 
     handleInvalidToken = async () => {
-        const { client } = this.core;
-        await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
     };
 

@@ -1,5 +1,6 @@
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import useModalManager from '@/hooks/useModalManager';
+import { getActiveTabUrl } from '@/utils/getActiveTabUrl';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
 import { DesktopLanguagesModal } from '@deriv-com/ui';
@@ -53,6 +54,7 @@ const Footer = () => {
                     onLanguageSwitch={code => {
                         switchLanguage(code);
                         hideModal();
+                        window.location.replace(getActiveTabUrl());
                         window.location.reload();
                     }}
                     selectedLanguage={currentLang}
