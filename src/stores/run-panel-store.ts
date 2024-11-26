@@ -9,6 +9,8 @@ import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/exte
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
+import { config } from '@deriv/bot-skeleton/src/constants/config';
+import { getSelectedTradeTypeCategory } from '@deriv/bot-skeleton/src/scratch/utils';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TDbot } from 'Types';
@@ -615,6 +617,16 @@ export default class RunPanelStore {
     onError = (data: { error: any }) => {
         // data.error for API errors, data for code errors
         const error = data.error || data;
+        if (error.code === 'OpenPositionLimitExceeded' && error.message) {
+            const { TRADE_TYPE_CATEGORY_NAMES } = config;
+            const trade_type_category = getSelectedTradeTypeCategory();
+            const tradeTypeName =
+                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] ?? '';
+
+            if (tradeTypeName) {
+                error.message += ` Trade type: ${tradeTypeName}`;
+            }
+        }
         if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = ErrorTypes.UNRECOVERABLE_ERRORS;
