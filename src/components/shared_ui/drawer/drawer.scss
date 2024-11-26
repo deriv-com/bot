@@ -88,6 +88,10 @@
             border-top: solid 1px var(--general-section-1);
         }
 
+        svg {
+            fill: var(--text-general);
+        }
+
         &-icon {
             transition: 0.25s ease;
 

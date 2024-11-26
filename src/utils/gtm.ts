@@ -1,14 +1,8 @@
 import { TStatistics } from '@/components/transaction-details/transaction-details.types';
 import { ProposalOpenContract } from '@deriv/api-types';
 
-declare global {
-    interface Window {
-        dataLayer?: any[];
-    }
-}
-
 const GTM = (() => {
-    const pushDataLayer = (data: Record<string, unknown>): void => {
+    const pushDataLayer = (data: { [key: string]: string | number | boolean; event: string }): void => {
         window.dataLayer?.push(data);
     };
 
@@ -55,7 +49,7 @@ const GTM = (() => {
     const onTransactionClosed = (contract: ProposalOpenContract): void => {
         const data = {
             event: 'dbot_run_transaction',
-            reference_id: contract.contract_id,
+            reference_id: contract?.contract_id ?? '',
         };
         pushDataLayer(data);
     };

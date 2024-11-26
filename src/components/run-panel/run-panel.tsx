@@ -123,9 +123,9 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
             id='db-run-panel__clear-button'
             className='run-panel__clear-button'
             disabled={is_clear_stat_disabled}
-            label={localize('Reset')}
+            text={localize('Reset')}
             onClick={onClearStatClick}
-            variant='outlined'
+            secondary
         />
     );
 

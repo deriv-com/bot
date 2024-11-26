@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useApiBase } from '@/hooks/useApiBase';
@@ -9,7 +9,6 @@ import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
-import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
@@ -18,8 +17,6 @@ import MenuItems from './menu-items';
 import MobileMenu from './mobile-menu';
 import PlatformSwitcher from './platform-switcher';
 import './header.scss';
-
-const { getOauthURL } = URLUtils;
 
 const AppHeader = observer(() => {
     const { isDesktop } = useDevice();
@@ -68,7 +65,7 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            window.location.replace(generateOAuthURL());
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
@@ -76,7 +73,7 @@ const AppHeader = observer(() => {
                     <Button
                         primary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            window.open(standalone_routes.signup);
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />
