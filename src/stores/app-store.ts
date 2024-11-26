@@ -82,7 +82,6 @@ export default class AppStore {
 
     handleErrorForEu = (show_default_error = false) => {
         const { client, common, ui } = this.core;
-        const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
             if (client?.has_logged_out) {
@@ -109,26 +108,25 @@ export default class AppStore {
             return false;
         }
 
-        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU) {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                toggleAccountsDialog,
+                () => {},
                 false,
                 false
             );
         }
 
         if (
-            ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
-                isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                client.is_options_blocked) &&
-            toggleAccountsDialog
+            (!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+            client.is_options_blocked
         ) {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                toggleAccountsDialog,
+                () => {},
                 false,
                 false
             );
