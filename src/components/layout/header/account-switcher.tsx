@@ -189,7 +189,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     tabsLabels={tabs_labels}
                     modalContentStyle={{
                         content: {
-                            top: '30%',
+                            top: '25%',
                             borderRadius: '10px',
                         },
                     }}
