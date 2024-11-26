@@ -5,12 +5,12 @@ import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
+import { config } from '@/external/bot-skeleton/constants';
+import { getSelectedTradeTypeCategory } from '@/external/bot-skeleton/scratch/utils';
 // import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
-import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { getSelectedTradeTypeCategory } from '@deriv/bot-skeleton/src/scratch/utils';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv-com/translations';
 import { TDbot } from 'Types';
@@ -618,7 +618,7 @@ export default class RunPanelStore {
         // data.error for API errors, data for code errors
         const error = data.error || data;
         if (error.code === 'OpenPositionLimitExceeded' && error.message) {
-            const { TRADE_TYPE_CATEGORY_NAMES } = config;
+            const { TRADE_TYPE_CATEGORY_NAMES } = config();
             const trade_type_category = getSelectedTradeTypeCategory();
             const tradeTypeName =
                 TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] ?? '';
