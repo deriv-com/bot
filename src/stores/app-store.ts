@@ -81,7 +81,7 @@ export default class AppStore {
     };
 
     handleErrorForEu = (show_default_error = false) => {
-        const { client, common, ui } = this.core;
+        const { client, common } = this.core;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
             if (client?.has_logged_out) {
@@ -96,9 +96,6 @@ export default class AppStore {
             return false;
         }
 
-        console.log(client);
-        console.log(client?.account_settings?.country_code);
-        console.log(ui);
         this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
         if (client.should_show_eu_error) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
