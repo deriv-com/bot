@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useModalManager from '@/hooks/useModalManager';
+import { getActiveTabUrl } from '@/utils/getActiveTabUrl';
 import { LANGUAGES } from '@/utils/languages';
 import { useTranslations } from '@deriv-com/translations';
 import { Drawer, MobileLanguagesDrawer, useDevice } from '@deriv-com/ui';
@@ -51,6 +52,7 @@ const MobileMenu = () => {
                                 onClose={hideModal}
                                 onLanguageSwitch={code => {
                                     switchLanguage(code);
+                                    window.location.replace(getActiveTabUrl());
                                     window.location.reload();
                                 }}
                                 selectedLanguage={currentLang}
