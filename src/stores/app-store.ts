@@ -97,6 +97,7 @@ export default class AppStore {
             return false;
         }
 
+        console.log(client);
         console.log(client?.account_settings?.country_code);
         this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
         if (client.should_show_eu_error) {
