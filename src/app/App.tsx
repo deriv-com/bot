@@ -6,6 +6,7 @@ import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
+import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
 import './app-root.scss';
@@ -53,6 +54,33 @@ const router = createBrowserRouter(
 );
 
 function App() {
+    const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
+
+    React.useEffect(() => {
+        // Set login info to local storage and remove params from url
+        if (loginInfo.length) {
+            try {
+                const defaultActiveAccount = URLUtils.getDefaultActiveAccount(loginInfo);
+                if (!defaultActiveAccount) return;
+
+                const accountsList: Record<string, string> = {};
+
+                loginInfo.forEach(account => {
+                    accountsList[account.loginid] = account.token;
+                });
+
+                localStorage.setItem('accountsList', JSON.stringify(accountsList));
+
+                URLUtils.filterSearchParams(paramsToDelete);
+
+                localStorage.setItem('authToken', loginInfo[0].token);
+                localStorage.setItem('active_loginid', loginInfo[0].loginid);
+            } catch (error) {
+                console.error('Error setting up login info:', error);
+            }
+        }
+    }, [loginInfo, paramsToDelete]);
+
     React.useEffect(() => {
         window?.dataLayer?.push({ event: 'page_load' });
     }, []);
