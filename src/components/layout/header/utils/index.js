@@ -1,5 +1,40 @@
 import { api_base } from '@/external/bot-skeleton';
 
+export const BOT_RESTRICTED_COUNTRIES_LIST = () => ({
+    au: 'Australian',
+    sg: 'Singaporean',
+    it: 'Italian',
+    de: 'German',
+    fr: 'French',
+    lu: 'Luxembourgish',
+    gr: 'Greek',
+    mf: 'Saint Martiner',
+    es: 'Spanish',
+    sk: 'Slovak',
+    lt: 'Lithuanian',
+    nl: 'Dutch',
+    at: 'Austrian',
+    bg: 'Bulgarian',
+    si: 'Slovenian',
+    cy: 'Cypriot',
+    be: 'Belgian',
+    ro: 'Romanian',
+    hr: 'Croatian',
+    pt: 'Portuguese',
+    pl: 'Polish',
+    lv: 'Latvian',
+    ee: 'Estonian',
+    cz: 'Czech',
+    fi: 'Finnish',
+    hu: 'Hungarian',
+    dk: 'Danish',
+    se: 'Swedish',
+    ie: 'Irish',
+    im: 'Manx',
+    gb: 'British',
+    mt: 'Maltese',
+});
+
 export const LOW_RISK_COUNTRIES = () => ['za', 'ec', 'bw'];
 export const EU_COUNTRIES = () => [
     'it',

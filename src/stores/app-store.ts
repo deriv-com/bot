@@ -1,4 +1,5 @@
 import { action, makeObservable, reaction, when } from 'mobx';
+import { BOT_RESTRICTED_COUNTRIES_LIST } from '@/components/layout/header/utils';
 import {
     ContentFlag,
     isEuResidenceWithOnlyVRTC,
@@ -63,10 +64,10 @@ export default class AppStore {
 
     throwErrorForExceptionCountries = (client_country: string) => {
         const { client, common } = this.core;
+        const eu_countries = BOT_RESTRICTED_COUNTRIES_LIST();
 
         const not_allowed_clients_country: { [key: string]: string } = {
-            au: 'Australian',
-            sg: 'Singaporean',
+            ...eu_countries,
         };
 
         const country_name = not_allowed_clients_country[client_country];
@@ -96,6 +97,7 @@ export default class AppStore {
             return false;
         }
 
+        console.log(client?.account_settings?.country_code);
         this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
         if (client.should_show_eu_error) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));

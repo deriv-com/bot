@@ -13,7 +13,7 @@ const RenderCountryIsEuHasOnlyRealAccount = ({
     account_switcher_data,
 }: TSwitcherContent) => {
     const { eu_accounts } = account_switcher_data.current;
-    const eu_update_account = updateNestedProperty(eu_accounts, 'currencyLabel', 'multiplier');
+    const eu_update_account = updateNestedProperty(eu_accounts, 'currencyLabel', 'Multiplier');
 
     return (
         <>
