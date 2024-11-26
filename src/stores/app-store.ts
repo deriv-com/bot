@@ -64,10 +64,10 @@ export default class AppStore {
 
     throwErrorForExceptionCountries = (client_country: string) => {
         const { client, common } = this.core;
-        const eu_countries = BOT_RESTRICTED_COUNTRIES_LIST();
+        const bot_resticted_countries = BOT_RESTRICTED_COUNTRIES_LIST();
 
         const not_allowed_clients_country: { [key: string]: string } = {
-            ...eu_countries,
+            ...bot_resticted_countries,
         };
 
         const country_name = not_allowed_clients_country[client_country];
