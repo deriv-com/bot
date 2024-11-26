@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { generateOAuthURL, standalone_routes } from '@/components/shared';

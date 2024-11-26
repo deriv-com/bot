@@ -190,7 +190,7 @@ const QuickStrategyForm = observer(() => {
                             case 'contract_type':
                                 return <ContractTypeSelect {...field} key={key} name={field.name as string} />;
                             case 'growth_rate':
-                                return <GrowthRateSelect {...field} name={field.name as string} />;
+                                return <GrowthRateSelect {...field} key={key} name={field.name as string} />;
                             case 'sell_conditions':
                                 return <SellConditions {...field} key={key} />;
                             default:
