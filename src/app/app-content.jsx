@@ -101,7 +101,7 @@ const AppContent = observer(() => {
         return () => {
             if (is_subscribed_to_msg_listener.current && msg_listener.current) {
                 is_subscribed_to_msg_listener.current = false;
-                msg_listener.current.unsubscribe();
+                msg_listener.current.unsubscribe?.();
             }
         };
     }, [is_api_initialized, client.is_logged_in, client.loginid, handleMessage, connectionStatus]);

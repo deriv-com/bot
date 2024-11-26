@@ -700,8 +700,6 @@ export default class RunPanelStore {
     };
 
     handleInvalidToken = async () => {
-        const { client } = this.core;
-        await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
     };
 

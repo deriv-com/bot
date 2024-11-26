@@ -4,6 +4,7 @@ import { getDecimalPlaces, toMoment } from '@/components/shared';
 import { FORM_ERROR_MESSAGES } from '@/components/shared/constants/form-error-messages';
 import { initFormErrorMessages } from '@/components/shared/utils/validation/declarative-validation-rules';
 import { api_base } from '@/external/bot-skeleton';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { TLandingCompany, TSocketResponseData } from '@/types/api-types';
@@ -19,6 +20,8 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
     const { client, common } = useStore() ?? {};
 
     const { currentLang } = useTranslations();
+
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
 
     const activeAccount = useMemo(
         () => accountList?.find(account => account.loginid === activeLoginid),
@@ -82,13 +85,13 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
     }, [client, common, isAuthorizing]);
 
     const handleMessages = useCallback(
-        (res: Record<string, unknown>) => {
+        async (res: Record<string, unknown>) => {
             if (!res) return;
             const data = res.data as TSocketResponseData<'balance'>;
             const { msg_type, error } = data;
 
             if (error?.code === 'AuthorizationRequired') {
-                client.logout();
+                await oAuthLogout();
             }
 
             if (msg_type === 'balance' && data && !error) {
@@ -112,7 +115,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 }
             }
         },
-        [client]
+        [client, oAuthLogout]
     );
 
     useEffect(() => {
@@ -123,7 +126,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
         return () => {
             if (msg_listener.current) {
-                msg_listener.current.unsubscribe();
+                msg_listener.current.unsubscribe?.();
             }
         };
     }, [connectionStatus, handleMessages, isAuthorizing, isAuthorized, client]);
