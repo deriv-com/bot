@@ -7,7 +7,6 @@ import { AppLinkedWithWalletIcon } from '@/components/shared_ui/app-linked-with-
 import Text from '@/components/shared_ui/text';
 import { WalletIcon } from '@/components/shared_ui/wallet-icon';
 import { useStore } from '@/hooks/useStore';
-import useStoreLinkedWalletsAccounts from '@/hooks/useStoreLinkedWalletsAccounts';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import {
     AccountsDerivAccountLightIcon,
@@ -19,7 +18,6 @@ import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import AccountInfoWrapper from '../account-info-wrapper';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from '../AccountSwitcherWallet';
-// import { AccountsInfoLoader } from '../Components/Preloader';
 import WalletBadge from './wallet-badge';
 
 type TAccountInfoWallets = {
@@ -119,34 +117,13 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { loginid, accounts, all_accounts_balance } = client;
     const { account_switcher_disabled_message } = ui;
     const { data: wallet_list } = useStoreWalletAccountsList();
-    const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
     const { isDesktop } = useDevice();
-    console.log(isDesktop, 'isDesktop');
 
     const balance = all_accounts_balance?.balance;
     const active_account = accounts?.[loginid ?? ''];
-    const wallet_loginid = localStorage.getItem('active_wallet_loginid');
-    const active_wallet =
-        wallet_list?.find(wallet => wallet.loginid === wallet_loginid) ??
-        wallet_list?.find(wallet => wallet.loginid === loginid);
-
-    let linked_dtrade_trading_account_loginid = loginid;
-
-    if (active_wallet) {
-        // get 'dtrade' loginid account linked to the current wallet
-        linked_dtrade_trading_account_loginid =
-            active_wallet.dtrade_loginid || linked_wallets_accounts.dtrade?.[0]?.loginid;
-
-        // switch to dtrade account
-        // if (linked_dtrade_trading_account_loginid && linked_dtrade_trading_account_loginid !== loginid) {
-        //     switchAccount(linked_dtrade_trading_account_loginid);
-        // }
-    }
+    const linked_dtrade_trading_account_loginid = loginid;
 
     const linked_wallet = wallet_list?.find(wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginid);
-
-    // if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />;
-
     const show_badge = linked_wallet?.is_virtual;
 
     return (
