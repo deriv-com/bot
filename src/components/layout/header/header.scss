@@ -67,6 +67,16 @@
 }
 
 .deriv-account-switcher {
+    &-item {
+        &__balance {
+            button {
+                border-width: 1px;
+                height: 2.4rem;
+                min-width: 4.8rem;
+            }
+        }
+    }
+
     &__button {
         margin-inline-end: 0.8rem;
 

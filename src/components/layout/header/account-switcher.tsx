@@ -30,6 +30,7 @@ type TAccountSwitcherProps = {
     switchAccount: (loginId: number) => void;
     modifiedCRAccountList?: TModifiedAccount[];
     modifiedMFAccountList?: TModifiedAccount[];
+    activeLoginId?: string;
 };
 
 type TAccountSwitcher = {
@@ -81,6 +82,7 @@ const RenderAccountItems = ({
     modifiedCRAccountList,
     modifiedMFAccountList,
     switchAccount,
+    activeLoginId,
 }: TAccountSwitcherProps) => {
     const { client } = useStore();
 
@@ -116,6 +118,15 @@ const RenderAccountItems = ({
                                     onSelectAccount={() => {
                                         if (!account.is_disabled) switchAccount(account.loginid);
                                     }}
+                                    onResetBalance={
+                                        isVirtual && activeLoginId === account.loginid
+                                            ? () => {
+                                                  api_base?.api?.send({
+                                                      topup_virtual: 1,
+                                                  });
+                                              }
+                                            : undefined
+                                    }
                                 />
                             </span>
                         ))}
@@ -292,6 +303,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     }, [modifiedAccountList]);
 
     const switchAccount = async (loginId: number) => {
+        if (loginId.toString() === activeAccount?.loginid) return;
         const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
         const token = account_list[loginId];
         if (!token) return;
@@ -320,6 +332,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                             modifiedCRAccountList={modifiedCRAccountList as TModifiedAccount[]}
                             modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
+                            activeLoginId={activeAccount?.loginid}
                         />
                     </UIAccountSwitcher.Tab>
                     <UIAccountSwitcher.Tab title={tabs_labels.demo}>
@@ -327,6 +340,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                             modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
                             isVirtual
+                            activeLoginId={activeAccount?.loginid}
                         />
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>
