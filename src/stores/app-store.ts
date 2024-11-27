@@ -80,19 +80,16 @@ export default class AppStore {
         }
     };
 
-    handleErrorForEu = (show_default_error = false) => {
+    handleErrorForEu = () => {
         const { client, common } = this.core;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
-            if (client?.has_logged_out) {
-                window.location.href = standalone_routes.traders_hub;
-            }
-
             this.throwErrorForExceptionCountries(client?.clients_country as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
         if (!client.is_landing_company_loaded) {
+            common.setError(false, {});
             return false;
         }
 
@@ -102,6 +99,7 @@ export default class AppStore {
         }
 
         if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
+            common.setError(false, {});
             return false;
         }
 
@@ -129,9 +127,7 @@ export default class AppStore {
             );
         }
 
-        if (show_default_error && common.has_error) {
-            if (common.setError) common.setError(false, { message: '' });
-        }
+        common.setError(false, {});
         return false;
     };
 
