@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import React from 'react';
 import classNames from 'classnames';
 import clsx from 'clsx';
@@ -13,8 +13,7 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyDerivIcon, LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Button,Divider, Text } from '@deriv-com/ui';
-import { checkSwitcherType } from './utils';
+import { AccountSwitcher as UIAccountSwitcher, Button, Divider, Text } from '@deriv-com/ui';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
@@ -24,14 +23,6 @@ type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     isActive: boolean;
     loginid: number;
     currency: string;
-};
-type TSwitcherData = {
-    renderCountryIsLowRiskAndHasNoRealAccount: boolean;
-    renderCountryIsEuAndNoRealAccount: boolean;
-    renderCountryIsNonEuAndNoRealAccount: boolean;
-    renderCountryIsEuHasOnlyRealAccount: boolean;
-    renderCountryIsNonEuHasOnlyRealAccount: boolean;
-    renderCountryIsLowRiskAndHasOnlyRealAccount: boolean;
 };
 type TAccountSwitcherProps = {
     isVirtual?: boolean;
@@ -92,38 +83,15 @@ const RenderAccountItems = ({
     switchAccount,
 }: TAccountSwitcherProps) => {
     const { client } = useStore();
-    const { landing_companies } = client;
 
     const show_manage_button = client?.loginid?.includes('CR') || client?.loginid?.includes('MF');
+
     const account_switcher_title_non_eu =
-        modifiedMFAccountList?.length === 0
-            ? localize('Deriv accounts')
-            : (!!modifiedCRAccountList ?? localize('Non-Eu Deriv accounts'));
+        modifiedMFAccountList?.length === 0 ? localize('Deriv accounts') : localize('Non-Eu Deriv accounts');
     const account_switcher_title_eu = modifiedMFAccountList
         ? localize('Eu Deriv accounts')
         : localize('Deriv accounts');
-
-    const account_switcher_data = useRef<TSwitcherData | null>(null);
-    const [is_account_data_fetched, setAccountDataFetched] = useState(false);
-
-    const fetchAccountSwitcherData = useCallback(async () => {
-        if (account_switcher_data.current || !client?.loginid || !modifiedAccountList) return;
-        const account_data = {
-            login_id: client.loginid,
-            modifiedAccountList,
-            landing_companies,
-            is_virtual: isVirtual,
-        };
-        const account_info = await checkSwitcherType(account_data);
-        account_switcher_data.current = account_info;
-        setAccountDataFetched(true);
-    }, [client, modifiedAccountList]);
-
     const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
-
-    useEffect(() => {
-        fetchAccountSwitcherData();
-    }, [modifiedAccountList, is_account_data_fetched]);
 
     if (isVirtual) {
         return (

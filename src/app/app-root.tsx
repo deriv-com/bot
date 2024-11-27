@@ -24,6 +24,7 @@ const ErrorComponentWrapper = observer(() => {
     const { common } = useStore();
 
     if (!common.error) return null;
+
     return (
         <ErrorComponent
             header={common.error?.header}

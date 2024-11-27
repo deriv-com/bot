@@ -101,7 +101,7 @@ const isMultiplier = landing_company_list => {
     const is_multiplier = multiplier_account?.includes('multiplier');
     return {
         is_multiplier: multiplier_account?.length === 1 && is_multiplier,
-        country_code: landing_company_list.id,
+        country_code: landing_company_list?.id,
     };
 };
 
