@@ -15,7 +15,7 @@ export default class ClientStore {
     loginid = '';
     account_list: TAuthData['account_list'] = [];
     balance = '0';
-    currency = 'USD';
+    currency = 'AUD';
     is_logged_in = false;
     account_status: GetAccountStatus | undefined;
     account_settings: GetSettings | undefined;
@@ -297,5 +297,13 @@ export default class ClientStore {
         setIsAuthorized(false);
         setAccountList([]);
         setAuthData(null);
+
+        // disable livechat
+        window.LC_API?.close_chat?.();
+        window.LiveChatWidget?.call('hide');
+
+        // disable freshchat
+        window.fcWidget?.close?.();
+        window.fcWidget?.user?.clear?.();
     };
 }

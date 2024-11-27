@@ -1,12 +1,15 @@
-import { Fragment, lazy, Suspense, useEffect } from 'react';
+import { Fragment, lazy, Suspense } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
+import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
-import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
+import { Loader } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
+import './app-root.scss';
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
@@ -21,7 +24,16 @@ const router = createBrowserRouter(
         <Route
             path='/'
             element={
-                <Suspense fallback={<div>Please wait while we load the app...</div>}>
+                <Suspense
+                    fallback={
+                        <div className='app-root'>
+                            <Loader />
+                            <div className='load-message'>
+                                {localize('Please wait while we connect to the server...')}
+                            </div>
+                        </div>
+                    }
+                >
                     <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <StoreProvider>
                             <RoutePromptDialog />
@@ -36,6 +48,7 @@ const router = createBrowserRouter(
             {/* All child routes will be passed as children to Layout */}
             <Route index element={<AppRoot />} />
             <Route path='endpoint' element={<Endpoint />} />
+            <Route path='callback' element={<CallbackPage />} />
         </Route>
     )
 );
@@ -43,7 +56,7 @@ const router = createBrowserRouter(
 function App() {
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
 
-    useEffect(() => {
+    React.useEffect(() => {
         // Set login info to local storage and remove params from url
         if (loginInfo.length) {
             try {

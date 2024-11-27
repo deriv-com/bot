@@ -7,6 +7,15 @@
 
     flex-direction: column;
 
+    .ReactVirtualized__Grid__innerScrollContainer {
+        & > :first-child,
+        :before,
+        :after {
+            box-sizing: border-box;
+            animation: move-in 0.4s ease-in forwards;
+        }
+    }
+
     .download__container {
         &__view-detail-button {
             margin-inline-start: 12px;
@@ -40,6 +49,14 @@
             display: flex;
             justify-content: center;
             margin-top: 0.3rem;
+
+            svg {
+                g {
+                    path {
+                        fill: var(--text-less-prominent);
+                    }
+                }
+            }
         }
 
         &__icon {

@@ -43,6 +43,12 @@ export const getSelectedTradeType = (workspace = window.Blockly.derivWorkspace) 
     return mandatory_tradeoptions_block;
 };
 
+export const getSelectedTradeTypeCategory = (workspace = Blockly.derivWorkspace) => {
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST');
+    return selected_trade_type ?? '';
+};
+
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/);
     if (match && match.length > 2) {
@@ -654,13 +660,11 @@ const all_context_menu_options = [
     localize('Download Block'),
 ];
 
-// Need for later
-// const deleteLocaleText = localize("Delete");
-// const blocksLocaleText = localize("Blocks");
-// const deleteBlocksLocaleText = localize("Delete Blocks");
-// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+const deleteBlocksLocaleText = localize('Delete Block');
+const deleteAllBlocksLocaleText = localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
+    console.log(menu);
     const include_items = [...common_included_items, ...add_new_items];
     include_items.forEach(item => {
         menu.push({
@@ -671,9 +675,18 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
     });
 
     for (let i = 0; i < menu.length; i++) {
-        const localized_text = localize(menu[i].text);
-        if (all_context_menu_options.includes(localized_text)) {
-            menu[i].text = localized_text;
+        const menu_text = menu[i]?.text?.toLowerCase();
+        if (menu_text?.includes('delete')) {
+            if (menu_text.includes('block') && !menu_text.includes('blocks')) {
+                menu[i].text = deleteBlocksLocaleText;
+            } else {
+                menu[i].text = deleteAllBlocksLocaleText;
+            }
+        } else {
+            const localized_text = localize(menu[i].text);
+            if (all_context_menu_options.includes(localized_text)) {
+                menu[i].text = localized_text;
+            }
         }
     }
 };

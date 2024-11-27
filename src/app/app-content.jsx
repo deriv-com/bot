@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
+import useLiveChat from '@/components/chat/useLiveChat';
 import { getUrlBase } from '@/components/shared';
 import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
@@ -39,6 +40,20 @@ const AppContent = observer(() => {
     const { initTrackJS } = useTrackjs();
 
     initTrackJS(client.loginid);
+
+    const livechat_client_information = {
+        is_client_store_initialized: client?.is_logged_in ? !!client?.account_settings?.email : !!client,
+        is_logged_in: client?.is_logged_in,
+        loginid: client?.loginid,
+        landing_company_shortcode: client?.landing_company_shortcode,
+        currency: client?.currency,
+        residence: client?.residence,
+        email: client?.account_settings?.email,
+        first_name: client?.account_settings?.first_name,
+        last_name: client?.account_settings?.last_name,
+    };
+
+    useLiveChat(livechat_client_information);
 
     useEffect(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
@@ -86,7 +101,7 @@ const AppContent = observer(() => {
         return () => {
             if (is_subscribed_to_msg_listener.current && msg_listener.current) {
                 is_subscribed_to_msg_listener.current = false;
-                msg_listener.current.unsubscribe();
+                msg_listener.current.unsubscribe?.();
             }
         };
     }, [is_api_initialized, client.is_logged_in, client.loginid, handleMessage, connectionStatus]);

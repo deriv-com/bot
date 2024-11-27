@@ -1,5 +1,8 @@
 import { ComponentProps, ReactNode } from 'react';
+import Livechat from '@/components/chat/Livechat';
 import { standalone_routes } from '@/components/shared';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
+import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
@@ -9,7 +12,6 @@ import {
     LegacyChartsIcon,
     LegacyHelpCentreIcon,
     LegacyHomeOldIcon,
-    LegacyLiveChatOutlineIcon,
     LegacyLogout1pxIcon,
     LegacyProfileSmIcon,
     LegacyResponsibleTradingIcon,
@@ -25,7 +27,7 @@ export type TSubmenuSection = 'accountSettings' | 'cashier';
 
 //IconTypes
 type TMenuConfig = {
-    LeftComponent: any;
+    LeftComponent: ReactNode | React.ElementType;
     RightComponent?: ReactNode;
     as: 'a' | 'button';
     href?: string;
@@ -40,6 +42,11 @@ const useMobileMenuConfig = () => {
     const { localize } = useTranslations();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
     const { client } = useStore();
+
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
+
+    const { data } = useRemoteConfig(true);
+    const { cs_chat_whatsapp } = data;
 
     const menuConfig: TMenuConfig[] = [
         [
@@ -80,44 +87,53 @@ const useMobileMenuConfig = () => {
                 RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
             },
         ],
-        [
-            {
-                as: 'a',
-                href: HELP_CENTRE,
-                label: localize('Help center'),
-                LeftComponent: LegacyHelpCentreIcon,
-            },
-            {
-                as: 'a',
-                href: ACCOUNT_LIMITS,
-                label: localize('Account limits'),
-                LeftComponent: LegacyAccountLimitsIcon,
-            },
-            {
-                as: 'a',
-                href: RESPONSIBLE,
-                label: localize('Responsible trading'),
-                LeftComponent: LegacyResponsibleTradingIcon,
-            },
-            {
-                as: 'a',
-                href: URLConstants.whatsApp,
-                label: localize('WhatsApp'),
-                LeftComponent: LegacyWhatsappIcon,
-                target: '_blank',
-            },
-            {
-                as: 'button',
-                label: localize('Live chat'),
-                LeftComponent: LegacyLiveChatOutlineIcon,
-            },
-        ],
+        (
+            [
+                {
+                    as: 'a',
+                    href: HELP_CENTRE,
+                    label: localize('Help center'),
+                    LeftComponent: LegacyHelpCentreIcon,
+                },
+                {
+                    as: 'a',
+                    href: ACCOUNT_LIMITS,
+                    label: localize('Account limits'),
+                    LeftComponent: LegacyAccountLimitsIcon,
+                },
+                {
+                    as: 'a',
+                    href: RESPONSIBLE,
+                    label: localize('Responsible trading'),
+                    LeftComponent: LegacyResponsibleTradingIcon,
+                },
+                cs_chat_whatsapp
+                    ? {
+                          as: 'a',
+                          href: URLConstants.whatsApp,
+                          label: localize('WhatsApp'),
+                          LeftComponent: LegacyWhatsappIcon,
+                          target: '_blank',
+                      }
+                    : null,
+                {
+                    as: 'button',
+                    label: localize('Live chat'),
+                    LeftComponent: Livechat,
+                    onClick: () => {
+                        window.enable_freshworks_live_chat
+                            ? window.fcWidget.open()
+                            : window.LiveChatWidget?.call('maximize');
+                    },
+                },
+            ] as TMenuConfig
+        ).filter(Boolean),
         [
             {
                 as: 'button',
                 label: localize('Log out'),
                 LeftComponent: LegacyLogout1pxIcon,
-                onClick: client.logout,
+                onClick: oAuthLogout,
                 removeBorderBottom: true,
             },
         ],

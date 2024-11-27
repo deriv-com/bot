@@ -14,6 +14,8 @@ type TAccumulatorAnnouncementDialog = {
     handleOnConfirm: () => void;
     handleOnCancel: (() => void) | null;
     is_tablet?: boolean;
+    unordered_list?: TContentItem[];
+    media?: string[];
 };
 
 const AnnouncementDialog = ({
@@ -34,6 +36,8 @@ const AnnouncementDialog = ({
         content,
         numbered_content,
         plain_text,
+        unordered_list,
+        media,
     } = announcement;
     return (
         <Dialog
@@ -59,6 +63,13 @@ const AnnouncementDialog = ({
                 <div className={`${base_classname}__body-icon--${id.toLowerCase()}`}>
                     <IconAnnounceModal announce_id={id} />
                 </div>
+                {Array.isArray(media) && (
+                    <>
+                        {media.map((src, index) => (
+                            <img className={`${base_classname}__image`} key={index} src={src} alt={src} />
+                        ))}
+                    </>
+                )}
                 <div className={`${base_classname}__body-main-content`}>
                     <Text as='p' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
@@ -70,18 +81,29 @@ const AnnouncementDialog = ({
                                     <div>
                                         <LabelPairedCheckCaptionFillIcon fill='var(--icon-black-plus)' />
                                     </div>
-                                    <Text as='p' line_height='l' size='xs'>
+                                    <Text as='p' lineHeight='l' size='xs'>
                                         {content_item?.text}
                                     </Text>
                                 </div>
                             );
                         })}
+                    {Array.isArray(unordered_list) && (
+                        <ul className={`${base_classname}__unordered_list`} key={0}>
+                            {unordered_list.map((content_item: TContentItem) => (
+                                <li key={content_item?.id}>
+                                    <Text as='div' lineHeight='l' size='xs'>
+                                        {content_item?.text}
+                                    </Text>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     {Array.isArray(numbered_content) && (
                         <ol className={`${base_classname}__body-item--numbered`}>
                             {numbered_content.map((content: TContentItem) => (
                                 <Text
                                     as='li'
-                                    line_height='xl'
+                                    lineHeight='xl'
                                     size='xs'
                                     key={content?.id}
                                     styles={{ listStyle: 'auto' }}
@@ -96,7 +118,7 @@ const AnnouncementDialog = ({
                             {plain_text.map((plain_text_item: TContentItem) => (
                                 <span key={plain_text_item?.id}>
                                     <Text
-                                        line_height='m'
+                                        lineHeight='m'
                                         size='xs'
                                         key={plain_text_item.id}
                                         styles={{ listStyle: 'auto' }}

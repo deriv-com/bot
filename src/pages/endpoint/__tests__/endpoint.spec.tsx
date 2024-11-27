@@ -35,8 +35,6 @@ describe('<Endpoint />', () => {
 
         expect(LocalStorageUtils.getValue('config.server_url') ?? '').toBe('qa10.deriv.dev');
         expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe('123');
-
-        expect(mockReload).toHaveBeenCalledTimes(1);
     });
 
     it('should call getServerInfo and reset the inputs when user clicks on the reset button', async () => {

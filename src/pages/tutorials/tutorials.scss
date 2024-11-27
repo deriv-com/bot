@@ -411,6 +411,7 @@
     &__select {
         height: 4rem;
         margin-bottom: 1.5rem;
+        fill: var(--text-general);
 
         @include flex-center;
 
@@ -464,6 +465,7 @@
 
                 .search-icon {
                     display: block;
+                    fill: var(--text-general);
                 }
             }
         }

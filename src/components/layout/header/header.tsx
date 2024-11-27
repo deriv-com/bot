@@ -1,15 +1,16 @@
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
-import { URLUtils } from '@deriv-com/utils';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
@@ -19,8 +20,6 @@ import MobileMenu from './mobile-menu';
 import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
-const { getOauthURL } = URLUtils;
-
 const AppHeader = observer(() => {
     const { isDesktop } = useDevice();
     const { isAuthorizing, activeLoginid } = useApiBase();
@@ -29,6 +28,8 @@ const AppHeader = observer(() => {
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
 
     const { localize } = useTranslations();
+
+    const { isOAuth2Enabled } = useOauth2();
 
     const renderAccountSection = () => {
         if (isAuthorizing) {
@@ -67,8 +68,14 @@ const AppHeader = observer(() => {
                 <div className='auth-actions'>
                     <Button
                         tertiary
-                        onClick={() => {
-                            window.location.assign(getOauthURL());
+                        onClick={async () => {
+                            if (!isOAuth2Enabled) {
+                                window.location.replace(generateOAuthURL());
+                            } else {
+                                await requestOidcAuthentication({
+                                    redirectCallbackUri: `${window.location.origin}/callback`,
+                                });
+                            }
                         }}
                     >
                         <Localize i18n_default_text='Log in' />
@@ -76,7 +83,7 @@ const AppHeader = observer(() => {
                     <Button
                         primary
                         onClick={() => {
-                            window.location.assign(getOauthURL());
+                            window.open(standalone_routes.signup);
                         }}
                     >
                         <Localize i18n_default_text='Sign up' />

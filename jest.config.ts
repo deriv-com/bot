@@ -83,6 +83,7 @@ const config: Config = {
         'react-dom/server': '<rootDir>/__mocks__/react-dom-server.js',
         '@deriv-com/translations': '<rootDir>/__mocks__/translation.mock.js',
         '@deriv-com/ui': '<rootDir>/node_modules/@deriv-com/ui',
+        '@deriv-com/auth-client': '<rootDir>/node_modules/@deriv-com/auth-client',
         '^@/external/(.*)$': '<rootDir>/src/external/$1',
         '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
         '^@/components/(.*)$': '<rootDir>/src/components/$1',
@@ -179,7 +180,7 @@ const config: Config = {
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-    transformIgnorePatterns: ['/node_modules/(?!@deriv-com/ui).+\\.js$'],
+    transformIgnorePatterns: ['/node_modules/(?!@deriv-com/ui|@deriv-com/auth-client).+\\.js$'],
 
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,

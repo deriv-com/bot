@@ -3,9 +3,25 @@
         padding-inline-start: 1.6rem;
         padding-inline-end: 1.6rem;
 
-        svg > g > path,
-        &-chevron > path {
-            fill: var(--text-prominent);
+        svg > g {
+            fill: var(--text-general);
+        }
+
+        &-chevron {
+            margin-inline-start: 3.2rem;
+
+            svg > g > path,
+            > path {
+                fill: var(--text-general);
+            }
+        }
+    }
+
+    &__context-menu {
+        &__items {
+            a > svg > g {
+                fill: var(--text-general);
+            }
         }
     }
 }

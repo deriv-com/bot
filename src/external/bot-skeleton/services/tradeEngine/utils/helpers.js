@@ -214,10 +214,11 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'RateLimit',
         'DisconnectError',
         'MarketIsClosed',
-        'OpenPositionLimitExceeded',
     ];
     updateErrorMessage(error);
-    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error?.error?.code);
+    const is_ignorable_error = errors_to_ignore
+        .concat(default_errors_to_ignore)
+        .includes(error?.error?.code ?? error?.name);
 
     return !is_ignorable_error;
 };
@@ -237,7 +238,7 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     return;
                 }
                 recoverFn(
-                    error?.error?.code,
+                    error?.error?.code ?? error?.name,
                     () =>
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
