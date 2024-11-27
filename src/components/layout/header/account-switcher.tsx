@@ -79,6 +79,7 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                 isOpen
                 title={localize('Deriv accounts')}
                 className='account-switcher-panel'
+                style={{ maxHeight: '220px' }}
                 key={isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
             >
                 {modifiedAccountList
