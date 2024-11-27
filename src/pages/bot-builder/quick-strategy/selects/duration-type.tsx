@@ -37,8 +37,9 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                 if (!has_selected || prevSymbol !== symbol || prevTradeType !== tradetype) {
                     setCurrentDurationMinMax(durations?.[0]?.min, durations?.[0]?.max);
                     setFieldValue?.('durationtype', durations?.[0]?.unit, true);
-                    setFieldValue?.('duration', durations?.[0]?.min, true);
                     setValue('durationtype', durations?.[0]?.unit ?? '');
+                    setFieldValue?.('duration', durations?.[0]?.min);
+                    validateForm();
                 } else {
                     const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
                     setCurrentDurationMinMax(duration?.min, duration?.max);
