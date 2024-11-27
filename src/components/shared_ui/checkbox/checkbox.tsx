@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@/utils/tmp/dummy';
+import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons/LabelPaired';
 import Text from '../text';
 
 type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'> & {
@@ -86,7 +86,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
                         tabIndex={withTabIndex}
                         onKeyDown={handleKeyDown}
                     >
-                        {!!checked && <Icon icon='IcCheckmark' color='active' />}
+                        {!!checked && <LabelPairedCheckCaptionFillIcon />}
                     </span>
                 </span>
                 <Text

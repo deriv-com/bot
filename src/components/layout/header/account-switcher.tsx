@@ -7,6 +7,7 @@ import { getDecimalPlaces, standalone_routes } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
 import { api_base } from '@/external/bot-skeleton';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
@@ -28,6 +29,7 @@ type TAccountSwitcherProps = {
     isVirtual?: boolean;
     modifiedAccountList: TModifiedAccount[];
     switchAccount: (loginId: number) => void;
+    activeLoginId?: string;
 };
 
 type TAccountSwitcher = {
@@ -48,7 +50,12 @@ interface AccountSwitcherData {
     renderCountryIsLowRiskAndHasRealAccount: boolean;
 }
 
-const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: TAccountSwitcherProps) => {
+const RenderAccountItems = ({
+    isVirtual,
+    modifiedAccountList,
+    switchAccount,
+    activeLoginId,
+}: TAccountSwitcherProps) => {
     const { client } = useStore();
     const { landing_companies } = client;
 
@@ -65,6 +72,8 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
         const account_info = await checkSwitcherType(account_data);
         account_switcher_data.current = account_info;
     }, [client, modifiedAccountList]);
+
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
 
     useEffect(() => {
         fetchAccountSwitcherData();
@@ -92,6 +101,15 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                                 onSelectAccount={() => {
                                     if (!account.is_disabled) switchAccount(account.loginid);
                                 }}
+                                onResetBalance={
+                                    isVirtual && activeLoginId === account.loginid
+                                        ? () => {
+                                              api_base?.api?.send({
+                                                  topup_virtual: 1,
+                                              });
+                                          }
+                                        : undefined
+                                }
                             />
                         </span>
                     ))}
@@ -109,8 +127,8 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
                     <div
                         id='dt_logout_button'
                         className='deriv-account-switcher__logout'
-                        onClick={() => {
-                            client.logout();
+                        onClick={async () => {
+                            await oAuthLogout();
                         }}
                     >
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
@@ -163,6 +181,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     ]);
 
     const switchAccount = async (loginId: number) => {
+        if (loginId.toString() === activeAccount?.loginid) return;
         const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
         const token = account_list[loginId];
         if (!token) return;
@@ -189,6 +208,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                         <RenderAccountItems
                             modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
+                            activeLoginId={activeAccount?.loginid}
                         />
                     </UIAccountSwitcher.Tab>
                     <UIAccountSwitcher.Tab title={tabs_labels.demo}>
@@ -196,6 +216,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                             modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
                             isVirtual
+                            activeLoginId={activeAccount?.loginid}
                         />
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>

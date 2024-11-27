@@ -5,6 +5,8 @@ import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
+import { config } from '@/external/bot-skeleton/constants';
+import { getSelectedTradeTypeCategory } from '@/external/bot-skeleton/scratch/utils';
 // import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
@@ -437,7 +439,7 @@ export default class RunPanelStore {
         let disposeIsSocketOpenedListener: (() => void) | undefined, disposeLogoutListener: (() => void) | undefined;
 
         const registerIsSocketOpenedListener = () => {
-            // TODO: fix notifications and is_socket_opened
+            // TODO: fix notifications
             if (common.is_socket_opened) {
                 disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
@@ -517,7 +519,8 @@ export default class RunPanelStore {
         if (this.error_type === ErrorTypes.RECOVERABLE_ERRORS) {
             // Bot should indicate it started in below cases:
             // - When error happens it's a recoverable error
-            const { shouldRestartOnError, timeMachineEnabled } = this.dbot.interpreter.bot.tradeEngine.options;
+            const { shouldRestartOnError = false, timeMachineEnabled = false } =
+                this.dbot?.interpreter?.bot?.tradeEngine?.options ?? {};
             const is_bot_recoverable = shouldRestartOnError || timeMachineEnabled;
 
             if (is_bot_recoverable) {
@@ -575,7 +578,7 @@ export default class RunPanelStore {
                 const { is_virtual } = this.core.client;
 
                 if (!is_virtual && buy) {
-                    this.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
+                    GTM?.pushDataLayer?.({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
 
                 break;
@@ -615,6 +618,16 @@ export default class RunPanelStore {
     onError = (data: { error: any }) => {
         // data.error for API errors, data for code errors
         const error = data.error || data;
+        if (error.code === 'OpenPositionLimitExceeded' && error.message) {
+            const { TRADE_TYPE_CATEGORY_NAMES } = config();
+            const trade_type_category = getSelectedTradeTypeCategory();
+            const tradeTypeName =
+                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] ?? '';
+
+            if (tradeTypeName) {
+                error.message += ` Trade type: ${tradeTypeName}`;
+            }
+        }
         if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = ErrorTypes.UNRECOVERABLE_ERRORS;
@@ -700,8 +713,6 @@ export default class RunPanelStore {
     };
 
     handleInvalidToken = async () => {
-        const { client } = this.core;
-        await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
     };
 

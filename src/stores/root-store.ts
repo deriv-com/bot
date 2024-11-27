@@ -52,9 +52,6 @@ export default class RootStore {
         client: {},
         common: {},
     };
-    gtm = {
-        pushDataLayer: () => {},
-    };
 
     constructor(dbot: unknown) {
         this.dbot = dbot;
