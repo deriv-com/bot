@@ -265,6 +265,17 @@
 }
 
 .dc-dialog {
+    .link:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .link {
+        color: var(--brand-red-coral);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
     @include mobile-or-tablet-screen {
         &__wrapper--preview {
             top: 6.5rem;
