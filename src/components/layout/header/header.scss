@@ -132,8 +132,7 @@
     }
 
     &__container--mobile {
-        max-height: 90vh;
-        min-height: 340px;
+        min-height: auto;
     }
 
     &__container {
