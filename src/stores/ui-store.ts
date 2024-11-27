@@ -9,6 +9,7 @@ export default class UiStore {
     account_switcher_disabled_message = '';
     show_prompt = false;
     is_trading_assessment_for_new_user_enabled = false;
+    is_accounts_switcher_on = false;
 
     // TODO: fix - need to implement this feature
     is_onscreen_keyboard_active = false;
@@ -27,6 +28,8 @@ export default class UiStore {
             setPromptHandler: action,
             setIsTradingAssessmentForNewUserEnabled: action.bound,
             is_trading_assessment_for_new_user_enabled: observable,
+            is_accounts_switcher_on: observable,
+            toggleAccountsDialog: action.bound,
         });
     }
 
@@ -54,4 +57,8 @@ export default class UiStore {
         this.is_desktop = value === 'desktop';
         this.is_tablet = value === 'tablet';
     };
+
+    toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
+        this.is_accounts_switcher_on = status;
+    }
 }

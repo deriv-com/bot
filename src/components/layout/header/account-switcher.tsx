@@ -12,7 +12,9 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import AccountInfoWallets from './wallets/account-info-wallets';
 import { checkSwitcherType } from './utils';
+import './account-switcher.scss';
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
@@ -32,6 +34,8 @@ type TAccountSwitcherProps = {
 
 type TAccountSwitcher = {
     activeAccount: ReturnType<typeof useActiveAccount>['data'];
+    is_dialog_on: boolean;
+    toggleDialog: () => void;
 };
 
 const tabs_labels = {
@@ -131,8 +135,10 @@ const RenderAccountItems = ({ isVirtual, modifiedAccountList, switchAccount }: T
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
     const { ui, run_panel, client } = useStore();
-    const { account_switcher_disabled_message } = ui;
+    const { accounts } = client;
+    const { toggleAccountsDialog, is_accounts_switcher_on, account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
+    const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
 
     const modifiedAccountList = useMemo(() => {
         return accountList?.map(account => {
@@ -172,7 +178,10 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     };
 
     return (
-        activeAccount && (
+        activeAccount &&
+        (has_wallet ? (
+            <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+        ) : (
             <Popover
                 className='run-panel__info'
                 classNameBubble='run-panel__info--bubble'
@@ -200,7 +209,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>
             </Popover>
-        )
+        ))
     );
 });
 
