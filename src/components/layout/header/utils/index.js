@@ -32,7 +32,7 @@ export const BOT_RESTRICTED_COUNTRIES_LIST = () => ({
     ie: 'Irish',
     im: 'Manx',
     gb: 'British',
-    mt: 'Maltese',
+    mt: 'Malta',
 });
 
 export const LOW_RISK_COUNTRIES = () => ['za', 'ec', 'bw'];
