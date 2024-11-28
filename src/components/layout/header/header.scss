@@ -46,6 +46,10 @@
                 border-width: 1px;
                 height: 2.4rem;
                 min-width: 4.8rem;
+
+                span {
+                    color: var(--text-prominent) !important;
+                }
             }
         }
     }

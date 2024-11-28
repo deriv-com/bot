@@ -1,11 +1,11 @@
 import { Fragment, lazy, Suspense } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
 import { URLUtils } from '@deriv-com/utils';
 import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
@@ -25,14 +25,7 @@ const router = createBrowserRouter(
             path='/'
             element={
                 <Suspense
-                    fallback={
-                        <div className='app-root'>
-                            <Loader />
-                            <div className='load-message'>
-                                {localize('Please wait while we connect to the server...')}
-                            </div>
-                        </div>
-                    }
+                    fallback={<ChunkLoader message={localize('Please wait while we connect to the server...')} />}
                 >
                     <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <StoreProvider>

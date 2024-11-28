@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import useLiveChat from '@/components/chat/useLiveChat';
+import ChunkLoader from '@/components/loader/chunk-loader';
 import { getUrlBase } from '@/components/shared';
 import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
@@ -15,7 +16,6 @@ import initDatadog from '@/utils/datadog';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
 import Audio from '../components/audio';
 import BlocklyLoading from '../components/blockly-loading';
 import BotStopped from '../components/bot-stopped';
@@ -159,10 +159,7 @@ const AppContent = observer(() => {
     if (common?.error) return null;
 
     return is_loading ? (
-        <div className='app-root'>
-            <Loader />
-            <div>{localize('Please wait while we connect to the server...')}</div>
-        </div>
+        <ChunkLoader message={localize('Initializing your account...')} />
     ) : (
         <>
             <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
