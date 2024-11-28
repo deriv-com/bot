@@ -21,8 +21,6 @@ export const handleError = (errorCode, observer) => {
     switch (errorCode) {
         case 'BLOCK_DELETION':
             if (error_message_map[window.Blockly.getSelected().type]) {
-                console.log(error_message_map);
-                console.log(error_message_map[window.Blockly.getSelected().type]?.default);
                 observer.emit('ui.log.error', error_message_map[window.Blockly.getSelected().type]?.default);
             }
             break;

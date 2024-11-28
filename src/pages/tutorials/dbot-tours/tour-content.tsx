@@ -3,7 +3,7 @@ import React from 'react';
 import Text from '@/components/shared_ui/text';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { LabelPairedCircleCheckCaptionRegularIcon } from '@deriv/quill-icons/LabelPaired';
-import { Localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import TourSteps from './common/tour-steps';
 
 type TJoyrideConfig = Record<
@@ -149,7 +149,7 @@ export const DBOT_ONBOARDING = [
                 has_localize_component
             />
         ),
-        locale: { last: <Localize i18n_default_text='Got it, thanks!' /> },
+        locale: { last: localize('Got it, thanks!') },
         ...joyride_props,
         hideBackButton: true,
         disableOverlay: false,
@@ -432,7 +432,7 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
-        locale: { last: <Localize i18n_default_text='Next' /> },
+        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

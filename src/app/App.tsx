@@ -1,3 +1,4 @@
+import { initSurvicate } from '../public-path';
 import { Fragment, lazy, Suspense } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
@@ -75,7 +76,14 @@ function App() {
     }, [loginInfo, paramsToDelete]);
 
     React.useEffect(() => {
+        initSurvicate();
         window?.dataLayer?.push({ event: 'page_load' });
+        return () => {
+            const survicate_box = document.getElementById('survicate-box');
+            if (survicate_box) {
+                survicate_box.style.display = 'none';
+            }
+        };
     }, []);
 
     return (

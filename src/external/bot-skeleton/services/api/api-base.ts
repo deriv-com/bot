@@ -81,6 +81,7 @@ class APIBase {
     }
 
     async init(force_create_connection = false) {
+        console.log('test force_create_connection ----->', force_create_connection);
         this.toggleRunButton(true);
 
         if (this.api) {
