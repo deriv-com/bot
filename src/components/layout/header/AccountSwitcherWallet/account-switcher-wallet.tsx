@@ -9,6 +9,7 @@ import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
+import '../wallets/wallet.scss';
 
 type TAccountSwitcherWalletProps = {
     is_visible: boolean;

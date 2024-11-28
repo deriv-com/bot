@@ -3,10 +3,10 @@ import { IconSize } from '@deriv/quill-icons';
 
 const WALLET_ICONS = {
     IcWalletDerivDemoLight: lazy(() =>
-        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandIcon }))
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandDarkIcon }))
     ),
     IcWalletDerivDemoDark: lazy(() =>
-        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandIcon }))
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandDarkIcon }))
     ),
     IcWalletCurrencyUsdLight: lazy(() =>
         import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdIcon }))
