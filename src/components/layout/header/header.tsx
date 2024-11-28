@@ -26,6 +26,8 @@ const AppHeader = observer(() => {
     const { client } = useStore() ?? {};
 
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
+    const { accounts } = client ?? {};
+    const has_wallet = Object.keys(accounts ?? {}).some(id => accounts?.[id].account_category === 'wallet');
 
     const { localize } = useTranslations();
 
@@ -50,17 +52,26 @@ const AppHeader = observer(() => {
                         </Tooltip>
                     )}
                     <AccountSwitcher activeAccount={activeAccount} />
-                    {isDesktop && (
-                        <Button
-                            primary
-                            onClick={() => {
-                                window.location.assign(standalone_routes.cashier_deposit);
-                            }}
-                            className='deposit-button'
-                        >
-                            {localize('Deposit')}
-                        </Button>
-                    )}
+                    {isDesktop &&
+                        (has_wallet ? (
+                            <Button
+                                className='manage-funds-button'
+                                has_effect
+                                text={localize('Manage funds')}
+                                onClick={() => window.location.assign(standalone_routes.wallets_transfer)}
+                                primary
+                            />
+                        ) : (
+                            <Button
+                                primary
+                                onClick={() => {
+                                    window.location.assign(standalone_routes.cashier_deposit);
+                                }}
+                                className='deposit-button'
+                            >
+                                {localize('Deposit')}
+                            </Button>
+                        ))}
                 </>
             );
         } else {
