@@ -155,6 +155,10 @@
         transform-origin: 50% 45%;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 
+        svg {
+            fill: var(--text-general);
+        }
+
         // @extend %inline-icon;
 
         &--invert {

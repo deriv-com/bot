@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
 import { WalletIconList } from './wallet-icons-list';
 import './wallet-icon.scss';
 
@@ -67,8 +66,7 @@ const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_
             })}
             data-testid='dt_wallet_icon'
         >
-            {(type === 'fiat' || type === 'app') && <AccountsDerivAccountLightIcon iconSize='sm' />}
-            {(type === 'demo' || type === 'crypto') && <WalletIconList type={icon} size='sm' />}
+            <WalletIconList type={icon} size='xs' />
         </div>
     );
 };

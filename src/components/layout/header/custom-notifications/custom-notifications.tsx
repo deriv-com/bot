@@ -12,16 +12,14 @@ const CustomNotifications = () => {
 
     return (
         <div className='notifications__wrapper'>
-            {!isMobile && (
-                <Tooltip
-                    as='button'
-                    onClick={() => setIsOpen(!isOpen)}
-                    tooltipContent={localize('View notifications')}
-                    tooltipPosition='bottom'
-                >
-                    <LegacyNotificationIcon iconSize='sm' />
-                </Tooltip>
-            )}
+            <Tooltip
+                as='button'
+                onClick={() => setIsOpen(!isOpen)}
+                tooltipContent={localize('View notifications')}
+                tooltipPosition='bottom'
+            >
+                <LegacyNotificationIcon iconSize='sm' />
+            </Tooltip>
             <Notifications
                 className={clsx('', {
                     'notifications__wrapper--mobile': isMobile,

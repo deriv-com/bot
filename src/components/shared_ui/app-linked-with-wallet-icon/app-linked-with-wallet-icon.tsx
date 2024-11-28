@@ -1,4 +1,6 @@
 import React from 'react';
+import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 import { WalletIcon } from '../wallet-icon';
 import './app-linked-with-wallet-icon.scss';
 
@@ -40,11 +42,14 @@ const AppLinkedWithWalletIcon = ({
         return null;
     }
 
+    const { isDesktop } = useDevice();
+    const icon_size = isDesktop ? 'sm' : 'xs';
+
     return (
         <div className={`app-icon app-icon--${size}`}>
             {/* Top Icon */}
             <div className='app-icon__top-icon'>
-                <WalletIcon icon={app_icon} size={sizes.top[size]} type='app' />
+                <AccountsDerivAccountLightIcon iconSize={icon_size} />
             </div>
 
             {/* Bottom Icon */}

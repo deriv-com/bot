@@ -5,27 +5,67 @@ const WALLET_ICONS = {
     IcWalletDerivDemoLight: lazy(() =>
         import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandIcon }))
     ),
-    USD: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdIcon }))),
-    EUR: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEurIcon }))),
-    AUD: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyAudIcon }))),
-    GBP: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyGbpIcon }))),
-    BTC: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyBtcIcon }))),
-    ETH: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEthIcon }))),
-    USDT: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdtIcon }))),
-    eUSDT: lazy(() =>
-        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodTetherUsdtBrandIcon }))
+    IcWalletDerivDemoDark: lazy(() =>
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodDerivDemoBrandIcon }))
+    ),
+    IcWalletCurrencyUsdLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdIcon }))
+    ),
+    IcWalletCurrencyUsdDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdIcon }))
+    ),
+    IcWalletCurrencyEurLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEurIcon }))
+    ),
+    IcWalletCurrencyEurDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEurIcon }))
+    ),
+    IcWalletCurrencyAudLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyAudIcon }))
+    ),
+    IcWalletCurrencyAudDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyAudIcon }))
+    ),
+    IcWalletCurrencyGbpLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyGbpIcon }))
+    ),
+    IcWalletCurrencyGbpDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyGbpIcon }))
+    ),
+    IcWalletBitcoinLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyBtcIcon }))
+    ),
+    IcWalletBitcoinDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyBtcIcon }))
+    ),
+    IcWalletEthereumLight: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEthIcon }))
+    ),
+    IcWalletEthereumDark: lazy(() =>
+        import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyEthIcon }))
     ),
     IcWalletTetherLight: lazy(() =>
         import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodTetherUsdtBrandIcon }))
     ),
-    UST: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdtIcon }))),
+    IcWalletTetherDark: lazy(() =>
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodTetherUsdtBrandIcon }))
+    ),
     IcWalletLiteCoinLight: lazy(() =>
         import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodLitecoinBrandIcon }))
     ),
-    USDC: lazy(() =>
+    IcWalletLiteCoinDark: lazy(() =>
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodLitecoinBrandIcon }))
+    ),
+    IcWalletUsdCoinLight: lazy(() =>
         import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodUsdCoinBrandIcon }))
     ),
-    XRP: lazy(() =>
+    IcWalletUsdCoinDark: lazy(() =>
+        import('@deriv/quill-icons/Logo').then(module => ({ default: module.PaymentMethodUsdCoinBrandIcon }))
+    ),
+    IcWalletXrpLight: lazy(() =>
+        import('@deriv/quill-icons/PaymentMethods').then(module => ({ default: module.PaymentMethodXrpBrandIcon }))
+    ),
+    IcWalletXrpDark: lazy(() =>
         import('@deriv/quill-icons/PaymentMethods').then(module => ({ default: module.PaymentMethodXrpBrandIcon }))
     ),
     unknown: lazy(() => import('@deriv/quill-icons/Currencies').then(module => ({ default: module.CurrencyUsdIcon }))),
