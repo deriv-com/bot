@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -13,9 +13,10 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider, Loader, Text } from '@deriv-com/ui';
-import AccountInfoWallets from './wallets/account-info-wallets';
 import { checkSwitcherType } from './utils';
 import './account-switcher.scss';
+
+const AccountInfoWallets = lazy(() => import('./wallets/account-info-wallets'));
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
