@@ -109,25 +109,29 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             }
             prev_error.current.take_profit = null;
         } catch (error_response) {
-            let errror_message = error_response?.message ?? error_response?.error?.message;
+            let error_message = error_response?.message ?? error_response?.error?.message;
 
             if (values.boolean_tick_count) {
-                setFieldError('tick_count', errror_message);
-                prev_error.current.tick_count = errror_message;
+                setFieldError('tick_count', error_message);
+                prev_error.current.tick_count = error_message;
             } else {
                 if (error_response?.error?.details?.field === 'take_profit') {
-                    errror_message = `Your total payout is ${
-                        Number(values.take_profit) + Number(values.stake)
-                    }. Enter amount less than ${ref_max_payout.current} ${localize(
-                        'By changing your initial stake and/or take profit.'
-                    )}`;
+                    if (Number(values.take_profit) === 0) {
+                        error_message = error_response?.error?.message;
+                    } else {
+                        error_message = `Your total payout is ${
+                            Number(values.take_profit) + Number(values.stake)
+                        }. Enter amount less than ${ref_max_payout.current} ${localize(
+                            'By changing your initial stake and/or take profit.'
+                        )}`;
+                    }
                 }
 
                 if (error_response?.error?.details?.field === 'stake') {
-                    errror_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
+                    error_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
                 }
-                setFieldError('take_profit', errror_message);
-                prev_error.current.take_profit = errror_message;
+                setFieldError('take_profit', error_message);
+                prev_error.current.take_profit = error_message;
             }
         }
     };
