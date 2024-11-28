@@ -196,6 +196,7 @@
         }
 
         &__icon {
+            position: relative;
             width: 3.2rem;
             height: 3.2rem;
             text-align: center;
@@ -206,8 +207,8 @@
 
             &--indicator {
                 position: absolute;
-                top: 1.5rem;
-                left: 4rem;
+                top: 0;
+                right: 0;
                 width: 0.8rem;
                 height: 0.8rem;
                 background-color: var(--status-danger);

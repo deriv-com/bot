@@ -1,4 +1,5 @@
 import { action, makeObservable, reaction, when } from 'mobx';
+import { BOT_RESTRICTED_COUNTRIES_LIST } from '@/components/layout/header/utils';
 import {
     ContentFlag,
     isEuResidenceWithOnlyVRTC,
@@ -63,10 +64,10 @@ export default class AppStore {
 
     throwErrorForExceptionCountries = (client_country: string) => {
         const { client, common } = this.core;
+        const bot_resticted_countries = BOT_RESTRICTED_COUNTRIES_LIST();
 
         const not_allowed_clients_country: { [key: string]: string } = {
-            au: 'Australian',
-            sg: 'Singaporean',
+            ...bot_resticted_countries,
         };
 
         const country_name = not_allowed_clients_country[client_country];
@@ -79,20 +80,16 @@ export default class AppStore {
         }
     };
 
-    handleErrorForEu = (show_default_error = false) => {
-        const { client, common, ui } = this.core;
-        const toggleAccountsDialog = ui?.toggleAccountsDialog;
+    handleErrorForEu = () => {
+        const { client, common } = this.core;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
-            if (client?.has_logged_out) {
-                window.location.href = standalone_routes.traders_hub;
-            }
-
             this.throwErrorForExceptionCountries(client?.clients_country as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
         if (!client.is_landing_company_loaded) {
+            common.setError(false, {});
             return false;
         }
 
@@ -102,37 +99,41 @@ export default class AppStore {
         }
 
         if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
+            common.setError(false, {});
             return false;
         }
 
-        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+        if (client.content_flag === ContentFlag.LOW_RISK_CR_EU) {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                toggleAccountsDialog,
+                () => {
+                    // TODOL: need to fix this from the deriv ui package
+                    document.querySelector('.deriv-account-switcher__button')?.click();
+                },
                 false,
                 false
             );
         }
 
         if (
-            ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
-                isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-                client.is_options_blocked) &&
-            toggleAccountsDialog
+            (!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+            client.is_options_blocked
         ) {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                toggleAccountsDialog,
+                () => {
+                    // TODOL: need to fix this from the deriv ui package
+                    document.querySelector('.deriv-account-switcher__button')?.click();
+                },
                 false,
                 false
             );
         }
 
-        if (show_default_error && common.has_error) {
-            if (common.setError) common.setError(false, { message: '' });
-        }
+        common.setError(false, {});
         return false;
     };
 
