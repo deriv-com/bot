@@ -48,6 +48,7 @@ export default defineConfig({
                 },
             },
             { from: 'node_modules/@deriv/deriv-charts/dist/chart/assets/*', to: 'assets/[name][ext]' },
+            { from: 'node_modules/@deriv/deriv-charts/dist/chart/assets/fonts/*', to: 'assets/fonts/[name][ext]' },
             { from: path.join(__dirname, 'public') },
         ],
     },
