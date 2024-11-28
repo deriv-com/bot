@@ -1,4 +1,4 @@
-import { initSurvicate } from '@/public-path';
+import { initSurvicate } from '../public-path';
 import { Fragment, lazy, Suspense } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
