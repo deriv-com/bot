@@ -77,7 +77,6 @@ const useStoreWalletAccountsList = () => {
                 const is_disabled = Boolean(wallet.is_disabled);
                 const is_virtual = Boolean(wallet.is_virtual);
 
-                // const fiat_or_crypto = is_crypto(currency) ? 'crypto' : 'fiat';
                 const icon_type = is_virtual && 'demo';
                 const landing_company_name = wallet.landing_company_name?.replace('maltainvest', 'malta');
                 const is_malta_wallet = landing_company_name === 'malta';
@@ -126,9 +125,6 @@ const useStoreWalletAccountsList = () => {
             if (a.is_virtual !== b.is_virtual) {
                 return a.is_virtual ? 1 : -1;
             }
-            // else if (is_crypto(a.currency) !== is_crypto(b.currency)) {
-            //     return is_crypto(a.currency) ? 1 : -1;
-            // }
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef } from 'react';
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -12,7 +12,7 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Divider, Text } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher, Divider, Loader, Text } from '@deriv-com/ui';
 import AccountInfoWallets from './wallets/account-info-wallets';
 import { checkSwitcherType } from './utils';
 import './account-switcher.scss';
@@ -199,7 +199,9 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     return (
         activeAccount &&
         (has_wallet ? (
-            <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            <Suspense fallback={<Loader />}>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            </Suspense>
         ) : (
             <Popover
                 className='run-panel__info'
