@@ -56,7 +56,6 @@ const initSurvicate = () => {
     setSurvicateCalledValue(true);
     const active_loginid = localStorage.getItem('active_loginid');
     const client_accounts = JSON.parse(localStorage.getItem('accountsList') as string) || undefined;
-    console.log(active_loginid, client_accounts);
     const setAttributesIfAvailable = () => {
         if (active_loginid && client_accounts) {
             const { residence, account_type, created_at } = client_accounts[active_loginid] || {};
