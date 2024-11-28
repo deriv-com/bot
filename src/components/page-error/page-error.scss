@@ -27,6 +27,7 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: center;
+        text-align: center;
 
         @include desktop {
             &--left {
@@ -46,8 +47,12 @@
 
     &__message {
         // @include typeface(--title-center-normal-black, none);
-        max-width: 502px;
+        max-width: 600px;
         margin: 1.6rem 0 2.4rem;
+
+        &-paragraph {
+            text-align: center;
+        }
 
         &-wrapper {
             display: flex;

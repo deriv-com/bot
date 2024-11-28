@@ -107,7 +107,10 @@ export default class AppStore {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                () => {},
+                () => {
+                    // TODOL: need to fix this from the deriv ui package
+                    document.querySelector('.deriv-account-switcher__button')?.click();
+                },
                 false,
                 false
             );
@@ -121,7 +124,10 @@ export default class AppStore {
             return showDigitalOptionsUnavailableError(
                 common.showError,
                 this.getErrorForNonEuClients(),
-                () => {},
+                () => {
+                    // TODOL: need to fix this from the deriv ui package
+                    document.querySelector('.deriv-account-switcher__button')?.click();
+                },
                 false,
                 false
             );
