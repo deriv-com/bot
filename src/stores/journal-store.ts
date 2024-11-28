@@ -106,7 +106,7 @@ export default class JournalStore {
     restoreStoredJournals() {
         const client = this.core.client as RootStore['client'];
         const { loginid } = client;
-        this.journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+        this.journal_filters = getSetting('journal_filter') ?? this.filters.map(filter => filter.id);
         this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, loginid, []);
     }
 

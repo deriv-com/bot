@@ -1,4 +1,4 @@
-@import '../shared/styles/devices';
+@use 'components/shared/styles/devices' as *;
 
 .dc-modal__container_tnc-status-update-modal-wrapper {
     padding: 2.4rem;
