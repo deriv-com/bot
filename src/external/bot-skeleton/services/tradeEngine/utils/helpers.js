@@ -139,6 +139,10 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
     const { error = {}, msg_type = '', echo_req = {} } = error_obj;
     const { code = '', message = '' } = error;
     let message_to_print = '';
+    const trade_type_block = Blockly.derivWorkspace
+        .getAllBlocks(true)
+        .find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST') || '';
 
     if (code) {
         switch (code) {
@@ -166,9 +170,10 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                 break;
             case 'OpenPositionLimitExceeded':
                 message_to_print = localize(
-                    'You already have an open position for this contract type, retrying in {{ delay }}s',
+                    'You already have an open position for {{ trade_type }} contract type, retrying in {{ delay }}s',
                     {
                         delay: next_delay_in_seconds,
+                        trade_type: selected_trade_type,
                     }
                 );
                 break;
@@ -214,12 +219,14 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'RateLimit',
         'DisconnectError',
         'MarketIsClosed',
+        'OpenPositionLimitExceeded',
     ];
     updateErrorMessage(error);
     const is_ignorable_error = errors_to_ignore
         .concat(default_errors_to_ignore)
         .includes(error?.error?.code ?? error?.name);
 
+    if (error.error?.code === 'OpenPositionLimitExceeded') globalObserver.emit('bot.recoverOpenPositionLimitExceeded');
     return !is_ignorable_error;
 };
 
