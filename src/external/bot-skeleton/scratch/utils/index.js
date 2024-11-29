@@ -43,6 +43,12 @@ export const getSelectedTradeType = (workspace = window.Blockly.derivWorkspace) 
     return mandatory_tradeoptions_block;
 };
 
+export const getSelectedTradeTypeCategory = (workspace = Blockly.derivWorkspace) => {
+    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST');
+    return selected_trade_type ?? '';
+};
+
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/);
     if (match && match.length > 2) {
@@ -658,7 +664,6 @@ const deleteBlocksLocaleText = localize('Delete Block');
 const deleteAllBlocksLocaleText = localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
-    console.log(menu);
     const include_items = [...common_included_items, ...add_new_items];
     include_items.forEach(item => {
         menu.push({

@@ -1,5 +1,40 @@
 import { api_base } from '@/external/bot-skeleton';
 
+export const BOT_RESTRICTED_COUNTRIES_LIST = () => ({
+    au: 'Australian',
+    sg: 'Singaporean',
+    it: 'Italian',
+    de: 'German',
+    fr: 'French',
+    lu: 'Luxembourgish',
+    gr: 'Greek',
+    mf: 'Saint Martiner',
+    es: 'Spanish',
+    sk: 'Slovak',
+    lt: 'Lithuanian',
+    nl: 'Dutch',
+    at: 'Austrian',
+    bg: 'Bulgarian',
+    si: 'Slovenian',
+    cy: 'Cypriot',
+    be: 'Belgian',
+    ro: 'Romanian',
+    hr: 'Croatian',
+    pt: 'Portuguese',
+    pl: 'Polish',
+    lv: 'Latvian',
+    ee: 'Estonian',
+    cz: 'Czech',
+    fi: 'Finnish',
+    hu: 'Hungarian',
+    dk: 'Danish',
+    se: 'Swedish',
+    ie: 'Irish',
+    im: 'Manx',
+    gb: 'British',
+    mt: 'Malta',
+});
+
 export const LOW_RISK_COUNTRIES = () => ['za', 'ec', 'bw'];
 export const EU_COUNTRIES = () => [
     'it',
@@ -66,18 +101,17 @@ const isMultiplier = landing_company_list => {
     const is_multiplier = multiplier_account?.includes('multiplier');
     return {
         is_multiplier: multiplier_account?.length === 1 && is_multiplier,
-        country_code: landing_company_list.id,
+        country_code: landing_company_list?.id,
     };
 };
 
 export const checkSwitcherType = async account_data => {
-    const { client_accounts = {}, activeLoginid, isVirtual, landing_company } = account_data;
+    const { client_accounts = {}, login_id, isVirtual = false, landing_companies } = account_data;
 
     const virtual_accounts = [];
     const non_eu_accounts = [];
     const eu_accounts = [];
-    const real_accounts = [...eu_accounts, ...non_eu_accounts];
-    if (!activeLoginid) return null;
+    if (!login_id) return null;
     const account_info = { ...api_base.account_info };
 
     if (!account_info) return null;
@@ -86,12 +120,13 @@ export const checkSwitcherType = async account_data => {
 
     const { country, upgradeable_landing_companies = [] } = account_info;
     const is_eu = isEu(country);
-    const { country_code } = isMultiplier(landing_company);
+
+    const { country_code } = isMultiplier(landing_companies);
     //TODO: check if this is needed
     //is_multiplier
     // const is_high_risk_or_eu = is_eu && is_high_risk;
 
-    const { financial_company, gaming_company } = landing_company;
+    const { financial_company, gaming_company } = landing_companies;
 
     const { risk_classification } = account_status || {};
     const is_country_low_risk = LOW_RISK_COUNTRIES().includes(country_code);
@@ -108,26 +143,30 @@ export const checkSwitcherType = async account_data => {
     if (is_low_risk) is_high_risk = false;
     if (is_high_risk) is_low_risk = false;
 
-    client_accounts.forEach(account => {
+    account_data.modifiedAccountList.forEach(account => {
         if (account.loginid.startsWith('VR')) virtual_accounts.push({ ...client_accounts[account], account });
         if (account.loginid.startsWith('MF')) eu_accounts.push({ ...client_accounts[account], account });
         if (account.loginid.startsWith('CR')) non_eu_accounts.push({ ...client_accounts[account], account });
     });
 
-    const renderCountryIsLowRiskAndHasNoRealAccount = !isVirtual && is_country_low_risk && !real_accounts.length === 0;
-    const renderCountryIsEuAndNoRealAccount = !isVirtual && !is_country_low_risk && is_eu && !real_accounts.length;
-    const renderCountryIsNonEuAndNoRealAccount = !isVirtual && !is_country_low_risk && !is_eu && !real_accounts.length;
-    const renderCountryIsEuHasOnlyRealAccount = !isVirtual && is_country_low_risk && is_eu && real_accounts.length > 0;
+    const real_accounts = eu_accounts.length + non_eu_accounts.length;
+    const renderCountryIsLowRiskAndHasNoRealAccount = !isVirtual && is_country_low_risk && real_accounts === 0;
+    const renderCountryIsEuAndNoRealAccount = !isVirtual && !is_country_low_risk && is_eu && real_accounts === 0;
+    const renderCountryIsNonEuAndNoRealAccount = !isVirtual && !is_country_low_risk && !is_eu && real_accounts === 0;
+    const renderCountryIsEuHasOnlyRealAccount = !isVirtual && is_country_low_risk && is_eu && real_accounts > 0;
     const renderCountryIsNonEuHasOnlyRealAccount =
         !isVirtual && is_country_low_risk && !is_eu && real_accounts.length > 0;
-    const renderCountryIsLowRiskAndHasRealAccount = !isVirtual && is_country_low_risk && real_accounts.length > 0;
+    const renderCountryIsLowRiskAndHasOnlyRealAccount = !isVirtual && is_country_low_risk && real_accounts > 0;
 
     return {
+        non_eu_accounts,
+        eu_accounts,
+        virtual_accounts,
         renderCountryIsLowRiskAndHasNoRealAccount,
         renderCountryIsEuAndNoRealAccount,
         renderCountryIsNonEuAndNoRealAccount,
         renderCountryIsEuHasOnlyRealAccount,
         renderCountryIsNonEuHasOnlyRealAccount,
-        renderCountryIsLowRiskAndHasRealAccount,
+        renderCountryIsLowRiskAndHasOnlyRealAccount,
     };
 };

@@ -13,6 +13,29 @@
     color: var(--text-prominent);
     padding-bottom: 0.8rem;
 
+    .dc-btn--sell {
+        width: 100%;
+        background: transparent;
+        border: 1px solid var(--button-secondary-default);
+        color: var(--text-general);
+
+        &:hover {
+            background: var(--button-secondary-hover) !important;
+        }
+    }
+
+    .dc-btn-close,
+    .dc-btn--sell {
+        span {
+            color: var(--text-general) !important;
+            font-size: 1.2rem;
+
+            &:hover {
+                color: var(--text-general) !important;
+            }
+        }
+    }
+
     &:before {
         content: '';
         position: absolute;

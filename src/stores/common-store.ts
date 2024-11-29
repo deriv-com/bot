@@ -66,20 +66,22 @@ export default class CommonStore {
 
     setError = (has_error: boolean, error: Partial<Error>) => {
         this.has_error = has_error;
-        this.error = {
-            type: error ? error.type : 'info',
-            ...(error && {
-                header: error.header,
-                message: error.message,
-                redirect_label: error.redirect_label,
-                redirectOnClick: error.redirectOnClick,
-                should_show_refresh: error.should_show_refresh,
-                redirect_to: error.redirect_to,
-                should_clear_error_on_click: error.should_clear_error_on_click,
-                should_redirect: error.should_redirect,
-                setError: this.setError,
-            }),
-        };
+        this.error = has_error
+            ? {
+                  type: error ? error.type : 'info',
+                  ...(error && {
+                      header: error.header,
+                      message: error.message,
+                      redirect_label: error.redirect_label,
+                      redirectOnClick: error.redirectOnClick,
+                      should_show_refresh: error.should_show_refresh,
+                      redirect_to: error.redirect_to,
+                      should_clear_error_on_click: error.should_clear_error_on_click,
+                      should_redirect: error.should_redirect,
+                      setError: this.setError,
+                  }),
+              }
+            : undefined;
     };
 
     showError = ({

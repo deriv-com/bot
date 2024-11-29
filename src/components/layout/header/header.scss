@@ -26,6 +26,33 @@
 
     &-footer {
         background: var(--general-main-1);
+
+        &__actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+
+            &--hide-manage-button {
+                justify-content: flex-end;
+            }
+
+            .manage-button {
+                background: none;
+                border: 1px solid var(--button-secondary-default);
+
+                &:hover {
+                    background-color: unset !important;
+                }
+
+                span {
+                    color: var(--text-prominent);
+                    font-size: var(--text-size-xs);
+                    cursor: pointer;
+                    font-weight: 400;
+                }
+            }
+        }
     }
 }
 
@@ -40,6 +67,16 @@
 }
 
 .deriv-account-switcher {
+    &-item {
+        &__balance {
+            button {
+                border-width: 1px;
+                height: 2.4rem;
+                min-width: 4.8rem;
+            }
+        }
+    }
+
     &__button {
         margin-inline-end: 0.8rem;
 
@@ -63,6 +100,30 @@
     &__list {
         &.account-switcher-panel {
             padding: 2rem 0.8rem 1rem;
+
+            .account-switcher-panel__no-eu-accounts {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .add-button {
+                    background: none;
+
+                    span {
+                        color: #000;
+                        font-size: 12px;
+                        border: solid 2px var(--text-disabled-1);
+                        padding: 0.1rem 1.6rem;
+                        border-radius: 0.5em;
+                        cursor: pointer;
+                    }
+                }
+
+                .deriv-account-switcher-item:hover,
+                .deriv-account-switcher-item--active {
+                    background-color: unset;
+                }
+            }
         }
 
         .deriv-accordion {
@@ -81,7 +142,7 @@
     }
 
     &__container--mobile {
-        max-height: 90vh;
+        min-height: auto;
     }
 
     &__container {
