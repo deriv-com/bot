@@ -70,7 +70,6 @@ export default class AppStore {
             ...bot_resticted_countries,
         };
 
-        console.log(not_allowed_clients_country);
         const country_name = not_allowed_clients_country[client_country];
 
         if (country_name) {
@@ -83,8 +82,8 @@ export default class AppStore {
 
     handleErrorForEu = () => {
         const { client, common } = this.core;
-        if (!client?.is_logged_in && true) {
-            this.throwErrorForExceptionCountries('fr' as string);
+        if (!client?.is_logged_in && client?.is_eu_country) {
+            this.throwErrorForExceptionCountries(client?.country_code as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
