@@ -28,7 +28,7 @@ const ErrorComponent = ({
     return (
         <PageErrorContainer
             error_header={header ?? ''}
-            error_messages={message ? [message, null] : []}
+            error_messages={message ? [message, ''] : []}
             redirect_urls={[redirect_to]}
             redirect_labels={(!redirect_label && []) || [redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => window.location.reload())}

@@ -84,7 +84,7 @@ export default class AppStore {
         const { client, common } = this.core;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
-            this.throwErrorForExceptionCountries(client?.clients_country as string);
+            this.throwErrorForExceptionCountries(client?.country_code as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
