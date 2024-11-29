@@ -11,6 +11,7 @@ const BlocklyLoading = observer(() => {
             {is_loading && (
                 <div className='bot__loading' data-testid='blockly-loader'>
                     <Loader />
+                    <div>Loading Blockly...</div>
                 </div>
             )}
         </>

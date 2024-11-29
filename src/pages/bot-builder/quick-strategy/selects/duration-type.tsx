@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import Autocomplete from '@/components/shared_ui/autocomplete';
@@ -16,7 +16,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [prevSymbol, setPrevSymbol] = React.useState('');
     const [prevTradeType, setPrevTradeType] = React.useState('');
     const { quick_strategy } = useStore();
-    const { setValue, setCurrentDurationMinMax } = quick_strategy;
+    const { setValue, setCurrentDurationMinMax, current_duration_min_max } = quick_strategy;
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
 
@@ -50,6 +50,10 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, tradetype]);
+
+    useEffect(() => {
+        validateForm();
+    }, [current_duration_min_max, validateForm]);
 
     return (
         <div

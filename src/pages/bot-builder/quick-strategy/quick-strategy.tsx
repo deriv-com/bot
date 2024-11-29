@@ -43,8 +43,7 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useStore();
-    const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData } =
-        quick_strategy;
+    const { selected_strategy, form_data, initializeLossThresholdWarningData } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES()[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
     const is_mounted = useRef(true);
@@ -112,6 +111,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         let min_error = getErrorMessage('MIN', min);
                         let max_error = getErrorMessage('MAX', max);
                         let integer_error_message = '';
+                        const { current_duration_min_max } = quick_strategy;
                         if (field.name === 'duration' && current_duration_min_max) {
                             min = current_duration_min_max.min;
                             max = current_duration_min_max.max;

@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ChunkLoader from '@/components/loader/chunk-loader';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
@@ -209,7 +210,7 @@ const AppWrapper = observer(() => {
                                     : 'id-charts'
                             }
                         >
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
                                 <Chart show_digits_stats={false} />
                             </Suspense>
                         </div>
@@ -228,7 +229,9 @@ const AppWrapper = observer(() => {
                             id='id-tutorials'
                         >
                             <div className='tutorials-wrapper'>
-                                <Suspense fallback={<div>Loading...</div>}>
+                                <Suspense
+                                    fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}
+                                >
                                     <Tutorial handleTabChange={handleTabChange} />
                                 </Suspense>
                             </div>
