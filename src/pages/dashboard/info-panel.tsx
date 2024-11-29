@@ -37,7 +37,7 @@ const InfoPanel = observer(() => {
     const renderInfo = () => (
         <div className='db-info-panel'>
             <div data-testid='close-icon' className='db-info-panel__close-action' onClick={handleClose}>
-                <LegacyClose1pxIcon height='18px' width='18px' />
+                <LegacyClose1pxIcon height='18px' width='18px' fill='var(--text-prominent)' />
             </div>
 
             {SIDEBAR_INTRO().map(sidebar_item => {
