@@ -11,3 +11,7 @@ export const no_account = {
     isActive: false,
     isVirtual: true,
 };
+
+export const convertCommaValue = (str: string) => {
+    return Number(str.replace(/,/g, ''));
+};

@@ -3,6 +3,7 @@ import { api_base } from '@/external/bot-skeleton';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
 import AccountSwitcherFooter from './account-swticher-footer';
+import { convertCommaValue } from './utils';
 
 type TDemonAccounts = {
     tabs_labels: {
@@ -45,7 +46,9 @@ const DemoAccounts = ({
                                     if (!account.is_disabled) switchAccount(account.loginid);
                                 }}
                                 onResetBalance={
-                                    isVirtual && activeLoginId === account.loginid && Number(account.balance) !== 10000
+                                    isVirtual &&
+                                    activeLoginId === account.loginid &&
+                                    convertCommaValue(account.balance) !== 10000
                                         ? () => {
                                               api_base?.api?.send({
                                                   topup_virtual: 1,
