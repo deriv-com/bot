@@ -35,6 +35,7 @@ const NonEUAccounts = ({
                 isOpen
                 title={account_switcher_title_non_eu}
                 className='account-switcher-panel'
+                style={{ maxHeight: '220px' }}
                 key={!isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels?.real.toLowerCase()}
             >
                 {modifiedCRAccountList.map(account => (

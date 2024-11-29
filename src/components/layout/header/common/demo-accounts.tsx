@@ -45,7 +45,7 @@ const DemoAccounts = ({
                                     if (!account.is_disabled) switchAccount(account.loginid);
                                 }}
                                 onResetBalance={
-                                    isVirtual && activeLoginId === account.loginid
+                                    isVirtual && activeLoginId === account.loginid && Number(account.balance) !== 10000
                                         ? () => {
                                               api_base?.api?.send({
                                                   topup_virtual: 1,

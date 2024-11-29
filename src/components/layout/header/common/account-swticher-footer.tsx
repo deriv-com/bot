@@ -35,13 +35,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter)
                     </Button>
                 )}
                 <UIAccountSwitcher.Footer>
-                    <div
-                        id='dt_logout_button'
-                        className='deriv-account-switcher__logout'
-                        onClick={async () => {
-                            await oAuthLogout();
-                        }}
-                    >
+                    <div id='dt_logout_button' className='deriv-account-switcher__logout' onClick={oAuthLogout}>
                         <Text color='prominent' size='xs' align='left' className='deriv-account-switcher__logout-text'>
                             {localize('Log out')}
                         </Text>

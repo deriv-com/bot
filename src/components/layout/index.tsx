@@ -35,7 +35,7 @@ const Layout = () => {
             <Body>
                 <Outlet />
             </Body>
-            {isDesktop && <Footer />}
+            {!isCallbackPage && isDesktop && <Footer />}
         </div>
     );
 };

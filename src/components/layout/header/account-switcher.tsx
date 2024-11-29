@@ -150,6 +150,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     activeAccount={activeAccount}
                     isDisabled={is_stop_button_visible}
                     tabsLabels={tabs_labels}
+                    modalContentStyle={{
+                        content: {
+                            top: '30%',
+                            borderRadius: '10px',
+                        },
+                    }}
                 >
                     <UIAccountSwitcher.Tab title={tabs_labels.real}>
                         <RenderAccountItems

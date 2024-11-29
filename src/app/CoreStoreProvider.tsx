@@ -90,7 +90,11 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
             const data = res.data as TSocketResponseData<'balance'>;
             const { msg_type, error } = data;
 
-            if (error?.code === 'AuthorizationRequired') {
+            if (
+                error?.code === 'AuthorizationRequired' ||
+                error?.code === 'DisabledClient' ||
+                error?.code === 'InvalidToken'
+            ) {
                 await oAuthLogout();
             }
 

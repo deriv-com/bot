@@ -65,7 +65,6 @@ export default class CommonStore {
     };
 
     setError = (has_error: boolean, error: Partial<Error>) => {
-        console.log('test error', has_error, error);
         this.has_error = has_error;
         this.error = has_error
             ? {
