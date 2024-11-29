@@ -23,15 +23,12 @@ const ErrorComponent = ({
     should_clear_error_on_click,
     setError,
     redirect_to = standalone_routes.trade,
-    should_show_refresh = true,
     should_redirect = true,
 }: Partial<TErrorComponent>) => {
-    const refresh_message = should_show_refresh ? localize('Please refresh this page to continue.') : '';
-
     return (
         <PageErrorContainer
             error_header={header ?? ''}
-            error_messages={message ? [message, refresh_message] : []}
+            error_messages={message ? [message, null] : []}
             redirect_urls={[redirect_to]}
             redirect_labels={(!redirect_label && []) || [redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => window.location.reload())}
