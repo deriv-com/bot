@@ -1,3 +1,4 @@
+import RootStore from '@/stores/root-store';
 import { TOAuth2EnabledAppList, useIsOAuth2Enabled, useOAuth2 } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
 
@@ -14,7 +15,13 @@ import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureV
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
  * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
  */
-export const useOauth2 = ({ handleLogout }: { handleLogout?: () => Promise<void> } = {}) => {
+export const useOauth2 = ({
+    handleLogout,
+    client,
+}: {
+    handleLogout?: () => Promise<void>;
+    client?: RootStore['client'];
+} = {}) => {
     const { featureFlagValue: oAuth2EnabledApps, isGBLoaded: OAuth2EnabledAppsInitialised } =
         useGrowthbookGetFeatureValue<string>({
             featureFlag: 'hydra_be',
@@ -31,5 +38,11 @@ export const useOauth2 = ({ handleLogout }: { handleLogout?: () => Promise<void>
     };
 
     const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout ?? (() => Promise.resolve()));
-    return { isOAuth2Enabled, oAuthLogout };
+
+    const logoutHandler = async () => {
+        client?.setIsLoggingOut(true);
+        await oAuthLogout();
+    };
+
+    return { isOAuth2Enabled, oAuthLogout: logoutHandler };
 };

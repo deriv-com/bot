@@ -1,12 +1,15 @@
 import clsx from 'clsx';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '@/hooks/useStore';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
 import PlatformSwitcher from '../platform-switcher';
 import useMobileMenuConfig from './use-mobile-menu-config';
 
-const MenuContent = () => {
+const MenuContent = observer(() => {
     const { isDesktop } = useDevice();
+    const { client } = useStore();
     const textSize = isDesktop ? 'sm' : 'md';
-    const { config } = useMobileMenuConfig();
+    const { config } = useMobileMenuConfig(client);
 
     return (
         <div className='mobile-menu__content'>
@@ -78,6 +81,6 @@ const MenuContent = () => {
             </div>
         </div>
     );
-};
+});
 
 export default MenuContent;
