@@ -9,7 +9,7 @@ import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
 
 type TAccountSwitcherFooter = {
     oAuthLogout: () => void;
-    loginid: string;
+    loginid?: string;
 };
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter) => {

@@ -3,13 +3,14 @@ import { api_base } from '@/external/bot-skeleton';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
 import AccountSwitcherFooter from './account-swticher-footer';
+import { TModifiedAccount } from './types';
 import { convertCommaValue } from './utils';
 
 type TDemonAccounts = {
     tabs_labels: {
         demo: string;
     };
-    modifiedAccountList: any[];
+    modifiedAccountList: TModifiedAccount[];
     switchAccount: (loginId: number) => void;
     isVirtual: boolean;
     activeLoginId?: string;
