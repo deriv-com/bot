@@ -1,5 +1,7 @@
 import React from 'react';
+import { standalone_routes } from '@/components/shared';
 import Dialog from '@/components/shared_ui/dialog';
+import StaticUrl from '@/components/shared_ui/static-url';
 import Text from '@/components/shared_ui/text';
 import { Localize, localize } from '@deriv-com/translations';
 
@@ -48,7 +50,13 @@ const StopBotModalContent = ({
                         <Text as='p' lineHeight='s' size='xs' styles={{ paddingBottom: '2rem', paddingTop: '1rem' }}>
                             <Localize i18n_default_text='Close your contract now or keep it running. If you decide to keep it running, you can check and close it later on the ' />
                             <Text weight='bold' as='span' lineHeight='s' size='xs'>
-                                <Localize i18n_default_text='Reports' />
+                                <StaticUrl
+                                    key={0}
+                                    className='link'
+                                    onClick={() => window.location.assign(standalone_routes.reports)}
+                                >
+                                    <Localize i18n_default_text='Reports' />
+                                </StaticUrl>
                             </Text>
                             <Localize i18n_default_text=' page.' />
                         </Text>
@@ -64,7 +72,13 @@ const StopBotModalContent = ({
                         <Text as='p' lineHeight='s' size='xs'>
                             <Localize i18n_default_text='Any open contracts can be viewed on the ' />
                             <Text weight='bold' as='span' lineHeight='s' size='xs'>
-                                <Localize i18n_default_text='Reports' />
+                                <StaticUrl
+                                    key={0}
+                                    className='link'
+                                    onClick={() => window.location.assign(standalone_routes.reports)}
+                                >
+                                    <Localize i18n_default_text='Reports' />
+                                </StaticUrl>
                             </Text>
                             <Text as='span' lineHeight='s' size='xs' styles={{ paddingInlineStart: '0.4rem' }}>
                                 <Localize i18n_default_text=' page.' />
