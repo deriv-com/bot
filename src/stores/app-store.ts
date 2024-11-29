@@ -82,20 +82,19 @@ export default class AppStore {
 
     handleErrorForEu = () => {
         const { client, common } = this.core;
-
         if (!client?.is_logged_in && client?.is_eu_country) {
             this.throwErrorForExceptionCountries(client?.country_code as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
+        this.throwErrorForExceptionCountries(client?.account_settings?.clients_country as string);
+        if (client.should_show_eu_error) {
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
+        }
+
         if (!client.is_landing_company_loaded) {
             common.setError(false, {});
             return false;
-        }
-
-        this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
-        if (client.should_show_eu_error) {
-            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
         if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
