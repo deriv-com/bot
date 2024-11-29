@@ -57,7 +57,7 @@ export default class AppStore {
             title: is_logged_in
                 ? localize(`Deriv Bot is not available for ${country || 'EU'} clients`)
                 : localize(`Deriv Bot is unavailable in ${country || 'the EU'}`),
-            link: is_logged_in ? localize("Back to Trader's Hub") : '',
+            link: is_logged_in ? localize("Back to Trader's Hub") : localize('Refresh'),
             route: standalone_routes.traders_hub,
         };
     };
@@ -70,6 +70,7 @@ export default class AppStore {
             ...bot_resticted_countries,
         };
 
+        console.log(not_allowed_clients_country);
         const country_name = not_allowed_clients_country[client_country];
 
         if (country_name) {
@@ -82,19 +83,19 @@ export default class AppStore {
 
     handleErrorForEu = () => {
         const { client, common } = this.core;
-        if (!client?.is_logged_in && client?.is_eu_country) {
-            this.throwErrorForExceptionCountries(client?.country_code as string);
+        if (!client?.is_logged_in && true) {
+            this.throwErrorForExceptionCountries('fr' as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
-        }
-
-        this.throwErrorForExceptionCountries(client?.account_settings?.clients_country as string);
-        if (client.should_show_eu_error) {
-            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
         if (!client.is_landing_company_loaded) {
             common.setError(false, {});
             return false;
+        }
+
+        this.throwErrorForExceptionCountries(client?.account_settings?.clients_country as string);
+        if (client.should_show_eu_error) {
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
         if (client.content_flag === ContentFlag.HIGH_RISK_CR) {
