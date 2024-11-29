@@ -33,7 +33,7 @@
     }
 
     &--full-rounded {
-        border-radius: $BORDER_RADIUS / 2;
+        border-radius: calc($BORDER_RADIUS / 2);
     }
 
     &--two-rounded {
