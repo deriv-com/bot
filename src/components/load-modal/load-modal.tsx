@@ -82,7 +82,7 @@ const LoadModal: React.FC = observer(() => {
                 toggleLoadModal();
                 rudderStackSendCloseEvent({
                     subform_name: 'load_strategy',
-                    load_strategy_tab: LOAD_MODAL_TABS[active_index + (!is_desktop ? 1 : 0)],
+                    load_strategy_tab: LOAD_MODAL_TABS[active_index + (!isDesktop ? 1 : 0)],
                 });
             }}
             onEntered={onEntered}
