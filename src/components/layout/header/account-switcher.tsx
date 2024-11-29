@@ -167,6 +167,7 @@ const RenderAccountItems = ({
                     isOpen
                     title={account_switcher_title_non_eu}
                     className='account-switcher-panel'
+                    style={{ maxHeight: '220px' }}
                     key={!isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels?.real.toLowerCase()}
                 >
                     {modifiedCRAccountList.map(account => (
@@ -325,6 +326,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     activeAccount={activeAccount}
                     isDisabled={is_stop_button_visible}
                     tabsLabels={tabs_labels}
+                    modalContentStyle={{
+                        content: {
+                            top: '30%',
+                            borderRadius: '10px',
+                        },
+                    }}
                 >
                     <UIAccountSwitcher.Tab title={tabs_labels.real}>
                         <RenderAccountItems
