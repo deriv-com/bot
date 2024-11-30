@@ -23,6 +23,8 @@ const tabs_labels = {
     real: localize('Real'),
 };
 
+const AccountSwitcherDivider = () => <Divider color='var(--general-section-2)' height='4px' />;
+
 const RenderAccountItems = ({
     isVirtual,
     modifiedAccountList,
@@ -54,32 +56,39 @@ const RenderAccountItems = ({
     return (
         <>
             {!isVirtual && modifiedCRAccountList && modifiedCRAccountList?.length > 0 ? (
-                <NonEUAccounts
-                    modifiedCRAccountList={modifiedCRAccountList}
-                    modifiedMFAccountList={modifiedMFAccountList}
-                    switchAccount={switchAccount}
-                    isVirtual={isVirtual}
-                    tabs_labels={tabs_labels}
-                    is_low_risk_country={is_low_risk_country}
-                />
+                <>
+                    <NonEUAccounts
+                        modifiedCRAccountList={modifiedCRAccountList}
+                        modifiedMFAccountList={modifiedMFAccountList}
+                        switchAccount={switchAccount}
+                        isVirtual={isVirtual}
+                        tabs_labels={tabs_labels}
+                        is_low_risk_country={is_low_risk_country}
+                    />
+                    <AccountSwitcherDivider />
+                </>
             ) : (
-                <NoEuAccounts
-                    is_low_risk_country={is_low_risk_country}
-                    isVirtual={!!isVirtual}
-                    tabs_labels={tabs_labels}
-                />
+                <>
+                    <NoEuAccounts
+                        is_low_risk_country={is_low_risk_country}
+                        isVirtual={!!isVirtual}
+                        tabs_labels={tabs_labels}
+                    />
+                    <AccountSwitcherDivider />
+                </>
             )}
-            <Divider color='var(--general-section-2)' height='4px' />
             {!isVirtual && modifiedMFAccountList && modifiedMFAccountList?.length > 0 && (
-                <EuAccounts
-                    modifiedMFAccountList={modifiedMFAccountList}
-                    switchAccount={switchAccount}
-                    tabs_labels={tabs_labels}
-                    isVirtual={isVirtual}
-                    is_low_risk_country={is_low_risk_country}
-                />
+                <>
+                    <EuAccounts
+                        modifiedMFAccountList={modifiedMFAccountList}
+                        switchAccount={switchAccount}
+                        tabs_labels={tabs_labels}
+                        isVirtual={isVirtual}
+                        is_low_risk_country={is_low_risk_country}
+                    />
+                    <AccountSwitcherDivider />
+                </>
             )}
-            <Divider color='var(--general-section-2)' height='4px' />
             <AccountSwitcherFooter oAuthLogout={oAuthLogout} loginid={loginid} />
         </>
     );
