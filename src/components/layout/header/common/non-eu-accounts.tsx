@@ -23,7 +23,7 @@ const NonEUAccounts = ({
     is_low_risk_country,
     switchAccount,
 }: TNonEUAccounts) => {
-    if (!is_low_risk_country) {
+    if (!is_low_risk_country && modifiedCRAccountList && modifiedCRAccountList?.length === 0) {
         return null;
     }
 
