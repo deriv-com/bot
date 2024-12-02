@@ -11,7 +11,7 @@ import { TAccountSwitcherFooter } from './types';
 import { AccountSwitcherDivider } from './utils';
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccountSwitcherFooter) => {
-    const show_manage_button = loginid?.includes('CR') ?? loginid?.includes('MF');
+    const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
     return (
         <div className=''>
             <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
@@ -27,7 +27,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
                     <Button
                         id='manage-button'
                         className='manage-button'
-                        onClick={() => location.replace(standalone_routes.traders_hub)}
+                        onClick={() => location.replace('https://app.deriv.com')}
                     >
                         <Localize i18n_default_text='Manage accounts' />
                     </Button>
