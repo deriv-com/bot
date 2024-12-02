@@ -1,0 +1,662 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
+/** @define acc-info */
+.acc-info {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    padding: 0 1.6rem 0 1.7rem;
+    width: max-content;
+
+    &__preloader {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 37rem;
+        height: 4rem;
+        z-index: 2;
+        background: var(--general-main-1);
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -8rem;
+            width: 8rem;
+            height: 3.5rem;
+            top: 0;
+            background: var(--general-main-1);
+        }
+
+        &--no-currency:before {
+            left: -9rem;
+            width: 9rem;
+        }
+
+        @include mobile-screen {
+            width: 14rem;
+            height: 4rem;
+            top: -0.3rem;
+
+            &:before {
+                display: none;
+            }
+
+            &--is-crypto {
+                width: 100%;
+            }
+        }
+    }
+
+    &__preloader__dtrader {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 37rem;
+        height: 4rem;
+        z-index: 2;
+        background: var(--general-main-1);
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: -8rem;
+            width: 8rem;
+            height: 3.5rem;
+            top: 0;
+            background: var(--general-main-1);
+        }
+
+        &--no-currency:before {
+            left: -9rem;
+            width: 9rem;
+        }
+
+        @include mobile-screen {
+            width: 14rem;
+            height: 4rem;
+            top: -0.3rem;
+
+            &:before {
+                display: none;
+            }
+
+            &--is-crypto {
+                width: 100%;
+            }
+        }
+
+        &--wallets {
+            width: 47rem;
+
+            @include mobile-screen {
+                width: auto;
+            }
+        }
+    }
+
+    &__container {
+        align-items: center;
+        -webkit-box-align: center;
+        display: flex;
+    }
+
+    &__wrapper {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        justify-content: center;
+        position: relative;
+        margin-right: 0.8rem;
+        user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    &__id {
+        pointer-events: none;
+
+        &-icon {
+            vertical-align: middle;
+            margin-right: 0.8rem;
+        }
+    }
+
+    &__separator {
+        border-right: 1px solid var(--general-section-1);
+        width: 2rem;
+        height: 3.2rem;
+        margin-right: -0.1rem;
+    }
+
+    &__balance {
+        @include typeface(--title-center-bold-green, default);
+
+        line-height: 2.4rem;
+        pointer-events: none;
+        margin-right: 0.8rem;
+    }
+
+    &__account-type-and-balance {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 1rem 0.1rem 0;
+        pointer-events: none;
+    }
+
+    &__select-arrow {
+        pointer-events: none;
+        transform: rotate(0);
+        transform-origin: 50% 45%;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+        svg {
+            fill: var(--text-general);
+        }
+
+        // @extend %inline-icon;
+
+        &--invert {
+            transform: rotate(180deg);
+        }
+    }
+
+    @include desktop-screen {
+        &:hover:not(.show, &--is-disabled) {
+            background: var(--state-hover);
+
+            .symbols {
+                background: transparent;
+            }
+        }
+    }
+
+    @include mobile-screen {
+        padding: 0 1rem;
+        margin-right: -0.8rem;
+
+        &__balance {
+            font-size: 1.4rem;
+
+            &--no-currency {
+                white-space: nowrap;
+            }
+        }
+    }
+
+    &--is-virtual {
+        .acc-info__balance {
+            color: var(--text-profit-success);
+        }
+    }
+
+    &--is-disabled {
+        cursor: not-allowed;
+    }
+
+    &--show {
+        .acc-info__select-arrow {
+            transform: rotate(180deg);
+        }
+
+        .acc-info__select-arrow--invert {
+            transform: rotate(0deg);
+        }
+    }
+
+    &__button {
+        margin: 0 1.6em 0 0 !important;
+
+        &:not(:last-child) {
+            margin-right: 1em;
+        }
+
+        @include mobile-screen {
+            height: 2.8rem !important;
+        }
+    }
+
+    &__wallets {
+        padding: 1.2rem 1.6rem;
+        gap: 0.8rem;
+
+        &-notification-icon {
+            margin-right: 1rem;
+        }
+
+        &-container {
+            align-items: center;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        &-account-type-and-balance {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        &-balance {
+            color: var(--text-general);
+            margin-right: 0;
+        }
+    }
+}
+
+/* @define acc-switcher; weak */
+.acc-switcher {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 0 0.8rem;
+    height: 4rem;
+    position: relative;
+
+    &--is-loading {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: var(--general-main-2);
+    }
+
+    &__wrapper {
+        border-radius: $BORDER_RADIUS;
+        position: absolute;
+        z-index: 3;
+        transition:
+            transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+            opacity 0.25s linear;
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
+        right: 0;
+        top: calc(100% + 4px);
+        width: 320px;
+        background-color: var(--general-main-2);
+
+        @include tablet-screen {
+            position: unset;
+        }
+
+        &--wallets {
+            width: 32rem;
+            right: -3.2rem;
+        }
+
+        &--enter-done {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        &--enter,
+        &--exit {
+            opacity: 0;
+            transform: translate3d(0, -20px, 0);
+        }
+
+        .acc-switcher__button {
+            max-width: calc(100% - 1.6rem);
+            margin: 0.2rem 0.8rem 0.8rem;
+            height: 4rem;
+        }
+
+        @include mobile-or-tablet-screen {
+            position: relative;
+            top: unset;
+            left: unset;
+            right: unset;
+            width: 100%;
+            box-shadow: none;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .dc-themed-scrollbars {
+            scrollbar-color: var(--text-less-prominent) transparent;
+
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--text-less-prominent);
+            }
+        }
+    }
+
+    &__new-account {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.6rem 1.8rem;
+        font-size: var(--text-size-xs);
+
+        &-text {
+            margin-left: 0.8rem;
+        }
+
+        &-btn {
+            margin-left: auto;
+        }
+
+        &--disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+    &__reset-account {
+        &-btn {
+            margin-left: auto;
+        }
+    }
+
+    &__list {
+        border-radius: $BORDER_RADIUS;
+        display: flex;
+        flex-flow: column nowrap;
+        height: 100%;
+        background: var(--general-main-2);
+
+        &-wrapper {
+            padding: 0.4rem 0.8rem 0;
+        }
+
+        &-title {
+            flex: 1;
+        }
+
+        &-container {
+            height: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
+
+    &__help-icon {
+        cursor: pointer;
+        margin-left: 0.8rem;
+        vertical-align: middle;
+    }
+
+    &__accounts {
+        border-radius: $BORDER_RADIUS;
+        background: var(--general-main-2);
+        position: relative;
+
+        .acc-switcher__account {
+            margin-bottom: 2px;
+            background: var(--general-main-2);
+
+            &:hover:not(.acc-switcher__account--selected) {
+                background-color: var(--state-hover);
+                border-radius: 4px;
+            }
+
+            &.acc-switcher__account--disabled:hover {
+                background-color: var(--general-main-2);
+            }
+
+            .acc-switcher__id {
+                color: var(--text-general);
+                width: 100%;
+                line-height: 1.43;
+            }
+
+            &--selected {
+                background: var(--state-active);
+
+                .acc-switcher__id {
+                    color: var(--text-prominent);
+                    font-weight: 700;
+
+                    &--virtual:before {
+                        color: var(--text-prominent);
+                        border: 1px solid var(--text-prominent);
+                    }
+                }
+            }
+
+            &--disabled {
+                opacity: 0.5;
+                cursor: default;
+            }
+
+            &:only-child {
+                border-radius: 4px;
+            }
+
+            &:last-child {
+                margin-bottom: 8px;
+            }
+        }
+
+        &--is-loading {
+            padding-bottom: 0.8rem;
+        }
+    }
+
+    &__account {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 0.3rem 1.6rem;
+        position: relative;
+        background: var(--general-main-2);
+        text-decoration: none;
+
+        .acc-switcher__id {
+            @include typeface(--paragraph-left-normal-black);
+
+            align-items: center;
+            display: flex;
+            color: var(--text-prominent);
+
+            &-icon {
+                @include toEm(margin-right, 8px, 1em);
+            }
+        }
+
+        &:hover:not(.acc-switcher__account--selected) {
+            background: var(--state-hover);
+        }
+
+        &--selected {
+            background: var(--state-active);
+            border-radius: 4px;
+
+            .acc-switcher {
+                &__id {
+                    @include typeface(--paragraph-left-bold-active);
+
+                    &--virtual:before {
+                        color: var(--text-prominent);
+                        border: 1px solid var(--text-prominent);
+                    }
+                }
+
+                &__loginid-text {
+                    color: var(--text-prominent);
+                    font-weight: normal;
+                }
+            }
+
+            .no-currency {
+                color: var(--text-prominent);
+            }
+        }
+    }
+
+    &__footer {
+        align-items: center;
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+        padding-left: 1.3rem;
+    }
+
+    &__compare {
+        justify-self: end;
+        grid-column: 1 / 2;
+    }
+
+    &__logout {
+        grid-column: 2 / 3;
+        align-items: center;
+        display: flex;
+        justify-content: flex-end;
+        justify-self: start;
+        padding: 1.6em 1.3em;
+
+        &-text {
+            cursor: pointer;
+        }
+
+        &-icon {
+            margin-left: 8px;
+
+            // @extend %inline-icon;
+            cursor: pointer;
+        }
+    }
+
+    &__balance {
+        margin-left: auto;
+        text-align: right;
+    }
+
+    &__separator {
+        display: block;
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: var(--general-section-2);
+            z-index: 1;
+        }
+
+        &--no-padding {
+            &:after {
+                width: calc(100% + 0.4rem);
+            }
+        }
+
+        &--auto-margin {
+            margin-top: auto;
+        }
+    }
+
+    &__total {
+        height: 2.6rem;
+        margin: 0.4rem 1.6rem;
+        align-items: center;
+        display: flex;
+
+        &-subtitle {
+            margin: 0 1.6rem 1.2rem;
+        }
+    }
+
+    &__loginid-text {
+        font-size: 1rem;
+        color: var(--text-less-prominent);
+        line-height: 1.4;
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
+    }
+
+    &__loader {
+        margin: 1rem auto !important;
+        font-size: 0.8rem;
+    }
+
+    &__btn {
+        width: calc(100% - 32px);
+        margin: 0 16px 8px;
+
+        &--traders_hub {
+            margin: 1.3rem 1.1rem 1rem 1rem;
+        }
+    }
+
+    &__traders-hub {
+        padding: 1.2rem 0.5rem 0.6rem 0.8rem;
+
+        @include mobile-screen {
+            padding: 1.2rem 0.5rem 0.6rem 2.5rem;
+        }
+
+        &--link {
+            cursor: pointer;
+            text-decoration: none;
+
+            :hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
+        &--text {
+            align-items: center;
+            color: var(--text-loss-danger);
+        }
+    }
+}
+
+/** @define set-currency; weak */
+.set-currency {
+    margin-right: 8px;
+
+    & .dc-btn {
+        display: flex;
+        align-items: center;
+
+        @include mobile-screen {
+            height: 2.8rem !important;
+        }
+    }
+}
+
+/** @define no-currency; weak */
+.no-currency {
+    @include typeface(--xxsmall-center-normal-black);
+
+    text-transform: none;
+    color: var(--text-less-prominent);
+    line-height: 1.5;
+    text-align: right;
+}
+
+/** @define badge-server; weak */
+.badge-server {
+    display: inline-block;
+    background-color: $color-blue-2;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    margin-left: 0.5rem;
+    height: 2.2rem;
+
+    &-bot {
+        color: var(--text-colored-background);
+    }
+
+    &--disabled {
+        background-color: var(--border-disabled);
+    }
+}
+
+.dc-modal__container_accounts-switcher {
+    @include tablet-screen {
+        inset-inline: 0;
+        max-width: 60rem;
+        margin: auto;
+    }
+}

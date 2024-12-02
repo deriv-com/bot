@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import React from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import classNames from 'classnames';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
@@ -13,7 +13,10 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LegacyDerivIcon, LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Button, Divider, Text } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher, Button, Divider, Loader, Text } from '@deriv-com/ui';
+import './account-switcher.scss';
+
+const AccountInfoWallets = lazy(() => import('./wallets/account-info-wallets'));
 
 type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
     balance: string;
@@ -35,6 +38,8 @@ type TAccountSwitcherProps = {
 
 type TAccountSwitcher = {
     activeAccount: ReturnType<typeof useActiveAccount>['data'];
+    is_dialog_on: boolean;
+    toggleDialog: () => void;
 };
 
 const tabs_labels = {
@@ -267,8 +272,10 @@ const RenderAccountItems = ({
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
     const { ui, run_panel, client } = useStore();
-    const { account_switcher_disabled_message } = ui;
+    const { accounts } = client;
+    const { toggleAccountsDialog, is_accounts_switcher_on, account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
+    const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
 
     const modifiedAccountList = useMemo(() => {
         return accountList?.map(account => {
@@ -316,7 +323,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     };
 
     return (
-        activeAccount && (
+        activeAccount &&
+        (has_wallet ? (
+            <Suspense fallback={<Loader />}>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            </Suspense>
+        ) : (
             <Popover
                 className='run-panel__info'
                 classNameBubble='run-panel__info--bubble'
@@ -354,7 +366,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>
             </Popover>
-        )
+        ))
     );
 });
 
