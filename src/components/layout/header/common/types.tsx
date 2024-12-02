@@ -32,17 +32,7 @@ export type TDemoAccounts = {
     isVirtual: boolean;
     activeLoginId?: string;
     oAuthLogout: () => void;
-};
-
-export type TEuAccounts = {
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-    modifiedMFAccountList: TModifiedAccount[];
-    switchAccount: (loginId: number) => void;
-    isVirtual?: boolean;
-    is_low_risk_country?: boolean;
+    is_logging_out: boolean;
 };
 
 export type TNoEuAccounts = {
@@ -53,20 +43,30 @@ export type TNoEuAccounts = {
     };
     is_low_risk_country: boolean;
 };
-
-export type TNonEUAccounts = {
+export type TRealAccounts = TNoEuAccounts & {
+    modifiedCRAccountList: TModifiedAccount[];
+    modifiedMFAccountList: TModifiedAccount[];
+    switchAccount: (loginId: number) => void;
+    oAuthLogout: () => void;
+    loginid?: string;
+    is_logging_out: boolean;
+};
+export type TEuAccounts = TNoEuAccounts & {
+    modifiedMFAccountList: TModifiedAccount[];
+    switchAccount: (loginId: number) => void;
     isVirtual?: boolean;
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
+    is_low_risk_country?: boolean;
+};
+
+export type TNonEUAccounts = TNoEuAccounts & {
+    isVirtual?: boolean;
     modifiedCRAccountList: TModifiedAccount[];
     modifiedMFAccountList?: TModifiedAccount[];
     switchAccount: (loginId: number) => void;
-    is_low_risk_country: boolean;
 };
 
 export type TAccountSwitcherFooter = {
     oAuthLogout: () => void;
     loginid?: string;
+    is_logging_out: boolean;
 };

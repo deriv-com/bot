@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { lazy, Suspense, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
@@ -8,15 +8,12 @@ import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
+import { waitForDomElement } from '@/utils/dom-observer';
 import { localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Loader } from '@deriv-com/ui';
-import AccountSwitcherFooter from './common/account-swticher-footer';
+import { AccountSwitcher as UIAccountSwitcher, Loader, useDevice } from '@deriv-com/ui';
 import DemoAccounts from './common/demo-accounts';
-import EuAccounts from './common/eu-accounts';
-import NoEuAccounts from './common/no-eu-accounts';
-import NonEUAccounts from './common/non-eu-accounts';
+import RealAccounts from './common/real-accounts';
 import { TAccountSwitcher, TAccountSwitcherProps, TModifiedAccount } from './common/types';
-import { AccountSwitcherDivider } from './common/utils';
 import { LOW_RISK_COUNTRIES } from './utils';
 import './account-switcher.scss';
 
@@ -36,67 +33,57 @@ const RenderAccountItems = ({
     activeLoginId,
 }: TAccountSwitcherProps) => {
     const { client } = useStore();
-    const { loginid } = client;
-    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
     const is_low_risk_country = LOW_RISK_COUNTRIES().includes(client.account_settings?.country_code ?? '');
+    const is_virtual = !!isVirtual;
 
-    if (isVirtual) {
+    useEffect(() => {
+        // Update the max-height from the accordion content set from deriv-com/ui
+        const parent_container = document.getElementsByClassName('account-switcher-panel')?.[0] as HTMLDivElement;
+        if (!isVirtual && parent_container) {
+            parent_container.style.maxHeight = '70vh';
+            waitForDomElement('.deriv-accordion__content', parent_container)?.then((accordionElement: unknown) => {
+                const element = accordionElement as HTMLDivElement;
+                if (element) {
+                    element.style.maxHeight = '70vh';
+                }
+            });
+        }
+    }, [isVirtual]);
+
+    if (is_virtual) {
         return (
             <>
                 <DemoAccounts
                     modifiedVRTCRAccountList={modifiedVRTCRAccountList}
                     switchAccount={switchAccount}
                     activeLoginId={activeLoginId}
-                    isVirtual={isVirtual}
+                    isVirtual={is_virtual}
                     tabs_labels={tabs_labels}
                     oAuthLogout={oAuthLogout}
+                    is_logging_out={client.is_logging_out}
                 />
             </>
         );
+    } else {
+        return (
+            <RealAccounts
+                modifiedCRAccountList={modifiedCRAccountList as TModifiedAccount[]}
+                modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
+                switchAccount={switchAccount}
+                isVirtual={is_virtual}
+                tabs_labels={tabs_labels}
+                is_low_risk_country={is_low_risk_country}
+                oAuthLogout={oAuthLogout}
+                loginid={activeLoginId}
+                is_logging_out={client.is_logging_out}
+            />
+        );
     }
-
-    return (
-        <>
-            {!isVirtual && modifiedCRAccountList && modifiedCRAccountList?.length > 0 ? (
-                <>
-                    <NonEUAccounts
-                        modifiedCRAccountList={modifiedCRAccountList}
-                        modifiedMFAccountList={modifiedMFAccountList}
-                        switchAccount={switchAccount}
-                        isVirtual={isVirtual}
-                        tabs_labels={tabs_labels}
-                        is_low_risk_country={is_low_risk_country}
-                    />
-                    <AccountSwitcherDivider />
-                </>
-            ) : (
-                <>
-                    <NoEuAccounts
-                        is_low_risk_country={is_low_risk_country}
-                        isVirtual={!!isVirtual}
-                        tabs_labels={tabs_labels}
-                    />
-                    <AccountSwitcherDivider />
-                </>
-            )}
-            {!isVirtual && modifiedMFAccountList && modifiedMFAccountList?.length > 0 && (
-                <>
-                    <EuAccounts
-                        modifiedMFAccountList={modifiedMFAccountList}
-                        switchAccount={switchAccount}
-                        tabs_labels={tabs_labels}
-                        isVirtual={isVirtual}
-                        is_low_risk_country={is_low_risk_country}
-                    />
-                    <AccountSwitcherDivider />
-                </>
-            )}
-            <AccountSwitcherFooter oAuthLogout={oAuthLogout} loginid={loginid} />
-        </>
-    );
 };
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
+    const { isDesktop } = useDevice();
     const { accountList } = useApiBase();
     const { ui, run_panel, client } = useStore();
     const { accounts } = client;
@@ -174,7 +161,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     tabsLabels={tabs_labels}
                     modalContentStyle={{
                         content: {
-                            top: '30%',
+                            top: isDesktop ? '30%' : '50%',
                             borderRadius: '10px',
                         },
                     }}

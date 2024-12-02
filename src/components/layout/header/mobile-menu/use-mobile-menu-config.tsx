@@ -1,10 +1,11 @@
 import { ComponentProps, ReactNode } from 'react';
 import Livechat from '@/components/chat/Livechat';
+import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetAvailable';
 import { standalone_routes } from '@/components/shared';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
-import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
+import RootStore from '@/stores/root-store';
 import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
 import {
     LegacyAccountLimitsIcon,
@@ -31,22 +32,23 @@ type TMenuConfig = {
     RightComponent?: ReactNode;
     as: 'a' | 'button';
     href?: string;
-    label: string;
+    label: ReactNode;
     onClick?: () => void;
     removeBorderBottom?: boolean;
     submenu?: TSubmenuSection;
     target?: ComponentProps<'a'>['target'];
 }[];
 
-const useMobileMenuConfig = () => {
+const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { localize } = useTranslations();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
-    const { client } = useStore();
 
-    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client?.logout(), client });
 
     const { data } = useRemoteConfig(true);
     const { cs_chat_whatsapp } = data;
+
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
     const menuConfig: TMenuConfig[] = [
         [
@@ -116,27 +118,31 @@ const useMobileMenuConfig = () => {
                           target: '_blank',
                       }
                     : null,
-                {
-                    as: 'button',
-                    label: localize('Live chat'),
-                    LeftComponent: Livechat,
-                    onClick: () => {
-                        window.enable_freshworks_live_chat
-                            ? window.fcWidget.open()
-                            : window.LiveChatWidget?.call('maximize');
-                    },
-                },
+                is_livechat_available
+                    ? {
+                          as: 'button',
+                          label: localize('Live chat'),
+                          LeftComponent: Livechat,
+                          onClick: () => {
+                              window.enable_freshworks_live_chat
+                                  ? window.fcWidget.open()
+                                  : window.LiveChatWidget?.call('maximize');
+                          },
+                      }
+                    : null,
             ] as TMenuConfig
         ).filter(Boolean),
-        [
-            {
-                as: 'button',
-                label: localize('Log out'),
-                LeftComponent: LegacyLogout1pxIcon,
-                onClick: oAuthLogout,
-                removeBorderBottom: true,
-            },
-        ],
+        client?.is_logged_in
+            ? [
+                  {
+                      as: 'button',
+                      label: localize('Log out'),
+                      LeftComponent: LegacyLogout1pxIcon,
+                      onClick: oAuthLogout,
+                      removeBorderBottom: true,
+                  },
+              ]
+            : [],
     ];
 
     return {

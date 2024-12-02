@@ -51,6 +51,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 1rem;
+            background-color: var(--general-main-1);
 
             &--hide-manage-button {
                 justify-content: flex-end;
@@ -92,10 +94,6 @@
 }
 
 .deriv-account-switcher {
-    &__tradershub-link {
-        padding: 1.2rem 2.5rem 0.6rem 0.8rem;
-    }
-
     &-item {
         &__balance {
             button {
@@ -217,6 +215,17 @@
             margin-inline-end: 1rem;
             font-size: var(--text-size-xs);
         }
+
+        &--loader {
+            display: flex;
+            justify-content: flex-end;
+            padding: 16px;
+        }
+    }
+
+    &__tradershub-link {
+        padding: 1.2rem 2.5rem 0.6rem 0.8rem;
+        background: var(--general-main-1);
     }
 
     &__footer {

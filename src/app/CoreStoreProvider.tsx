@@ -21,7 +21,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
     const { currentLang } = useTranslations();
 
-    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout() });
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
 
     const activeAccount = useMemo(
         () => accountList?.find(account => account.loginid === activeLoginid),

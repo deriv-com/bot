@@ -13,7 +13,9 @@ const DemoAccounts = ({
     isVirtual,
     activeLoginId,
     oAuthLogout,
+    is_logging_out,
 }: TDemoAccounts) => {
+    console.log('this is called');
     return (
         <>
             <UIAccountSwitcher.AccountsPanel
@@ -51,7 +53,7 @@ const DemoAccounts = ({
                     ))}
             </UIAccountSwitcher.AccountsPanel>
             <AccountSwitcherDivider />
-            <AccountSwitcherFooter loginid={activeLoginId} oAuthLogout={oAuthLogout} />
+            <AccountSwitcherFooter loginid={activeLoginId} oAuthLogout={oAuthLogout} is_logging_out={is_logging_out} />
         </>
     );
 };

@@ -25,6 +25,7 @@ export default class ClientStore {
     accounts: Record<string, TAuthData['account_list'][number]> = {};
     is_landing_company_loaded = false;
     all_accounts_balance: Balance | null = null;
+    is_logging_out = false;
 
     // TODO: fix with self exclusion
     updateSelfExclusion = () => {};
@@ -43,6 +44,7 @@ export default class ClientStore {
             loginid: observable,
             upgradeable_landing_companies: observable,
             website_status: observable,
+            is_logging_out: observable,
             active_accounts: computed,
             clients_country: computed,
             is_bot_allowed: computed,
@@ -64,6 +66,7 @@ export default class ClientStore {
             setBalance: action,
             setCurrency: action,
             setIsLoggedIn: action,
+            setIsLoggingOut: action,
             setLandingCompany: action,
             setLoginId: action,
             setWebsiteStatus: action,
@@ -274,6 +277,10 @@ export default class ClientStore {
         this.all_accounts_balance = all_accounts_balance ?? null;
     };
 
+    setIsLoggingOut = (is_logging_out: boolean) => {
+        this.is_logging_out = is_logging_out;
+    };
+
     logout = () => {
         // reset all the states
         this.account_list = [];
@@ -297,6 +304,8 @@ export default class ClientStore {
         setIsAuthorized(false);
         setAccountList([]);
         setAuthData(null);
+
+        this.setIsLoggingOut(false);
 
         // disable livechat
         window.LC_API?.close_chat?.();
