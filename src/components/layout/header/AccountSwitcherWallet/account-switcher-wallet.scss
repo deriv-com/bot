@@ -1,0 +1,36 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
+.account-switcher-wallet {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &__header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--general-hover);
+    }
+
+    &__list {
+        padding: 0.4rem 0.8rem;
+    }
+
+    &__looking-for-cfds {
+        border-top: 1px solid var(--general-hover);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.6rem;
+        border: none;
+        background: none;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    &__arrow {
+        transform: rotate(-90deg);
+        cursor: pointer;
+    }
+}
