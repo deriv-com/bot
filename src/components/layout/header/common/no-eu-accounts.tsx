@@ -1,8 +1,8 @@
 import { standalone_routes } from '@/components/shared';
 import { Localize, localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Button, Divider } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher, Button } from '@deriv-com/ui';
 import { TNoEuAccounts } from './types';
-import { no_account } from './utils';
+import { AccountSwitcherDivider, no_account } from './utils';
 
 const NoEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoEuAccounts) => {
     if (!is_low_risk_country) {
@@ -17,7 +17,7 @@ const NoEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoEuAcco
         >
             <div className='account-switcher-panel__no-eu-accounts'>
                 <UIAccountSwitcher.AccountsItem account={no_account} onSelectAccount={() => {}} />
-                <Divider color='var(--general-section-2)' height='4px' />
+                <AccountSwitcherDivider />
                 <Button
                     id='add-button'
                     className='add-button'

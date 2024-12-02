@@ -5,8 +5,9 @@ import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 import { TAccountSwitcherFooter } from './types';
+import { AccountSwitcherDivider } from './utils';
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter) => {
     const show_manage_button = loginid?.includes('CR') ?? loginid?.includes('MF');
@@ -15,7 +16,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter)
             <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
                 {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
             </UIAccountSwitcher.TradersHubLink>
-            <Divider color='var(--general-section-2)' height='4px' />
+            <AccountSwitcherDivider />
             <div
                 className={classNames('account-switcher-footer__actions', {
                     'account-switcher-footer__actions--hide-manage-button': !show_manage_button,

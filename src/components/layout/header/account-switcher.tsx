@@ -9,13 +9,14 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Divider, Loader } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher, Loader } from '@deriv-com/ui';
 import AccountSwitcherFooter from './common/account-swticher-footer';
 import DemoAccounts from './common/demo-accounts';
 import EuAccounts from './common/eu-accounts';
 import NoEuAccounts from './common/no-eu-accounts';
 import NonEUAccounts from './common/non-eu-accounts';
 import { TAccountSwitcher, TAccountSwitcherProps, TModifiedAccount } from './common/types';
+import { AccountSwitcherDivider } from './common/utils';
 import { LOW_RISK_COUNTRIES } from './utils';
 import './account-switcher.scss';
 
@@ -25,8 +26,6 @@ const tabs_labels = {
     demo: localize('Demo'),
     real: localize('Real'),
 };
-
-const AccountSwitcherDivider = () => <Divider color='var(--general-section-2)' height='4px' />;
 
 const RenderAccountItems = ({
     isVirtual,
