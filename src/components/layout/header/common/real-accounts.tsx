@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountSwitcherFooter from './account-swticher-footer';
 import EuAccounts from './eu-accounts';
-import NoEuAccounts from './no-eu-accounts';
+import NoNonEuAccounts from './no-non-eu-accounts';
 import NonEUAccounts from './non-eu-accounts';
 import { TRealAccounts } from './types';
 import { AccountSwitcherDivider } from './utils';
@@ -35,7 +35,7 @@ const RealAccounts = ({
                 </>
             ) : (
                 <>
-                    <NoEuAccounts
+                    <NoNonEuAccounts
                         is_low_risk_country={is_low_risk_country}
                         isVirtual={isVirtual}
                         tabs_labels={tabs_labels}

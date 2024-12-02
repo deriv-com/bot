@@ -35,7 +35,7 @@ export type TDemoAccounts = {
     is_logging_out: boolean;
 };
 
-export type TNoEuAccounts = {
+export type TNoNonEuAccounts = {
     isVirtual: boolean;
     tabs_labels: {
         demo: string;
@@ -43,7 +43,7 @@ export type TNoEuAccounts = {
     };
     is_low_risk_country: boolean;
 };
-export type TRealAccounts = TNoEuAccounts & {
+export type TRealAccounts = TNoNonEuAccounts & {
     modifiedCRAccountList: TModifiedAccount[];
     modifiedMFAccountList: TModifiedAccount[];
     switchAccount: (loginId: number) => void;
@@ -51,14 +51,14 @@ export type TRealAccounts = TNoEuAccounts & {
     loginid?: string;
     is_logging_out: boolean;
 };
-export type TEuAccounts = TNoEuAccounts & {
+export type TEuAccounts = TNoNonEuAccounts & {
     modifiedMFAccountList: TModifiedAccount[];
     switchAccount: (loginId: number) => void;
     isVirtual?: boolean;
     is_low_risk_country?: boolean;
 };
 
-export type TNonEUAccounts = TNoEuAccounts & {
+export type TNonEUAccounts = TNoNonEuAccounts & {
     isVirtual?: boolean;
     modifiedCRAccountList: TModifiedAccount[];
     modifiedMFAccountList?: TModifiedAccount[];
