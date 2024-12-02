@@ -57,6 +57,7 @@
         background: var(--general-active);
         color: var(--text-prominent);
         z-index: 1;
+        align-items: center;
 
         &__icon {
             flex-grow: 1;
