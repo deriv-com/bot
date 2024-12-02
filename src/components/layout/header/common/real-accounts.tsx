@@ -5,6 +5,7 @@ import NoEuAccounts from './no-eu-accounts';
 import NonEUAccounts from './non-eu-accounts';
 import { TRealAccounts } from './types';
 import { AccountSwitcherDivider } from './utils';
+
 const RealAccounts = ({
     modifiedCRAccountList,
     modifiedMFAccountList,
