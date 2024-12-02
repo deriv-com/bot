@@ -55,7 +55,7 @@ const RenderAccountItems = ({
         return (
             <>
                 <DemoAccounts
-                    modifiedVRTCRAccountList={modifiedVRTCRAccountList}
+                    modifiedVRTCRAccountList={modifiedVRTCRAccountList as TModifiedAccount[]}
                     switchAccount={switchAccount}
                     activeLoginId={activeLoginId}
                     isVirtual={is_virtual}
