@@ -6,11 +6,7 @@ import Text from '@/components/shared_ui/text';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
-
-type TAccountSwitcherFooter = {
-    oAuthLogout: () => void;
-    loginid?: string;
-};
+import { TAccountSwitcherFooter } from './types';
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter) => {
     const show_manage_button = loginid?.includes('CR') ?? loginid?.includes('MF');

@@ -65,3 +65,8 @@ export type TNonEUAccounts = {
     switchAccount: (loginId: number) => void;
     is_low_risk_country: boolean;
 };
+
+export type TAccountSwitcherFooter = {
+    oAuthLogout: () => void;
+    loginid?: string;
+};
