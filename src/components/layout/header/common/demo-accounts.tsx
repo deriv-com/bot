@@ -15,7 +15,6 @@ const DemoAccounts = ({
     oAuthLogout,
     is_logging_out,
 }: TDemoAccounts) => {
-    console.log('this is called');
     return (
         <>
             <UIAccountSwitcher.AccountsPanel
