@@ -3,27 +3,17 @@ import { api_base } from '@/external/bot-skeleton';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
 import AccountSwitcherFooter from './account-swticher-footer';
-import { TModifiedAccount } from './types';
+import { TDemoAccounts } from './types';
 import { convertCommaValue } from './utils';
 
-type TDemonAccounts = {
-    tabs_labels: {
-        demo: string;
-    };
-    modifiedAccountList: TModifiedAccount[];
-    switchAccount: (loginId: number) => void;
-    isVirtual: boolean;
-    activeLoginId?: string;
-    oAuthLogout: () => void;
-};
 const DemoAccounts = ({
     tabs_labels,
-    modifiedAccountList,
+    modifiedVRTCRAccountList,
     switchAccount,
     isVirtual,
     activeLoginId,
     oAuthLogout,
-}: TDemonAccounts) => {
+}: TDemoAccounts) => {
     return (
         <>
             <UIAccountSwitcher.AccountsPanel
@@ -32,9 +22,8 @@ const DemoAccounts = ({
                 className='account-switcher-panel'
                 key={tabs_labels.demo.toLowerCase()}
             >
-                {modifiedAccountList
-                    ?.filter(account => account.is_virtual)
-                    .map(account => (
+                {modifiedVRTCRAccountList &&
+                    modifiedVRTCRAccountList.map(account => (
                         <span
                             className={clsx('account-switcher__item', {
                                 'account-switcher__item--disabled': account.is_disabled,

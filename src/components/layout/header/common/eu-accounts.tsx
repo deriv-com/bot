@@ -2,18 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-import { TModifiedAccount } from './types';
-
-type TEuAccounts = {
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-    modifiedMFAccountList: TModifiedAccount[];
-    switchAccount: (loginId: number) => void;
-    isVirtual?: boolean;
-    is_low_risk_country?: boolean;
-};
+import { TEuAccounts } from './types';
 
 const EuAccounts = ({
     isVirtual,

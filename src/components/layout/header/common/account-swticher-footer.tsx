@@ -13,7 +13,7 @@ type TAccountSwitcherFooter = {
 };
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid }: TAccountSwitcherFooter) => {
-    const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
+    const show_manage_button = loginid?.includes('CR') ?? loginid?.includes('MF');
     return (
         <div className=''>
             <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>

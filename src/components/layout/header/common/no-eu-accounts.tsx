@@ -1,16 +1,8 @@
 import { standalone_routes } from '@/components/shared';
 import { Localize, localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Button, Divider } from '@deriv-com/ui';
+import { TNoEuAccounts } from './types';
 import { no_account } from './utils';
-
-type TNoEuAccounts = {
-    isVirtual: boolean;
-    tabs_labels: {
-        demo: string;
-        real: string;
-    };
-    is_low_risk_country: boolean;
-};
 
 const NoEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoEuAccounts) => {
     if (!is_low_risk_country) {

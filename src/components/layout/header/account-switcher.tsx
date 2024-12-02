@@ -30,9 +30,9 @@ const AccountSwitcherDivider = () => <Divider color='var(--general-section-2)' h
 
 const RenderAccountItems = ({
     isVirtual,
-    modifiedAccountList,
     modifiedCRAccountList,
     modifiedMFAccountList,
+    modifiedVRTCRAccountList,
     switchAccount,
     activeLoginId,
 }: TAccountSwitcherProps) => {
@@ -45,7 +45,7 @@ const RenderAccountItems = ({
         return (
             <>
                 <DemoAccounts
-                    modifiedAccountList={modifiedAccountList}
+                    modifiedVRTCRAccountList={modifiedVRTCRAccountList}
                     switchAccount={switchAccount}
                     activeLoginId={activeLoginId}
                     isVirtual={isVirtual}
@@ -141,6 +141,10 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         return modifiedAccountList?.filter(account => account?.loginid?.includes('MF')) ?? [];
     }, [modifiedAccountList]);
 
+    const modifiedVRTCRAccountList = useMemo(() => {
+        return modifiedAccountList?.filter(account => account?.loginid?.includes('VRT')) ?? [];
+    }, [modifiedAccountList]);
+
     const switchAccount = async (loginId: number) => {
         if (loginId.toString() === activeAccount?.loginid) return;
         const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
@@ -178,7 +182,6 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                 >
                     <UIAccountSwitcher.Tab title={tabs_labels.real}>
                         <RenderAccountItems
-                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
                             modifiedCRAccountList={modifiedCRAccountList as TModifiedAccount[]}
                             modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
@@ -187,7 +190,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     </UIAccountSwitcher.Tab>
                     <UIAccountSwitcher.Tab title={tabs_labels.demo}>
                         <RenderAccountItems
-                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
+                            modifiedVRTCRAccountList={modifiedVRTCRAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
                             isVirtual
                             activeLoginId={activeAccount?.loginid}
