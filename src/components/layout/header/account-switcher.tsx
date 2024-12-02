@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import React from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
 import { addComma, getDecimalPlaces } from '@/components/shared';
@@ -9,7 +9,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Divider } from '@deriv-com/ui';
+import { AccountSwitcher as UIAccountSwitcher, Divider, Loader } from '@deriv-com/ui';
 import AccountSwitcherFooter from './common/account-swticher-footer';
 import DemoAccounts from './common/demo-accounts';
 import EuAccounts from './common/eu-accounts';
@@ -17,6 +17,9 @@ import NoEuAccounts from './common/no-eu-accounts';
 import NonEUAccounts from './common/non-eu-accounts';
 import { TAccountSwitcher, TAccountSwitcherProps, TModifiedAccount } from './common/types';
 import { LOW_RISK_COUNTRIES } from './utils';
+import './account-switcher.scss';
+
+const AccountInfoWallets = lazy(() => import('./wallets/account-info-wallets'));
 
 const tabs_labels = {
     demo: localize('Demo'),
@@ -97,8 +100,10 @@ const RenderAccountItems = ({
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { accountList } = useApiBase();
     const { ui, run_panel, client } = useStore();
-    const { account_switcher_disabled_message } = ui;
+    const { accounts } = client;
+    const { toggleAccountsDialog, is_accounts_switcher_on, account_switcher_disabled_message } = ui;
     const { is_stop_button_visible } = run_panel;
+    const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
 
     const modifiedAccountList = useMemo(() => {
         return accountList?.map(account => {
@@ -147,7 +152,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     };
 
     return (
-        activeAccount && (
+        activeAccount &&
+        (has_wallet ? (
+            <Suspense fallback={<Loader />}>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            </Suspense>
+        ) : (
             <Popover
                 className='run-panel__info'
                 classNameBubble='run-panel__info--bubble'
@@ -185,7 +195,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>
             </Popover>
-        )
+        ))
     );
 });
 

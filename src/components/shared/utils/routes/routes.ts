@@ -15,5 +15,6 @@ export const standalone_routes = {
     statement: `${URLConstants.derivAppProduction}/reports/statement`,
     trade: `${URLConstants.derivAppProduction}/dtrader`,
     traders_hub: URLConstants.derivAppProduction,
+    wallets_transfer: `${URLConstants.derivAppProduction}/wallet/account-transfer`,
     signup: `https://hub.deriv.com/tradershub/signup`,
 };
