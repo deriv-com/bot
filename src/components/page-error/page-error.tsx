@@ -38,6 +38,7 @@ const PageError = ({
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
             setError?.(false, null);
+            window.location.assign('https://app.deriv.com');
         } else {
             buttonOnClick?.();
         }
@@ -122,7 +123,7 @@ const PageError = ({
                         redirect_urls?.map?.((url, index) => (
                             <ButtonLink
                                 className='dc-page-error__btn'
-                                to={url}
+                                // to={url} // TODO: NEED TO FIX THIS TO REDIRECT TO THE CORRECT URL
                                 onClick={onClickHandler}
                                 size={buttonSize}
                                 key={index}
