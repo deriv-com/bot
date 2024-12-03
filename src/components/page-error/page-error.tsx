@@ -38,7 +38,7 @@ const PageError = ({
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
             setError?.(false, null);
-            window.location.assign('https://app.deriv.com');
+            window.location.assign('https://app.deriv.com'); // TODO: NEED TO REMOVE & FIX THIS TO REDIRECT TO THE CORRECT URL
         } else {
             buttonOnClick?.();
         }
