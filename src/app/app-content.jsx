@@ -29,7 +29,7 @@ const AppContent = observer(() => {
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const store = useStore();
-    const { app, transactions, common, client } = store;
+    const { app, transactions, common, client, run_panel } = store;
     const { showDigitalOptionsMaltainvestError } = app;
     const { is_dark_mode_on } = useThemeSwitcher();
 
@@ -112,10 +112,9 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings?.country_code, client.clients_country]);
 
     const init = () => {
-        // TODO: TBD
-        // import('@/utils/gtm').then(({ default: GTM }) => {
-        //     GTM.init();
-        // });
+        import('@/utils/gtm').then(({ default: GTM }) => {
+            GTM.init(transactions.statistics, run_panel.is_running);
+        });
         ServerTime.init(common);
         app.setDBotEngineStores();
         ApiHelpers.setInstance(app.api_helpers_store);
