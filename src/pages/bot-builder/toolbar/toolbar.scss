@@ -134,7 +134,7 @@
         @include mobile-or-tablet-screen {
             background-color: var(--general-main-1);
             position: absolute;
-            top: 0;
+            top: 10;
             overflow-y: auto;
             scrollbar-width: none;
             height: calc(100% - 5rem);
