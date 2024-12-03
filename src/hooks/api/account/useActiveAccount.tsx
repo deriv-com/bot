@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
-import { getDecimalPlaces } from '@/components/shared';
+import { addComma, getDecimalPlaces } from '@/components/shared';
 import { useApiBase } from '@/hooks/useApiBase';
 import { Balance } from '@deriv/api-types';
 import { localize } from '@deriv-com/translations';
@@ -20,7 +20,9 @@ const useActiveAccount = ({ allBalanceData }: { allBalanceData: Balance | null }
         return activeAccount
             ? {
                   ...activeAccount,
-                  balance: currentBalanceData?.balance?.toFixed(getDecimalPlaces(currentBalanceData.currency)) ?? '0',
+                  balance:
+                      addComma(currentBalanceData?.balance?.toFixed(getDecimalPlaces(currentBalanceData.currency))) ??
+                      '0',
                   currencyLabel: activeAccount?.is_virtual ? localize('Demo') : activeAccount?.currency,
                   icon: (
                       <CurrencyIcon

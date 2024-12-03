@@ -1,303 +1,86 @@
 import React, { useEffect } from 'react';
 import { lazy, Suspense, useMemo } from 'react';
-import classNames from 'classnames';
-import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { CurrencyIcon } from '@/components/currency/currency-icon';
-import RectangleSkeleton from '@/components/loader/rectangle-skeleton';
-import { getDecimalPlaces, standalone_routes } from '@/components/shared';
+import { addComma, getDecimalPlaces } from '@/components/shared';
 import Popover from '@/components/shared_ui/popover';
 import { api_base } from '@/external/bot-skeleton';
-import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
-import { LegacyDerivIcon, LegacyLogout1pxIcon } from '@deriv/quill-icons/Legacy';
-import { Localize, localize } from '@deriv-com/translations';
-import { AccountSwitcher as UIAccountSwitcher, Button, Divider, Loader, Text, useDevice } from '@deriv-com/ui';
+import { localize } from '@deriv-com/translations';
+import { AccountSwitcher as UIAccountSwitcher, Loader, useDevice } from '@deriv-com/ui';
+import DemoAccounts from './common/demo-accounts';
+import RealAccounts from './common/real-accounts';
+import { TAccountSwitcher, TAccountSwitcherProps, TModifiedAccount } from './common/types';
+import { LOW_RISK_COUNTRIES } from './utils';
 import './account-switcher.scss';
 
 const AccountInfoWallets = lazy(() => import('./wallets/account-info-wallets'));
-
-type TModifiedAccount = ReturnType<typeof useApiBase>['accountList'][number] & {
-    balance: string;
-    currencyLabel: string;
-    icon: React.ReactNode;
-    isVirtual: boolean;
-    isActive: boolean;
-    loginid: number;
-    currency: string;
-};
-type TAccountSwitcherProps = {
-    isVirtual?: boolean;
-    modifiedAccountList: TModifiedAccount[];
-    switchAccount: (loginId: number) => void;
-    modifiedCRAccountList?: TModifiedAccount[];
-    modifiedMFAccountList?: TModifiedAccount[];
-    activeLoginId?: string;
-};
-
-type TAccountSwitcher = {
-    activeAccount: ReturnType<typeof useActiveAccount>['data'];
-    is_dialog_on: boolean;
-    toggleDialog: () => void;
-};
 
 const tabs_labels = {
     demo: localize('Demo'),
     real: localize('Real'),
 };
 
-const no_account = {
-    currency: ' ',
-    currencyLabel: 'Options & Multipliers',
-    is_virtual: 1,
-    loginid: '',
-    is_disabled: false,
-    balance: '',
-    icon: <LegacyDerivIcon width={24} height={24} />,
-    isActive: false,
-    isVirtual: true,
-};
+const RenderAccountItems = ({
+    isVirtual,
+    modifiedCRAccountList,
+    modifiedMFAccountList,
+    modifiedVRTCRAccountList,
+    switchAccount,
+    activeLoginId,
+}: TAccountSwitcherProps) => {
+    const { client } = useStore();
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
+    const is_low_risk_country = LOW_RISK_COUNTRIES().includes(client.account_settings?.country_code ?? '');
+    const is_virtual = !!isVirtual;
 
-const NoEuAccounts = ({ isVirtual, tabs_labels }) => {
-    return (
-        <UIAccountSwitcher.AccountsPanel
-            isOpen
-            title={localize('Non-Eu Deriv Accounts')}
-            className='account-switcher-panel'
-            key={!isVirtual ? tabs_labels?.demo?.toLowerCase() : tabs_labels?.real?.toLowerCase()}
-        >
-            <div className='account-switcher-panel__no-eu-accounts'>
-                <UIAccountSwitcher.AccountsItem account={no_account} onSelectAccount={() => {}} />
-                <Button
-                    id='add-button'
-                    className='add-button'
-                    onClick={() => location.replace(standalone_routes.traders_hub)}
-                >
-                    <Localize i18n_default_text='Add' />
-                </Button>
-            </div>
-        </UIAccountSwitcher.AccountsPanel>
-    );
-};
-
-const RenderAccountItems = observer(
-    ({
-        isVirtual,
-        modifiedAccountList,
-        modifiedCRAccountList,
-        modifiedMFAccountList,
-        switchAccount,
-        activeLoginId,
-    }: TAccountSwitcherProps) => {
-        const { client } = useStore();
-
-        const show_manage_button = client?.loginid?.includes('CR') || client?.loginid?.includes('MF');
-
-        const account_switcher_title_non_eu =
-            modifiedMFAccountList?.length === 0 ? localize('Deriv accounts') : localize('Non-Eu Deriv accounts');
-        const account_switcher_title_eu = modifiedMFAccountList
-            ? localize('Eu Deriv accounts')
-            : localize('Deriv accounts');
-        const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
-
-        useEffect(() => {
-            // Update the max-height from the accordion content set from deriv-com/ui
-            const parent_container = document.getElementsByClassName('account-switcher-panel')?.[0] as HTMLDivElement;
-            if (!isVirtual && parent_container) {
-                parent_container.style.maxHeight = '70vh';
-                waitForDomElement('.deriv-accordion__content', parent_container)?.then((accordionElement: unknown) => {
-                    const element = accordionElement as HTMLDivElement;
-                    if (element) {
-                        element.style.maxHeight = '70vh';
-                    }
-                });
-            }
-        }, [isVirtual]);
-
-        if (isVirtual) {
-            return (
-                <>
-                    <UIAccountSwitcher.AccountsPanel
-                        isOpen
-                        title={localize('Deriv accounts')}
-                        className='account-switcher-panel'
-                        key={tabs_labels.demo.toLowerCase()}
-                    >
-                        {modifiedAccountList
-                            ?.filter(account => account.is_virtual)
-                            .map(account => (
-                                <span
-                                    className={clsx('account-switcher__item', {
-                                        'account-switcher__item--disabled': account.is_disabled,
-                                    })}
-                                    key={account.loginid}
-                                >
-                                    <UIAccountSwitcher.AccountsItem
-                                        account={account}
-                                        onSelectAccount={() => {
-                                            if (!account.is_disabled) switchAccount(account.loginid);
-                                        }}
-                                        onResetBalance={
-                                            isVirtual && activeLoginId === account.loginid
-                                                ? () => {
-                                                      api_base?.api?.send({
-                                                          topup_virtual: 1,
-                                                      });
-                                                  }
-                                                : undefined
-                                        }
-                                    />
-                                </span>
-                            ))}
-                    </UIAccountSwitcher.AccountsPanel>
-                    <Divider color='var(--du-general-active)' height='2px' />
-                    <div className='account-switcher-footer'>
-                        <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
-                            {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
-                        </UIAccountSwitcher.TradersHubLink>
-                        <Divider color='var(--du-general-active)' height='2px' />
-                        <UIAccountSwitcher.Footer>
-                            {client.is_logging_out ? (
-                                <div className='deriv-account-switcher__logout--loader'>
-                                    <RectangleSkeleton width='120px' height='12px' />
-                                </div>
-                            ) : (
-                                <div
-                                    id='dt_logout_button'
-                                    className='deriv-account-switcher__logout'
-                                    onClick={oAuthLogout}
-                                >
-                                    <Text
-                                        color='prominent'
-                                        size='xs'
-                                        align='left'
-                                        className='deriv-account-switcher__logout-text'
-                                    >
-                                        {localize('Log out')}
-                                    </Text>
-                                    <LegacyLogout1pxIcon
-                                        iconSize='xs'
-                                        fill='var(--text-general)'
-                                        className='icon-general-fill-path'
-                                    />
-                                </div>
-                            )}
-                        </UIAccountSwitcher.Footer>
-                    </div>
-                </>
-            );
+    useEffect(() => {
+        // Update the max-height from the accordion content set from deriv-com/ui
+        const parent_container = document.getElementsByClassName('account-switcher-panel')?.[0] as HTMLDivElement;
+        if (!isVirtual && parent_container) {
+            parent_container.style.maxHeight = '70vh';
+            waitForDomElement('.deriv-accordion__content', parent_container)?.then((accordionElement: unknown) => {
+                const element = accordionElement as HTMLDivElement;
+                if (element) {
+                    element.style.maxHeight = '70vh';
+                }
+            });
         }
+    }, [isVirtual]);
 
+    if (is_virtual) {
         return (
             <>
-                {!isVirtual && modifiedCRAccountList?.length > 0 ? (
-                    <UIAccountSwitcher.AccountsPanel
-                        isOpen
-                        title={account_switcher_title_non_eu}
-                        className='account-switcher-panel'
-                        key={!isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels?.real.toLowerCase()}
-                    >
-                        {modifiedCRAccountList.map(account => (
-                            <span
-                                className={clsx('account-switcher__item', {
-                                    'account-switcher__item--disabled': account.is_disabled,
-                                })}
-                                key={account.loginid}
-                            >
-                                <UIAccountSwitcher.AccountsItem
-                                    account={account}
-                                    onSelectAccount={() => {
-                                        if (!account.is_disabled) switchAccount(account.loginid);
-                                    }}
-                                />
-                            </span>
-                        ))}
-                    </UIAccountSwitcher.AccountsPanel>
-                ) : (
-                    <NoEuAccounts isVirtual={isVirtual} tabs_labels={tabs_labels} />
-                )}
-                {!isVirtual && modifiedMFAccountList?.length > 0 && (
-                    <UIAccountSwitcher.AccountsPanel
-                        isOpen
-                        title={account_switcher_title_eu}
-                        className='account-switcher-panel'
-                        key={!isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels.real.toLowerCase()}
-                    >
-                        {modifiedMFAccountList.map(account => (
-                            <span
-                                className={clsx('account-switcher__item', {
-                                    'account-switcher__item--disabled': account.is_disabled,
-                                })}
-                                key={account.loginid}
-                            >
-                                <UIAccountSwitcher.AccountsItem
-                                    account={account}
-                                    onSelectAccount={() => {
-                                        if (!account.is_disabled) switchAccount(account.loginid);
-                                    }}
-                                />
-                            </span>
-                        ))}
-                    </UIAccountSwitcher.AccountsPanel>
-                )}
-                <Divider color='var(--du-general-active)' height='2px' />
-                <div className=''>
-                    <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
-                        {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
-                    </UIAccountSwitcher.TradersHubLink>
-                    <Divider color='var(--du-general-active)' height='2px' />
-                    <div
-                        className={classNames('account-switcher-footer__actions', {
-                            'account-switcher-footer__actions--hide-manage-button': !show_manage_button,
-                        })}
-                    >
-                        {show_manage_button && (
-                            <Button
-                                id='manage-button'
-                                className='manage-button'
-                                onClick={() => location.replace(standalone_routes.traders_hub)}
-                            >
-                                <Localize i18n_default_text='Manage account' />
-                            </Button>
-                        )}
-                        <UIAccountSwitcher.Footer>
-                            {client.is_logging_out ? (
-                                <div className='deriv-account-switcher__logout--loader'>
-                                    <RectangleSkeleton width='120px' height='12px' />
-                                </div>
-                            ) : (
-                                <div
-                                    id='dt_logout_button'
-                                    className='deriv-account-switcher__logout'
-                                    onClick={async () => {
-                                        await oAuthLogout();
-                                    }}
-                                >
-                                    <Text
-                                        color='prominent'
-                                        size='xs'
-                                        align='left'
-                                        className='deriv-account-switcher__logout-text'
-                                    >
-                                        {localize('Log out')}
-                                    </Text>
-                                    <LegacyLogout1pxIcon
-                                        iconSize='xs'
-                                        fill='var(--text-general)'
-                                        className='icon-general-fill-path'
-                                    />
-                                </div>
-                            )}
-                        </UIAccountSwitcher.Footer>
-                    </div>
-                </div>
+                <DemoAccounts
+                    modifiedVRTCRAccountList={modifiedVRTCRAccountList as TModifiedAccount[]}
+                    switchAccount={switchAccount}
+                    activeLoginId={activeLoginId}
+                    isVirtual={is_virtual}
+                    tabs_labels={tabs_labels}
+                    oAuthLogout={oAuthLogout}
+                    is_logging_out={client.is_logging_out}
+                />
             </>
         );
+    } else {
+        return (
+            <RealAccounts
+                modifiedCRAccountList={modifiedCRAccountList as TModifiedAccount[]}
+                modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
+                switchAccount={switchAccount}
+                isVirtual={is_virtual}
+                tabs_labels={tabs_labels}
+                is_low_risk_country={is_low_risk_country}
+                oAuthLogout={oAuthLogout}
+                loginid={activeLoginId}
+                is_logging_out={client.is_logging_out}
+            />
+        );
     }
-);
+};
 
 const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
     const { isDesktop } = useDevice();
@@ -312,10 +95,11 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         return accountList?.map(account => {
             return {
                 ...account,
-                balance:
+                balance: addComma(
                     client.all_accounts_balance?.accounts?.[account?.loginid]?.balance?.toFixed(
                         getDecimalPlaces(account.currency)
-                    ) ?? '0',
+                    ) ?? '0'
+                ),
                 currencyLabel: account?.is_virtual
                     ? tabs_labels.demo
                     : (client.website_status?.currencies_config?.[account?.currency]?.name ?? account?.currency),
@@ -336,11 +120,15 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         activeAccount?.loginid,
     ]);
     const modifiedCRAccountList = useMemo(() => {
-        return modifiedAccountList?.filter(account => account?.loginid?.includes('CR'));
+        return modifiedAccountList?.filter(account => account?.loginid?.includes('CR')) ?? [];
     }, [modifiedAccountList]);
 
     const modifiedMFAccountList = useMemo(() => {
-        return modifiedAccountList?.filter(account => account?.loginid?.includes('MF'));
+        return modifiedAccountList?.filter(account => account?.loginid?.includes('MF')) ?? [];
+    }, [modifiedAccountList]);
+
+    const modifiedVRTCRAccountList = useMemo(() => {
+        return modifiedAccountList?.filter(account => account?.loginid?.includes('VRT')) ?? [];
     }, [modifiedAccountList]);
 
     const switchAccount = async (loginId: number) => {
@@ -380,7 +168,6 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                 >
                     <UIAccountSwitcher.Tab title={tabs_labels.real}>
                         <RenderAccountItems
-                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
                             modifiedCRAccountList={modifiedCRAccountList as TModifiedAccount[]}
                             modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
@@ -389,7 +176,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                     </UIAccountSwitcher.Tab>
                     <UIAccountSwitcher.Tab title={tabs_labels.demo}>
                         <RenderAccountItems
-                            modifiedAccountList={modifiedAccountList as TModifiedAccount[]}
+                            modifiedVRTCRAccountList={modifiedVRTCRAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
                             isVirtual
                             activeLoginId={activeAccount?.loginid}

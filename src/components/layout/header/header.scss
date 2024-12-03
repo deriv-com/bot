@@ -19,9 +19,29 @@
 
 .account-switcher {
     &__item {
+        .deriv-account-switcher-item {
+            padding: 0.6rem 1.6rem;
+
+            &__detail {
+                .deriv-account-switcher-item__currency {
+                    margin-bottom: 2px;
+                    font-size: 1.4rem;
+                }
+            }
+        }
+
         &--disabled {
             opacity: 0.32;
         }
+    }
+
+    &__separator:after {
+        background-color: var(--general-section-2);
+        content: '';
+        height: 4px;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
     }
 
     &-footer {
@@ -41,6 +61,7 @@
             .manage-button {
                 background: none;
                 border: 1px solid var(--button-secondary-default);
+                margin-left: 0.8rem;
 
                 &:hover {
                     background-color: unset !important;
@@ -50,7 +71,7 @@
                     color: var(--text-prominent);
                     font-size: var(--text-size-xs);
                     cursor: pointer;
-                    font-weight: 400;
+                    font-weight: 700;
                 }
             }
         }
@@ -65,6 +86,11 @@
     top: 0;
     z-index: 1;
     background: var(--general-main-1);
+
+    .derivs-text__size--md {
+        font-size: 14px;
+        line-height: 18px;
+    }
 }
 
 .deriv-account-switcher {
@@ -96,6 +122,18 @@
         .deriv-account-switcher__balance + svg > path {
             fill: var(--text-general);
         }
+
+        &:hover {
+            background-color: unset;
+        }
+    }
+
+    &__currency {
+        margin-bottom: 2px;
+    }
+
+    &__icon {
+        margin-right: 7px;
     }
 
     &__balance {
@@ -104,7 +142,7 @@
 
     &__list {
         &.account-switcher-panel {
-            padding: 2rem 0.8rem 1rem;
+            padding: 0.4rem 0.8rem 0;
 
             .account-switcher-panel__no-eu-accounts {
                 display: flex;
@@ -124,9 +162,8 @@
                     }
                 }
 
-                .deriv-account-switcher-item:hover,
-                .deriv-account-switcher-item--active {
-                    background-color: unset;
+                .deriv-account-switcher-item {
+                    background: none;
                 }
             }
         }
@@ -137,13 +174,15 @@
             }
 
             &__text {
-                margin-top: 1rem;
+                margin-top: 0;
             }
         }
     }
 
     &__title {
-        padding: 0 16px 12px;
+        height: 4rem;
+        margin: 0 auto;
+        padding: 1.2rem 1.6rem;
     }
 
     &__container--mobile {
@@ -154,6 +193,14 @@
         max-height: 80vh;
         overflow: auto;
         background: var(--general-main-1);
+        background-color: var(--general-main-2);
+        border-radius: 4px;
+        box-shadow: 0 8px 16px 0 var(--shadow-menu) !important;
+        position: absolute;
+        transition:
+            transform 0.3s ease,
+            opacity 0.25s linear;
+        width: 320px;
     }
 
     &__logout {
@@ -177,6 +224,7 @@
     }
 
     &__tradershub-link {
+        padding: 1.2rem 2.5rem 0.6rem 0.8rem;
         background: var(--general-main-1);
     }
 
@@ -217,4 +265,8 @@
 .deposit-button,
 .manage-funds-button {
     margin-inline-end: 1.6rem;
+}
+
+.deriv-accordion--underline {
+    border-bottom: none;
 }

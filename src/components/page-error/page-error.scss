@@ -47,7 +47,7 @@
 
     &__message {
         // @include typeface(--title-center-normal-black, none);
-        max-width: 600px;
+        max-width: 500px;
         margin: 1.6rem 0 2.4rem;
 
         &-paragraph {
@@ -84,6 +84,16 @@
         &-wrapper {
             display: flex;
             justify-content: center;
+
+            button {
+                height: 4rem;
+                min-width: 6.4rem;
+
+                span {
+                    font-size: 1.4rem;
+                    font-weight: 500;
+                }
+            }
         }
 
         @include mobile-or-tablet-screen {

@@ -57,7 +57,7 @@ export default class AppStore {
             title: is_logged_in
                 ? localize(`Deriv Bot is not available for ${country || 'EU'} clients`)
                 : localize(`Deriv Bot is unavailable in ${country || 'the EU'}`),
-            link: is_logged_in ? localize("Back to Trader's Hub") : '',
+            link: is_logged_in ? localize("Back to Trader's Hub") : localize('Refresh'),
             route: standalone_routes.traders_hub,
         };
     };
@@ -93,7 +93,7 @@ export default class AppStore {
             return false;
         }
 
-        this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
+        this.throwErrorForExceptionCountries(client?.account_settings?.clients_country as string);
         if (client.should_show_eu_error) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
