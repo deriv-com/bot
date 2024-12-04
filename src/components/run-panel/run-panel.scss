@@ -401,7 +401,6 @@
     &__button {
         @include mobile-or-tablet-screen {
             flex-basis: 100%;
-            margin-left: unset;
         }
     }
 }
