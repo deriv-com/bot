@@ -183,6 +183,10 @@
             @include mobile-or-tablet-screen {
                 margin: 0.8rem;
             }
+
+            @include is-RTL {
+                margin: 1.2rem auto 1.2rem 1.6rem;
+            }
         }
 
         &--is-title-centered {
