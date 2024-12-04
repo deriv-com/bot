@@ -12,6 +12,7 @@ import { AccountSwitcherDivider } from './utils';
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccountSwitcherFooter) => {
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
+
     return (
         <div className=''>
             <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
@@ -45,7 +46,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
                                 align='left'
                                 className='deriv-account-switcher__logout-text'
                             >
-                                {localize('Log out')}
+                                {localize('Logout')}
                             </Text>
                             <LegacyLogout1pxIcon
                                 iconSize='xs'

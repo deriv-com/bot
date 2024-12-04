@@ -31,8 +31,8 @@ const RenderAccountItems = ({
     modifiedVRTCRAccountList,
     switchAccount,
     activeLoginId,
+    client,
 }: TAccountSwitcherProps) => {
-    const { client } = useStore();
     const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
     const is_low_risk_country = LOW_RISK_COUNTRIES().includes(client.account_settings?.country_code ?? '');
     const is_virtual = !!isVirtual;
@@ -172,6 +172,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                             modifiedMFAccountList={modifiedMFAccountList as TModifiedAccount[]}
                             switchAccount={switchAccount}
                             activeLoginId={activeAccount?.loginid}
+                            client={client}
                         />
                     </UIAccountSwitcher.Tab>
                     <UIAccountSwitcher.Tab title={tabs_labels.demo}>
@@ -180,6 +181,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
                             switchAccount={switchAccount}
                             isVirtual
                             activeLoginId={activeAccount?.loginid}
+                            client={client}
                         />
                     </UIAccountSwitcher.Tab>
                 </UIAccountSwitcher>

@@ -64,6 +64,8 @@
         &__guides {
             display: flex;
             margin-top: 2.4rem;
+            max-width: 80vw;
+            overflow: auto;
 
             @include mobile-or-tablet-screen {
                 display: unset;
