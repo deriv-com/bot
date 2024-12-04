@@ -179,7 +179,7 @@ const FormWrapper = observer(
                         </div>
                         <div className='qs__body__content'>
                             <ThemedScrollbars
-                                className='qs__form__container qs__form__container--no-footer'
+                                className='qs__form__container qs__form__container--footer'
                                 autohide={false}
                                 refSetter={scroll_ref}
                             >

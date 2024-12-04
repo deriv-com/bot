@@ -66,7 +66,7 @@ const MobileFormWrapper = observer(
                 <div className='qs__body'>
                     <div className='qs__body__content'>
                         <ThemedScrollbars
-                            className={classNames('qs__form__container qs__form__container--no-footer', {
+                            className={classNames('qs__form__container qs__form__container--footer', {
                                 'qs__form__container--template': is_selected_strategy_step,
                             })}
                             autohide={false}
