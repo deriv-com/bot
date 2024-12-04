@@ -106,6 +106,12 @@
             .deriv-modal {
                 &__header {
                     border-bottom: 1px solid var(--general-section-6);
+
+                    @include is-RTL {
+                        .deriv-modal__close-icon {
+                            margin-inline: revert;
+                        }
+                    }
                 }
 
                 &__footer {
@@ -225,7 +231,7 @@
             margin-inline-start: 1.6rem;
 
             h3 {
-                @include mobile-or-tablet-screen {
+                @include is-RTL {
                     text-align: right;
                 }
             }
@@ -256,6 +262,10 @@
         padding: 1.6rem 0;
         border-bottom: 1px solid var(--general-section-6);
         justify-content: left;
-        padding-left: 2rem !important;
+        padding-inline-start: 2rem !important;
+
+        @include rtl {
+            justify-content: right;
+        }
     }
 }
