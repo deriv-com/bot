@@ -115,7 +115,7 @@ const useStoreWalletAccountsList = () => {
                     is_dtrader_account_disabled,
                 } as const;
             });
-    }, [accounts]);
+    }, [accounts, all_accounts_balance?.accounts]);
 
     // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
     const sorted_wallets = useMemo(() => {
