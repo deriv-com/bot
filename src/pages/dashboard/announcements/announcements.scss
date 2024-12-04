@@ -222,7 +222,13 @@
         }
 
         &__text {
-            margin-left: 1.6rem;
+            margin-inline-start: 1.6rem;
+
+            h3 {
+                @include mobile-or-tablet-screen {
+                    text-align: right;
+                }
+            }
         }
     }
 
