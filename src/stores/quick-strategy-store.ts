@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
-import { notification_message } from '@/components/bot-notification/bot-notification-utils';
+import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
 import { ApiHelpers, config as qs_config, load } from '@/external/bot-skeleton';
 import { save_types } from '@/external/bot-skeleton/constants/save-type';
 import { addDynamicBlockToDOM } from '@/utils/xml-dom-quick-strategy';
@@ -207,7 +207,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         }
 
         this.setFormVisibility(false);
-        botNotification(notification_message().success_quick_strategy_message);
+        botNotification(notification_message()[NOTIFICATION_TYPE.BOT_IMPORT]);
 
         await load({
             block_string: window.Blockly.Xml.domToText(strategy_dom),
