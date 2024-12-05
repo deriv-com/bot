@@ -106,7 +106,7 @@ const WorkspaceGroup = observer(() => {
                             }
                         />
                         <ToolbarIcon
-                            popover_message={localize('Trading View Chart')}
+                            popover_message={localize('TradingView Chart')}
                             icon={
                                 <span
                                     className='toolbar__icon'
