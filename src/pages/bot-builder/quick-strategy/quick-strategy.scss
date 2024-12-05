@@ -214,17 +214,20 @@
             }
 
             &__footer {
-                position: fixed;
-                z-index: 10000;
-                bottom: 0;
-                width: 100%;
                 border-top: 1px solid var(--border-divider);
+                background-color: var(--general-main-1);
+                height: 8.4rem;
+                width: 100%;
+                padding-right: 2.4rem;
+
+                @include mobile-screen {
+                    height: 6rem;
+                    position: fixed;
+                    z-index: 10000;
+                    bottom: 0;
+                }
 
                 @include flex-center(flex-end);
-
-                height: 6rem;
-                padding-right: 2.4rem;
-                background-color: var(--general-main-1);
 
                 button {
                     margin-inline-end: 1rem;
@@ -258,9 +261,9 @@
 
             &--footer {
                 max-height: 100% !important;
-                margin-bottom: 9rem;
 
                 @include mobile-screen {
+                    margin-bottom: 9rem;
                     max-height: calc(100% - 8rem) !important;
                 }
             }

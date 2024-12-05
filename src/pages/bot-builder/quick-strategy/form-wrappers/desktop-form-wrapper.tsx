@@ -15,7 +15,6 @@ import StrategyTabContent from './strategy-tab-content';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
 import useQsSubmitHandler from './useQsSubmitHandler';
-import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
     children: React.ReactNode;
