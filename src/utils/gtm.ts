@@ -1,12 +1,19 @@
+import { reaction } from 'mobx';
 import { TStatistics } from '@/components/transaction-details/transaction-details.types';
+import RootStore from '@/stores/root-store';
 import { ProposalOpenContract } from '@deriv/api-types';
 
 const GTM = (() => {
+    let timeoutId: NodeJS.Timeout;
+    let initialized = false;
     const pushDataLayer = (data: { [key: string]: string | number | boolean; event: string }): void => {
         window.dataLayer?.push(data);
     };
 
-    const init = () => {
+    const init = (_root_store: RootStore): void => {
+        if (initialized) return;
+        initialized = true;
+
         function loadGTM() {
             (function (w, d, s, l, i) {
                 w[l] = w[l] || [];
@@ -22,7 +29,30 @@ const GTM = (() => {
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-NF7884S');
         }
-        loadGTM();
+
+        setTimeout(() => {
+            loadGTM();
+        }, 3000);
+
+        try {
+            const { run_panel, transactions, client, common } = _root_store;
+            reaction(
+                () => run_panel.is_running,
+                (() => {
+                    return () => {
+                        if (run_panel.is_running) {
+                            clearTimeout(timeoutId);
+                            timeoutId = setTimeout(() => {
+                                onRunBot(client?.loginid, common?.server_time?.unix(), transactions?.statistics);
+                            }, 500);
+                        }
+                    };
+                })()
+            );
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.warn('Error initializing GTM reactions ', error);
+        }
     };
 
     const onRunBot = (login_id: string, server_time: number, statistics: TStatistics): void => {
