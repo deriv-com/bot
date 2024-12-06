@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import Cookies from 'js-cookie';
 import { observer } from 'mobx-react-lite';
 import { getDecimalPlaces, toMoment } from '@/components/shared';
 import { FORM_ERROR_MESSAGES } from '@/components/shared/constants/form-error-messages';
@@ -21,7 +22,15 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
     const { currentLang } = useTranslations();
 
-    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
+    const { oAuthLogout, isOAuth2Enabled } = useOauth2({ handleLogout: async () => client.logout(), client });
+
+    const isLoggedOutCookie = Cookies.get('logged_state') === 'false';
+
+    useEffect(() => {
+        if (isLoggedOutCookie && isOAuth2Enabled && client?.is_logged_in) {
+            oAuthLogout();
+        }
+    }, [isLoggedOutCookie, oAuthLogout, isOAuth2Enabled, client?.is_logged_in]);
 
     const activeAccount = useMemo(
         () => accountList?.find(account => account.loginid === activeLoginid),

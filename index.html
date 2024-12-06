@@ -10,7 +10,6 @@
                 font-size: 62.5%;
             }
         </style>
-        <script src="/cdn-cgi/zaraz/i.js" referrerpolicy="origin"></script>
     </head>
 
     <body class="body theme theme--light">
@@ -47,11 +46,13 @@
                         i(['call', c.call(arguments)]);
                     },
                     init: function () {
-                        var n = t.createElement('script');
-                        (n.async = !0),
-                            (n.type = 'text/javascript'),
-                            (n.src = 'https://cdn.livechatinc.com/tracking.js'),
-                            t.head.appendChild(n);
+                        setTimeout(() => {
+                            var n = t.createElement('script');
+                            (n.async = !0),
+                                (n.type = 'text/javascript'),
+                                (n.src = 'https://cdn.livechatinc.com/tracking.js'),
+                                t.head.appendChild(n);
+                        }, 3000);
                     },
                 };
                 !n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e);
