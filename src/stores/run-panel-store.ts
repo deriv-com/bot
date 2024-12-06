@@ -163,7 +163,7 @@ export default class RunPanelStore {
                 }
             }, 10000);
         }
-        const { summary_card, self_exclusion } = this.root_store;
+        const { summary_card, self_exclusion, transactions, common } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
         this.dbot.saveRecentWorkspace();
@@ -207,6 +207,12 @@ export default class RunPanelStore {
             summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
             this.dbot.runBot();
+            try {
+                GTM.onRunBot(client.login_id, common.server_time?.unix() || Date.now(), transactions.statistics);
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.warn('Error initializing GTM reactions ', error); // eslint-disable-line no-console
+            }
         });
         this.setShowBotStopMessage(false);
     };
