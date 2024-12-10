@@ -14,7 +14,6 @@ import { Tooltip } from '@deriv-com/ui';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
-import CustomNotifications from './custom-notifications';
 import MenuItems from './menu-items';
 import MobileMenu from './mobile-menu';
 import PlatformSwitcher from './platform-switcher';
@@ -39,7 +38,7 @@ const AppHeader = observer(() => {
         } else if (activeLoginid) {
             return (
                 <>
-                    <CustomNotifications />
+                    {/* <CustomNotifications /> */}
                     {isDesktop && (
                         <Tooltip
                             as='a'

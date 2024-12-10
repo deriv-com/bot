@@ -73,6 +73,8 @@ function App() {
                 console.error('Error setting up login info:', error);
             }
         }
+
+        URLUtils.filterSearchParams(['lang']);
     }, [loginInfo, paramsToDelete]);
 
     React.useEffect(() => {

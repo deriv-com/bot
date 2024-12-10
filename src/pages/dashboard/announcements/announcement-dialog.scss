@@ -4,6 +4,11 @@
     .dc-dialog {
         &__dialog {
             max-width: calc(440px - 4.8rem);
+
+            @include mobile-or-tablet-screen {
+                max-width: unset;
+            }
+
             max-height: none;
             padding: 0;
 
@@ -135,6 +140,7 @@
     &__image {
         min-height: 16rem;
         padding-top: 1.6rem;
+        width: 100%;
     }
 
     &__unordered_list {

@@ -28,6 +28,11 @@
                     font-size: 1.4rem;
                 }
             }
+
+            &__icon {
+                margin-right: unset;
+                margin-inline-end: 10px;
+            }
         }
 
         &--disabled {
@@ -61,7 +66,10 @@
             .manage-button {
                 background: none;
                 border: 1px solid var(--button-secondary-default);
-                margin-left: 0.8rem;
+                margin-inline-end: 0.7rem;
+                height: auto;
+                padding: 0.4rem 1.2rem;
+                white-space: break-spaces;
 
                 &:hover {
                     background-color: unset !important;
@@ -176,6 +184,11 @@
             &__text {
                 margin-top: 0;
             }
+
+            &__icon {
+                margin-left: unset;
+                margin-inline-start: auto;
+            }
         }
     }
 
@@ -201,6 +214,9 @@
             transform 0.3s ease,
             opacity 0.25s linear;
         width: 320px;
+        top: 55px;
+        right: unset;
+        inset-inline-end: 0;
     }
 
     &__logout {
@@ -258,7 +274,7 @@
 
     button {
         font-weight: 400;
-        margin-right: 1.6rem;
+        margin-inline-end: 1.6rem;
     }
 }
 

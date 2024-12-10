@@ -86,7 +86,11 @@
             width: 40rem;
 
             @include rtl {
-                right: -24rem;
+                inset-inline-start: -28rem;
+
+                @include tablet-screen {
+                    inset-inline-start: -37rem;
+                }
             }
         }
 
@@ -102,6 +106,12 @@
             .deriv-modal {
                 &__header {
                     border-bottom: 1px solid var(--general-section-6);
+
+                    @include is-RTL {
+                        .deriv-modal__close-icon {
+                            margin-inline: revert;
+                        }
+                    }
                 }
 
                 &__footer {
@@ -128,6 +138,7 @@
 
         @include flex-center;
 
+        justify-content: start;
         position: relative;
         height: 9.8rem;
         border-radius: none;
@@ -217,7 +228,13 @@
         }
 
         &__text {
-            margin-left: 1.6rem;
+            margin-inline-start: 1.6rem;
+
+            h3 {
+                @include is-RTL {
+                    text-align: right;
+                }
+            }
         }
     }
 
@@ -245,6 +262,10 @@
         padding: 1.6rem 0;
         border-bottom: 1px solid var(--general-section-6);
         justify-content: left;
-        padding-left: 2rem !important;
+        padding-inline-start: 2rem !important;
+
+        @include rtl {
+            justify-content: right;
+        }
     }
 }

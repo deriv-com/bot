@@ -67,6 +67,12 @@
             justify-content: space-between;
             text-decoration: none;
             border-bottom: 1px solid var(--general-section-1);
+
+            svg {
+                @include is-RTL {
+                    transform: rotate(180deg);
+                }
+            }
         }
 
         .quill-typography {

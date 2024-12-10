@@ -5,8 +5,6 @@ import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
-import { config } from '@/external/bot-skeleton/constants';
-import { getSelectedTradeTypeCategory } from '@/external/bot-skeleton/scratch/utils';
 // import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
@@ -53,6 +51,8 @@ export default class RunPanelStore {
             setHasOpenContract: action,
             setIsRunning: action,
             onRunButtonClick: action,
+            is_contracy_buying_in_progress: observable,
+            OpenPositionLimitExceededEvent: action,
             onStopButtonClick: action,
             onClearStatClick: action,
             clearStat: action,
@@ -104,6 +104,7 @@ export default class RunPanelStore {
     is_dialog_open = false;
     is_sell_requested = false;
     show_bot_stop_message = false;
+    is_contracy_buying_in_progress = false;
 
     run_id = '';
     onOkButtonClick: (() => void) | null = null;
@@ -119,6 +120,9 @@ export default class RunPanelStore {
     }
 
     get is_stop_button_disabled() {
+        if (this.is_contracy_buying_in_progress) {
+            return false;
+        }
         return [contract_stages.PURCHASE_SENT as number, contract_stages.IS_STOPPING as number].includes(
             this.contract_stage
         );
@@ -212,6 +216,7 @@ export default class RunPanelStore {
     };
 
     onStopButtonClick = () => {
+        this.is_contracy_buying_in_progress = false;
         const { is_multiplier } = this.root_store.summary_card;
 
         if (is_multiplier) {
@@ -431,7 +436,10 @@ export default class RunPanelStore {
         observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
+        observer.register('bot.recoverOpenPositionLimitExceeded', this.OpenPositionLimitExceededEvent);
     };
+
+    OpenPositionLimitExceededEvent = () => (this.is_contracy_buying_in_progress = true);
 
     registerReactions = () => {
         const { client, common } = this.core;
@@ -573,6 +581,7 @@ export default class RunPanelStore {
                 break;
             }
             case 'contract.purchase_received': {
+                this.is_contracy_buying_in_progress = false;
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
                 const { buy } = contract_status;
                 const { is_virtual } = this.core.client;
@@ -618,16 +627,6 @@ export default class RunPanelStore {
     onError = (data: { error: any }) => {
         // data.error for API errors, data for code errors
         const error = data.error || data;
-        if (error.code === 'OpenPositionLimitExceeded' && error.message) {
-            const { TRADE_TYPE_CATEGORY_NAMES } = config();
-            const trade_type_category = getSelectedTradeTypeCategory();
-            const tradeTypeName =
-                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] ?? '';
-
-            if (tradeTypeName) {
-                error.message += ` Trade type: ${tradeTypeName}`;
-            }
-        }
         if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = ErrorTypes.UNRECOVERABLE_ERRORS;

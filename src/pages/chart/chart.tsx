@@ -49,7 +49,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         chart_subscription_id,
     } = chart_store;
     const chartSubscriptionIdRef = useRef(chart_subscription_id);
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
     const settings = {
@@ -128,7 +128,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     />
                 )}
                 chartType={chart_type}
-                isMobile={!isDesktop}
+                isMobile={isMobile}
                 enabledNavigationWidget={isDesktop}
                 granularity={granularity}
                 requestAPI={requestAPI}

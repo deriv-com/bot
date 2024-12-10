@@ -35,11 +35,11 @@
         width: 100%;
 
         &--left {
-            padding-right: $toggler-width;
+            padding-inline-end: $toggler-width;
         }
 
         &--right {
-            padding-left: $toggler-width;
+            padding-inline-start: $toggler-width;
         }
 
         @include mobile-or-tablet-screen {

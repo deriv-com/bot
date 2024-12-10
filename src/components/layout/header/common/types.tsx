@@ -17,6 +17,7 @@ export type TAccountSwitcherProps = {
     modifiedMFAccountList?: TModifiedAccount[];
     modifiedVRTCRAccountList?: TModifiedAccount[];
     activeLoginId?: string;
+    client?: any;
 };
 
 export type TAccountSwitcher = {

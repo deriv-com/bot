@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LegacyChevronUp2pxIcon } from '@deriv/quill-icons';
+import { LegacyHandleLessIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {
@@ -81,7 +81,7 @@ const Drawer = ({
                         })}
                     />
                 ) : (
-                    <LegacyChevronUp2pxIcon fill='#000000' iconSize='sm' className='dc-drawer__toggle-icon' />
+                    <LegacyHandleLessIcon iconSize='sm' className='dc-drawer__toggle-icon' />
                 )}
             </div>
             <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: isDesktop })}>

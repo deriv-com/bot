@@ -119,7 +119,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { data: wallet_list } = useStoreWalletAccountsList();
     const { isDesktop } = useDevice();
 
-    const balance = all_accounts_balance?.balance;
+    const balance = all_accounts_balance?.accounts?.[loginid ?? '']?.balance;
     const active_account = accounts?.[loginid ?? ''];
     const linked_dtrade_trading_account_loginid = loginid;
 

@@ -1,4 +1,5 @@
 @use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
 
 @keyframes fade-in {
     0% {
@@ -110,6 +111,10 @@
 
             svg {
                 vertical-align: middle;
+
+                @include is-RTL {
+                    transform: rotate(180deg);
+                }
             }
 
             &:focus {
