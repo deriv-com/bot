@@ -137,7 +137,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         if (selected_announcement?.should_toggle_qs_modal) {
             setFormVisibility(true);
         }
-        if (selected_announcement?.should_toggle_modal) {
+        if (selected_announcement?.should_toggle_load_modal) {
             toggleLoadModal();
         }
         selected_announcement?.onConfirm?.();
