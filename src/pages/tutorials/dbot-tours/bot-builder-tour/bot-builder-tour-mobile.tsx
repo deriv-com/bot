@@ -30,12 +30,11 @@ const BotBuilderTourMobile = observer(() => {
     const test_id = tour_step === 3 ? 'finish-bot-builder-tour' : 'next-bot-builder-tour';
 
     React.useEffect(() => {
-        if (active_tour === '') return;
         setTourActiveStep(tour_step);
         //component does not rerender so calling this to highlight
         !show_mobile_tour_dialog && highlightLoadModalButton(active_tour, tour_step);
         if (tour_step === 2) toggleTourLoadModal(true);
-        else toggleTourLoadModal(false);
+        else if (active_tour !== '') toggleTourLoadModal(false);
         const token = getSetting('bot_builder_token');
         if (!token && active_tab === 1) {
             if (is_open) {

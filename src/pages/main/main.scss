@@ -709,6 +709,8 @@
     height: 2.5rem !important;
     width: 2.5rem !important;
     padding: 0.2rem 0;
+
+    @include flex-center;
 }
 
 .beta-server-bot {
