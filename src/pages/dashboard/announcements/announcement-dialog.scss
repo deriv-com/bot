@@ -4,13 +4,12 @@
     .dc-dialog {
         &__dialog {
             max-width: calc(440px - 4.8rem);
+            max-height: none;
+            padding: 0;
 
             @include mobile-or-tablet-screen {
                 max-width: unset;
             }
-
-            max-height: none;
-            padding: 0;
 
             @include mobile-or-tablet-screen {
                 margin-top: 0;
