@@ -623,9 +623,13 @@ const downloadBlock = () => {
     const xml_text = window.Blockly.Xml.domToPrettyText(xml_block);
     saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
 };
+const getLocalizedText = text => {
+    if (!text) return text;
+    return localize(text) || text;
+};
 
 const download_option = () => ({
-    text: localize('Download Block') || 'Download Block',
+    text: getLocalizedText('Download Block') || 'Download Block',
     enabled: true,
     callback: downloadBlock,
 });
@@ -642,11 +646,6 @@ export const excludeOptionFromContextMenu = (menu, exclude_items) => {
 };
 
 const common_included_items = [download_option()];
-
-const getLocalizedText = text => {
-    if (!text) return text;
-    return localize(text) || text;
-};
 
 const all_context_menu_options = () =>
     [
