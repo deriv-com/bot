@@ -28,7 +28,7 @@ const BotBuilderTourDesktop = observer(() => {
 
     return (
         <>
-            {is_finished ? <TourEndDialog /> : !is_load_modal_open && <TourStartDialog />}
+            {is_finished ? <TourEndDialog /> : (!is_load_modal_open ? <TourStartDialog />: null)}
             {active_tour && (
                 <ReactJoyrideWrapper
                     handleCallback={handleJoyrideCallback}
