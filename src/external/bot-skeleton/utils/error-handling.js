@@ -20,8 +20,8 @@ export const initErrorHandlingListener = (type = 'keydown') => {
 export const handleError = (errorCode, observer) => {
     switch (errorCode) {
         case 'BLOCK_DELETION':
-            if (error_message_map[window.Blockly.getSelected().type]) {
-                observer.emit('ui.log.error', error_message_map[window.Blockly.getSelected().type]?.default);
+            if (error_message_map?.()?.[window.Blockly.getSelected().type]) {
+                observer.emit('ui.log.error', error_message_map?.()?.[window.Blockly.getSelected().type]?.default);
             }
             break;
         default:

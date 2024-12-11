@@ -84,7 +84,7 @@ export const validateErrorOnBlockDelete = () => {
             blockX >= translate_X - translate_offset &&
             blockX <= translate_X + translate_offset
         ) {
-            globalObserver.emit('ui.log.error', error_message_map[window.Blockly?.getSelected()?.type]?.default);
+            globalObserver.emit('ui.log.error', error_message_map?.()?.[window.Blockly?.getSelected()?.type]?.default);
         }
     }
 };
@@ -412,17 +412,18 @@ const getDisabledBlocks = required_blocks_check => {
 
 const throwNewErrorMessage = (error_blocks, key) => {
     return error_blocks.forEach(block => {
-        if (key === 'misplaced' && block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.[key]);
-        else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map[block]?.[key]);
+        if (key === 'misplaced' && block)
+            globalObserver.emit('ui.log.error', error_message_map?.()?.[block?.type]?.[key]);
+        else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map?.()?.[block]?.[key]);
         else if (key === 'disabled' && block) {
             let parent_block_error = false;
-            const parent_error_message = error_message_map[block.type]?.[key];
+            const parent_error_message = error_message_map?.()?.[block.type]?.[key];
             if (block.disabled && parent_error_message) {
                 globalObserver.emit('ui.log.error', parent_error_message);
                 parent_block_error = true;
             } else if (!parent_block_error && block.childBlocks_) {
                 block.childBlocks_.forEach(childBlock => {
-                    const child_error_message = error_message_map[childBlock.type]?.[key];
+                    const child_error_message = error_message_map?.()?.[childBlock.type]?.[key];
                     if (child_error_message) globalObserver.emit('ui.log.error', child_error_message);
                 });
             }
@@ -624,11 +625,11 @@ const downloadBlock = () => {
     saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
 };
 
-const download_option = {
+const download_option = () => ({
     text: localize('Download Block'),
     enabled: true,
     callback: downloadBlock,
-};
+});
 
 export const excludeOptionFromContextMenu = (menu, exclude_items) => {
     for (let i = 0; i <= menu.length - 1; i++) {
@@ -641,9 +642,7 @@ export const excludeOptionFromContextMenu = (menu, exclude_items) => {
     }
 };
 
-const common_included_items = [download_option];
-
-const all_context_menu_options = [
+const all_context_menu_options = () => [
     localize('Duplicate'),
     localize('Add Comment'),
     localize('Remove Comment'),
@@ -654,10 +653,11 @@ const all_context_menu_options = [
     localize('Download Block'),
 ];
 
-const deleteBlocksLocaleText = localize('Delete Block');
-const deleteAllBlocksLocaleText = localize('Delete All Blocks');
+const deleteBlocksLocaleText = () => localize('Delete Block');
+const deleteAllBlocksLocaleText = () => localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
+    const common_included_items = [download_option()];
     const include_items = [...common_included_items, ...add_new_items];
     include_items.forEach(item => {
         menu.push({
@@ -671,13 +671,13 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
         const menu_text = menu[i]?.text?.toLowerCase();
         if (menu_text?.includes('delete')) {
             if (menu_text.includes('block') && !menu_text.includes('blocks')) {
-                menu[i].text = deleteBlocksLocaleText;
+                menu[i].text = deleteBlocksLocaleText();
             } else {
-                menu[i].text = deleteAllBlocksLocaleText;
+                menu[i].text = deleteAllBlocksLocaleText();
             }
         } else {
             const localized_text = localize(menu[i].text);
-            if (all_context_menu_options.includes(localized_text)) {
+            if (all_context_menu_options().includes(localized_text)) {
                 menu[i].text = localized_text;
             }
         }
