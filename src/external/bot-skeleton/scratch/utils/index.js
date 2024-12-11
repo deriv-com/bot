@@ -410,24 +410,47 @@ const getDisabledBlocks = required_blocks_check => {
     });
 };
 
-const throwNewErrorMessage = (error_blocks, key) => {
-    return error_blocks.forEach(block => {
-        if (key === 'misplaced' && block) globalObserver.emit('ui.log.error', error_message_map[block?.type]?.[key]);
-        else if (key === 'missing' && block) globalObserver.emit('ui.log.error', error_message_map[block]?.[key]);
-        else if (key === 'disabled' && block) {
+const throwNewErrorMessage = async (error_blocks, key) => {
+    for (const block of error_blocks) {
+        const error_message_map_ = async (type, key) => {
+            try {
+                const data = await error_message_map[type];
+                return data[key];
+            } catch (error) {
+                console.error('Error fetching error message:', error);
+                return null;
+            }
+        };
+        if (key === 'misplaced' && block) {
+            const error_message = await error_message_map_(block, key);
+            if (error_message) {
+                globalObserver.emit('ui.log.error', error_message);
+            }
+        } else if (key === 'missing' && block) {
+            // console.log('block send outside', block, key);
+            const error_message = await error_message_map_(block, key);
+            if (error_message) {
+                globalObserver.emit('ui.log.error', error_message);
+            }
+        } else if (key === 'disabled' && block) {
             let parent_block_error = false;
-            const parent_error_message = error_message_map[block.type]?.[key];
+            // console.log('block send outside', block.type, key);
+
+            const parent_error_message = await error_message_map_(block?.type, key);
+
             if (block.disabled && parent_error_message) {
                 globalObserver.emit('ui.log.error', parent_error_message);
                 parent_block_error = true;
             } else if (!parent_block_error && block.childBlocks_) {
-                block.childBlocks_.forEach(childBlock => {
-                    const child_error_message = error_message_map[childBlock.type]?.[key];
-                    if (child_error_message) globalObserver.emit('ui.log.error', child_error_message);
-                });
+                for (const childBlock of block.childBlocks_) {
+                    const child_error_message = await error_message_map_(childBlock.type, key);
+                    if (child_error_message) {
+                        globalObserver.emit('ui.log.error', child_error_message);
+                    }
+                }
             }
         }
-    });
+    }
 };
 
 export const isAllRequiredBlocksEnabled = workspace => {
@@ -448,6 +471,7 @@ export const isAllRequiredBlocksEnabled = workspace => {
     const error_blocks = [...missing_blocks, ...disabled_blocks];
     const blocks_required = error_blocks.length === 0;
 
+    console.log('blocks_required', error_blocks);
     return blocks_required;
 };
 

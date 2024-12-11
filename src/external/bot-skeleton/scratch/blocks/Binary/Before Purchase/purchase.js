@@ -11,7 +11,7 @@ window.Blockly.Blocks.purchase = {
     },
     definition() {
         return {
-            message0: localize('Purchase {{ contract_type }}', { contract_type: '%1' }),
+            message0: localize('Purchase test {{ contract_type }}', { contract_type: '%1' }),
             args0: [
                 {
                     type: 'field_dropdown',
