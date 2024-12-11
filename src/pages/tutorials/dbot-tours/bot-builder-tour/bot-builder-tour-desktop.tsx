@@ -10,8 +10,9 @@ import { useTourHandler } from '../useTourHandler';
 
 const BotBuilderTourDesktop = observer(() => {
     const { is_close_tour, is_finished, handleJoyrideCallback, setIsCloseTour } = useTourHandler();
-    const { dashboard } = useStore();
+    const { dashboard, load_modal } = useStore();
     const { active_tab, active_tour, setActiveTour, setTourDialogVisibility } = dashboard;
+    const { is_load_modal_open } = load_modal;
     const token = getSetting('bot_builder_token');
     if (!token && active_tab === 1) setTourDialogVisibility(true);
 
@@ -27,7 +28,7 @@ const BotBuilderTourDesktop = observer(() => {
 
     return (
         <>
-            {!is_finished ? <TourStartDialog /> : <TourEndDialog />}
+            {is_finished ? <TourEndDialog /> : (!is_load_modal_open ? <TourStartDialog />: null)}
             {active_tour && (
                 <ReactJoyrideWrapper
                     handleCallback={handleJoyrideCallback}
