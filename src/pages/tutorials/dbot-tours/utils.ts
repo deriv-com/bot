@@ -27,7 +27,7 @@ export const setTourType = (param: string) => {
 };
 
 export const highlightLoadModalButton = (tour_active: string, step: number) => {
-    const el_ref = document.querySelector('.toolbar__group-btn svg:nth-child(2)');
+    const el_ref = document.querySelector('#db-toolbar__import-button');
     if (tour_active && step === 1) {
         el_ref?.classList.add('dbot-tour-blink');
     } else {
