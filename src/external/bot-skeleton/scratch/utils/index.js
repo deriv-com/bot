@@ -643,7 +643,7 @@ export const excludeOptionFromContextMenu = (menu, exclude_items) => {
 
 const common_included_items = [download_option];
 
-const all_context_menu_options = [
+const all_context_menu_options = () => [
     localize('Duplicate'),
     localize('Add Comment'),
     localize('Remove Comment'),
@@ -677,7 +677,7 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
             }
         } else {
             const localized_text = localize(menu[i].text);
-            if (all_context_menu_options.includes(localized_text)) {
+            if (all_context_menu_options().includes(localized_text)) {
                 menu[i].text = localized_text;
             }
         }
