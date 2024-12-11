@@ -511,16 +511,17 @@ export default class LoadModalStore {
         this.setSelectedStrategyId(workspace_id);
 
         await waitForDomElement('#load-strategy__blockly-container');
-        const ref_preview = document?.getElementById('load-strategy__blockly-container');
+        const ref_preview = document.getElementById('load-strategy__blockly-container');
 
-        if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, inject_options);
-        (this.recent_workspace as any).RTL = isDbotRTL();
+        if (ref_preview) {
+            if (!this.recent_workspace) this.recent_workspace = window.Blockly.inject(ref_preview, inject_options);
+            (this.recent_workspace as any).RTL = isDbotRTL();
 
-        const convertedDom = window.Blockly?.utils?.xml?.textToDom(this.selected_strategy?.xml);
-        const mainWorkspace = window.Blockly?.getMainWorkspace();
+            const convertedDom = window.Blockly?.utils?.xml?.textToDom(this.selected_strategy?.xml);
+            const mainWorkspace = window.Blockly?.getMainWorkspace();
 
-        window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
-
+            window.Blockly?.Xml?.clearWorkspaceAndLoadFromXml(convertedDom, mainWorkspace);
+        }
         setLoading(false);
         this.setOpenButtonDisabled(false);
     };
