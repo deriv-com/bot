@@ -1,45 +1,24 @@
-import { Localize } from '@deriv-com/translations';
+import { localize } from '@deriv-com/translations';
 
 const generateErrorMessage = (block_type, missing_space = 'workspace') => {
     return {
-        missing: (
-            <Localize
-                i18n_default_text={`The {{block_type}} block is missing.`}
-                values={{
-                    block_type,
-                }}
-            />
-        ),
-        misplaced: (
-            <Localize
-                i18n_default_text={`The {{block_type}} block is misplaced from {{missing_space}}.`}
-                values={{
-                    block_type,
-                    missing_space,
-                }}
-            />
-        ),
-
-        disabled: (
-            <Localize
-                i18n_default_text={`The {{block_type}} block is mandatory and cannot be deleted/disabled.`}
-                values={{
-                    block_type,
-                }}
-            />
-        ),
-        default: (
-            <Localize
-                i18n_default_text={`The {{block_type}} block is mandatory and cannot be deleted/disabled.`}
-                values={{
-                    block_type,
-                }}
-            />
-        ),
+        missing: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type,
+        }),
+        misplaced: localize('The {{block_type}} block is misplaced from {{missing_space}}.', {
+            block_type,
+            missing_space,
+        }),
+        disabled: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type,
+        }),
+        default: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+            block_type,
+        }),
     };
 };
 
-export const error_message_map = {
+export const error_message_map = () => ({
     trade_definition: generateErrorMessage('Trade parameters'),
     trade_parameters: generateErrorMessage('Trade parameters'),
     before_purchase: generateErrorMessage('Purchase conditions'),
@@ -48,4 +27,4 @@ export const error_message_map = {
     trade_definition_tradeoptions: generateErrorMessage('Trade options', 'trade parameters'),
     trade_definition_multiplier: generateErrorMessage('Trade options multipliers', 'trade parameters'),
     trade_definition_accumulator: generateErrorMessage('Trade options accumulators', 'trade parameters'),
-};
+});

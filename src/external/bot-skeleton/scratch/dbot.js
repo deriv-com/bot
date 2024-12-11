@@ -402,15 +402,12 @@ class DBot {
      * Disable blocks outside of any main or independent blocks.
      */
     disableStrayBlocks() {
-        const isMainBlock = block_type => config().mainBlocks.indexOf(block_type) >= 0;
         const top_blocks = this.workspace.getTopBlocks();
-
         top_blocks.forEach(block => {
-            if (!isMainBlock() && !block.isIndependentBlock()) {
+            if (!block.isMainBlock() && !block.isIndependentBlock()) {
                 this.disableBlocksRecursively(block);
             }
         });
-
         return true;
     }
 
@@ -418,6 +415,7 @@ class DBot {
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
+        block.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
         }
