@@ -643,16 +643,22 @@ export const excludeOptionFromContextMenu = (menu, exclude_items) => {
 
 const common_included_items = [download_option()];
 
-const all_context_menu_options = () => [
-    localize('Duplicate'),
-    localize('Add Comment'),
-    localize('Remove Comment'),
-    localize('Collapse Block'),
-    localize('Expand Block'),
-    localize('Disable Block'),
-    localize('Enable Block'),
-    localize('Download Block'),
-];
+const getLocalizedText = text => {
+    if (!text) return text;
+    return localize(text) || text;
+};
+
+const all_context_menu_options = () =>
+    [
+        'Duplicate',
+        'Add Comment',
+        'Remove Comment',
+        'Collapse Block',
+        'Expand Block',
+        'Disable Block',
+        'Enable Block',
+        'Download Block',
+    ].map(getLocalizedText);
 
 const deleteBlocksLocaleText = () => localize('Delete Block');
 const deleteAllBlocksLocaleText = () => localize('Delete All Blocks');
