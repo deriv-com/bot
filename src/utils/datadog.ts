@@ -25,7 +25,6 @@ const getConfigValues = (is_production: boolean) => {
 
 const initDatadog = (is_datadog_enabled: boolean) => {
     if (!is_datadog_enabled) return;
-    console.log('current environment: ', process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
         const is_production = process.env.NODE_ENV === 'production';
         const {
