@@ -7,6 +7,7 @@ import {
     standalone_routes,
 } from '@/components/shared';
 import { api_base, ApiHelpers, DBot, runIrreversibleEvents } from '@/external/bot-skeleton';
+import { setCurrency } from '@/external/bot-skeleton/scratch/utils';
 import { TApiHelpersStore } from '@/types/stores.types';
 import { localize } from '@deriv-com/translations';
 import RootStore from './root-store';
@@ -224,7 +225,7 @@ export default class AppStore {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
             () => this.core.client.currency,
-            currency => {
+            () => {
                 if (!window.Blockly?.derivWorkspace) return;
 
                 const trade_options_blocks = window.Blockly?.derivWorkspace
@@ -237,7 +238,7 @@ export default class AppStore {
                             (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
                     );
 
-                trade_options_blocks.forEach(trade_options_block => trade_options_block.setCurrency(currency));
+                trade_options_blocks.forEach(trade_options_block => setCurrency(trade_options_block));
             }
         );
     };
