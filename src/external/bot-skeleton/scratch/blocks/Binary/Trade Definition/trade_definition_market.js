@@ -57,7 +57,7 @@ window.Blockly.Blocks.trade_definition_market = {
 
         this.enforceLimitations();
 
-        const { active_symbols } = ApiHelpers.instance;
+        const { active_symbols = [] } = ApiHelpers?.instance || {};
         const market_dropdown = this.getField('MARKET_LIST');
         const submarket_dropdown = this.getField('SUBMARKET_LIST');
         const symbol_dropdown = this.getField('SYMBOL_LIST');

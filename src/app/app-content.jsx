@@ -122,7 +122,7 @@ const AppContent = observer(() => {
 
     const changeActiveSymbolLoadingState = () => {
         init();
-        const { active_symbols } = ApiHelpers.instance;
+        const { active_symbols = [] } = ApiHelpers?.instance || {};
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
         });
