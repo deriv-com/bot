@@ -12,6 +12,7 @@ import { useDevice } from '@deriv-com/ui';
 import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
+import MobileQSFooter from './form-wrappers/mobile-qs-footer';
 import { QsSteps } from './form-wrappers/trade-constants';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
@@ -246,28 +247,31 @@ const QuickStrategy = observer(() => {
                         </DesktopFormWrapper>
                     </Modal>
                 ) : (
-                    <MobileFullPageModal
-                        is_modal_open={is_open}
-                        className='quick-strategy__wrapper'
-                        header={
-                            <Text size='xs' weight='bold'>
-                                {localize(
-                                    `Step ${current_step === QsSteps.StrategyCompleted ? 2 : 1}/2: Choose your strategy`
-                                )}
-                            </Text>
-                        }
-                        onClickClose={handleClose}
-                        height_offset='8rem'
-                    >
-                        <MobileFormWrapper
-                            setCurrentStep={setCurrentStep}
-                            current_step={current_step}
-                            selected_trade_type={selected_trade_type}
-                            setSelectedTradeType={setSelectedTradeType}
+                    <>
+                        <MobileFullPageModal
+                            is_modal_open={is_open}
+                            className='quick-strategy__wrapper'
+                            header={
+                                <Text size='xs' weight='bold'>
+                                    {localize(
+                                        `Step ${current_step === QsSteps.StrategyCompleted ? 2 : 1}/2: Choose your strategy`
+                                    )}
+                                </Text>
+                            }
+                            onClickClose={handleClose}
+                            height_offset='8rem'
                         >
-                            <Form />
-                        </MobileFormWrapper>
-                    </MobileFullPageModal>
+                            <MobileFormWrapper
+                                setCurrentStep={setCurrentStep}
+                                current_step={current_step}
+                                selected_trade_type={selected_trade_type}
+                                setSelectedTradeType={setSelectedTradeType}
+                            >
+                                <Form />
+                            </MobileFormWrapper>
+                        </MobileFullPageModal>
+                        <MobileQSFooter setCurrentStep={setCurrentStep} current_step={current_step} />
+                    </>
                 )}
             </FormikForm>
         </FormikWrapper>
