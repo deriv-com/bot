@@ -67,6 +67,7 @@
             padding: 16px 0 2px;
             cursor: pointer;
             color: var(--text-general);
+            -webkit-tap-highlight-color: transparent;
 
             &-item {
                 display: inline-block;
