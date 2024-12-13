@@ -48,8 +48,12 @@ export default class BlockConversion {
 
                                 value_input.connection.connect(value_block.outputConnection);
                             });
+                            const parent_element = child_node.parentNode;
+                            const child_element = child_node;
 
-                            child_node.parentNode.removeChild(child_node);
+                            if (parent_element && child_element && parent_element?.contains(child_element)) {
+                                parent_element?.removeChild(child_element);
+                            }
                         });
                 }
             }
@@ -135,8 +139,12 @@ export default class BlockConversion {
 
                                 value_input.connection.connect(converted_block.outputConnection);
                             });
+                            const parent_element = el_value?.parentNode;
+                            const child_element = el_value;
 
-                            el_value.parentNode.removeChild(el_value);
+                            if (parent_element && child_element && parent_element?.contains(child_element)) {
+                                el_value?.parentNode?.removeChild(el_value);
+                            }
                         }
                     });
                 }
