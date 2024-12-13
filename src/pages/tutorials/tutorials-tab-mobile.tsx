@@ -68,7 +68,12 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         const selectElement = document.getElementById('dt_components_select-native_select-tag') as HTMLSelectElement;
 
         if (selectElement) {
-            selectElement.removeChild(selectElement?.options[3]);
+            const parent_element = selectElement;
+            const child_element = selectElement?.options?.[3];
+
+            if (parent_element && child_element && parent_element?.contains(child_element)) {
+                parent_element?.removeChild(child_element);
+            }
         }
     }, []);
 

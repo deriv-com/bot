@@ -117,7 +117,12 @@ const ModalElement = ({
         onMount?.();
 
         return () => {
-            local_modal_root_ref?.current?.removeChild?.(local_el_ref.current);
+            const parent_element = local_modal_root_ref?.current;
+            const child_element = local_el_ref?.current;
+
+            if (parent_element && child_element && parent_element?.contains(child_element)) {
+                parent_element?.removeChild(child_element);
+            }
             onUnmount?.();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

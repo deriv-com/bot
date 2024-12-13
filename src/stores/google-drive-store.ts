@@ -188,6 +188,11 @@ export default class GoogleDriveStore {
             if ((err as TErrorWithStatus)?.status === 401) {
                 await this.signOut();
                 const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
+                const parent_element = picker?.parentNode;
+                const child_element = picker;
+                if (child_element && parent_element && parent_element?.contains(child_element)) {
+                    parent_element?.removeChild(child_element);
+                }
                 picker?.parentNode?.removeChild(picker);
                 const pickerBackground = document.getElementsByClassName(
                     'picker-dialog-bg'
