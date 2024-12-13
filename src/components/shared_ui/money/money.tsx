@@ -29,7 +29,7 @@ const Money = ({
 
     return (
         <React.Fragment>
-            {has_sign && sign}
+            <span>{has_sign && sign}</span>
             <span data-testid='dt_span' className={className}>
                 {final_amount} {show_currency && getCurrencyDisplayCode(currency)}
             </span>
