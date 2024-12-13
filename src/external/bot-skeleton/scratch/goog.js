@@ -34,7 +34,7 @@ goog.dom.removeNode = function (node) {
     const parent_element = node.parentNode;
     const child_element = node;
 
-    if (child_element && parent_element) {
+    if (child_element && parent_element && parent_element.contains(child_element)) {
         parent_element.removeChild(child_element);
     }
 };
