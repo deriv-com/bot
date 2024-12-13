@@ -69,7 +69,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
 
         if (selectElement) {
             const parent_element = selectElement;
-            const child_element = selectElement?.options[3];
+            const child_element = selectElement?.options?.[3];
 
             if (parent_element && child_element && parent_element?.contains(child_element)) {
                 parent_element?.removeChild(child_element);
