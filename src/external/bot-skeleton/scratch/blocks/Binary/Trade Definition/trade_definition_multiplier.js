@@ -3,7 +3,7 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
-import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents } from '../../../utils';
+import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents, setCurrency } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_multiplier = {
     init() {
@@ -134,7 +134,7 @@ window.Blockly.Blocks.trade_definition_multiplier = {
         const is_load_event = /^dbot-load/.test(event.group);
 
         if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.setCurrency();
+            setCurrency(this);
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateMultiplierInput(false);
@@ -145,6 +145,7 @@ window.Blockly.Blocks.trade_definition_multiplier = {
         }
 
         if (event.type === window.Blockly.Events.BLOCK_CHANGE) {
+            setCurrency(this);
             this.validateBlocksInStatement();
             if (is_load_event) {
                 if (event.name === 'TRADETYPE_LIST') {
@@ -166,7 +167,6 @@ window.Blockly.Blocks.trade_definition_multiplier = {
         }
 
         if (event.type === window.Blockly.Events.BLOCK_DRAG && !event.isStart) {
-            this.setCurrency();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
@@ -245,7 +245,6 @@ window.Blockly.Blocks.trade_definition_multiplier = {
     customContextMenu(menu) {
         modifyContextMenu(menu);
     },
-    setCurrency: window.Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
