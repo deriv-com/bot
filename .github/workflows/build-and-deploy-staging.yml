@@ -39,6 +39,7 @@ jobs:
             - name: Build staging
               run: npm run build
               env:
+                  APP_ENV: staging
                   R2_PROJECT_NAME: ${{ vars.R2_PROJECT_NAME }}
                   TRANSLATIONS_CDN_URL: ${{ vars.TRANSLATIONS_CDN_URL }}
                   CROWDIN_BRANCH_NAME: staging

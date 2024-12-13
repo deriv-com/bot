@@ -30,7 +30,7 @@ export const AnalyticsInitializer = async () => {
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
                 growthbookOptions: {
-                    disableCache: process.env.NODE_ENV !== 'production',
+                    disableCache: process.env.APP_ENV !== 'production',
                     attributes: {
                         account_type: account_type === 'null' ? 'unlogged' : account_type,
                         app_id: String(getAppId()),

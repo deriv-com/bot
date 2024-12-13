@@ -25,8 +25,8 @@ const getConfigValues = (is_production: boolean) => {
 
 const initDatadog = (is_datadog_enabled: boolean) => {
     if (!is_datadog_enabled) return;
-    if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-        const is_production = process.env.NODE_ENV === 'production';
+    if (process.env.APP_ENV === 'production' || process.env.APP_ENV === 'staging') {
+        const is_production = process.env.APP_ENV === 'production';
         const {
             service,
             version,
