@@ -7,7 +7,7 @@ export const tabs_title = Object.freeze({
 export const clearInjectionDiv = (el_ref?: HTMLElement) => {
     const parent_element = el_ref;
     const child_element = el_ref?.getElementsByClassName('injectionDiv');
-    if (parent_element && child_element && child_element.length > 1) {
+    if (parent_element && child_element && child_element?.length > 1) {
         parent_element.removeChild(child_element[0]);
     }
 };

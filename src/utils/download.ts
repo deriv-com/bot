@@ -94,7 +94,7 @@ export const downloadFile = (file_name: string, content: string) => {
     link.click();
     const parent_element = link.parentNode;
     const child_element = link;
-    if (parent_element && child_element && parent_element.contains(child_element)) {
-        parent_element.removeChild(child_element);
+    if (parent_element && child_element && parent_element?.contains(child_element)) {
+        parent_element?.removeChild(child_element);
     }
 };
