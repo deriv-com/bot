@@ -116,7 +116,9 @@ window.Blockly.Blocks.trade_definition_market = {
                 // Reconnect self to trade definition block.
                 if (trade_definition_block) {
                     const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');
-                    connection.connect(this.previousConnection);
+                    if (connection) {
+                        connection.connect(this.previousConnection);
+                    }
                 } else {
                     this.dispose();
                 }
