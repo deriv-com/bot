@@ -1,4 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
+import { isTouchDevice } from '@/components/shared/utils/screen/responsive';
 
 export default class UiStore {
     is_mobile = true;
@@ -7,6 +8,7 @@ export default class UiStore {
     is_chart_layout_default = true;
     is_dark_mode_on = localStorage.getItem('theme') === 'dark';
     account_switcher_disabled_message = '';
+    current_focus = null;
     show_prompt = false;
     is_trading_assessment_for_new_user_enabled = false;
     is_accounts_switcher_on = false;
@@ -16,20 +18,23 @@ export default class UiStore {
 
     constructor() {
         makeObservable(this, {
-            show_prompt: observable,
-            is_dark_mode_on: observable,
-            is_mobile: observable,
-            is_desktop: observable,
-            is_tablet: observable,
             account_switcher_disabled_message: observable,
-            setDarkMode: action,
-            setDevice: action,
-            setAccountSwitcherDisabledMessage: action,
-            setPromptHandler: action,
-            setIsTradingAssessmentForNewUserEnabled: action.bound,
-            is_trading_assessment_for_new_user_enabled: observable,
+            current_focus: observable,
             is_accounts_switcher_on: observable,
+            is_dark_mode_on: observable,
+            is_desktop: observable,
+            is_mobile: observable,
+            is_tablet: observable,
+            is_trading_assessment_for_new_user_enabled: observable,
+            show_prompt: observable,
+            setAccountSwitcherDisabledMessage: action.bound,
+            setCurrentFocus: action.bound,
+            setDarkMode: action.bound,
+            setDevice: action.bound,
+            setPromptHandler: action.bound,
+            setIsTradingAssessmentForNewUserEnabled: action.bound,
             toggleAccountsDialog: action.bound,
+            toggleOnScreenKeyboard: action.bound,
         });
     }
 
@@ -60,5 +65,14 @@ export default class UiStore {
 
     toggleAccountsDialog(status = !this.is_accounts_switcher_on) {
         this.is_accounts_switcher_on = status;
+    }
+
+    toggleOnScreenKeyboard() {
+        this.is_onscreen_keyboard_active = this.current_focus !== null && this.is_mobile && isTouchDevice();
+    }
+
+    setCurrentFocus(value) {
+        this.current_focus = value;
+        this.toggleOnScreenKeyboard();
     }
 }

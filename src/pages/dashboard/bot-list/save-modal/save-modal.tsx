@@ -54,7 +54,7 @@ const SaveModalForm: React.FC<TSaveModalForm> = ({
         initialValues={{
             is_local: true,
             save_as_collection: false,
-            bot_name: bot_name === config.default_file_name ? '' : bot_name,
+            bot_name: bot_name === config().default_file_name ? '' : bot_name,
         }}
         validate={validateBotName}
         onSubmit={onConfirmSave}
@@ -80,8 +80,8 @@ const SaveModalForm: React.FC<TSaveModalForm> = ({
                                             placeholder={localize('Untitled Strategy')}
                                             error={touched[field.name] && errors[field.name]}
                                             label={localize('Bot name')}
-                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                            onBlur={() => setCurrentFocus(null)}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.value)}
+                                            onBlur={() => setCurrentFocus('')}
                                             {...field}
                                         />
                                     )}
