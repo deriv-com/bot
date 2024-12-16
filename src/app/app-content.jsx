@@ -150,7 +150,7 @@ const AppContent = observer(() => {
             changeActiveSymbolLoadingState();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client.is_landing_company_loaded, is_api_initialized]);
+    }, [client.is_landing_company_loaded, is_api_initialized, client.loginid]);
 
     // TODO: fix
     // const isMounted = useIsMounted();
