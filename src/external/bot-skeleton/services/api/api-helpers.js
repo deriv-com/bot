@@ -26,7 +26,7 @@ class ApiHelpers {
     }
 
     static get instance() {
-        return this.singleton;
+        return this.singleton ?? {};
     }
 }
 
