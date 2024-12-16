@@ -207,7 +207,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         }
 
         this.setFormVisibility(false);
-        botNotification(notification_message()[NOTIFICATION_TYPE.BOT_IMPORT]);
+        this.root_store.client.is_logged_in && botNotification(notification_message()[NOTIFICATION_TYPE.BOT_IMPORT]);
 
         await load({
             block_string: window.Blockly.Xml.domToText(strategy_dom),
