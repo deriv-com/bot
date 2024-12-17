@@ -8,14 +8,35 @@ import Interface from '../Interface';
 import { createScope } from './cliTools';
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
-    const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
-    return newStateStack;
+    console.log('takeStateSnapshot');
+    if (!this.stateStack || this.stateStack.length === 0) {
+        console.error('State stack is empty. Cannot take snapshot.');
+        return null;
+    }
+    try {
+        const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);
+        return newStateStack;
+    } catch (error) {
+        console.error('Failed to clone state stack:', error);
+        return null;
+    }
 };
 
 JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
-    this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
-    this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
-    this.initFunc_(this, this.global);
+    console.log('restoreStateSnapshot');
+
+    if (!snapshot || !Array.isArray(snapshot) || snapshot.length === 0) {
+        console.error('Invalid snapshot provided for restoration.');
+        return;
+    }
+    try {
+        this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
+        this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
+        this.initFunc_(this, this.global);
+        console.log('State restored successfully.');
+    } catch (error) {
+        console.error('Failed to restore state:', error);
+    }
 };
 
 const botInitialized = bot => bot && bot.tradeEngine.options;
@@ -48,10 +69,21 @@ const Interpreter = () => {
         $scope = createScope();
         bot = Interface($scope);
         interpreter = {};
-        onFinish = () => {};
+        onFinish = () => { };
     }
 
     function revert(state) {
+        console.log('revert interpreter: ', interpreter, 'state: ', state);
+
+        if (!interpreter) {
+            console.error('Interpreter is not initialized.');
+            return;
+        }
+
+        if (typeof interpreter.restoreStateSnapshot !== 'function') {
+            console.error('restoreStateSnapshot is not a function.');
+            return;
+        }
         interpreter.restoreStateSnapshot(state);
         interpreter.paused_ = false;
         loop();
@@ -233,8 +265,22 @@ const Interpreter = () => {
     }
 
     function run(code) {
+        console.log('run');
+
+        if (!interpreter) {
+            console.log('Initializing interpreter.');
+            interpreter = new JSInterpreter(code, initFunc);
+        }
+
         return new Promise((resolve, reject) => {
             const onError = e => {
+                console.error('Error occurred during execution:', e);
+                if (!code) {
+                    console.error('No code provided to run.');
+                    reject(new Error('No code provided to run.'));
+                    return;
+                }
+
                 if ($scope.stopped) {
                     return;
                 }
@@ -262,17 +308,46 @@ const Interpreter = () => {
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
                 bot.tradeEngine.start(tradeOptions);
-                revert($scope.startState);
+
+                if ($scope.startState && interpreter && typeof interpreter.restoreStateSnapshot === 'function') {
+                    console.log('Attempting to revert to start state.');
+                    revert($scope.startState);
+                } else {
+                    console.error('Cannot revert: startState or restoreStateSnapshot is missing.');
+                }
             };
 
-            $scope.observer.register('Error', onError);
+            try {
+                $scope.observer.register('Error', onError);
+                interpreter = new JSInterpreter(code, initFunc);
 
-            interpreter = new JSInterpreter(code, initFunc);
-            onFinish = resolve;
+                $scope.startState = interpreter.takeStateSnapshot();//
+                if (!$scope.startState) {//
+                    throw new Error('Failed to take initial state snapshot.');
+                }
+
+                interpreter.run();
+                resolve();
+            } catch (error) {
+                onError(error);
+            }
 
             loop();
         });
     }
+
+    //Use safe reinitialization. If the interpreter needs to be reinitialized, e.g.in case of an error, you should do it safely
+    async function resetInterpreter() {
+        if (interpreter) {
+            try {
+                await interpreter.terminateSession();
+            } catch (error) {
+                console.error('Error during interpreter termination:', error);
+            }
+        }
+        interpreter = new JSInterpreter('', initFunc);
+    }
+
 
     return { stop, run, terminateSession, bot, unsubscribeFromTicksService };
 };

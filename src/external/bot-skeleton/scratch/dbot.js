@@ -266,7 +266,9 @@ class DBot {
             this.is_bot_running = true;
 
             api_base.setIsRunning(true);
-            this.interpreter.run(code).catch(error => {
+            this.interpreter.run(code).then(() => {
+                console.log('Running interpreter...');
+            }).catch(error => {
                 globalObserver.emit('Error', error);
                 this.stopBot();
             });
