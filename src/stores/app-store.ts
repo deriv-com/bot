@@ -259,11 +259,12 @@ export default class AppStore {
 
                 this.showDigitalOptionsMaltainvestError();
 
-                if (ApiHelpers.instance) {
-                    const { active_symbols, contracts_for } = ApiHelpers.instance;
+                const active_symbols = ApiHelpers.instance?.active_symbols;
+                const contracts_for = ApiHelpers.instance?.contracts_for;
 
+                if (ApiHelpers.instance && active_symbols && contracts_for) {
                     if (window.Blockly?.derivWorkspace) {
-                        active_symbols.retrieveActiveSymbols(true).then(() => {
+                        active_symbols?.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();
                             window.Blockly?.derivWorkspace
                                 .getAllBlocks()
