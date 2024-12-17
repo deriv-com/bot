@@ -237,7 +237,8 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updateAmountLimits() {
-        const { account_limits } = ApiHelpers.instance;
+        const { account_limits } = ApiHelpers?.instance ?? {};
+        if (!account_limits) return;
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
         if (isAuthorizing$.getValue()) return;
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
@@ -260,7 +261,8 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
+        if (!contracts_for) return;
 
         if (this.selected_trade_type === 'accumulator' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
@@ -400,7 +402,9 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         }, 10);
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
+        if (!contracts_for) return;
+
         const { BARRIER_TYPES } = config();
 
         contracts_for
@@ -458,7 +462,8 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             });
     },
     updatePredictionInput(should_use_default_value) {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
+        if (!contracts_for) return;
 
         contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
             this.createPredictionInput(prediction_range);

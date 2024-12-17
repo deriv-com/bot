@@ -45,7 +45,7 @@ class DBot {
                 const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
 
                 if (is_symbol_list_change || is_trade_type_cat_list_change) {
-                    const { contracts_for } = ApiHelpers.instance;
+                    const { contracts_for } = ApiHelpers?.instance ?? {};
                     const top_parent_block = this.getTopParent();
                     const market_block = top_parent_block.getChildByType('trade_definition_market');
                     const market = market_block.getFieldValue('MARKET_LIST');
@@ -57,7 +57,7 @@ class DBot {
                     if (!is_trade_type_accumulator) forgetAccumulatorsProposalRequest(that);
 
                     if (is_symbol_list_change) {
-                        contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
+                        contracts_for?.getTradeTypeCategories?.(market, submarket, symbol).then(categories => {
                             const category_field = this.getField('TRADETYPECAT_LIST');
                             if (category_field) {
                                 category_field.updateOptions(categories, {
@@ -82,7 +82,7 @@ class DBot {
                             });
                         }
                     } else if (is_trade_type_cat_list_change && event.blockId === this.id) {
-                        contracts_for.getTradeTypes(market, submarket, symbol, category).then(trade_types => {
+                        contracts_for?.getTradeTypes?.(market, submarket, symbol, category).then(trade_types => {
                             const trade_type_field = this.getField('TRADETYPE_LIST');
                             trade_type_field.updateOptions(trade_types, {
                                 default_value: trade_type,

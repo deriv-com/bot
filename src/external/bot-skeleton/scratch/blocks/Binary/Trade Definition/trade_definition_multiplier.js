@@ -182,22 +182,24 @@ window.Blockly.Blocks.trade_definition_multiplier = {
     },
 
     updateMultiplierInput(should_use_default_value) {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
 
         if (this.selected_trade_type === 'multiplier') {
-            contracts_for.getMultiplierRange(this.selected_symbol, this.selected_trade_type).then(multiplier_range => {
-                if (multiplier_range.length > 0) {
-                    const multiplier_list_dropdown = this.getField('MULTIPLIERTYPE_LIST');
-                    const multiplier_options = multiplier_range.map(value => {
-                        const option = value.toString();
-                        return [option, option];
-                    });
+            contracts_for
+                ?.getMultiplierRange?.(this.selected_symbol, this.selected_trade_type)
+                ?.then(multiplier_range => {
+                    if (multiplier_range.length > 0) {
+                        const multiplier_list_dropdown = this.getField('MULTIPLIERTYPE_LIST');
+                        const multiplier_options = multiplier_range.map(value => {
+                            const option = value.toString();
+                            return [option, option];
+                        });
 
-                    multiplier_list_dropdown?.updateOptions(multiplier_options, {
-                        default_value: should_use_default_value ? undefined : multiplier_list_dropdown.getValue(),
-                    });
-                }
-            });
+                        multiplier_list_dropdown?.updateOptions(multiplier_options, {
+                            default_value: should_use_default_value ? undefined : multiplier_list_dropdown.getValue(),
+                        });
+                    }
+                });
             return;
         }
 

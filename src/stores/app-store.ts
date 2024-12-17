@@ -253,16 +253,16 @@ export default class AppStore {
                     ws: api_base.api,
                 };
 
-                if (!ApiHelpers.instance) {
+                if (!ApiHelpers?.instance) {
                     ApiHelpers.setInstance(this.api_helpers_store);
                 }
 
                 this.showDigitalOptionsMaltainvestError();
 
-                const active_symbols = ApiHelpers.instance?.active_symbols;
-                const contracts_for = ApiHelpers.instance?.contracts_for;
+                const active_symbols = ApiHelpers?.instance?.active_symbols;
+                const contracts_for = ApiHelpers?.instance?.contracts_for;
 
-                if (ApiHelpers.instance && active_symbols && contracts_for) {
+                if (ApiHelpers?.instance && active_symbols && contracts_for) {
                     if (window.Blockly?.derivWorkspace) {
                         active_symbols?.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();

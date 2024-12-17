@@ -53,12 +53,13 @@ const SymbolSelect: React.FC = () => {
     );
 
     useEffect(() => {
-        const { active_symbols } = ApiHelpers.instance as unknown as {
-            active_symbols: {
-                getSymbolsForBot: () => TSymbol[];
-            };
-        };
-        const symbols = active_symbols.getSymbolsForBot();
+        const { active_symbols } =
+            (ApiHelpers?.instance as unknown as {
+                active_symbols: {
+                    getSymbolsForBot: () => TSymbol[];
+                };
+            }) ?? {};
+        const symbols = active_symbols?.getSymbolsForBot?.();
         setActiveSymbols(symbols);
 
         const has_symbol = !!symbols?.find(symbol => symbol?.value === values?.symbol);

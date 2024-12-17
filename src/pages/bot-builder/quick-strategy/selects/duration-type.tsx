@@ -23,8 +23,8 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     React.useEffect(() => {
         if (tradetype && symbol) {
             const getDurationUnits = async () => {
-                const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
-                const durations = await contracts_for.getDurations(symbol, tradetype);
+                const { contracts_for } = (ApiHelpers?.instance as unknown as TApiHelpersInstance) ?? {};
+                const durations = await contracts_for?.getDurations?.(symbol, tradetype);
                 const duration_units = durations?.map(duration => ({
                     text: duration.display ?? '',
                     value: duration.unit ?? '',

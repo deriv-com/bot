@@ -40,9 +40,9 @@ const TradeTypeSelect: React.FC = () => {
             const selected = values?.tradetype;
             const is_symbol_accumulator = is_strategy_accumulator ? 'ACCU' : '';
 
-            const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
+            const { contracts_for } = (ApiHelpers?.instance as unknown as TApiHelpersInstance) ?? {};
             const getTradeTypes = async () => {
-                const trade_types = await contracts_for.getTradeTypesForQuickStrategy(
+                const trade_types = await contracts_for?.getTradeTypesForQuickStrategy?.(
                     values?.symbol,
                     is_symbol_accumulator
                 );
