@@ -336,11 +336,11 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                     take_profit_shadow_block.initSvg();
                     take_profit_shadow_block.renderEfficiently();
 
+                    take_profit_block.initSvg();
+                    take_profit_block.renderEfficiently();
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(take_profit_block.previousConnection);
-                    take_profit_block.initSvg();
-                    take_profit_block.renderEfficiently();
 
                     const stop_loss_block = this.workspace.newBlock('multiplier_stop_loss');
                     const stop_loss_input = stop_loss_block.getInput('AMOUNT');
