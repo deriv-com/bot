@@ -17,7 +17,10 @@ const useTrackjs = () => {
                     enabled: isProduction,
                     token: TRACKJS_TOKEN!,
                     userId: loginid,
-                    version: (document.querySelector('meta[name=version]') as HTMLMetaElement)?.content ?? 'undefined',
+                    version:
+                        (document.querySelector('meta[name=version]') as HTMLMetaElement)?.content ??
+                        process?.env?.REF_NAME ??
+                        'undefined',
                 });
             }
         } catch (error) {
