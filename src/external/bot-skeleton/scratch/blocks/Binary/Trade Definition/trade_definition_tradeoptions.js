@@ -353,11 +353,11 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                     stop_loss_shadow_block.initSvg();
                     stop_loss_shadow_block.renderEfficiently();
 
+                    stop_loss_block.initSvg();
+                    stop_loss_block.renderEfficiently();
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(stop_loss_block.previousConnection);
-                    stop_loss_block.initSvg();
-                    stop_loss_block.renderEfficiently();
 
                     this.dispose();
                 });
