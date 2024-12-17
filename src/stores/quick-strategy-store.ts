@@ -140,7 +140,8 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
 
     onSubmit = async (data: TFormData) => {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
+        if (!contracts_for) return;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);

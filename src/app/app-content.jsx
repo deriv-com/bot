@@ -122,15 +122,26 @@ const AppContent = observer(() => {
 
     const changeActiveSymbolLoadingState = () => {
         init();
-        const intervalId = setInterval(() => {
-            if (ApiHelpers?.instance?.active_symbols) {
-                clearInterval(intervalId);
-                const { active_symbols } = ApiHelpers.instance;
-                active_symbols.retrieveActiveSymbols(true).then(() => {
-                    setIsLoading(false);
-                });
-            }
-        }, 1000);
+
+        const retrieveActiveSymbols = () => {
+            const { active_symbols } = ApiHelpers.instance;
+            active_symbols.retrieveActiveSymbols(true).then(() => {
+                setIsLoading(false);
+            });
+        };
+
+        if (ApiHelpers?.instance?.active_symbols) {
+            retrieveActiveSymbols();
+        } else {
+            // This is a workaround to fix the issue where the active symbols are not loaded immediately
+            // when the API is initialized. Should be replaced with RxJS pubsub
+            const intervalId = setInterval(() => {
+                if (ApiHelpers?.instance?.active_symbols) {
+                    clearInterval(intervalId);
+                    retrieveActiveSymbols();
+                }
+            }, 1000);
+        }
     };
 
     React.useEffect(() => {

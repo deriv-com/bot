@@ -27,8 +27,8 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
         if (tradetype && symbol) {
             const selected = values?.type;
             const getContractTypes = async () => {
-                const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
-                const categories = await contracts_for.getContractTypes(tradetype);
+                const { contracts_for } = (ApiHelpers?.instance as unknown as TApiHelpersInstance) ?? {};
+                const categories = await contracts_for?.getContractTypes?.(tradetype);
                 setList(categories);
                 const has_selected = categories?.some(contract => contract.value === selected);
                 if (!has_selected) {

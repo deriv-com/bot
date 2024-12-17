@@ -175,10 +175,10 @@ window.Blockly.Blocks.trade_definition_accumulator = {
     },
     updateAmountLimits: window.Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
     updateAccumulatorInput(should_use_default_value) {
-        const { contracts_for } = ApiHelpers.instance;
+        const { contracts_for } = ApiHelpers?.instance ?? {};
 
         if (this.selected_trade_type === 'accumulator') {
-            contracts_for.getAccumulationRange().then(accumulator_range => {
+            contracts_for?.getAccumulationRange?.()?.then(accumulator_range => {
                 if (accumulator_range.length > 0) {
                     const accumulator_list_dropdown = this.getField('GROWTHRATE_LIST');
                     const accumulator_options = accumulator_range.map(value => {
