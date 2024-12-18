@@ -11,6 +11,7 @@ import {
     setIsAuthorizing,
 } from './observables/connection-status-stream';
 import ApiHelpers from './api-helpers';
+import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
 
 type CurrentSubscription = {
     id: string;
@@ -129,12 +130,12 @@ class APIBase {
                         if (!this.has_active_symbols) {
                             this.active_symbols_promise = this.getActiveSymbols();
                         }
-                
+
                         this.initEventListeners();
-                
+
                         if (this.time_interval) clearInterval(this.time_interval);
                         this.time_interval = null;
-                
+
                         if (V2GetActiveToken()) {
                             setIsAuthorizing(true);
                             this.authorizeAndSubscribe();
@@ -174,7 +175,6 @@ class APIBase {
                 // });
             }
         }
-
 
         // chart_api.init(force_create_connection);
 
