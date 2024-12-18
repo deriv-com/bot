@@ -242,12 +242,18 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
         if (isAuthorizing$.getValue()) return;
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
-            if (!this.getField('AMOUNT_LIMITS')) {
+            const restricted_trade_types = ['multiplier', 'accumulator'];
+            const CURRENCY_BLOCK = this.getField('CURRENCY_LIST')?.getSourceBlock();
+            const CURRENCY_CHILD_BLOCK = CURRENCY_BLOCK?.getChildren()[1]?.getField('NUM');
+            if (restricted_trade_types.includes(this.selected_trade_type)) {
+                return;
+            }
+            if (!this.getField('AMOUNT_LIMITS') && CURRENCY_BLOCK && CURRENCY_CHILD_BLOCK) {
                 return;
             }
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
-            if (max_payout && min_stake && this.selected_trade_type !== 'multiplier') {
+            if (max_payout && min_stake) {
                 runIrreversibleEvents(() => {
                     this.setFieldValue(
                         localize('(min: {{min_stake}} - max: {{max_payout}})', {
@@ -257,6 +263,9 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                         'AMOUNT_LIMITS'
                     );
                 });
+                if (CURRENCY_BLOCK && CURRENCY_CHILD_BLOCK) {
+                    CURRENCY_CHILD_BLOCK.setValue(this.amount_limits?.min_stake);
+                }
             }
         });
     },
