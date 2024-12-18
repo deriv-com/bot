@@ -9,6 +9,7 @@ export default Engine =>
             if (!api_base.api) return;
             const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                 if (data.msg_type === 'proposal_open_contract') {
+                    console.log('test ------------------- observeOpenContract ---------', data?.msg_type);
                     const contract = data.proposal_open_contract;
 
                     if (!contract || !this.expectedContractId(contract?.contract_id)) {

@@ -25,6 +25,7 @@ class DBot {
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
+        console.log('test initWorkspace ---------', this.interpreter);
         await loadBlockly(is_dark_mode);
         const recent_files = await getSavedWorkspaces();
         this.interpreter = Interpreter();
@@ -246,10 +247,25 @@ class DBot {
     }
 
     async initializeInterpreter() {
-        if (this.interpreter) {
-            await this.interpreter.terminateSession();
+        console.log('test initializeInterpreter ---------', this.interpreter, this.is_bot_running);
+        if (this.is_bot_running) {
+            this.interpreter?.unsubscribeFromTicksService?.()?.then(async () => {
+                await this.interpreter?.bot?.tradeEngine?.watchTicks(this.interpreter?.bot?.tradeEngine?.symbol, true);
+                console.log('test making proposal open contract request ---------', {
+                    proposal_open_contract: 1,
+                    contract_id: this.interpreter.bot.tradeEngine.contractId,
+                });
+                api_base.api.send({
+                    proposal_open_contract: 1,
+                    contract_id: this.interpreter.bot.tradeEngine.contractId,
+                });
+            });
+        } else {
+            if (this.interpreter) {
+                await this.interpreter.terminateSession();
+            }
+            this.interpreter = Interpreter();
         }
-        this.interpreter = Interpreter();
     }
     /**
      * Runs the bot. Does a sanity check before attempting to generate the

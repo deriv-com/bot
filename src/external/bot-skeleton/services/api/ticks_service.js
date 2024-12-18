@@ -265,6 +265,7 @@ export default class TicksService {
         };
         return new Promise((resolve, reject) => {
             if (!api_base.api) resolve([]);
+            console.log('test ------------------- requestTicks ---------', request_object);
             doUntilDone(() => api_base.api.send(request_object), [], api_base)
                 .then(r => {
                     if (style === 'ticks') {

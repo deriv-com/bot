@@ -139,6 +139,7 @@ export default class AppStore {
     };
 
     onMount = async () => {
+        console.log('test onMount ---------');
         const { blockly_store, run_panel } = this.root_store;
         const { client, ui } = this.core;
         this.showDigitalOptionsMaltainvestError();
@@ -186,6 +187,7 @@ export default class AppStore {
     };
 
     onUnmount = () => {
+        console.log('test onUnmount ---------');
         DBot.terminateBot();
         DBot.terminateConnection();
         if (window.Blockly?.derivWorkspace) {
