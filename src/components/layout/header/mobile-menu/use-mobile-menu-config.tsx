@@ -6,7 +6,6 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import RootStore from '@/stores/root-store';
-import { ACCOUNT_LIMITS, HELP_CENTRE, RESPONSIBLE } from '@/utils/constants';
 import {
     LegacyAccountLimitsIcon,
     LegacyCashierIcon,
@@ -54,13 +53,13 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
         [
             {
                 as: 'a',
-                href: URLConstants.derivComProduction,
+                href: standalone_routes.deriv_com,
                 label: localize('Deriv.com'),
                 LeftComponent: BrandDerivLogoCoralIcon,
             },
             {
                 as: 'a',
-                href: URLConstants.derivAppProduction,
+                href: standalone_routes.deriv_app,
                 label: localize("Trader's Hub"),
                 LeftComponent: LegacyHomeOldIcon,
             },
@@ -93,19 +92,19 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
             [
                 {
                     as: 'a',
-                    href: HELP_CENTRE,
+                    href: standalone_routes.help_center,
                     label: localize('Help center'),
                     LeftComponent: LegacyHelpCentreIcon,
                 },
                 {
                     as: 'a',
-                    href: ACCOUNT_LIMITS,
+                    href: standalone_routes.account_limits,
                     label: localize('Account limits'),
                     LeftComponent: LegacyAccountLimitsIcon,
                 },
                 {
                     as: 'a',
-                    href: RESPONSIBLE,
+                    href: standalone_routes.responsible,
                     label: localize('Responsible trading'),
                     LeftComponent: LegacyResponsibleTradingIcon,
                 },
