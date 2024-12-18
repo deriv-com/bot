@@ -1,7 +1,5 @@
-import { getAppId, getSocketURL } from '@/components/shared';
-import { website_name } from '@/utils/site-config';
+import { getAppId } from '@/components/shared';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getInitialLanguage } from '@deriv-com/translations';
 import APIMiddleware from './api-middleware';
 
 export const generateDerivApiInstance = () => {
@@ -12,7 +10,7 @@ export const generateDerivApiInstance = () => {
     const deriv_api = new DerivAPIBasic({
         // connection: deriv_socket,
         app_id: cleanedAppId,
-        endpoint:  'ws.derivws.com',
+        endpoint: 'ws.derivws.com',
         middleware: new APIMiddleware({}),
     });
     return deriv_api;
