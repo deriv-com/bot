@@ -11,8 +11,6 @@ import {
     setIsAuthorizing,
 } from './observables/connection-status-stream';
 import ApiHelpers from './api-helpers';
-import { generateDerivApiInstance, V2GetActiveClientId, V2GetActiveToken } from './appId';
-import chart_api from './chart-api';
 
 type CurrentSubscription = {
     id: string;
@@ -40,6 +38,8 @@ type TApiBaseApi = {
     };
 } & ReturnType<typeof generateDerivApiInstance>;
 
+let reconnect_timeout: NodeJS.Timeout | null = null;
+
 class APIBase {
     api: TApiBaseApi | null = null;
     token: string = '';
@@ -57,64 +57,135 @@ class APIBase {
     active_symbols_promise: Promise<void> | null = null;
     common_store: CommonStore | undefined;
     landing_company: string | null = null;
+    //TODO : Need to remove this api call because we have it in client store
+    async getLandingCompany() {
+        if (!this.api || !this.account_info?.country) {
+            return null;
+        }
+        try {
+            const landing_company = await this.api.send({ landing_company: this.account_info.country });
+            this.landing_company = landing_company;
+        } catch (error) {
+            console.error('Error fetching landing company:', error);
+            this.landing_company = null;
+        }
+        return this.landing_company;
+    }
 
     unsubscribeAllSubscriptions = () => {
-        this.current_auth_subscriptions?.forEach(subscription_promise => {
-            subscription_promise.then(({ subscription }) => {
-                if (subscription?.id) {
-                    this.api?.send({
-                        forget: subscription.id,
-                    });
-                }
-            });
-        });
+        // this.current_auth_subscriptions?.forEach(subscription_promise => {
+        //     subscription_promise.then(({ subscription }) => {
+        //         if (subscription?.id) {
+        //             this.api?.send({
+        //                 forget: subscription.id,
+        //             });
+        //         }
+        //     });
+        // });
         this.current_auth_subscriptions = [];
     };
 
     onsocketopen() {
         setConnectionStatus(CONNECTION_STATUS.OPENED);
+        console.log('test on open ---------');
     }
 
     onsocketclose() {
         setConnectionStatus(CONNECTION_STATUS.CLOSED);
         this.reconnectIfNotConnected();
+        const error = {
+            error: {
+                code: 'DisconnectError',
+                message: 'Connection lost',
+            },
+        };
+        globalObserver?.emit('Error', error);
     }
 
-    async init(force_create_connection = false) {
+    async initApi(force_create_connection = false) {
         this.toggleRunButton(true);
 
         if (this.api) {
             this.unsubscribeAllSubscriptions();
         }
 
-        if (!this.api || this.api?.connection.readyState !== 1 || force_create_connection) {
-            if (this.api?.connection) {
+        if (!this.api || this.api?.connection.readyState > 1 || force_create_connection) {
+            if (this.api?.connection && !force_create_connection) {
                 ApiHelpers.disposeInstance();
                 setConnectionStatus(CONNECTION_STATUS.CLOSED);
-                this.api.disconnect();
-                this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
-                this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
+                console.log('test ------------------- reconnect ---------');
+                await this.api.reconnect();
+                // this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
+                // this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
+            } else {
+                this.api?.disconnect();
+                this.api = generateDerivApiInstance();
+                console.log('test ------------------- new ---------', this.api.onOpen);
+                // Example: WebSocket API that returns Observable for 'open' events
+                api_base.api.onOpen().subscribe({
+                    next: openEvent => {
+                        // This block is executed when WebSocket opens
+                        console.log('WebSocket connection opened:', openEvent);
+                        if (!this.has_active_symbols) {
+                            this.active_symbols_promise = this.getActiveSymbols();
+                        }
+                
+                        this.initEventListeners();
+                
+                        if (this.time_interval) clearInterval(this.time_interval);
+                        this.time_interval = null;
+                
+                        if (V2GetActiveToken()) {
+                            setIsAuthorizing(true);
+                            this.authorizeAndSubscribe();
+                        }
+                        this.onsocketopen();
+                    },
+                    error: err => {
+                        // Handle any errors (unlikely for WebSocket "open", but error handling is always good)
+                        console.error('Error occurred while opening WebSocket:', err);
+                    },
+                    complete: () => {
+                        // Complete is called when the Observable completes or the connection closes
+                        console.log('WebSocket onOpen event stream completed');
+                    },
+                });
+
+                this.api.onClose().subscribe({
+                    next: closeEvent => {
+                        console.log('WebSocket connection closed:', closeEvent);
+                        this.onsocketclose();
+                        // throw new Error('DisconnectError');
+                    },
+                    error: err => {
+                        console.error('Error occurred while closing WebSocket:', err);
+                    },
+                    complete: () => {
+                        console.log('WebSocket onClose event stream completed');
+                    },
+                });
+
+                // Subscribing to the 'open' event
+                // const openSubscription: Subscription = openObservable;
+                // this.api?.connection.addEventListener('open', this.onsocketopen.bind(this));
+                // this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
+                // this.api.onClose(() => {
+                //     console.log('test on close ---------');
+                // });
             }
-            this.api = generateDerivApiInstance();
-            this.api?.connection.addEventListener('open', this.onsocketopen.bind(this));
-            this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
         }
 
-        if (!this.has_active_symbols) {
-            this.active_symbols_promise = this.getActiveSymbols();
+
+        // chart_api.init(force_create_connection);
+
+        if (!reconnect_timeout) {
+            setInterval(() => {
+                console.log('--------  Disconnecting the socket ---------');
+                // this.api?.disconnect();
+            }, 30000);
+        } else {
+            reconnect_timeout = null;
         }
-
-        this.initEventListeners();
-
-        if (this.time_interval) clearInterval(this.time_interval);
-        this.time_interval = null;
-
-        if (V2GetActiveToken()) {
-            setIsAuthorizing(true);
-            await this.authorizeAndSubscribe();
-        }
-
-        chart_api.init(force_create_connection);
     }
 
     getConnectionStatus() {
@@ -127,7 +198,7 @@ class APIBase {
 
     terminate() {
         // eslint-disable-next-line no-console
-        if (this.api) this.api.disconnect();
+        // if (this.api) this.api.disconnect();
     }
 
     initEventListeners() {
@@ -139,7 +210,7 @@ class APIBase {
 
     async createNewInstance(account_id: string) {
         if (this.account_id !== account_id) {
-            await this.init();
+            await this.initApi(true);
         }
     }
 
@@ -147,9 +218,15 @@ class APIBase {
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api?.connection?.readyState);
         if (this.api?.connection?.readyState && this.api?.connection?.readyState > 1) {
-            // eslint-disable-next-line no-console
-            console.log('Info: Connection to the server was closed, trying to reconnect.');
-            this.init(true);
+            // Debounce reconnection attempts to avoid multiple rapid reconnects
+            if (reconnect_timeout) {
+                clearTimeout(reconnect_timeout as NodeJS.Timeout);
+            }
+            reconnect_timeout = setTimeout(() => {
+                // eslint-disable-next-line no-console
+                console.log('Info: Connection to the server was closed, trying to reconnect.');
+                this.initApi();
+            }, 3000);
         }
     };
 
@@ -208,7 +285,7 @@ class APIBase {
                     return subscription;
                 },
                 [],
-                this
+                this.api
             );
         };
 

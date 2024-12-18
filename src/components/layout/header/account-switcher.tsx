@@ -138,7 +138,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         if (!token) return;
         localStorage.setItem('authToken', token);
         localStorage.setItem('active_loginid', loginId.toString());
-        await api_base?.init(true);
+        await api_base?.initApi(true);
     };
 
     return (

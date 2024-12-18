@@ -12,8 +12,9 @@ let tickListenerKey;
 
 export default Engine =>
     class Ticks extends Engine {
-        async watchTicks(symbol) {
-            if (symbol && this.symbol !== symbol) {
+        async watchTicks(symbol, restartTrade = false) {
+            console.log('test ------------------- watchTicks ---------', symbol);
+            if (symbol && (this.symbol !== symbol || restartTrade)) {
                 this.symbol = symbol;
                 const { ticksService } = this.$scope;
 

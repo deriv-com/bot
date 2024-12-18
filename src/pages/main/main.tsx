@@ -75,10 +75,10 @@ const AppWrapper = observer(() => {
         if (connectionStatus !== CONNECTION_STATUS.OPENED) {
             const is_bot_running = document.getElementById('db-animation__stop-button') !== null;
             if (is_bot_running) {
-                clear();
-                stopBot();
-                api_base.setIsRunning(false);
-                setWebSocketState(false);
+                // clear();
+                // stopBot();
+                // api_base.setIsRunning(false);
+                // setWebSocketState(false);
             }
         }
     }, [clear, connectionStatus, setWebSocketState, stopBot]);
