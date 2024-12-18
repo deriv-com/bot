@@ -242,8 +242,8 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
         if (isAuthorizing$.getValue()) return;
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
-            const restricted_trade_types = ['multiplier', 'accumulator'];
-            if (restricted_trade_types.includes(this.selected_trade_type)) return;
+            const not_required_trade_types = ['multiplier', 'accumulator'];
+            if (not_required_trade_types.includes(this.selected_trade_type)) return;
             const CURRENCY_BLOCK = this.getField('CURRENCY_LIST')?.getSourceBlock();
             const CURRENCY_CHILD_BLOCK = CURRENCY_BLOCK?.getChildren()[1]?.getField('NUM');
             if (!this.getField('AMOUNT_LIMITS') && CURRENCY_BLOCK && CURRENCY_CHILD_BLOCK) return;
