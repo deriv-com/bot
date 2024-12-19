@@ -1,6 +1,6 @@
 import { localize } from '@deriv-com/translations';
 import { getContractTypeOptions } from '../../../shared';
-import { modifyContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.purchase = {
     init() {
@@ -76,6 +76,8 @@ window.Blockly.Blocks.purchase = {
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     restricted_parents: ['before_purchase'],
