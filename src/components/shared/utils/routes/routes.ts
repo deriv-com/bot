@@ -1,74 +1,85 @@
-const getDerivComDomain = () => {
-    const hostname = window.location.hostname;
-    const isStaging = hostname.includes('staging');
-    const domainType = hostname.endsWith('.me') ? 'me' : hostname.endsWith('.be') ? 'be' : 'com';
+type Service = 'derivCom' | 'derivApp' | 'smartTrader';
+type DomainType = 'me' | 'be' | 'com';
 
-    const stagingDomain = 'https://staging.deriv.com';
-    const productionDomains = {
-        me: 'https://deriv.me',
-        be: 'https://deriv.be',
-        com: 'https://deriv.com',
-    };
+interface DomainConfig {
+    staging: string | Record<DomainType, string>;
+    production: Record<DomainType, string>;
+}
 
-    return isStaging ? stagingDomain : productionDomains[domainType];
+const domains: Record<Service, DomainConfig> = {
+    derivCom: {
+        staging: 'https://staging.deriv.com',
+        production: {
+            me: 'https://deriv.me',
+            be: 'https://deriv.be',
+            com: 'https://deriv.com',
+        },
+    },
+    derivApp: {
+        staging: 'https://staging-app.deriv.com',
+        production: {
+            me: 'https://app.deriv.me',
+            be: 'https://app.deriv.be',
+            com: 'https://app.deriv.com',
+        },
+    },
+    smartTrader: {
+        staging: {
+            me: 'https://staging-smarttrader.deriv.me',
+            be: 'https://staging-smarttrader.deriv.be',
+            com: 'https://staging-smarttrader.deriv.com',
+        },
+        production: {
+            me: 'https://smarttrader.deriv.me',
+            be: 'https://smarttrader.deriv.be',
+            com: 'https://smarttrader.deriv.com',
+        },
+    },
 };
 
-const getDerivAppDomain = () => {
+const getDerivDomain = (service: Service): string => {
     const hostname = window.location.hostname;
     const isStaging = hostname.includes('staging');
-    const domainType = hostname.endsWith('.me') ? 'me' : hostname.endsWith('.be') ? 'be' : 'com';
+    const domainType: DomainType = hostname.endsWith('.me') ? 'me' : hostname.endsWith('.be') ? 'be' : 'com';
 
-    const stagingAppDomain = 'https://staging-app.deriv.com';
-    const productionDomains = {
-        me: 'https://app.deriv.me',
-        be: 'https://app.deriv.be',
-        com: 'https://app.deriv.com',
-    };
+    const serviceConfig = domains[service];
 
-    return isStaging ? stagingAppDomain : productionDomains[domainType];
+    if (isStaging) {
+        if (typeof serviceConfig.staging === 'string') {
+            return serviceConfig.staging;
+        } else {
+            return serviceConfig.staging[domainType];
+        }
+    } else {
+        return serviceConfig.production[domainType];
+    }
 };
 
-const getSmartTraderDomain = () => {
-    const hostname = window.location.hostname;
-    const isStaging = hostname.includes('staging');
-    const domainType = hostname.endsWith('.me') ? 'me' : hostname.endsWith('.be') ? 'be' : 'com';
-
-    const smartTraderStaging = {
-        me: 'https://staging-smarttrader.deriv.me',
-        be: 'https://staging-smarttrader.deriv.be',
-        com: 'https://staging-smarttrader.deriv.com',
-    };
-
-    const smartTraderProduction = {
-        me: 'https://smarttrader.deriv.me',
-        be: 'https://smarttrader.deriv.be',
-        com: 'https://smarttrader.deriv.com',
-    };
-
-    return isStaging ? smartTraderStaging[domainType] : smartTraderProduction[domainType];
-};
-
+/**
+ * Standalone routes that use the domain helper functions.
+ * Uses template literals to compose URLs dynamically.
+ */
 export const standalone_routes = {
     bot: '/',
-    cashier: `${getDerivAppDomain()}/cashier/`,
-    cashier_deposit: `${getDerivAppDomain()}/cashier/deposit`,
-    cashier_p2p: `${getDerivAppDomain()}/cashier/p2p`,
-    contract: `${getDerivAppDomain()}/contract/:contract_id`,
-    personal_details: `${getDerivAppDomain()}/account/personal-details`,
-    positions: `${getDerivAppDomain()}/reports/positions`,
-    profit: `${getDerivAppDomain()}/reports/profit`,
-    reports: `${getDerivAppDomain()}/reports`,
-    root: getDerivAppDomain(),
-    smarttrader: getSmartTraderDomain(),
-    statement: `${getDerivAppDomain()}/reports/statement`,
-    trade: `${getDerivAppDomain()}/dtrader`,
-    traders_hub: getDerivAppDomain(),
-    wallets_transfer: `${getDerivAppDomain()}/wallet/account-transfer`,
+    cashier: `${getDerivDomain('derivApp')}/cashier/`,
+    cashier_deposit: `${getDerivDomain('derivApp')}/cashier/deposit`,
+    cashier_p2p: `${getDerivDomain('derivApp')}/cashier/p2p`,
+    contract: `${getDerivDomain('derivApp')}/contract/:contract_id`,
+    personal_details: `${getDerivDomain('derivApp')}/account/personal-details`,
+    positions: `${getDerivDomain('derivApp')}/reports/positions`,
+    profit: `${getDerivDomain('derivApp')}/reports/profit`,
+    reports: `${getDerivDomain('derivApp')}/reports`,
+    root: getDerivDomain('derivApp'),
+    smarttrader: getDerivDomain('smartTrader'),
+    statement: `${getDerivDomain('derivApp')}/reports/statement`,
+    trade: `${getDerivDomain('derivApp')}/dtrader`,
+    traders_hub: getDerivDomain('derivApp'),
+    wallets_transfer: `${getDerivDomain('derivApp')}/wallet/account-transfer`,
     signup: `https://hub.deriv.com/tradershub/signup`,
-    deriv_com: getDerivComDomain(),
-    deriv_app: getDerivAppDomain(),
+    deriv_com: getDerivDomain('derivCom'),
+    deriv_app: getDerivDomain('derivApp'),
     endpoint: '/endpoint',
-    account_limits: `${getDerivAppDomain()}/account/account-limits`,
-    help_center: `${getDerivComDomain()}/help-centre/`,
-    responsible: `${getDerivComDomain()}/responsible/`,
+    account_limits: `${getDerivDomain('derivApp')}/account/account-limits`,
+    help_center: `${getDerivDomain('derivCom')}/help-centre/`,
+    responsible: `${getDerivDomain('derivCom')}/responsible/`,
 };
