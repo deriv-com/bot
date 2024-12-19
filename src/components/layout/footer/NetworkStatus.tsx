@@ -14,7 +14,6 @@ const statusConfigs = () => ({
 });
 
 const NetworkStatus = () => {
-    // TODO complete the logic by adding the socket connctions status
     const status = useNetworkStatus();
     const { className, tooltip } = useMemo(() => statusConfigs()[status], [status]);
 
