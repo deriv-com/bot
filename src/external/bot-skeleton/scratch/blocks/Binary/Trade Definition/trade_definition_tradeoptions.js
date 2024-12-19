@@ -245,7 +245,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
             const unsupported_trade_types = ['multiplier', 'accumulator'];
             if (unsupported_trade_types.includes(this.selected_trade_type)) return;
             const currency_block = this.getField('CURRENCY_LIST')?.getSourceBlock();
-            const currency_child_block = currency_block?.getChildren()[1]?.getField('NUM');
+            const currency_child_block = currency_block?.getChildren()?.[1]?.getField('NUM');
             if (!this.getField('AMOUNT_LIMITS') && currency_block && currency_child_block) return;
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
