@@ -73,6 +73,7 @@ export default class ClientStore {
             setUpgradeableLandingCompanies: action,
             is_trading_experience_incomplete: computed,
             is_cr_account: computed,
+            account_open_date: computed,
         });
     }
 
@@ -207,6 +208,13 @@ export default class ClientStore {
 
     get is_cr_account() {
         return this.loginid?.startsWith('CR');
+    }
+
+    get account_open_date() {
+        if (isEmptyObject(this.accounts) || !this.accounts[this.loginid]) return undefined;
+        return Object.keys(this.accounts[this.loginid]).includes('created_at')
+            ? this.accounts[this.loginid].created_at
+            : undefined;
     }
 
     isBotAllowed = () => {

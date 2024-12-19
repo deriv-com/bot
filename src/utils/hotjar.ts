@@ -1,11 +1,8 @@
 import { epochToMoment, toMoment } from '@/components/shared/utils/date/date-time';
 import { TStores } from '@deriv/stores/types';
 
-const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
-
 const initHotjar = (client: TStores['client']) => {
     // To initialize only on staging and production links
-    if (!isProductionOrStaging) return;
 
     /**
      * Inject: External Script - Hotjar
@@ -32,6 +29,7 @@ const initHotjar = (client: TStores['client']) => {
         const user_id = client.loginid;
         const account_type = client.is_virtual ? 'Demo' : 'Real';
         const account_open_date = client.account_open_date ? epochToMoment(client.account_open_date) : undefined;
+        console.log(account_open_date);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).hj('identify', user_id, {
