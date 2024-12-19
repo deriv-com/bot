@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
-import { modifyContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_contracttype = {
     init() {
@@ -61,6 +61,8 @@ window.Blockly.Blocks.trade_definition_contracttype = {
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,

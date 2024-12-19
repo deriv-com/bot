@@ -4,7 +4,13 @@ import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import { handleProposalRequestForAccumulators } from '../../../accumulators-proposal-handler';
 import DBotStore from '../../../dbot-store';
-import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents, setCurrency } from '../../../utils';
+import {
+    excludeOptionFromContextMenu,
+    modifyContextMenu,
+    runGroupedEvents,
+    runIrreversibleEvents,
+    setCurrency,
+} from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_accumulator = {
     init() {
@@ -236,6 +242,8 @@ window.Blockly.Blocks.trade_definition_accumulator = {
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     restricted_parents: ['trade_definition'],

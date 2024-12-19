@@ -3,7 +3,13 @@ import { localize } from '@deriv-com/translations';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
-import { modifyContextMenu, runGroupedEvents, runIrreversibleEvents, setCurrency } from '../../../utils';
+import {
+    excludeOptionFromContextMenu,
+    modifyContextMenu,
+    runGroupedEvents,
+    runIrreversibleEvents,
+    setCurrency,
+} from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_multiplier = {
     init() {
@@ -245,6 +251,8 @@ window.Blockly.Blocks.trade_definition_multiplier = {
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     restricted_parents: ['trade_definition'],

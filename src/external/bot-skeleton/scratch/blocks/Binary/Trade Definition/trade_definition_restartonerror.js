@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { modifyContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 
 window.Blockly.Blocks.trade_definition_restartonerror = {
     init() {
@@ -34,6 +34,8 @@ window.Blockly.Blocks.trade_definition_restartonerror = {
         this.enforceLimitations();
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     enforceLimitations: window.Blockly.Blocks.trade_definition_market.enforceLimitations,

@@ -1,6 +1,6 @@
 import { localize } from '@deriv-com/translations';
 import ApiHelpers from '../../../../services/api/api-helpers';
-import { modifyContextMenu, runIrreversibleEvents } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu, runIrreversibleEvents } from '../../../utils';
 
 /* eslint-disable */
 window.Blockly.Blocks.trade_definition_market = {
@@ -39,6 +39,8 @@ window.Blockly.Blocks.trade_definition_market = {
         this.setDeletable(false);
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     onchange(event) {
