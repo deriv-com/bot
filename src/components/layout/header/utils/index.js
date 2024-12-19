@@ -122,9 +122,6 @@ export const checkSwitcherType = async account_data => {
     const is_eu = isEu(country);
 
     const { country_code } = isMultiplier(landing_companies);
-    //TODO: check if this is needed
-    //is_multiplier
-    // const is_high_risk_or_eu = is_eu && is_high_risk;
 
     const { financial_company, gaming_company } = landing_companies;
 
@@ -135,8 +132,6 @@ export const checkSwitcherType = async account_data => {
     let is_high_risk = isHighRisk(financial_company, gaming_company, risk_classification);
     const low_risk_no_account = is_low_risk && Object.keys(client_accounts).length === 1;
     const high_risk_no_account = is_high_risk && Object.keys(client_accounts).length === 1;
-    //TODO: check if this is needed
-    // const is_high_risk_or_eu = is_eu && is_high_risk;
 
     if (low_risk_no_account) is_low_risk = false;
     if (high_risk_no_account) is_high_risk = false;

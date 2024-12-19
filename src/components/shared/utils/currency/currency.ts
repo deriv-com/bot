@@ -95,7 +95,6 @@ export const formatMoney = (
             minimumFractionDigits: minimumFractionDigits || decimal_places,
             maximumFractionDigits: decimal_places,
         };
-        // TODO: [use-shared-i18n] - Use a getLanguage function to determine number format.
         money = new Intl.NumberFormat('en', options).format(money);
     } else {
         money = addComma(money, decimal_places);
@@ -144,7 +143,6 @@ export const isCryptocurrency = (currency: string) => {
 export const CryptoConfig = (() => {
     let crypto_config: any;
 
-    // TODO: [use-shared-i18n] - Use translate function shared among apps or pass in translated names externally.
     const initCryptoConfig = () =>
         deepFreeze({
             BTC: {

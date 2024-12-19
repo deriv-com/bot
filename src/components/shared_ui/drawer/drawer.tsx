@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LegacyHandleLessIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronsRightCaptionRegularIcon,LegacyHandleLessIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {
@@ -14,17 +14,6 @@ type TDrawer = {
     is_open: boolean;
     toggleDrawer?: (prop: boolean) => void;
 };
-
-// TODO: use-from-shared - Use this icon from icons' shared package
-const IconDrawer = ({ className }: { className?: string }) => (
-    <svg className={className} xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
-        <path
-            fill='var(--text-less-prominent)'
-            fillRule='nonzero'
-            d='M8.87 2.164l5 5.5a.5.5 0 0 1 0 .672l-5 5.5a.5.5 0 0 1-.74-.672L12.824 8 8.13 2.836a.5.5 0 0 1 .74-.672zm-5 0l5 5.5a.5.5 0 0 1 0 .672l-5 5.5a.5.5 0 0 1-.74-.672L7.824 8 3.13 2.836a.5.5 0 1 1 .74-.672z'
-        />
-    </svg>
-);
 
 const Drawer = ({
     anchor = 'left',
@@ -75,7 +64,7 @@ const Drawer = ({
                 onClick={toggleDrawer}
             >
                 {isDesktop ? (
-                    <IconDrawer
+                    <LabelPairedChevronsRightCaptionRegularIcon
                         className={classNames('dc-drawer__toggle-icon', {
                             [`dc-drawer__toggle-icon--${anchor}`]: isDesktop,
                         })}
