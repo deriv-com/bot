@@ -84,6 +84,11 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                         const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
                         input_target.setFieldValue(new_value.toString(), 'NUM');
                     }
+                    if (input.name === 'AMOUNT') {
+                        this.validateAmount(value);
+                    } else if (input.name === 'DURATION') {
+                        this.validateDuration(value);
+                    }
                 });
         }
 
@@ -242,12 +247,14 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         const { currency, landing_company_shortcode } = DBotStore.instance.client;
         if (isAuthorizing$.getValue()) return;
         account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
-            if (!this.getField('AMOUNT_LIMITS')) {
-                return;
-            }
+            const unsupported_trade_types = ['multiplier', 'accumulator'];
+            if (unsupported_trade_types.includes(this.selected_trade_type)) return;
+            const currency_block = this.getField('CURRENCY_LIST')?.getSourceBlock();
+            const currency_child_block = currency_block?.getChildren()?.[1]?.getField('NUM');
+            if (!this.getField('AMOUNT_LIMITS') && !currency_block && !currency_child_block) return;
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
-            if (max_payout && min_stake && this.selected_trade_type !== 'multiplier') {
+            if (max_payout && min_stake) {
                 runIrreversibleEvents(() => {
                     this.setFieldValue(
                         localize('(min: {{min_stake}} - max: {{max_payout}})', {
@@ -257,6 +264,9 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                         'AMOUNT_LIMITS'
                     );
                 });
+                if (currency_block && currency_child_block) {
+                    currency_child_block.setValue(this.amount_limits?.min_stake);
+                }
             }
         });
     },
@@ -530,57 +540,85 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
         return container;
     },
     restricted_parents: ['trade_definition'],
+    validateAmount(input) {
+        const input_number = Number(input);
+        const max_payout = this.amount_limits?.max_payout;
+        const min_stake = this.amount_limits?.min_stake;
+        const highlight_class = 'block--error-highlighted';
+        if (min_stake && input_number < min_stake) {
+            if (!this.error_message) {
+                this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
+                    min_stake,
+                });
+                this.svgGroup_?.classList?.add(highlight_class);
+            } else {
+                this.error_message = '';
+                this.svgGroup_?.classList?.remove(highlight_class);
+            }
+            return input_number < min_stake;
+        }
+        if (input_number > max_payout) {
+            if (!this.error_message) {
+                this.error_message = localize("Please enter a payout amount that's lower than {{max_payout}}.", {
+                    max_payout,
+                });
+                this.svgGroup_?.classList?.add(highlight_class);
+            } else {
+                this.error_message = '';
+                this.svgGroup_?.classList?.remove(highlight_class);
+            }
+            return input_number > max_payout;
+        }
+        this.error_message = localize('Amount must be a positive number.');
+        return !isNaN(input_number) && input_number <= 0;
+    },
+    validateDuration(input) {
+        const input_number = Number(input);
+        if (isNaN(input_number) || !this.durations.length) {
+            return false;
+        }
+
+        const duration = this.durations.find(d => d.unit === this.selected_duration);
+        const highlight_class = 'block--error-highlighted';
+        if (duration) {
+            const { min, max } = duration;
+            const is_valid_duration = input_number >= min && input_number <= max;
+            if (min === max) {
+                if (!this.error_message) {
+                    this.error_message = localize(
+                        'Duration value is not allowed. To run the bot, please enter {{min}}.',
+                        { min }
+                    );
+                    this.svgGroup_?.classList?.add(highlight_class);
+                } else {
+                    this.error_message = '';
+                    this.svgGroup_?.classList?.remove(highlight_class);
+                }
+            } else if (input_number < min || input_number > max) {
+                if (!this.error_message) {
+                    this.error_message = localize(
+                        'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
+                        { min, max }
+                    );
+                    this.svgGroup_?.classList?.add(highlight_class);
+                } else {
+                    this.error_message = '';
+                    this.svgGroup_?.classList?.remove(highlight_class);
+                }
+            } else {
+                this.error_message = '';
+                this.svgGroup_?.classList?.remove(highlight_class);
+            }
+
+            return !is_valid_duration;
+        }
+
+        return false;
+    },
     getRequiredValueInputs() {
         return {
-            AMOUNT: input => {
-                const input_number = Number(input);
-                const max_payout = this.amount_limits?.max_payout;
-                const min_stake = this.amount_limits?.min_stake;
-                if (min_stake && input_number < min_stake) {
-                    this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
-                        min_stake,
-                    });
-                    return input_number < min_stake;
-                }
-                if (max_payout && input_number > max_payout) {
-                    this.error_message = localize("Please enter a payout amount that's lower than {{max_payout}}.", {
-                        max_payout,
-                    });
-                    return input_number > max_payout;
-                }
-                this.error_message = localize('Amount must be a positive number.');
-                return !isNaN(input_number) && input_number <= 0;
-            },
-            DURATION: input => {
-                const input_number = Number(input);
-
-                if (isNaN(input_number) || !this.durations.length) {
-                    return false;
-                }
-
-                const duration = this.durations.find(d => d.unit === this.selected_duration);
-
-                if (duration) {
-                    const { min, max } = duration;
-                    const is_valid_duration = input_number >= min && input_number <= max;
-
-                    if (min === max) {
-                        this.error_message = localize(
-                            'Duration value is not allowed. To run the bot, please enter {{min}}.',
-                            { min }
-                        );
-                    } else {
-                        this.error_message = localize(
-                            'Duration value is not allowed. To run the bot, please enter a value between {{min}} to {{max}}.',
-                            { min, max }
-                        );
-                    }
-
-                    return !is_valid_duration;
-                }
-
-                return false;
-            },
+            AMOUNT: input => this.validateAmount(input),
+            DURATION: input => this.validateDuration(input),
         };
     },
 };
