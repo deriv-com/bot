@@ -603,7 +603,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                     this.svgGroup_?.classList?.add(highlight_class);
                 } else {
                     this.error_message = '';
-                    this.svgGroup_.classList?.remove(highlight_class);
+                    this.svgGroup_?.classList?.remove(highlight_class);
                 }
             } else {
                 this.error_message = '';
