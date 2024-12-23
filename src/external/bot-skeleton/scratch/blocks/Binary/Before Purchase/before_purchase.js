@@ -1,5 +1,5 @@
 import { localize } from '@deriv-com/translations';
-import { appendCollapsedMainBlocksFields, modifyContextMenu } from '../../../utils';
+import { appendCollapsedMainBlocksFields, excludeOptionFromContextMenu, modifyContextMenu } from '../../../utils';
 import { purchase } from '../../images';
 
 window.Blockly.Blocks.before_purchase = {
@@ -62,6 +62,8 @@ window.Blockly.Blocks.before_purchase = {
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     meta() {
