@@ -163,13 +163,9 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_landing_company_loaded, is_api_initialized, client.loginid]);
 
-    // TODO: fix
-    // const isMounted = useIsMounted();
-    // const { data: remote_config_data } = useRemoteConfig(isMounted());
-    // const { tracking_datadog } = data;
     useEffect(() => {
-        initDatadog(true); // (tracking_datadog);
-    }, []); // [tracking_datadog])
+        initDatadog(true);
+    }, []);
 
     if (common?.error) return null;
 
