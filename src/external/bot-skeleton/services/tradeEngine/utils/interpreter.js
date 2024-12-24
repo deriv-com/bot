@@ -233,6 +233,9 @@ const Interpreter = () => {
     }
 
     function run(code) {
+        if (!interpreter || !(interpreter instanceof JSInterpreter)) {
+            interpreter = new JSInterpreter(code, initFunc);
+        }
         return new Promise((resolve, reject) => {
             const onError = e => {
                 if ($scope.stopped) {
@@ -262,7 +265,10 @@ const Interpreter = () => {
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
                 bot.tradeEngine.start(tradeOptions);
-                revert($scope.startState);
+                const canRestoreState = $scope.startState && interpreter?.restoreStateSnapshot instanceof Function;
+                if (canRestoreState) {
+                    revert($scope.startState);
+                }
             };
 
             $scope.observer.register('Error', onError);
