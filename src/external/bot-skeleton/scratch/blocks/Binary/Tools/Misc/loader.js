@@ -16,7 +16,7 @@ window.Blockly.Blocks.loader = {
                 {
                     type: 'field_input',
                     name: 'URL',
-                    text: 'https://github.com/deriv-com/bot/blob/84d5e1dd9d0e0f37f4c9dff768dc80949498c0a4/src/xml/1_3_2_6.xml',
+                    text: 'https://file.io/u9FGqO2yisgZ/1_3_2_6.xml',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
