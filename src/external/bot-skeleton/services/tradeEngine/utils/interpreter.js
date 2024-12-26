@@ -233,9 +233,6 @@ const Interpreter = () => {
     }
 
     function run(code) {
-        if (!interpreter || !(interpreter instanceof JSInterpreter)) {
-            interpreter = new JSInterpreter(code, initFunc);
-        }
         return new Promise((resolve, reject) => {
             const onError = e => {
                 if ($scope.stopped) {
