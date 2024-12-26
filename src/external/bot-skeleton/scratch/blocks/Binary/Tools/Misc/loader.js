@@ -16,7 +16,7 @@ window.Blockly.Blocks.loader = {
                 {
                     type: 'field_input',
                     name: 'URL',
-                    text: 'http://www.example.com/block.xml',
+                    text: 'https://github.com/deriv-com/bot/blob/84d5e1dd9d0e0f37f4c9dff768dc80949498c0a4/src/xml/1_3_2_6.xml',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
@@ -43,7 +43,6 @@ window.Blockly.Blocks.loader = {
         }
 
         if (event.type === window.Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
-            this.setDisabled(true);
             this.current_url = this.getFieldValue('URL');
             const loader_blocks = this.workspace.getAllBlocks().filter(block => block.type === 'loader');
 
@@ -52,10 +51,10 @@ window.Blockly.Blocks.loader = {
                     this.setDisabled(true);
                 }
             });
-        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (!this.disabled) {
                 this.loadBlocksFromCurrentUrl();
             }
+        } else if (event.type === window.Blockly.Events.BLOCK_CHANGE && event.blockId === this.id) {
             if (event.newValue && event.oldValue !== event.newValue) {
                 if (event.newValue === this.current_url) {
                     this.setDisabled(false);
