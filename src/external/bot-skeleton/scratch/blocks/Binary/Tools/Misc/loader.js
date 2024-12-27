@@ -16,7 +16,7 @@ window.Blockly.Blocks.loader = {
                 {
                     type: 'field_input',
                     name: 'URL',
-                    text: 'https://file.io/u9FGqO2yisgZ/1_3_2_6.xml',
+                    text: 'https://maryia-matskevich-deriv.github.io/maryiaQQQ/default.xml',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
