@@ -15,7 +15,6 @@ import StrategyTabContent from './strategy-tab-content';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
 import useQsSubmitHandler from './useQsSubmitHandler';
-import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
     children: React.ReactNode;
@@ -179,7 +178,7 @@ const FormWrapper = observer(
                         </div>
                         <div className='qs__body__content'>
                             <ThemedScrollbars
-                                className='qs__form__container qs__form__container--no-footer'
+                                className='qs__form__container qs__form__container--footer'
                                 autohide={false}
                                 refSetter={scroll_ref}
                             >

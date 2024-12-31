@@ -214,16 +214,24 @@
             }
 
             &__footer {
-                height: var(--footer-height);
                 border-top: 1px solid var(--border-divider);
+                background-color: var(--general-main-1);
+                height: 8.4rem;
+                width: 100%;
+                padding-right: 2.4rem;
+
+                @include mobile-screen {
+                    height: 6rem;
+                    position: fixed;
+                    z-index: 10000;
+                    bottom: 0;
+                }
 
                 @include flex-center(flex-end);
 
-                padding: 1.6rem 2.4rem;
-                background-color: var(--general-main-1);
-
                 button {
                     margin-inline-end: 1rem;
+                    height: 4rem;
 
                     &:last-child {
                         margin-inline-end: 0;
@@ -243,7 +251,7 @@
             overflow-y: auto;
 
             @include desktop-screen {
-                height: calc(100vh - 16rem) !important;
+                height: calc(100vh - 23.5rem) !important;
             }
 
             @include mobile-screen {
@@ -251,10 +259,11 @@
                 max-height: calc(100% - 12.2rem) !important;
             }
 
-            &--no-footer {
+            &--footer {
                 max-height: 100% !important;
 
                 @include mobile-screen {
+                    margin-bottom: 9rem;
                     max-height: calc(100% - 8rem) !important;
                 }
             }

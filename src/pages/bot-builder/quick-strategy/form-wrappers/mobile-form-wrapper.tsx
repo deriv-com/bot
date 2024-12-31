@@ -2,20 +2,16 @@ import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
-import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
-import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import QSStepper from './qs-stepper';
 import StrategyTabContent from './strategy-tab-content';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
-import useQsSubmitHandler from './useQsSubmitHandler';
-import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -27,10 +23,9 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper = observer(
     ({ children, current_step, selected_trade_type, setCurrentStep, setSelectedTradeType }: TMobileFormWrapper) => {
-        const { isValid, validateForm, values } = useFormikContext<TFormValues>();
+        const { isValid, validateForm } = useFormikContext<TFormValues>();
         const { quick_strategy } = useStore();
         const { selected_strategy } = quick_strategy;
-        const { handleSubmit } = useQsSubmitHandler();
         const selected_startegy_label = STRATEGIES()[selected_strategy as keyof typeof STRATEGIES].label;
         const is_verified_or_completed_step =
             current_step === QsSteps.StrategyVerified || current_step === QsSteps.StrategyCompleted;
@@ -39,18 +34,6 @@ const MobileFormWrapper = observer(
         React.useEffect(() => {
             validateForm();
         }, [selected_strategy, validateForm]);
-
-        const onRun = () => {
-            rudderStackSendQsRunStrategyEvent({
-                form_values: values,
-                selected_strategy,
-            });
-            handleSubmit();
-        };
-
-        const onBack = () => {
-            setCurrentStep(QsSteps.StrategySelect);
-        };
 
         React.useEffect(() => {
             if (isValid && current_step === QsSteps.StrategyVerified) {
@@ -66,7 +49,7 @@ const MobileFormWrapper = observer(
                 <div className='qs__body'>
                     <div className='qs__body__content'>
                         <ThemedScrollbars
-                            className={classNames('qs__form__container qs__form__container--no-footer', {
+                            className={classNames('qs__form__container qs__form__container--footer', {
                                 'qs__form__container--template': is_selected_strategy_step,
                             })}
                             autohide={false}
@@ -107,25 +90,6 @@ const MobileFormWrapper = observer(
                                 </>
                             )}
                         </ThemedScrollbars>
-                        {is_verified_or_completed_step && (
-                            <div className='qs__body__content__footer'>
-                                <Button secondary disabled={is_selected_strategy_step} onClick={onBack}>
-                                    {localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    data-testid='qs-run-button'
-                                    type='submit'
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        onRun();
-                                    }}
-                                    disabled={!isValid}
-                                >
-                                    {localize('Run')}
-                                </Button>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
