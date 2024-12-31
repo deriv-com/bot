@@ -262,7 +262,10 @@ const Interpreter = () => {
                 $scope.observer.register('Error', onError);
                 bot.tradeEngine.init(...initArgs);
                 bot.tradeEngine.start(tradeOptions);
-                revert($scope.startState);
+                const canRestoreState = $scope.startState && interpreter?.restoreStateSnapshot instanceof Function;
+                if (canRestoreState) {
+                    revert($scope.startState);
+                }
             };
 
             $scope.observer.register('Error', onError);
