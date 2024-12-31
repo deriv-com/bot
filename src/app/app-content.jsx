@@ -13,6 +13,7 @@ import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import useTrackjs from '@/hooks/useTrackjs';
 import initDatadog from '@/utils/datadog';
+import initHotjar from '@/utils/hotjar';
 import { setSmartChartsPublicPath } from '@deriv/deriv-charts';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { localize } from '@deriv-com/translations';
@@ -165,6 +166,9 @@ const AppContent = observer(() => {
 
     useEffect(() => {
         initDatadog(true);
+        if (client) {
+            initHotjar(client);
+        }
     }, []);
 
     if (common?.error) return null;
