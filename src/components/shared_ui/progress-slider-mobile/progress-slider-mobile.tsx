@@ -43,7 +43,6 @@ const ProgressSliderMobile = ({
                         <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
                     </Text>
                     {is_loading || percentage < 1 ? (
-                        // TODO: Change this behavior in mobile
                         <div className='dc-progress-slider-mobile__infinite-loader'>
                             <div className='dc-progress-slider-mobile__infinite-loader--indeterminate' />
                         </div>

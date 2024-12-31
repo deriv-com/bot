@@ -5,7 +5,6 @@ import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Tab from './tab';
 import './tabs.scss';
 
-// TODO: Remove this declaration after changing label to data-label in Tabs component
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
         label?: React.ReactNode;
