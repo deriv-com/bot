@@ -36,7 +36,6 @@
     }
 }
 
-// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 div.radio-group {
     &__save-type {
         display: flex;
@@ -89,7 +88,6 @@ div.radio-group {
     }
 
     &__input {
-        // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
         margin: 2rem 0 0 !important;
     }
 

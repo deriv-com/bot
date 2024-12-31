@@ -75,7 +75,6 @@
         border-bottom-right-radius: $BORDER_RADIUS;
     }
 
-    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__run-button {
         width: fit-content;
         height: 100% !important;

@@ -1,7 +1,6 @@
 @use 'components/shared/styles/devices' as *;
 
 /** @define dc-drawer */
-// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .dc-drawer {
     $toggler-width: 16px;
 

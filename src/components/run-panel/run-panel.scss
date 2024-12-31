@@ -3,7 +3,6 @@
 /**
 * @define -panel
 **/
-// TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
     height: 0;
 
@@ -110,8 +109,6 @@
 
         &-button {
             width: 318px;
-
-            // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
             height: 32px !important;
             margin: 12px 24px;
         }
@@ -256,7 +253,6 @@
         right: -0.2rem;
     }
 
-    // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__dialog {
         max-height: 500px !important;
         width: 460px;
