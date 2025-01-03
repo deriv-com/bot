@@ -449,7 +449,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_MARTINGALE: {
         name: 'accumulators_martingale',
         label: localize('Martingale'),
-        rs_strategy_name: `ACCUMULATORS_MARTINGALE`,
+        rs_strategy_name: 'accumulators_martingale',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -472,7 +472,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_DALEMBERT: {
         name: 'accumulators_dalembert',
         label: localize('D’Alembert'),
-        rs_strategy_name: `ACCUMULATORS_DALEMBERT`,
+        rs_strategy_name: 'accumulators_dalembert',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -495,7 +495,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_MARTINGALE_ON_STAT_RESET: {
         name: 'accumulators_martingale_on_stat_reset',
         label: localize('Martingale on Stat Reset'),
-        rs_strategy_name: `ACCUMULATORS_MARTINGALE_ON_STAT_RESET`,
+        rs_strategy_name: 'accumulators_martingale_on_stat_reset',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -518,7 +518,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_DALEMBERT_ON_STAT_RESET: {
         name: 'accumulators_dalembert_on_stat_reset',
         label: localize("D'Alembert on Stat Reset"),
-        rs_strategy_name: `ACCUMULATORS_DALEMBERT_ON_STAT_RESET`,
+        rs_strategy_name: 'accumulators_dalembert_on_stat_reset',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -541,7 +541,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_REVERSE_MARTINGALE: {
         name: 'accumulators_reverse_martingale',
         label: localize('Reverse Martingale'),
-        rs_strategy_name: `ACCUMULATORS_REVERSE_MARTINGALE`,
+        rs_strategy_name: 'accumulators_reverse_martingale',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -564,7 +564,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET: {
         name: 'accumulators_reverse_martingale_on_stat_reset',
         label: localize('Reverse Martingale on Stat Reset'),
-        rs_strategy_name: `ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET`,
+        rs_strategy_name: 'accumulators_reverse_martingale_on_stat_reset',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -587,7 +587,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_REVERSE_DALEMBERT: {
         name: 'accumulators_reverse_dalembert',
         label: localize("Reverse D'Alembert"),
-        rs_strategy_name: `ACCUMULATORS_REVERSE_DALEMBERT`,
+        rs_strategy_name: 'accumulators_reverse_dalembert',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],
@@ -610,7 +610,7 @@ export const STRATEGIES = (): TStrategies => ({
     ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET: {
         name: 'accumulators_reverse_dalembert_on_stat_reset',
         label: localize("Reverse D'Alembert on Stat Reset"),
-        rs_strategy_name: `ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET`,
+        rs_strategy_name: 'accumulators_reverse_dalembert_on_stat_reset',
         description: [],
         fields: [
             [LABEL_SYMBOL(), SYMBOL(), LABEL_STAKE(), STAKE(), GROWTH_RATE(), GROWTH_RATE_VALUE()],

@@ -15,7 +15,7 @@ export const getRsDropdownTextFromLocalStorage = () => {
 
 const hasStoredText = (parameter: string) => parameter && parameter !== STORED_ITEM_NOT_FOUND;
 
-export const getRsStrategyType = (selected_strategy: string) => STRATEGIES[selected_strategy]?.rs_strategy_name;
+export const getRsStrategyType = (selected_strategy: string) => STRATEGIES()[selected_strategy]?.rs_strategy_name;
 
 export const getQsActiveTabString = (tab: string) => (tab === 'TRADE_PARAMETERS' ? 'trade parameters' : 'learn more');
 
