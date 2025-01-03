@@ -5,6 +5,7 @@ import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
+import { getSelectedTradeType } from '@/external/bot-skeleton/scratch/utils';
 // import { journalError, switch_account_notification } from '@/utils/bot-notifications';
 import GTM from '@/utils/gtm';
 import { helpers } from '@/utils/store-helpers';
@@ -143,7 +144,12 @@ export default class RunPanelStore {
         if (show_bot_stop_message)
             botNotification(notification_message().bot_stop, {
                 label: localize('Reports'),
-                onClick: () => window.location.assign(standalone_routes.reports),
+                onClick: () => {
+                    const contract_type = getSelectedTradeType();
+                    const url = new URL(standalone_routes.positions);
+                    url.searchParams.set('contract_type_bots', contract_type);
+                    window.location.assign(url.toString());
+                },
             });
     };
 
