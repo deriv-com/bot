@@ -4,6 +4,9 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
+import { config } from '@/external/bot-skeleton';
+import { api_base } from '@/external/bot-skeleton/services/api/api-base';
+import { useApiBase } from '@/hooks/useApiBase';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
@@ -49,7 +52,7 @@ const router = createBrowserRouter(
 
 function App() {
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
-
+    const { accountList, activeLoginid } = useApiBase();
     React.useEffect(() => {
         // Set login info to local storage and remove params from url
         if (loginInfo.length) {
@@ -87,6 +90,55 @@ function App() {
             }
         };
     }, []);
+
+    const switchAccount = async (loginId: string) => {
+        if (loginId.toString() === activeLoginid) return;
+        const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+        const token = account_list[loginId];
+        if (!token) return;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('active_loginid', loginId.toString());
+        await api_base?.init(true);
+    };
+
+    React.useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const account_currency = urlParams.get('account');
+        const is_valid_currency = config().lists.CURRENCY.some(currency => currency === account_currency);
+
+        if (!activeLoginid || !accountList.length) return;
+
+        if (account_currency === 'demo') {
+            if (activeLoginid.startsWith('VR')) return;
+            const should_switch_to_demo = !activeLoginid.startsWith('VR');
+            const demo_account = accountList.find(account => account.loginid.startsWith('VR'));
+            if (should_switch_to_demo && demo_account) {
+                switchAccount(demo_account.loginid);
+                return;
+            }
+        }
+
+        if (account_currency && account_currency !== 'demo') {
+            const target_account = accountList.find(
+                account => !account.loginid.startsWith('VR') && account.currency === account_currency
+            );
+            if (target_account && target_account.loginid !== activeLoginid) {
+                switchAccount(target_account.loginid);
+                return;
+            }
+        }
+
+        if (!account_currency || !is_valid_currency) {
+            const default_account = accountList.find(
+                account => account.broker === 'CR' && account.currency_type === 'fiat'
+            );
+            if (default_account) {
+                switchAccount(default_account.loginid);
+            } else {
+                //here should be virtual
+            }
+        }
+    }, [activeLoginid, accountList]);
 
     return (
         <Fragment>
