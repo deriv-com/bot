@@ -1,27 +1,16 @@
-// import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-// import { V2GetActiveToken } from '@/external/bot-skeleton/services/api/appId';
 import { useIsIntercomAvailable } from '@/hooks/useIntercom';
 import { LegacyLiveChatOutlineIcon } from '@deriv/quill-icons/Legacy';
 import { localize } from '@deriv-com/translations';
 import { Tooltip, useDevice } from '@deriv-com/ui';
-// import useFreshChat from './useFreshchat';
 import useIsLiveChatWidgetAvailable from './useIsLiveChatWidgetAvailable';
 
 const Livechat = observer(() => {
     const { isDesktop } = useDevice();
 
-    // const token = V2GetActiveToken() ?? null;
-
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const icAvailable = useIsIntercomAvailable();
-    // const { isReady, featureFlagValue, widget } = useFreshChat(token);
 
-    // useEffect(() => {
-    //     window.enable_freshworks_live_chat = !!featureFlagValue;
-    // }, [featureFlagValue]);
-
-    // const isFreshchatEnabledButNotReady = featureFlagValue && !isReady;
     const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !icAvailable;
 
     if (isNeitherChatNorLiveChatAvailable) {
