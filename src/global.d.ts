@@ -24,6 +24,10 @@ declare global {
         dataLayer: {
             push: (event: { [key: string]: boolean | number | string; event: string }) => void;
         };
+        DerivInterCom: {
+            initialize: (config: IntercomConfig) => void;
+        };
+        Intercom: any;
         fcSettings: {
             [key: string]: unknown;
         };
