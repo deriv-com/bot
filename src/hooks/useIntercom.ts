@@ -7,7 +7,6 @@ export const useIntercom = (token: string | null) => {
     const { featureFlagValue: enable_intercom } = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_intercom_dbot',
     });
-    console.log(enable_intercom);
     const scriptStatus = useScript(enable_intercom ? intercom_script : null);
 
     useEffect(() => {

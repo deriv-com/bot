@@ -4,6 +4,7 @@ import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetA
 import { standalone_routes } from '@/components/shared';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
+import { useIsIntercomAvailable } from '@/hooks/useIntercom';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import RootStore from '@/stores/root-store';
 import {
@@ -48,6 +49,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { cs_chat_whatsapp } = data;
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+    const icAvailable = useIsIntercomAvailable();
 
     const menuConfig: TMenuConfig[] = [
         [
@@ -117,15 +119,13 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                           target: '_blank',
                       }
                     : null,
-                is_livechat_available
+                is_livechat_available || icAvailable
                     ? {
                           as: 'button',
                           label: localize('Live chat'),
                           LeftComponent: Livechat,
                           onClick: () => {
-                              window.enable_freshworks_live_chat
-                                  ? window.fcWidget.open()
-                                  : window.LiveChatWidget?.call('maximize');
+                              icAvailable ? window.Intercom('show') : window.LiveChatWidget?.call('maximize');
                           },
                       }
                     : null,
