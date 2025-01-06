@@ -3,7 +3,7 @@ import { useScript } from 'usehooks-ts';
 import useGrowthbookGetFeatureValue from './growthbook/useGrowthbookGetFeatureValue';
 
 export const useIntercom = (token: string | null) => {
-    const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
+    const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.2.js';
     const { featureFlagValue: enable_intercom } = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_intercom_dbot',
     });
