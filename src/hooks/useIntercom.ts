@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
-// import useGrowthbookGetFeatureValue from './growthbook/useGrowthbookGetFeatureValue';
+import useGrowthbookGetFeatureValue from './growthbook/useGrowthbookGetFeatureValue';
 
 export const useIntercom = (token: string | null) => {
     const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
-    // const { featureFlagValue: enable_intercom } = useGrowthbookGetFeatureValue({
-    //     featureFlag: 'enable_intercom',
-    // });
-    const enable_intercom = true;
+    const { featureFlagValue: enable_intercom } = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_intercom_dbot',
+    });
+    console.log(enable_intercom);
     const scriptStatus = useScript(enable_intercom ? intercom_script : null);
 
     useEffect(() => {
