@@ -5,13 +5,12 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import { config } from '@/external/bot-skeleton';
-import { api_base } from '@/external/bot-skeleton/services/api/api-base';
-import { useApiBase } from '@/hooks/useApiBase';
+import { StoreProvider } from '@/hooks/useStore';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
+import { TAuthData } from '@/types/api-types';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
-import { StoreProvider } from '../hooks/useStore';
 import CoreStoreProvider from './CoreStoreProvider';
 import './app-root.scss';
 
@@ -52,7 +51,6 @@ const router = createBrowserRouter(
 
 function App() {
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
-    const { accountList, activeLoginid } = useApiBase();
     React.useEffect(() => {
         // Set login info to local storage and remove params from url
         if (loginInfo.length) {
@@ -91,54 +89,75 @@ function App() {
         };
     }, []);
 
-    const switchAccount = async (loginId: string) => {
-        if (loginId.toString() === activeLoginid) return;
-        const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
-        const token = account_list[loginId];
-        if (!token) return;
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('active_loginid', loginId.toString());
-        await api_base?.init(true);
-    };
-
     React.useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const account_currency = urlParams.get('account');
-        const is_valid_currency = config().lists.CURRENCY.some(currency => currency === account_currency);
+        const accounts_list = localStorage.getItem('accountsList');
+        const client_accounts = localStorage.getItem('client.accounts');
+        const url_params = new URLSearchParams(window.location.search);
+        const account_currency = url_params.get('account');
 
-        if (!activeLoginid || !accountList.length) return;
+        if (!account_currency || !accounts_list || !client_accounts) return;
 
+        const parsed_accounts = JSON.parse(accounts_list);
+        const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
+        const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
+
+        const updateLocalStorage = (token: string, loginid: string) => {
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('active_loginid', loginid);
+        };
+
+        // Handle demo account
         if (account_currency === 'demo') {
-            if (activeLoginid.startsWith('VR')) return;
-            const should_switch_to_demo = !activeLoginid.startsWith('VR');
-            const demo_account = accountList.find(account => account.loginid.startsWith('VR'));
-            if (should_switch_to_demo && demo_account) {
-                switchAccount(demo_account.loginid);
+            const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
+
+            if (demo_account) {
+                const [loginid, token] = demo_account;
+                updateLocalStorage(String(token), loginid);
                 return;
             }
         }
 
-        if (account_currency && account_currency !== 'demo') {
-            const target_account = accountList.find(
-                account => !account.loginid.startsWith('VR') && account.currency === account_currency
+        // Handle real account with valid currency
+        if (account_currency !== 'demo' && is_valid_currency) {
+            const real_account = Object.entries(parsed_client_accounts).find(
+                ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
             );
-            if (target_account && target_account.loginid !== activeLoginid) {
-                switchAccount(target_account.loginid);
+
+            if (real_account) {
+                const [loginid, account] = real_account;
+                if ('token' in account) {
+                    updateLocalStorage(String(account?.token), loginid);
+                }
                 return;
             }
         }
 
-        if (!account_currency || !is_valid_currency) {
-            const default_account = accountList.find(
-                account => account.broker === 'CR' && account.currency_type === 'fiat'
+        // Handle invalid currency case
+        if (!is_valid_currency) {
+            // Try to find default fiat account
+            const default_account = Object.entries(parsed_client_accounts).find(
+                ([, account]) => account.broker === 'CR' && account.currency_type === 'fiat'
             );
+
             if (default_account) {
-                switchAccount(default_account.loginid);
-            } else {
-                //here should be virtual
+                const [loginid, account] = default_account;
+                if ('token' in account) {
+                    updateLocalStorage(String(account.token), loginid);
+                }
+                return;
+            }
+
+            // Fallback to demo account if no fiat account found
+            const demo_account = Object.entries(parsed_client_accounts).find(([loginid]) => loginid.startsWith('VR'));
+
+            if (demo_account) {
+                const [loginid, account] = demo_account;
+                if ('token' in account) {
+                    updateLocalStorage(String(account.token), loginid);
+                }
             }
         }
-    }, [activeLoginid, accountList]);
+    }, []);
 
     return (
         <Fragment>
