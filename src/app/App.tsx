@@ -92,70 +92,60 @@ function App() {
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
         const client_accounts = localStorage.getItem('client.accounts');
+        const active_loginid = localStorage.getItem('active_loginid');
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
         if (!account_currency || !accounts_list || !client_accounts) return;
 
-        const parsed_accounts = JSON.parse(accounts_list);
-        const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
-        const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
+        try {
+            const parsed_accounts = JSON.parse(accounts_list);
+            const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
+            const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
 
-        const updateLocalStorage = (token: string, loginid: string) => {
-            localStorage.setItem('authToken', token);
-            localStorage.setItem('active_loginid', loginid);
-        };
+            const updateLocalStorage = (token: string, loginid: string) => {
+                localStorage.setItem('authToken', token);
+                localStorage.setItem('active_loginid', loginid);
+            };
 
-        // Handle demo account
-        if (account_currency === 'demo') {
-            const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
+            // Handle demo account
+            if (account_currency === 'demo') {
+                const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
 
-            if (demo_account) {
-                const [loginid, token] = demo_account;
-                updateLocalStorage(String(token), loginid);
-                return;
-            }
-        }
-
-        // Handle real account with valid currency
-        if (account_currency !== 'demo' && is_valid_currency) {
-            const real_account = Object.entries(parsed_client_accounts).find(
-                ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
-            );
-
-            if (real_account) {
-                const [loginid, account] = real_account;
-                if ('token' in account) {
-                    updateLocalStorage(String(account?.token), loginid);
-                }
-                return;
-            }
-        }
-
-        // Handle invalid currency case
-        if (!is_valid_currency) {
-            // Try to find default fiat account
-            const default_account = Object.entries(parsed_client_accounts).find(
-                ([, account]) => account.broker === 'CR' && account.currency_type === 'fiat'
-            );
-
-            if (default_account) {
-                const [loginid, account] = default_account;
-                if ('token' in account) {
-                    updateLocalStorage(String(account.token), loginid);
-                }
-                return;
-            }
-
-            // Fallback to demo account if no fiat account found
-            const demo_account = Object.entries(parsed_client_accounts).find(([loginid]) => loginid.startsWith('VR'));
-
-            if (demo_account) {
-                const [loginid, account] = demo_account;
-                if ('token' in account) {
-                    updateLocalStorage(String(account.token), loginid);
+                if (demo_account) {
+                    const [loginid, token] = demo_account;
+                    updateLocalStorage(String(token), loginid);
+                    return;
                 }
             }
+
+            // Handle real account with valid currency
+            if (account_currency !== 'demo' && is_valid_currency) {
+                const real_account = Object.entries(parsed_client_accounts).find(
+                    ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
+                );
+
+                if (real_account) {
+                    const [loginid, account] = real_account;
+                    if ('token' in account) {
+                        updateLocalStorage(String(account?.token), loginid);
+                    }
+                    return;
+                }
+            }
+
+            // Handle invalid currency case
+            if (!is_valid_currency) {
+                const selected_account = parsed_client_accounts[active_loginid];
+                if (!selected_account) return;
+
+                const search_params = new URLSearchParams(window.location.search);
+                const account_param = selected_account.is_virtual ? 'demo' : selected_account.currency || 'USD';
+                search_params.set('account', account_param);
+                window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
+            }
+        } catch (e) {
+            console.warn('Error', e); // eslint-disable-line no-console
         }
     }, []);
 
