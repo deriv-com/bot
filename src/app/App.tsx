@@ -98,14 +98,12 @@ function App() {
         const active_loginid = localStorage.getItem('active_loginid');
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
-        console.log('client_accounts', client_accounts);
 
         if (!account_currency || !accounts_list || !client_accounts) return;
 
         try {
             const parsed_accounts = JSON.parse(accounts_list);
             const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
-            console.log('parsed_client_accounts', parsed_client_accounts);
 
             const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
 
@@ -130,7 +128,6 @@ function App() {
                 const real_account = Object.entries(parsed_client_accounts).find(
                     ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
                 );
-                console.log('real_account', real_account);
 
                 if (real_account) {
                     const [loginid, account] = real_account;
