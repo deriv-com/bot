@@ -59,12 +59,15 @@ function App() {
                 if (!defaultActiveAccount) return;
 
                 const accountsList: Record<string, string> = {};
+                const clientAccounts: Record<string, { loginid: string; token: string }> = {};
 
-                loginInfo.forEach(account => {
+                loginInfo.forEach((account: { loginid: string; token: string }) => {
                     accountsList[account.loginid] = account.token;
+                    clientAccounts[account.loginid] = account;
                 });
 
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
+                localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 URLUtils.filterSearchParams(paramsToDelete);
 
@@ -91,16 +94,19 @@ function App() {
 
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
-        const client_accounts = localStorage.getItem('client.accounts');
+        const client_accounts = localStorage.getItem('clientAccounts');
         const active_loginid = localStorage.getItem('active_loginid');
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
+        console.log('client_accounts', client_accounts);
 
         if (!account_currency || !accounts_list || !client_accounts) return;
 
         try {
             const parsed_accounts = JSON.parse(accounts_list);
             const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
+            console.log('parsed_client_accounts', parsed_client_accounts);
+
             const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
 
             const updateLocalStorage = (token: string, loginid: string) => {
@@ -124,6 +130,7 @@ function App() {
                 const real_account = Object.entries(parsed_client_accounts).find(
                     ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
                 );
+                console.log('real_account', real_account);
 
                 if (real_account) {
                     const [loginid, account] = real_account;
@@ -136,11 +143,14 @@ function App() {
 
             // Handle invalid currency case
             if (!is_valid_currency) {
-                const selected_account = parsed_client_accounts[active_loginid];
+                const selected_account = parsed_client_accounts.find(account => account.loginid === active_loginid);
+
                 if (!selected_account) return;
 
                 const search_params = new URLSearchParams(window.location.search);
-                const account_param = selected_account.is_virtual ? 'demo' : selected_account.currency || 'USD';
+                const account_param = selected_account.loginid.startsWith('VR')
+                    ? 'demo'
+                    : selected_account.currency || 'USD';
                 search_params.set('account', account_param);
                 window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
             }
