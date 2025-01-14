@@ -118,7 +118,7 @@ export const checkAndSetEndpointFromUrl = () => {
 
             if (/^(^(www\.)?qa[0-9]{1,4}\.deriv.dev|(.*)\.derivws\.com)$/.test(qa_server) && /^[0-9]+$/.test(app_id)) {
                 localStorage.setItem('config.app_id', app_id);
-                localStorage.setItem('config.server_url', qa_server);
+                localStorage.setItem('config.server_url', qa_server.replace(/"/g, ''));
             }
 
             const params = url_params.toString();
