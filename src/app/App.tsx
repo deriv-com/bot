@@ -59,9 +59,9 @@ function App() {
                 if (!defaultActiveAccount) return;
 
                 const accountsList: Record<string, string> = {};
-                const clientAccounts: Record<string, { loginid: string; token: string }> = {};
+                const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 
-                loginInfo.forEach((account: { loginid: string; token: string }) => {
+                loginInfo.forEach((account: { loginid: string; token: string; currency: string }) => {
                     accountsList[account.loginid] = account.token;
                     clientAccounts[account.loginid] = account;
                 });
