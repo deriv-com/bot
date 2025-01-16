@@ -11,7 +11,7 @@ const Endpoint = () => {
             serverUrl: LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ?? getSocketURL(),
         },
         onSubmit: values => {
-            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, values.serverUrl);
+            localStorage.setItem(LocalStorageConstants.configServerURL, values.serverUrl);
             LocalStorageUtils.setValue(LocalStorageConstants.configAppId, values.appId);
             formik.resetForm({ values });
         },
@@ -62,7 +62,7 @@ const Endpoint = () => {
                         color='black'
                         onClick={() => {
                             const { server_url, app_id } = getDefaultAppIdAndUrl();
-                            LocalStorageUtils.setValue(LocalStorageConstants.configServerURL, server_url);
+                            localStorage.setItem(LocalStorageConstants.configServerURL, server_url);
                             LocalStorageUtils.setValue(LocalStorageConstants.configAppId, app_id);
 
                             formik.resetForm({
