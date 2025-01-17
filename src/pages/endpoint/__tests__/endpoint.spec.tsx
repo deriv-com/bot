@@ -1,4 +1,3 @@
-import { LocalStorageUtils } from '@deriv-com/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Endpoint from '..';
@@ -34,7 +33,7 @@ describe('<Endpoint />', () => {
         await userEvent.click(submitButton);
 
         expect(localStorage.getItem('config.server_url') ?? '').toBe('qa10.deriv.dev');
-        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe('123');
+        expect(localStorage.getItem('config.app_id') ?? '').toBe('123');
     });
 
     it('should call getServerInfo and reset the inputs when user clicks on the reset button', async () => {
@@ -49,6 +48,6 @@ describe('<Endpoint />', () => {
         await userEvent.click(resetButton);
 
         expect(localStorage.getItem('config.server_url') ?? '').toBe('blue.derivws.com');
-        expect(LocalStorageUtils.getValue('config.app_id') ?? '').toBe(65555);
+        expect(localStorage.getItem('config.app_id') ?? '').toBe('65555');
     });
 });
