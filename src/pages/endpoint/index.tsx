@@ -2,17 +2,17 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { getAppId, getDefaultAppIdAndUrl, getSocketURL } from '@/components/shared';
 import { Button, Input, Text } from '@deriv-com/ui';
-import { LocalStorageConstants, LocalStorageUtils } from '@deriv-com/utils';
+import { LocalStorageConstants } from '@deriv-com/utils';
 import './endpoint.scss';
 const Endpoint = () => {
     const formik = useFormik({
         initialValues: {
-            appId: LocalStorageUtils.getValue(LocalStorageConstants.configAppId) ?? getAppId(),
-            serverUrl: LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ?? getSocketURL(),
+            appId: localStorage.getItem(LocalStorageConstants.configAppId) ?? getAppId(),
+            serverUrl: localStorage.getItem(LocalStorageConstants.configServerURL) ?? getSocketURL(),
         },
         onSubmit: values => {
             localStorage.setItem(LocalStorageConstants.configServerURL, values.serverUrl);
-            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, values.appId);
+            localStorage.setItem(LocalStorageConstants.configAppId, values.appId.toString());
             formik.resetForm({ values });
         },
         validate: values => {
@@ -63,7 +63,7 @@ const Endpoint = () => {
                         onClick={() => {
                             const { server_url, app_id } = getDefaultAppIdAndUrl();
                             localStorage.setItem(LocalStorageConstants.configServerURL, server_url);
-                            LocalStorageUtils.setValue(LocalStorageConstants.configAppId, app_id);
+                            localStorage.setItem(LocalStorageConstants.configAppId, app_id.toString());
 
                             formik.resetForm({
                                 values: {
