@@ -92,6 +92,15 @@ function App() {
         };
     }, []);
 
+    const updateAccountParamInURL = (account_data: TAuthData['account_list'][number], fallback_currency = '') => {
+        const search_params = new URLSearchParams(window.location.search);
+        const account_param = account_data.loginid.startsWith('VR')
+            ? 'demo'
+            : account_data.currency || fallback_currency;
+        search_params.set('account', account_param);
+        window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
+    };
+
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
         const client_accounts = localStorage.getItem('clientAccounts');
@@ -99,13 +108,29 @@ function App() {
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
-        if (!account_currency || !accounts_list || !client_accounts) return;
+        if (!account_currency) {
+            try {
+                if (!client_accounts) return;
+                const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
+                const selected_account = Object.entries(parsed_client_accounts).find(
+                    ([/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account]) =>
+                        account.loginid === active_loginid
+                );
+                if (!selected_account) return;
+                const [/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account] = selected_account;
+                updateAccountParamInURL(account);
+            } catch (e) {
+                console.warn('Error', e); // eslint-disable-line no-console
+            }
+        }
+
+        if (!accounts_list || !client_accounts) return;
 
         try {
             const parsed_accounts = JSON.parse(accounts_list);
             const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
 
-            const is_valid_currency = config().lists.CURRENCY.includes(account_currency);
+            const is_valid_currency = account_currency ? config().lists.CURRENCY.includes(account_currency) : false;
 
             const updateLocalStorage = (token: string, loginid: string) => {
                 localStorage.setItem('authToken', token);
@@ -140,16 +165,13 @@ function App() {
 
             // Handle invalid currency case
             if (!is_valid_currency) {
-                const selected_account = parsed_client_accounts.find(account => account.loginid === active_loginid);
-
+                const selected_account = Object.entries(parsed_client_accounts).find(
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    ([_, account]) => account.loginid === active_loginid
+                );
                 if (!selected_account) return;
-
-                const search_params = new URLSearchParams(window.location.search);
-                const account_param = selected_account.loginid.startsWith('VR')
-                    ? 'demo'
-                    : selected_account.currency || 'USD';
-                search_params.set('account', account_param);
-                window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
+                const [_, account] = selected_account; // eslint-disable-line @typescript-eslint/no-unused-vars
+                updateAccountParamInURL(account, 'USD');
             }
         } catch (e) {
             console.warn('Error', e); // eslint-disable-line no-console
