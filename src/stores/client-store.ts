@@ -319,8 +319,13 @@ export default class ClientStore {
         window.LC_API?.close_chat?.();
         window.LiveChatWidget?.call('hide');
 
-        // disable freshchat
-        window.fcWidget?.close?.();
-        window.fcWidget?.user?.clear?.();
+        // shutdown and initialize intercom
+        if (window.Intercom) {
+            window.Intercom('shutdown');
+            window.DerivInterCom.initialize({
+                hideLauncher: true,
+                token: null,
+            });
+        }
     };
 }
