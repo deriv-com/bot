@@ -22,7 +22,7 @@ const PlatformSwitcher = () => {
                     active={active}
                     className='platform-switcher'
                     description={localize('{{description}}', { description })}
-                    href={href}
+                    href={window.location.search ? `${href}/${window.location.search}` : href}
                     icon={icon}
                     key={description}
                 />
