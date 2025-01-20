@@ -27,7 +27,7 @@ const CallbackPage = () => {
                 localStorage.setItem('authToken', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
 
-                localStorage.setItem('tokens object', tokens);
+                localStorage.setItem('tokens object', JSON.stringify(tokens));
 
                 window.location.assign('/');
             }}
