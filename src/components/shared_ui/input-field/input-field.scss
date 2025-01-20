@@ -81,11 +81,6 @@ button.dc-input-wrapper {
         }
     }
 
-    &__icon {
-        // TODO: fix check if necessary
-        // @extend %inline-icon;
-    }
-
     &--disabled {
         pointer-events: none;
         color: var(--text-disabled);

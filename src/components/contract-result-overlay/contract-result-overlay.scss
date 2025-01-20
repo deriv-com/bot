@@ -48,7 +48,7 @@
     }
 
     &--won {
-        background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
+        background-image: $COLOR_LIGHT_GREEN_GRADIENT;
 
         > #{$contract_result}-caption {
             color: var(--text-profit-success);
@@ -56,7 +56,7 @@
     }
 
     &--lost {
-        background-image: $COLOR_LIGHT_RED_GRADIENT; // TODO: Update when gradients are added.
+        background-image: $COLOR_LIGHT_RED_GRADIENT;
 
         > #{$contract_result}-caption {
             color: var(--text-loss-danger);

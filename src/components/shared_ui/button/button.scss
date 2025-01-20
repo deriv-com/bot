@@ -206,7 +206,6 @@
         }
     }
 
-    /* TODO: confirm this button with designer are we still using this? */
     &--green {
         background: var(--status-success);
 
@@ -302,8 +301,6 @@
     &__button-group {
         border-radius: 0 4px 4px 0;
     }
-
-    /* TODO: confirm this button with designer are we still using this? */
 
     /* postcss-bem-linter: ignore */
     .initial-loader--btn {
