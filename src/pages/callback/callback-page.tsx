@@ -28,6 +28,8 @@ const CallbackPage = () => {
                 localStorage.setItem('authToken', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
 
+                localStorage.setItem('tokens object', tokens);
+
                 window.location.assign('/');
             }}
             renderReturnButton={() => {
