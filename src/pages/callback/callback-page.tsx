@@ -6,17 +6,24 @@ const CallbackPage = () => {
         <Callback
             onSignInSuccess={(tokens: Record<string, string>) => {
                 const accountsList: Record<string, string> = {};
+                const clientAccounts: Record<string, { loginid: string; token: string }> = {};
+                console.log(tokens);
 
                 for (const [key, value] of Object.entries(tokens)) {
                     if (key.startsWith('acct')) {
                         const tokenKey = key.replace('acct', 'token');
                         if (tokens[tokenKey]) {
                             accountsList[value] = tokens[tokenKey];
+                            clientAccounts[value] = {
+                                loginid: value,
+                                token: tokens[tokenKey],
+                            };
                         }
                     }
                 }
 
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
+                localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 localStorage.setItem('authToken', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
