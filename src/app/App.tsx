@@ -4,7 +4,6 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
-import { config } from '@/external/bot-skeleton';
 import { StoreProvider } from '@/hooks/useStore';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
@@ -129,8 +128,11 @@ function App() {
         try {
             const parsed_accounts = JSON.parse(accounts_list);
             const parsed_client_accounts = JSON.parse(client_accounts) as TAuthData['account_list'];
-
-            const is_valid_currency = account_currency ? config().lists.CURRENCY.includes(account_currency) : false;
+            const is_valid_currency = account_currency
+                ? Object.values(parsed_client_accounts).some(
+                      account => account.currency.toUpperCase() === account_currency.toUpperCase()
+                  )
+                : false;
 
             const updateLocalStorage = (token: string, loginid: string) => {
                 localStorage.setItem('authToken', token);
@@ -138,7 +140,7 @@ function App() {
             };
 
             // Handle demo account
-            if (account_currency === 'demo') {
+            if (account_currency?.toUpperCase() === 'DEMO') {
                 const demo_account = Object.entries(parsed_accounts).find(([key]) => key.startsWith('VR'));
 
                 if (demo_account) {
@@ -149,9 +151,10 @@ function App() {
             }
 
             // Handle real account with valid currency
-            if (account_currency !== 'demo' && is_valid_currency) {
+            if (account_currency?.toUpperCase() !== 'DEMO' && is_valid_currency) {
                 const real_account = Object.entries(parsed_client_accounts).find(
-                    ([loginid, account]) => !loginid.startsWith('VR') && account.currency === account_currency
+                    ([loginid, account]) =>
+                        !loginid.startsWith('VR') && account.currency.toUpperCase() === account_currency?.toUpperCase()
                 );
 
                 if (real_account) {
