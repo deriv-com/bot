@@ -7,7 +7,6 @@ const CallbackPage = () => {
             onSignInSuccess={(tokens: Record<string, string>) => {
                 const accountsList: Record<string, string> = {};
                 const clientAccounts: Record<string, { loginid: string; token: string }> = {};
-                console.log(tokens);
 
                 for (const [key, value] of Object.entries(tokens)) {
                     if (key.startsWith('acct')) {
