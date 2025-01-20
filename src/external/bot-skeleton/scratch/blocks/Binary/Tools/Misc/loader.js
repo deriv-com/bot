@@ -16,7 +16,7 @@ window.Blockly.Blocks.loader = {
                 {
                     type: 'field_input',
                     name: 'URL',
-                    text: 'http://www.example.com/block.xml',
+                    text: 'https://maryia-matskevich-deriv.github.io/maryiaQQQ/default.xml',
                 },
             ],
             colour: window.Blockly.Colours.Base.colour,
@@ -51,7 +51,6 @@ window.Blockly.Blocks.loader = {
                     this.setDisabled(true);
                 }
             });
-
             if (!this.disabled) {
                 this.loadBlocksFromCurrentUrl();
             }
