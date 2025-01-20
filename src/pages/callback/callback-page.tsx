@@ -6,7 +6,7 @@ const CallbackPage = () => {
         <Callback
             onSignInSuccess={(tokens: Record<string, string>) => {
                 const accountsList: Record<string, string> = {};
-                const clientAccounts: Record<string, { loginid: string; token: string }> = {};
+                const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 
                 for (const [key, value] of Object.entries(tokens)) {
                     if (key.startsWith('acct')) {
@@ -16,7 +16,13 @@ const CallbackPage = () => {
                             clientAccounts[value] = {
                                 loginid: value,
                                 token: tokens[tokenKey],
+                                currency: '',
                             };
+                        }
+                    } else if (key.startsWith('cur')) {
+                        const accKey = key.replace('cur', 'acct');
+                        if (tokens[accKey]) {
+                            clientAccounts[tokens[accKey]].currency = value;
                         }
                     }
                 }
@@ -26,8 +32,6 @@ const CallbackPage = () => {
 
                 localStorage.setItem('authToken', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
-
-                localStorage.setItem('tokens object', JSON.stringify(tokens));
 
                 window.location.assign('/');
             }}
