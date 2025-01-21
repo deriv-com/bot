@@ -47,6 +47,16 @@ export const AccountSwitcherWalletItem = observer(
             localStorage.setItem('active_loginid', loginId.toString());
             await api_base?.init(true);
             closeAccountsDialog();
+
+            const client_accounts = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
+            const search_params = new URLSearchParams(window.location.search);
+            const selected_account = Object.values(client_accounts)?.find(
+                (acc: any) => acc.loginid === loginId.toString()
+            );
+            if (!selected_account) return;
+            const account_param = is_virtual ? 'demo' : selected_account.currency;
+            search_params.set('account', account_param);
+            window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
         };
 
         return (
