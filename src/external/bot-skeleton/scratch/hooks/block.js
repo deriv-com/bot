@@ -218,3 +218,10 @@ window.Blockly.FieldDropdown.prototype.doClassValidation_4 = function (newValue)
     this.setText(text ?? '');
     return newValue;
 };
+
+window.Blockly.FieldDropdown.prototype.doClassValidation_5 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};
