@@ -147,10 +147,15 @@ export const generateOAuthURL = () => {
     const oauth_url = getOauthURL();
     const original_url = new URL(oauth_url);
     const configured_server_url = (LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ||
+        localStorage.getItem('config.server_url') ||
         original_url.hostname) as string;
 
     const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
-    if (!valid_server_urls.includes(JSON.stringify(configured_server_url))) {
+    if (
+        typeof configured_server_url === 'string'
+            ? !valid_server_urls.includes(configured_server_url)
+            : !valid_server_urls.includes(JSON.stringify(configured_server_url))
+    ) {
         original_url.hostname = configured_server_url;
     }
     return original_url.toString() || oauth_url;
