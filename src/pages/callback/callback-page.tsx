@@ -1,10 +1,11 @@
+import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
 
 const CallbackPage = () => {
     return (
         <Callback
-            onSignInSuccess={(tokens: Record<string, string>) => {
+            onSignInSuccess={async (tokens: Record<string, string>) => {
                 const accountsList: Record<string, string> = {};
                 const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 
@@ -30,8 +31,27 @@ const CallbackPage = () => {
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
-                localStorage.setItem('authToken', tokens.token1);
-                localStorage.setItem('active_loginid', tokens.acct1);
+                let is_token_set = false;
+                const api = await generateDerivApiInstance();
+                if (api) {
+                    const { authorize, error } = await api.authorize(tokens.token1);
+                    localStorage.setItem('callback_token', authorize.toString());
+                    api.disconnect();
+                    if (!error) {
+                        const clientAccountsArray = Object.values(clientAccounts);
+                        const firstId = authorize?.account_list[0]?.loginid;
+                        const filteredTokens = clientAccountsArray.filter(account => account.loginid === firstId);
+                        if (filteredTokens.length) {
+                            localStorage.setItem('authToken', filteredTokens[0].token);
+                            localStorage.setItem('active_loginid', filteredTokens[0].loginid);
+                            is_token_set = true;
+                        }
+                    }
+                }
+                if (!is_token_set) {
+                    localStorage.setItem('authToken', tokens.token1);
+                    localStorage.setItem('active_loginid', tokens.acct1);
+                }
 
                 window.location.assign('/');
             }}

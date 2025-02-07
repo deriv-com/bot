@@ -1,5 +1,5 @@
 import { initSurvicate } from '../public-path';
-import { Fragment, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
@@ -9,7 +9,6 @@ import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
 import { TAuthData } from '@/types/api-types';
 import { initializeI18n, localize, TranslationProvider } from '@deriv-com/translations';
-import { URLUtils } from '@deriv-com/utils';
 import CoreStoreProvider from './CoreStoreProvider';
 import './app-root.scss';
 
@@ -49,37 +48,6 @@ const router = createBrowserRouter(
 );
 
 function App() {
-    const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
-    React.useEffect(() => {
-        // Set login info to local storage and remove params from url
-        if (loginInfo.length) {
-            try {
-                const defaultActiveAccount = URLUtils.getDefaultActiveAccount(loginInfo);
-                if (!defaultActiveAccount) return;
-
-                const accountsList: Record<string, string> = {};
-                const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
-
-                loginInfo.forEach((account: { loginid: string; token: string; currency: string }) => {
-                    accountsList[account.loginid] = account.token;
-                    clientAccounts[account.loginid] = account;
-                });
-
-                localStorage.setItem('accountsList', JSON.stringify(accountsList));
-                localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
-
-                URLUtils.filterSearchParams(paramsToDelete);
-
-                localStorage.setItem('authToken', loginInfo[0].token);
-                localStorage.setItem('active_loginid', loginInfo[0].loginid);
-            } catch (error) {
-                console.error('Error setting up login info:', error);
-            }
-        }
-
-        URLUtils.filterSearchParams(['lang']);
-    }, [loginInfo, paramsToDelete]);
-
     React.useEffect(() => {
         initSurvicate();
         window?.dataLayer?.push({ event: 'page_load' });
@@ -181,11 +149,7 @@ function App() {
         }
     }, []);
 
-    return (
-        <Fragment>
-            <RouterProvider router={router} />
-        </Fragment>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;

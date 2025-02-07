@@ -60,7 +60,7 @@ const getDerivDomain = (service: Service): string => {
  * Uses template literals to compose URLs dynamically.
  */
 export const standalone_routes = {
-    bot: '/',
+    bot: `${window.location.origin}`,
     cashier: `${getDerivDomain('derivApp')}/cashier/`,
     cashier_deposit: `${getDerivDomain('derivApp')}/cashier/deposit`,
     cashier_p2p: `${getDerivDomain('derivApp')}/cashier/p2p`,
@@ -78,7 +78,7 @@ export const standalone_routes = {
     signup: `https://hub.deriv.com/tradershub/signup`,
     deriv_com: getDerivDomain('derivCom'),
     deriv_app: getDerivDomain('derivApp'),
-    endpoint: '/endpoint',
+    endpoint: `${window.location.origin}/endpoint`,
     account_limits: `${getDerivDomain('derivApp')}/account/account-limits`,
     help_center: `${getDerivDomain('derivCom')}/help-centre/`,
     responsible: `${getDerivDomain('derivCom')}/responsible/`,

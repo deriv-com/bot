@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
-import App from './app/App';
+import { AuthWrapper } from './app/AuthWrapper';
 import { AnalyticsInitializer } from './utils/analytics';
 import './styles/index.scss';
 
 AnalyticsInitializer();
 
-ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')!).render(<AuthWrapper />);
