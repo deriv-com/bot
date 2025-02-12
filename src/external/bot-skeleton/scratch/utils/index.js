@@ -412,7 +412,6 @@ const getDisabledBlocks = required_blocks_check => {
             .filter(block => required_block_types.includes(block.type))
             .map(block => [block.type, block.disabled])
     );
-
     const mandatory_blocks = ['before_purchase', 'purchase', 'trade_definition', 'trade_definition_tradeoptions'];
     const has_disabled_blocks = mandatory_blocks.some(type => flag_disabled_blocks[type]);
 
