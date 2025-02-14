@@ -9,6 +9,11 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch = (error, info) => {
+        if (error?.message?.includes('survicate.com')) {
+            console.warn('Survicate script error:', error.message);
+            return;
+        }
+
         if (window.TrackJS) window.TrackJS.console.log(this.props.root_store);
 
         this.setState({
