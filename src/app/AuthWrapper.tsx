@@ -5,7 +5,7 @@ import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/a
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
-import { Account,AccountsList, ApiInstance, ClientAccounts, LoginInfo } from './types';
+import { Account, AccountsList, ApiInstance, ClientAccounts, LoginInfo } from './types';
 
 const getCookieAccounts = (): ClientAccounts => {
     try {
@@ -24,19 +24,15 @@ const storeAccountsToLocalStorage = (
     const accountsList: AccountsList = {};
     const clientAccounts: ClientAccounts = { ...cookieAccounts };
 
-    authorizedAccounts.forEach(({ loginid, token, currency }) => {
+    [...authorizedAccounts, ...loginInfo].forEach(({ loginid, token, currency }) => {
         if (loginid && token) {
             accountsList[loginid] = token;
             clientAccounts[loginid] = { loginid, token, currency: currency || '' };
         }
     });
 
-    loginInfo.forEach(({ loginid, token, currency }) => {
-        if (loginid && token) {
-            accountsList[loginid] = token;
-            clientAccounts[loginid] = { loginid, token, currency: currency || '' };
-        }
-    });
+    console.log('accountsList', accountsList);
+    console.log('clientAccounts', clientAccounts);
 
     localStorage.setItem('accountsList', JSON.stringify(accountsList));
     localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
@@ -85,6 +81,7 @@ const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: Client
             try {
                 const { authorize, error } = await api.authorize(token);
 
+                console.log('authorize', authorize);
                 if (!error && authorize?.account_list) {
                     authorizedAccounts.push({
                         loginid,
@@ -92,6 +89,7 @@ const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: Client
                         currency: currency || authorize.currency || '',
                     });
                 }
+                console.log('authorizedAccounts', authorizedAccounts);
             } catch (err) {
                 console.error(`Authorization failed for ${loginid}:`, err);
             }
@@ -147,6 +145,7 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
+            console.log('loginInfo', loginInfo);
             await setLocalStorageToken(loginInfo, paramsToDelete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
