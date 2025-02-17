@@ -85,6 +85,10 @@ function App() {
             active_loginid_cookie: Cookies.get('active_loginid') || '{}',
             active_loginid_local_storage: localStorage.getItem('active_loginid'),
         });
+        if (client_accounts) {
+            localStorage.setItem('clientAccounts', JSON.stringify(client_accounts));
+        }
+        console.log('updated client accounts', JSON.parse(localStorage.getItem('clientAccounts') || '{}'));
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
