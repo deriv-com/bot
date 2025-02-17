@@ -5,17 +5,9 @@ import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/a
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
-import {
-    Account,
-    AccountsList,
-    ActiveAccount,
-    ApiInstance,
-    ClientAccounts,
-    LocalStorageToken,
-    LoginInfo,
-} from './types';
+import { Account,AccountsList, ApiInstance, ClientAccounts, LoginInfo } from './types';
 
-const getCookieAccounts = () => {
+const getCookieAccounts = (): ClientAccounts => {
     try {
         return JSON.parse(Cookies.get('client.accounts') || '{}');
     } catch (error) {
@@ -24,11 +16,22 @@ const getCookieAccounts = () => {
     }
 };
 
-const storeAccountsToLocalStorage = (cookieAccounts: Record<string, Account>): ClientAccounts => {
+const storeAccountsToLocalStorage = (
+    cookieAccounts: ClientAccounts,
+    loginInfo: LoginInfo[],
+    authorizedAccounts: LoginInfo[]
+): ClientAccounts => {
     const accountsList: AccountsList = {};
-    const clientAccounts: ClientAccounts = {};
+    const clientAccounts: ClientAccounts = { ...cookieAccounts };
 
-    Object.values(cookieAccounts).forEach(({ loginid, token, currency }) => {
+    authorizedAccounts.forEach(({ loginid, token, currency }) => {
+        if (loginid && token) {
+            accountsList[loginid] = token;
+            clientAccounts[loginid] = { loginid, token, currency: currency || '' };
+        }
+    });
+
+    loginInfo.forEach(({ loginid, token, currency }) => {
         if (loginid && token) {
             accountsList[loginid] = token;
             clientAccounts[loginid] = { loginid, token, currency: currency || '' };
@@ -37,14 +40,15 @@ const storeAccountsToLocalStorage = (cookieAccounts: Record<string, Account>): C
 
     localStorage.setItem('accountsList', JSON.stringify(accountsList));
     localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
+
     return clientAccounts;
 };
 
 const getActiveAccount = (
-    cookieAccounts: Record<string, ActiveAccount>,
+    cookieAccounts: ClientAccounts,
     clientAccounts: ClientAccounts,
     loginInfo: LoginInfo[]
-): ActiveAccount | undefined => {
+): Account | LoginInfo => {
     const queryParams = new URLSearchParams(window.location.search);
     const currencyType = queryParams.get('account') || loginInfo[0]?.currency;
 
@@ -57,19 +61,48 @@ const getActiveAccount = (
     );
 };
 
-const authorizeAccount = async (api: ApiInstance, loginInfo: LoginInfo[]): Promise<LoginInfo | undefined> => {
-    if (api) {
-        const { authorize, error } = await api.authorize(loginInfo[0].token);
-        api.disconnect();
-        if (!error) {
-            const firstId = authorize?.account_list[0]?.loginid;
-            return loginInfo.find(acc => acc.loginid === firstId);
+const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: ClientAccounts): Promise<LoginInfo[]> => {
+    if (!api || Object.keys(cookieAccounts).length === 0) return [];
+
+    const authorizedAccounts: LoginInfo[] = [];
+
+    for (const loginid in cookieAccounts) {
+        const { token, currency } = cookieAccounts[loginid];
+
+        if (token) {
+            authorizedAccounts.push({
+                loginid,
+                token,
+                currency: currency || '',
+            });
         }
     }
-    return undefined;
+
+    for (const loginid in cookieAccounts) {
+        const { token, currency } = cookieAccounts[loginid];
+
+        if (!token) {
+            try {
+                const { authorize, error } = await api.authorize(token);
+
+                if (!error && authorize?.account_list) {
+                    authorizedAccounts.push({
+                        loginid,
+                        token,
+                        currency: currency || authorize.currency || '',
+                    });
+                }
+            } catch (err) {
+                console.error(`Authorization failed for ${loginid}:`, err);
+            }
+        }
+    }
+
+    api.disconnect();
+    return authorizedAccounts;
 };
 
-const setLocalStorageToken = async ({ loginInfo, paramsToDelete }: LocalStorageToken): Promise<void> => {
+const setLocalStorageToken = async (loginInfo: LoginInfo[], paramsToDelete: string[]): Promise<void> => {
     const cookieAccounts = getCookieAccounts();
     const hasValidLoginInfo = loginInfo.length > 0 && loginInfo.some(acc => acc.token);
     const hasValidCookie = Object.keys(cookieAccounts).length > 0;
@@ -77,8 +110,25 @@ const setLocalStorageToken = async ({ loginInfo, paramsToDelete }: LocalStorageT
     if (!hasValidLoginInfo && !hasValidCookie) return;
 
     try {
-        const clientAccounts = storeAccountsToLocalStorage(cookieAccounts);
+        const api = await generateDerivApiInstance();
+        let authorizedAccounts: LoginInfo[] = [];
+
+        if (api && hasValidCookie) {
+            authorizedAccounts = await authorizeAccounts(api, cookieAccounts);
+        }
+
+        const clientAccounts = storeAccountsToLocalStorage(cookieAccounts, loginInfo, authorizedAccounts);
+
         let activeAccount = getActiveAccount(cookieAccounts, clientAccounts, loginInfo);
+
+        if (api && !activeAccount) {
+            const authorizedAccount = authorizedAccounts[0];
+            if (authorizedAccount) {
+                activeAccount = authorizedAccount;
+                localStorage.setItem('authToken', activeAccount.token);
+                localStorage.setItem('active_loginid', activeAccount.loginid);
+            }
+        }
 
         if (activeAccount) {
             localStorage.setItem('authToken', activeAccount.token);
@@ -86,15 +136,6 @@ const setLocalStorageToken = async ({ loginInfo, paramsToDelete }: LocalStorageT
         }
 
         URLUtils.filterSearchParams(paramsToDelete);
-        const api = await generateDerivApiInstance();
-
-        if (api && !activeAccount) {
-            activeAccount = await authorizeAccount(api, loginInfo);
-            if (activeAccount) {
-                localStorage.setItem('authToken', activeAccount.token);
-                localStorage.setItem('active_loginid', activeAccount.loginid);
-            }
-        }
     } catch (error) {
         console.error('Error setting up login info:', error);
     }
@@ -106,7 +147,7 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
-            await setLocalStorageToken({ loginInfo, paramsToDelete });
+            await setLocalStorageToken(loginInfo, paramsToDelete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
         };
