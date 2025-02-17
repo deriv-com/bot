@@ -75,6 +75,7 @@ function App() {
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
+        // revert commit
         if (!account_currency) {
             try {
                 if (!client_accounts) return;
