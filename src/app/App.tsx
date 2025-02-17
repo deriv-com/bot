@@ -1,7 +1,6 @@
 import { initSurvicate } from '../public-path';
 import { lazy, Suspense } from 'react';
 import React from 'react';
-import Cookies from 'js-cookie';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
@@ -70,41 +69,12 @@ function App() {
     };
 
     React.useEffect(() => {
-        const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
-        const cookie_accounts = Cookies.get('client.accounts') || '{}';
-        const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
-
-        Object.values(JSON.parse(cookie_accounts)).forEach(data => {
-            const account_data = data as { loginid: string; token: string };
-            const loginid = account_data.loginid;
-            accounts_list[loginid] = account_data.token;
-        });
-
-        if (!Object.keys(accounts_list).length) {
-            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
-        }
-
-        const client_accounts = {
-            ...stored_accounts,
-            ...JSON.parse(cookie_accounts),
-        };
-        console.log(client_accounts);
-        const active_loginid = Cookies.get('active_loginid') || localStorage.getItem('active_loginid');
-        console.log('test from app', {
-            active_loginid,
-            active_login_id_encrypted: Cookies.get('active_loginid') || '{}',
-            active_loginid_cookie: Cookies.get('active_loginid') || '{}',
-            active_loginid_local_storage: localStorage.getItem('active_loginid'),
-        });
-
-        if (client_accounts) {
-            localStorage.setItem('clientAccounts', JSON.stringify(client_accounts));
-        }
-        console.log('updated client accounts', JSON.parse(localStorage.getItem('clientAccounts') || '{}'));
+        const accounts_list = localStorage.getItem('accountsList');
+        const client_accounts = localStorage.getItem('clientAccounts');
+        const active_loginid = localStorage.getItem('active_loginid');
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
-        // revert commit
         if (!account_currency) {
             try {
                 if (!client_accounts) return;
@@ -113,7 +83,6 @@ function App() {
                     ([/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account]) =>
                         account.loginid === active_loginid
                 );
-                console.log(selected_account);
                 if (!selected_account) return;
                 const [/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account] = selected_account;
                 updateAccountParamInURL(account);
