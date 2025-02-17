@@ -1,6 +1,7 @@
 import { initSurvicate } from '../public-path';
 import { lazy, Suspense } from 'react';
 import React from 'react';
+import Cookies from 'js-cookie';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
@@ -71,7 +72,14 @@ function App() {
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
         const client_accounts = localStorage.getItem('clientAccounts');
-        const active_loginid = localStorage.getItem('active_loginid');
+        const active_loginid =
+            JSON.parse(Cookies.get('active_loginid') || '') || localStorage.getItem('active_loginid');
+        console.log('test from app', {
+            active_loginid,
+            active_login_id_encrypted: JSON.parse(Cookies.get('active_login_id_unencrypted') || ''),
+            active_loginid_cookie: Cookies.get('active_loginid') || '',
+            active_loginid_local_storage: localStorage.getItem('active_loginid'),
+        });
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
 
