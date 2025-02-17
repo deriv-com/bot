@@ -74,11 +74,18 @@ function App() {
         const cookie_accounts = Cookies.get('client.accounts') || '{}';
         const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
 
-        Object.values(JSON.parse(cookie_accounts)).forEach(data => {
-            const account_data = data as { loginid: string; token: string };
-            const loginid = account_data.loginid;
-            accounts_list[loginid] = account_data.token;
-        });
+        if (Array.isArray(cookie_accounts)) {
+            cookie_accounts.forEach(data => {
+                const loginid = data.loginid;
+                console.log('loginid test', data.loginid);
+                accounts_list[loginid] = data.token;
+            });
+
+            console.log('loginid test cookie_accounts accounts_list', cookie_accounts, accounts_list);
+            localStorage.setItem('accountsList', accounts_list);
+        } else {
+            console.error('Invalid cookie_accounts format');
+        }
 
         const client_accounts = {
             ...stored_accounts,
