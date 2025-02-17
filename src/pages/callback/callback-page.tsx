@@ -51,7 +51,7 @@ const CallbackPage = () => {
                 }
                 if (!is_token_set) {
                     const active_loginid =
-                        JSON.parse(Cookies.get('active_loginid') || '{}') || localStorage.getItem('active_loginid');
+                        Cookies.get('active_loginid') || '{}' || localStorage.getItem('active_loginid');
                     console.log('test from callback', {
                         tokens,
                         active_loginid,
