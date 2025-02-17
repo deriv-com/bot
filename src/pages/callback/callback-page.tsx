@@ -30,6 +30,7 @@ const CallbackPage = () => {
                 }
 
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
+                console.log('callback', clientAccounts);
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 let is_token_set = false;
