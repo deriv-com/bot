@@ -71,7 +71,13 @@ function App() {
 
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
-        const client_accounts = localStorage.getItem('clientAccounts');
+        const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
+        const cookie_accounts = Cookies.get('client.accounts') || '{}';
+        const client_accounts = {
+            ...stored_accounts,
+            ...JSON.parse(cookie_accounts),
+        };
+        console.log(client_accounts);
         const active_loginid = Cookies.get('active_loginid') || localStorage.getItem('active_loginid');
         console.log('test from app', {
             active_loginid,
@@ -90,6 +96,7 @@ function App() {
                     ([/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account]) =>
                         account.loginid === active_loginid
                 );
+                console.log(selected_account);
                 if (!selected_account) return;
                 const [/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account] = selected_account;
                 updateAccountParamInURL(account);
