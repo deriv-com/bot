@@ -70,7 +70,7 @@ function App() {
     };
 
     React.useEffect(() => {
-        const accounts_list = localStorage.getItem('accountsList') || '{}';
+        const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
         const cookie_accounts = Cookies.get('client.accounts') || '{}';
         const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
 
