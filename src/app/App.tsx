@@ -80,6 +80,9 @@ function App() {
             accounts_list[loginid] = account_data.token;
         });
 
+        if (accounts_list) {
+            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
+        }
         const client_accounts = {
             ...stored_accounts,
             ...JSON.parse(cookie_accounts),
@@ -92,6 +95,7 @@ function App() {
             active_loginid_cookie: Cookies.get('active_loginid') || '{}',
             active_loginid_local_storage: localStorage.getItem('active_loginid'),
         });
+
         if (client_accounts) {
             localStorage.setItem('clientAccounts', JSON.stringify(client_accounts));
         }
