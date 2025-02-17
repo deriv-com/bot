@@ -31,6 +31,9 @@ const storeAccountsToLocalStorage = (
         }
     });
 
+    console.log('accountsList', accountsList);
+    console.log('clientAccounts', clientAccounts);
+
     localStorage.setItem('accountsList', JSON.stringify(accountsList));
     localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
@@ -142,6 +145,7 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
+            console.log('loginInfo', loginInfo);
             await setLocalStorageToken(loginInfo, paramsToDelete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
