@@ -73,11 +73,11 @@ function App() {
         const accounts_list = localStorage.getItem('accountsList');
         const client_accounts = localStorage.getItem('clientAccounts');
         const active_loginid =
-            JSON.parse(Cookies.get('active_loginid') || '') || localStorage.getItem('active_loginid');
+            JSON.parse(Cookies.get('active_loginid') || '{}') || localStorage.getItem('active_loginid');
         console.log('test from app', {
             active_loginid,
-            active_login_id_encrypted: JSON.parse(Cookies.get('active_login_id_unencrypted') || ''),
-            active_loginid_cookie: Cookies.get('active_loginid') || '',
+            active_login_id_encrypted: JSON.parse(Cookies.get('active_loginid') || '{}'),
+            active_loginid_cookie: Cookies.get('active_loginid') || '{}',
             active_loginid_local_storage: localStorage.getItem('active_loginid'),
         });
         const url_params = new URLSearchParams(window.location.search);
