@@ -78,11 +78,9 @@ function App() {
             const account_data = data as { loginid: string; token: string };
             const loginid = account_data.loginid;
             accounts_list[loginid] = account_data.token;
+            localStorage.setItem('accountsList', accounts_list);
         });
 
-        if (accounts_list) {
-            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
-        }
         const client_accounts = {
             ...stored_accounts,
             ...JSON.parse(cookie_accounts),
