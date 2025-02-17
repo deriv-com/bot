@@ -77,9 +77,11 @@ function App() {
         if (Array.isArray(cookie_accounts)) {
             cookie_accounts.forEach(data => {
                 const loginid = data.loginid;
+                console.log('loginid test', data.loginid);
                 accounts_list[loginid] = data.token;
             });
 
+            console.log('loginid test cookie_accounts accounts_list', cookie_accounts, accounts_list);
             localStorage.setItem('accountsList', accounts_list);
         } else {
             console.error('Invalid cookie_accounts format');
