@@ -74,12 +74,15 @@ function App() {
         const cookie_accounts = Cookies.get('client.accounts') || '{}';
         const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
 
-        const json_acc_list = Object.values(JSON.parse(cookie_accounts)).forEach(data => {
+        Object.values(JSON.parse(cookie_accounts)).forEach(data => {
             const account_data = data as { loginid: string; token: string };
             const loginid = account_data.loginid;
             accounts_list[loginid] = account_data.token;
         });
-        localStorage.setItem('accountsList', JSON.stringify(json_acc_list));
+
+        if (!Object.keys(accounts_list).length) {
+            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
+        }
 
         const client_accounts = {
             ...stored_accounts,
