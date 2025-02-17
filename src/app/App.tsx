@@ -70,7 +70,7 @@ function App() {
     };
 
     React.useEffect(() => {
-        const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
+        const accounts_list = localStorage.getItem('accountsList') || '{}';
         const cookie_accounts = Cookies.get('client.accounts') || '{}';
         const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
 
@@ -80,11 +80,10 @@ function App() {
                 accounts_list[loginid] = data.token;
             });
 
-            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
+            localStorage.setItem('accountsList', accounts_list);
         } else {
             console.error('Invalid cookie_accounts format');
         }
-        localStorage.setItem('accountsList', JSON.stringify(accounts_list));
 
         const client_accounts = {
             ...stored_accounts,
