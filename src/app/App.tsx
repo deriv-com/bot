@@ -71,8 +71,21 @@ function App() {
 
     React.useEffect(() => {
         const accounts_list = JSON.parse(localStorage.getItem('accountsList') || '{}');
-        const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
         const cookie_accounts = Cookies.get('client.accounts') || '{}';
+        const stored_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
+
+        if (Array.isArray(cookie_accounts)) {
+            cookie_accounts.forEach(data => {
+                const loginid = data.loginid;
+                accounts_list[loginid] = data.token;
+            });
+
+            localStorage.setItem('accountsList', JSON.stringify(accounts_list));
+        } else {
+            console.error('Invalid cookie_accounts format');
+        }
+        localStorage.setItem('accountsList', JSON.stringify(accounts_list));
+
         const client_accounts = {
             ...stored_accounts,
             ...JSON.parse(cookie_accounts),
