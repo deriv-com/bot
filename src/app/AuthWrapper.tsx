@@ -147,6 +147,7 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
+            console.log('loginInfo', loginInfo);
             await setLocalStorageToken(loginInfo, paramsToDelete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
