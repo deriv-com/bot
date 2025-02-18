@@ -29,7 +29,7 @@ const Layout = () => {
     const cookiesAccount = JSON.parse(Cookies.get('client.accounts') ?? '{}');
     const isAccountPresent = hasAllKeys(checkClientAccount, cookiesAccount);
 
-    console.log('clientAccounts', { checkClientAccount, checkAccountList, isAccountPresent });
+    console.log('clientAccounts', { cookiesAccount, checkClientAccount, checkAccountList, isAccountPresent });
 
     useEffect(() => {
         if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !isAccountPresent) {
