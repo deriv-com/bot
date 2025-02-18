@@ -33,10 +33,12 @@ const authorizeAccounts = async (api: ApiInstance, clientAccounts: ClientAccount
             try {
                 const { authorize, error } = await api.authorize(token);
                 if (!error) {
-                    authorizedAccounts.push({
-                        loginid,
-                        token,
-                        currency: currency || authorize?.currency || '',
+                    authorize?.account_list.forEach(({ loginid }) => {
+                        authorizedAccounts.push({
+                            loginid,
+                            token,
+                            currency,
+                        });
                     });
                 }
             } catch (err) {
