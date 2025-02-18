@@ -21,7 +21,8 @@ const Layout = () => {
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency = getQueryParams.get('account') ?? '';
-    const ifClientAccountHasCurrency = Object.values(checkClientAccount).some(account => account.currency === currency);
+    const ifClientAccountHasCurrency =
+        Object.values(checkClientAccount).some(account => account.currency === currency) || currency === 'demo';
 
     console.log('clientAccounts', {
         currency,
