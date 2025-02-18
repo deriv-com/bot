@@ -20,9 +20,19 @@ const Layout = () => {
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+    const clientAccountsMissingToken =
+        isClientAccountsPopulated &&
+        Object.values(clientAccounts).some(account => !(account as { token?: string }).token);
 
     useEffect(() => {
-        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
+        if (
+            isLoggedInCookie &&
+            !isClientAccountsPopulated &&
+            isOAuth2Enabled &&
+            !isEndpointPage &&
+            !isCallbackPage &&
+            clientAccountsMissingToken
+        ) {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
