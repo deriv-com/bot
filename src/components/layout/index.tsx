@@ -19,13 +19,14 @@ const Layout = () => {
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
-    const checkAccountList = JSON.parse(localStorage.getItem('api_account_list') ?? '{}');
-    const areAccountsEqual = Object.keys(checkClientAccount).length === Object.keys(checkAccountList).length;
+    const getQueryParams = new URLSearchParams(window.location.search);
+    const currency = getQueryParams.get('account') ?? '';
+    const ifClientAccountHasCurrency = Object.values(checkClientAccount).some(account => account.currency === currency);
 
     console.log('clientAccounts', {
+        currency,
         checkClientAccount,
-        checkAccountList,
-        areAccountsEqual,
+        ifClientAccountHasCurrency,
     });
 
     useEffect(() => {
