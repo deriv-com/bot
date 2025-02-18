@@ -34,12 +34,23 @@ const Layout = () => {
     });
 
     useEffect(() => {
-        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
+        if (
+            (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
+            !ifClientAccountHasCurrency
+        ) {
+            console.log('requestOidcAuthentication');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
+    }, [
+        isLoggedInCookie,
+        isClientAccountsPopulated,
+        isOAuth2Enabled,
+        isEndpointPage,
+        isCallbackPage,
+        ifClientAccountHasCurrency,
+    ]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
