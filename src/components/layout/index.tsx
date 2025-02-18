@@ -25,14 +25,7 @@ const Layout = () => {
         Object.values(clientAccounts).some(account => !(account as { token?: string }).token);
 
     useEffect(() => {
-        if (
-            isLoggedInCookie &&
-            !isClientAccountsPopulated &&
-            isOAuth2Enabled &&
-            !isEndpointPage &&
-            !isCallbackPage &&
-            clientAccountsMissingToken
-        ) {
+        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && clientAccountsMissingToken) {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
