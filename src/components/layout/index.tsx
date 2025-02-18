@@ -21,17 +21,17 @@ const Layout = () => {
     const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const checkAccountList = JSON.parse(localStorage.getItem('accountList') ?? '{}');
-    const AccountLengthsEqual = JSON.stringify(clientAccounts) === JSON.stringify(checkClientAccount);
+    const accountLengthsEqual = JSON.stringify(clientAccounts) === JSON.stringify(checkClientAccount);
 
-    console.log('clientAccounts', { checkClientAccount, checkAccountList, AccountLengthsEqual });
+    console.log('clientAccounts', { checkClientAccount, checkAccountList, accountLengthsEqual });
     useEffect(() => {
-        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !AccountLengthsEqual) {
+        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !accountLengthsEqual) {
             console.log('requestOidcAuthentication');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
+    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage, accountLengthsEqual]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
