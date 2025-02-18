@@ -47,3 +47,15 @@ export type LocalStorageToken = {
     loginInfo: LoginInfoItem[];
     paramsToDelete: string[];
 };
+
+export type RemainingAccount = {
+    loginid: string;
+    token?: string;
+    currency?: string;
+};
+
+export type AccountListItem = {
+    loginid: string;
+    token?: string;
+    currency?: string;
+};

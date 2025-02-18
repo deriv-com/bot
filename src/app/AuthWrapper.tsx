@@ -5,7 +5,7 @@ import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/a
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
-import { Account, AccountsList, ApiInstance, ClientAccounts, LoginInfo } from './types';
+import { AccountsList, ApiInstance, ClientAccounts, LoginInfo } from './types';
 
 const getCookieAccounts = (): ClientAccounts => {
     try {
@@ -16,118 +16,56 @@ const getCookieAccounts = (): ClientAccounts => {
     }
 };
 
-const storeAccountsToLocalStorage = (
-    cookieAccounts: ClientAccounts,
-    loginInfo: LoginInfo[],
-    authorizedAccounts: LoginInfo[]
-): ClientAccounts => {
-    const accountsList: AccountsList = {};
-    const clientAccounts: ClientAccounts = { ...cookieAccounts };
-
-    [...authorizedAccounts, ...loginInfo].forEach(({ loginid, token, currency }) => {
-        if (loginid && token) {
-            accountsList[loginid] = token;
-            clientAccounts[loginid] = { loginid, token, currency: currency || '' };
-        }
-    });
-
-    console.log('accountsList', accountsList);
-    console.log('clientAccounts', clientAccounts);
-
+const storeAccountsToLocalStorage = (clientAccounts: ClientAccounts) => {
+    const accountsList: AccountsList = Object.fromEntries(
+        Object.entries(clientAccounts).map(([loginid, { token }]) => [loginid, token])
+    );
     localStorage.setItem('accountsList', JSON.stringify(accountsList));
     localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
-
-    return clientAccounts;
 };
 
-const getActiveAccount = (
-    cookieAccounts: ClientAccounts,
-    clientAccounts: ClientAccounts,
-    loginInfo: LoginInfo[]
-): Account | LoginInfo => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const currencyType = queryParams.get('account') || loginInfo[0]?.currency;
-
-    return (
-        Object.values(cookieAccounts).find(acc => acc.currency === currencyType) ||
-        Object.values(cookieAccounts)[0] ||
-        Object.values(clientAccounts).find(acc => acc.currency === currencyType) ||
-        Object.values(clientAccounts)[0] ||
-        loginInfo[0]
-    );
-};
-
-const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: ClientAccounts): Promise<LoginInfo[]> => {
-    if (!api || Object.keys(cookieAccounts).length === 0) return [];
+const authorizeAccounts = async (api: ApiInstance, clientAccounts: ClientAccounts): Promise<LoginInfo[]> => {
+    if (!api || !Object.keys(clientAccounts).length) return [];
 
     const authorizedAccounts: LoginInfo[] = [];
-
-    for (const loginid in cookieAccounts) {
-        const { token, currency } = cookieAccounts[loginid];
-
+    for (const [loginid, { token, currency }] of Object.entries(clientAccounts)) {
         if (token) {
-            authorizedAccounts.push({
-                loginid,
-                token,
-                currency: currency || '',
-            });
-        }
-    }
-
-    for (const loginid in cookieAccounts) {
-        const { token, currency } = cookieAccounts[loginid];
-
-        if (!token) {
             try {
                 const { authorize, error } = await api.authorize(token);
-
-                console.log('authorize', authorize);
-                if (!error && authorize?.account_list) {
+                if (!error) {
                     authorizedAccounts.push({
                         loginid,
                         token,
-                        currency: currency || authorize.currency || '',
+                        currency: currency || authorize?.currency || '',
                     });
                 }
-                console.log('authorizedAccounts', authorizedAccounts);
             } catch (err) {
                 console.error(`Authorization failed for ${loginid}:`, err);
             }
         }
     }
-
-    api.disconnect();
     return authorizedAccounts;
 };
 
-const setLocalStorageToken = async (loginInfo: LoginInfo[], paramsToDelete: string[]): Promise<void> => {
+const setLocalStorageToken = async (loginInfo: LoginInfo[], paramsToDelete: string[]): Promise<LoginInfo[] | void> => {
     const cookieAccounts = getCookieAccounts();
-    const hasValidLoginInfo = loginInfo.length > 0 && loginInfo.some(acc => acc.token);
-    const hasValidCookie = Object.keys(cookieAccounts).length > 0;
+    if (!loginInfo.length && !Object.keys(cookieAccounts).length) return;
 
-    if (!hasValidLoginInfo && !hasValidCookie) return;
+    const api = await generateDerivApiInstance();
+    if (!api) return;
 
     try {
-        const api = await generateDerivApiInstance();
-        let authorizedAccounts: LoginInfo[] = [];
+        const authorizedAccounts = await authorizeAccounts(api, {
+            ...cookieAccounts,
+            ...Object.fromEntries(loginInfo.map(acc => [acc.loginid, acc])),
+        });
+        const clientAccounts = {
+            ...cookieAccounts,
+            ...Object.fromEntries(authorizedAccounts.map(acc => [acc.loginid, acc])),
+        };
+        storeAccountsToLocalStorage(clientAccounts);
 
-        if (api && hasValidCookie) {
-            authorizedAccounts = await authorizeAccounts(api, cookieAccounts);
-        }
-
-        const clientAccounts = storeAccountsToLocalStorage(cookieAccounts, loginInfo, authorizedAccounts);
-
-        let activeAccount = getActiveAccount(cookieAccounts, clientAccounts, loginInfo);
-
-        if (api && !activeAccount) {
-            const authorizedAccount = authorizedAccounts[0];
-            if (authorizedAccount) {
-                activeAccount = authorizedAccount;
-                localStorage.setItem('authToken', activeAccount.token);
-                localStorage.setItem('active_loginid', activeAccount.loginid);
-            }
-        }
-
+        const activeAccount = Object.values(clientAccounts)[0] || loginInfo[0];
         if (activeAccount) {
             localStorage.setItem('authToken', activeAccount.token);
             localStorage.setItem('active_loginid', activeAccount.loginid);
@@ -136,6 +74,8 @@ const setLocalStorageToken = async (loginInfo: LoginInfo[], paramsToDelete: stri
         URLUtils.filterSearchParams(paramsToDelete);
     } catch (error) {
         console.error('Error setting up login info:', error);
+    } finally {
+        api.disconnect();
     }
 };
 
@@ -145,12 +85,10 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
-            console.log('loginInfo', loginInfo);
             await setLocalStorageToken(loginInfo, paramsToDelete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
         };
-
         initializeAuth();
     }, [loginInfo, paramsToDelete]);
 
