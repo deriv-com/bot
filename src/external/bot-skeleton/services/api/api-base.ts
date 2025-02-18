@@ -177,6 +177,7 @@ class APIBase {
                 this.is_authorized = true;
                 this.subscribe();
                 this.getSelfExclusion();
+                localStorage.setItem('api_account_list', JSON.stringify(authorize.account_list));
             } catch (e) {
                 this.is_authorized = false;
                 setIsAuthorized(false);
