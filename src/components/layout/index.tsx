@@ -30,7 +30,14 @@ const Layout = () => {
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
+    }, [
+        isLoggedInCookie,
+        isClientAccountsPopulated,
+        isOAuth2Enabled,
+        isEndpointPage,
+        isCallbackPage,
+        clientAccountsMissingToken,
+    ]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
