@@ -25,7 +25,9 @@ const Layout = () => {
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
 
     const ifClientAccountHasCurrency =
-        Object.values(checkClientAccount).some(account => account.currency === currency) || currency === 'demo';
+        Object.values(checkClientAccount).some(account => account.currency === currency) ||
+        currency === 'demo' ||
+        currency === '';
 
     console.log('clientAccounts', {
         currency,
