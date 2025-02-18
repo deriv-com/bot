@@ -19,27 +19,19 @@ const Layout = () => {
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
-    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-    const clientAccountsMissingToken =
-        isClientAccountsPopulated &&
-        Object.values(clientAccounts).some(account => !(account as { token?: string }).token);
+    const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
+    const checkAccountList = JSON.parse(localStorage.getItem('accountList') ?? '{}');
+    const AccountLengthsEqual = JSON.stringify(clientAccounts) === JSON.stringify(checkClientAccount);
 
-    console.log('clientAccounts', clientAccountsMissingToken, clientAccounts);
+    console.log('clientAccounts', { checkClientAccount, checkAccountList, AccountLengthsEqual });
     useEffect(() => {
-        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && clientAccountsMissingToken) {
+        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !AccountLengthsEqual) {
             console.log('requestOidcAuthentication');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [
-        isLoggedInCookie,
-        isClientAccountsPopulated,
-        isOAuth2Enabled,
-        isEndpointPage,
-        isCallbackPage,
-        clientAccountsMissingToken,
-    ]);
+    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
