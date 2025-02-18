@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
-import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
@@ -20,13 +19,12 @@ const Layout = () => {
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
-    const checkAccountList = api_base?.account_info?.account_list ?? {};
+    const checkAccountList = JSON.parse(localStorage.getItem('api_account_list') ?? '{}');
     const areAccountsEqual = Object.keys(checkClientAccount).length === Object.keys(checkAccountList).length;
 
     console.log('clientAccounts', {
         checkClientAccount,
         checkAccountList,
-        account_list: api_base?.account_info?.account_list,
         areAccountsEqual,
     });
 
