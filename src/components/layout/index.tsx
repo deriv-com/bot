@@ -21,7 +21,7 @@ const Layout = () => {
     const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const checkAccountList = JSON.parse(localStorage.getItem('accountList') ?? '{}');
-    const accountLengthsEqual = JSON.stringify(clientAccounts) === JSON.stringify(checkClientAccount);
+    const accountLengthsEqual = Object.keys(clientAccounts).length === Object.keys(checkClientAccount).length;
 
     console.log('clientAccounts', { checkClientAccount, checkAccountList, accountLengthsEqual });
     useEffect(() => {
