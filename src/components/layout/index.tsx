@@ -10,6 +10,12 @@ import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
 
+function hasAllKeys(obj1, obj2) {
+    const keys1 = Object.keys(obj1);
+    const keys2 = new Set(Object.keys(obj2));
+    return keys1.every(key => keys2.has(key));
+}
+
 const Layout = () => {
     const { isDesktop } = useDevice();
 
@@ -18,20 +24,21 @@ const Layout = () => {
     const isCallbackPage = window.location.pathname === '/callback';
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
-    const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const checkAccountList = JSON.parse(localStorage.getItem('accountList') ?? '{}');
-    const accountLengthsEqual = Object.keys(clientAccounts).length === Object.keys(checkClientAccount).length;
+    const cookiesAccount = JSON.parse(Cookies.get('client.accounts') ?? '{}');
+    const isAccountPresent = hasAllKeys(checkClientAccount, cookiesAccount);
 
-    console.log('clientAccounts', { checkClientAccount, checkAccountList, accountLengthsEqual });
+    console.log('clientAccounts', { checkClientAccount, checkAccountList, isAccountPresent });
+
     useEffect(() => {
-        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !accountLengthsEqual) {
+        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !isAccountPresent) {
             console.log('requestOidcAuthentication');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage, accountLengthsEqual]);
+    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage, isAccountPresent]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
