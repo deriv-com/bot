@@ -24,15 +24,19 @@ const storeAccountsToLocalStorage = (
     const accountsList: AccountsList = {};
     const clientAccounts: ClientAccounts = { ...cookieAccounts };
 
-    [...authorizedAccounts, ...loginInfo].forEach(({ loginid, token, currency }) => {
+    authorizedAccounts.forEach(({ loginid, token, currency }) => {
         if (loginid && token) {
             accountsList[loginid] = token;
             clientAccounts[loginid] = { loginid, token, currency: currency || '' };
         }
     });
 
-    console.log('accountsList', accountsList);
-    console.log('clientAccounts', clientAccounts);
+    loginInfo.forEach(({ loginid, token, currency }) => {
+        if (loginid && token) {
+            accountsList[loginid] = token;
+            clientAccounts[loginid] = { loginid, token, currency: currency || '' };
+        }
+    });
 
     localStorage.setItem('accountsList', JSON.stringify(accountsList));
     localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
@@ -81,7 +85,6 @@ const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: Client
             try {
                 const { authorize, error } = await api.authorize(token);
 
-                console.log('authorize', authorize);
                 if (!error && authorize?.account_list) {
                     authorizedAccounts.push({
                         loginid,
@@ -89,7 +92,6 @@ const authorizeAccounts = async (api: ApiInstance | null, cookieAccounts: Client
                         currency: currency || authorize.currency || '',
                     });
                 }
-                console.log('authorizedAccounts', authorizedAccounts);
             } catch (err) {
                 console.error(`Authorization failed for ${loginid}:`, err);
             }

@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
@@ -30,7 +29,6 @@ const CallbackPage = () => {
                 }
 
                 localStorage.setItem('accountsList', JSON.stringify(accountsList));
-                console.log('callback', clientAccounts);
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 let is_token_set = false;
@@ -51,12 +49,6 @@ const CallbackPage = () => {
                     }
                 }
                 if (!is_token_set) {
-                    const active_loginid =
-                        Cookies.get('active_loginid') || '{}' || localStorage.getItem('active_loginid');
-                    console.log('test from callback', {
-                        tokens,
-                        active_loginid,
-                    });
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
