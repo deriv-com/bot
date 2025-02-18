@@ -21,6 +21,9 @@ const Layout = () => {
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency = getQueryParams.get('account') ?? '';
+    const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+
     const ifClientAccountHasCurrency =
         Object.values(checkClientAccount).some(account => account.currency === currency) || currency === 'demo';
 
@@ -31,13 +34,12 @@ const Layout = () => {
     });
 
     useEffect(() => {
-        if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
-            console.log('requestOidcAuthentication');
+        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
+    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled, isEndpointPage, isCallbackPage]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
