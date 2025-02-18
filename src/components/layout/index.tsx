@@ -20,9 +20,15 @@ const Layout = () => {
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
-    const checkAccountList = JSON.parse(localStorage.getItem('accountList') ?? '{}');
+    const checkAccountList = api_base?.account_info?.account_list ?? {};
+    const areAccountsEqual = Object.keys(checkClientAccount).length === Object.keys(checkAccountList).length;
 
-    console.log('clientAccounts', { checkClientAccount, checkAccountList, api_base });
+    console.log('clientAccounts', {
+        checkClientAccount,
+        checkAccountList,
+        account_list: api_base?.account_info?.account_list,
+        areAccountsEqual,
+    });
 
     useEffect(() => {
         if (isLoggedInCookie && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
