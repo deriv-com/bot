@@ -53,7 +53,7 @@ const CallbackPage = () => {
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
 
-                window.location.assign('/');
+                window.location.assign(window.history.state?.from || '/');
             }}
             renderReturnButton={() => {
                 return (
