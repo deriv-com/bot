@@ -29,7 +29,7 @@ const Layout = () => {
         Object.values(checkClientAccount).some(account => account.currency === currency) ||
         currency === 'demo' ||
         currency === '';
-    const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
+    const [clientHasCurrency] = useState(ifClientAccountHasCurrency);
 
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
     const query_currency = (getQueryParams.get('account') ?? '')?.toUpperCase();
@@ -40,11 +40,17 @@ const Layout = () => {
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
             api_accounts.push(data.authorize.account_list || []);
+            console.log('api_accounts', api_accounts);
+            console.log('checkClientAccount', checkClientAccount);
             api_accounts?.flat().map(data => {
                 Object.values(checkClientAccount).map(key => {
+                    console.log('outside data.currency', data.currency);
+                    console.log('outside key.currency', key.currency);
                     if (data.currency !== key.currency) {
                         console.log('setClientHasCurrency');
-                        setClientHasCurrency(false);
+                        console.log('data.currency', data.currency);
+                        console.log('key.currency', key.currency);
+                        //setClientHasCurrency(false);
                     }
                 });
             });
@@ -62,11 +68,10 @@ const Layout = () => {
         }
     }, []);
 
+    console.log('clientHasCurrency', clientHasCurrency);
+
     useEffect(() => {
-        if (
-            (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
-            !clientHasCurrency
-        ) {
+        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) {
             console.log('requestOidcAuthentication');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
