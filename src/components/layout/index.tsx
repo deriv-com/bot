@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
+import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
+import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
@@ -21,24 +23,49 @@ const Layout = () => {
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency = getQueryParams.get('account') ?? '';
-    const clientAccounts = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
-    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-
+    const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+    const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const ifClientAccountHasCurrency =
         Object.values(checkClientAccount).some(account => account.currency === currency) ||
         currency === 'demo' ||
         currency === '';
+    const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
 
-    console.log('clientAccounts', {
-        currency,
-        checkClientAccount,
-        ifClientAccountHasCurrency,
-    });
+    const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
+    const query_currency = (getQueryParams.get('account') ?? '')?.toUpperCase();
+    const isCurrencyValid = validCurrencies.includes(query_currency);
+    const api_accounts = [];
+    let subscription: { unsubscribe: () => void };
+
+    const validateApiAccounts = ({ data }: any) => {
+        if (data.msg_type === 'authorize') {
+            api_accounts.push(data.authorize.account_list || []);
+            api_accounts?.flat().map(data => {
+                Object.values(checkClientAccount).map(key => {
+                    if (data.currency !== key.currency) {
+                        console.log('setClientHasCurrency');
+                        setClientHasCurrency(false);
+                    }
+                });
+            });
+
+            if (subscription) {
+                subscription?.unsubscribe();
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (isCurrencyValid && api_base.api) {
+            // Subscribe to the onMessage event
+            subscription = api_base.api.onMessage().subscribe(validateApiAccounts);
+        }
+    }, []);
 
     useEffect(() => {
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
-            !ifClientAccountHasCurrency
+            !clientHasCurrency
         ) {
             console.log('requestOidcAuthentication');
             requestOidcAuthentication({
@@ -51,7 +78,7 @@ const Layout = () => {
         isOAuth2Enabled,
         isEndpointPage,
         isCallbackPage,
-        ifClientAccountHasCurrency,
+        clientHasCurrency,
     ]);
 
     return (

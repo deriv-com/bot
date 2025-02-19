@@ -24,8 +24,8 @@ export type TCurrenciesConfig = {
 
 let currencies_config: TCurrenciesConfig = {};
 
-const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
-const crypto_currencies_display_order = [
+export const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
+export const crypto_currencies_display_order = [
     'TUSDT',
     'BTC',
     'ETH',
