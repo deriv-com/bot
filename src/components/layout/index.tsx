@@ -44,7 +44,7 @@ const Layout = () => {
 
             const hasMissingCurrency = api_accounts?.flat().some(data => {
                 if (!allCurrencies.has(data.currency)) {
-                    localStorage.setItem('missing_currency', data.currency);
+                    sessionStorage.setItem('missing_currency', currency);
                     return true;
                 }
                 return false;
