@@ -44,7 +44,7 @@ const Layout = () => {
 
             const hasMissingCurrency = api_accounts?.flat().some(data => {
                 if (!allCurrencies.has(data.currency)) {
-                    sessionStorage.setItem('missing_currency', currency);
+                    sessionStorage.setItem('query_param_currency', currency);
                     return true;
                 }
                 return false;
@@ -53,7 +53,7 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
-                sessionStorage.removeItem('missing_currency');
+                sessionStorage.removeItem('query_param_currency');
                 console.log('All currencies are present');
             }
 
