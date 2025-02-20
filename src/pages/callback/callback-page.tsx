@@ -53,8 +53,8 @@ const CallbackPage = () => {
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
 
-                const missing_currency = localStorage.getItem('missing_currency');
-                window.location.assign(missing_currency ? `/?account=${missing_currency}` : '/');
+                const query_param_currency = sessionStorage.getItem('currency');
+                window.location.assign(query_param_currency ? `/?account=${query_param_currency}` : '/');
             }}
             renderReturnButton={() => {
                 return (
