@@ -53,7 +53,7 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
-                localStorage.removeItem('missing_currency');
+                sessionStorage.removeItem('missing_currency');
                 console.log('All currencies are present');
             }
 
