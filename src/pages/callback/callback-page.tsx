@@ -5,7 +5,7 @@ import { Button } from '@deriv-com/ui';
 const CallbackPage = () => {
     return (
         <Callback
-            onSignInSuccess={async (tokens: Record<string, string>, state: unknown) => {
+            onSignInSuccess={async (tokens: Record<string, string>, state: { account?: string } | null) => {
                 console.log('state from oidcccc', state, tokens);
                 const accountsList: Record<string, string> = {};
                 const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
@@ -56,7 +56,7 @@ const CallbackPage = () => {
 
                 const currency = sessionStorage.getItem('query_param_currency');
                 console.log('state from oidcccc', state);
-                window.location.assign(typeof state === 'string' ? state : `/?account=${currency || 'USD'}`);
+                window.location.assign(state && state?.account ? state?.account : `/?account=${currency || 'USD'}`);
             }}
             renderReturnButton={() => {
                 return (
