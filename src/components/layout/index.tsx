@@ -75,11 +75,11 @@ const Layout = () => {
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
             !clientHasCurrency
         ) {
-            const queryParamCurrency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+            const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 state: {
-                    account: `/?account=${queryParamCurrency}`,
+                    account: `/?account=${query_param_currency}`,
                 },
             });
         }
