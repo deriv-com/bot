@@ -5,7 +5,7 @@ import { Button } from '@deriv-com/ui';
 const CallbackPage = () => {
     return (
         <Callback
-            onSignInSuccess={async (tokens: Record<string, string>) => {
+            onSignInSuccess={async (tokens: Record<string, string>, state: { account?: string } | null) => {
                 const accountsList: Record<string, string> = {};
                 const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 
@@ -52,9 +52,13 @@ const CallbackPage = () => {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
-
-                const query_param_currency = sessionStorage.getItem('query_param_currency');
-                window.location.assign(query_param_currency ? `/?account=${query_param_currency}` : '/');
+                const currency = sessionStorage.getItem('query_param_currency');
+                const currencies = Object.keys(tokens)
+                    .filter(key => key.startsWith('cur'))
+                    .map(key => tokens[key]);
+                const is_valid_currency = currencies.includes(state?.account || currency || '');
+                const selected_currency = is_valid_currency ? state?.account || currency : 'USD';
+                window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (

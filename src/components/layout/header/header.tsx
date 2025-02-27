@@ -82,8 +82,19 @@ const AppHeader = observer(() => {
                             if (!isOAuth2Enabled) {
                                 window.location.replace(generateOAuthURL());
                             } else {
+                                const getQueryParams = new URLSearchParams(window.location.search);
+                                const currency = getQueryParams.get('account') ?? '';
+                                const query_param_currency =
+                                    sessionStorage.getItem('query_param_currency') || currency || 'USD';
                                 await requestOidcAuthentication({
                                     redirectCallbackUri: `${window.location.origin}/callback`,
+                                    ...(query_param_currency
+                                        ? {
+                                              state: {
+                                                  account: query_param_currency,
+                                              },
+                                          }
+                                        : {}),
                                 });
                             }
                         }}
