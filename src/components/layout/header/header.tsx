@@ -91,7 +91,7 @@ const AppHeader = observer(() => {
                                     ...(query_param_currency
                                         ? {
                                               state: {
-                                                  account: `/?account=${query_param_currency}`,
+                                                  account: query_param_currency,
                                               },
                                           }
                                         : {}),

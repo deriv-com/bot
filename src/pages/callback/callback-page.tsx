@@ -53,13 +53,12 @@ const CallbackPage = () => {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
-
-                const client_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
                 const currency = sessionStorage.getItem('query_param_currency');
-
-                const is_valid_currency = currency && Object.prototype.hasOwnProperty.call(client_accounts, currency);
-
-                const selected_currency = is_valid_currency ? currency : 'USD';
+                const currencies = Object.keys(tokens)
+                    .filter(key => key.startsWith('cur'))
+                    .map(key => tokens[key]);
+                const is_valid_currency = currencies.includes(state?.account || currency || '');
+                const selected_currency = is_valid_currency ? state?.account || currency : 'USD';
                 window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {

@@ -58,9 +58,6 @@ const Layout = () => {
                 console.log('All currencies are present');
                 sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
-                const url = new URL(window.location.href);
-                url.searchParams.set('account', currency);
-                window.history.replaceState({}, '', url.toString());
             }
 
             if (subscription) {
@@ -87,7 +84,7 @@ const Layout = () => {
                 ...(query_param_currency
                     ? {
                           state: {
-                              account: `/?account=${query_param_currency}`,
+                              account: query_param_currency,
                           },
                       }
                     : {}),
