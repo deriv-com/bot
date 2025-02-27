@@ -54,8 +54,13 @@ const CallbackPage = () => {
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
 
+                const client_accounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
                 const currency = sessionStorage.getItem('query_param_currency');
-                window.location.assign(state && state?.account ? state?.account : `/?account=${currency || 'USD'}`);
+
+                const is_valid_currency = currency && Object.prototype.hasOwnProperty.call(client_accounts, currency);
+
+                const selected_currency = is_valid_currency ? currency : 'USD';
+                window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (
