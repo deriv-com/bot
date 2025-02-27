@@ -41,20 +41,26 @@ const Layout = () => {
         if (data.msg_type === 'authorize') {
             api_accounts.push(data.authorize.account_list || []);
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
-
+            let currency = 'USD';
             const hasMissingCurrency = api_accounts?.flat().some(data => {
                 if (!allCurrencies.has(data.currency)) {
                     sessionStorage.setItem('query_param_currency', currency);
                     return true;
                 }
+                currency = data.currency;
                 return false;
             });
 
             if (hasMissingCurrency) {
+                console.log('Missing currency');
                 setClientHasCurrency(false);
             } else {
-                sessionStorage.removeItem('query_param_currency');
                 console.log('All currencies are present');
+                sessionStorage.removeItem('query_param_currency');
+                setClientHasCurrency(true);
+                const url = new URL(window.location.href);
+                url.searchParams.set('account', currency);
+                window.history.replaceState({}, '', url.toString());
             }
 
             if (subscription) {
@@ -76,11 +82,16 @@ const Layout = () => {
             !clientHasCurrency
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+            const session_storage_currency = sessionStorage.getItem('query_param_currency');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
-                state: {
-                    account: `/?account=${query_param_currency}`,
-                },
+                ...(session_storage_currency
+                    ? {
+                          state: {
+                              account: `/?account=${query_param_currency}`,
+                          },
+                      }
+                    : {}),
             });
         }
     }, [

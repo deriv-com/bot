@@ -55,7 +55,6 @@ const CallbackPage = () => {
                 }
 
                 const currency = sessionStorage.getItem('query_param_currency');
-                console.log('state from oidcccc', state);
                 window.location.assign(state && state?.account ? state?.account : `/?account=${currency || 'USD'}`);
             }}
             renderReturnButton={() => {
