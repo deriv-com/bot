@@ -6,7 +6,6 @@ const CallbackPage = () => {
     return (
         <Callback
             onSignInSuccess={async (tokens: Record<string, string>, state: { account?: string } | null) => {
-                console.log('state from oidcccc', state, tokens);
                 const accountsList: Record<string, string> = {};
                 const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
 

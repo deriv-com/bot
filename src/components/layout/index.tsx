@@ -52,10 +52,8 @@ const Layout = () => {
             });
 
             if (hasMissingCurrency) {
-                console.log('Missing currency');
                 setClientHasCurrency(false);
             } else {
-                console.log('All currencies are present');
                 sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
             }
