@@ -86,10 +86,9 @@ const AppHeader = observer(() => {
                                 const currency = getQueryParams.get('account') ?? '';
                                 const query_param_currency =
                                     sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                                const session_storage_currency = sessionStorage.getItem('query_param_currency');
                                 await requestOidcAuthentication({
                                     redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(session_storage_currency
+                                    ...(query_param_currency
                                         ? {
                                               state: {
                                                   account: `/?account=${query_param_currency}`,

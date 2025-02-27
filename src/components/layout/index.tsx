@@ -82,10 +82,9 @@ const Layout = () => {
             !clientHasCurrency
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
-            const session_storage_currency = sessionStorage.getItem('query_param_currency');
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
-                ...(session_storage_currency
+                ...(query_param_currency
                     ? {
                           state: {
                               account: `/?account=${query_param_currency}`,
