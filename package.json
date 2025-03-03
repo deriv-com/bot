@@ -152,5 +152,8 @@
         "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^5.1.0"
+    },
+    "optionalDependencies": {
+        "@rspack/binding-linux-x64-gnu": "1.0.14"
     }
 }
