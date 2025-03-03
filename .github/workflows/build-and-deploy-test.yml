@@ -65,7 +65,7 @@ jobs:
 
             - name: Get cached dependencies
               id: cache-npm
-              uses: actions/cache/restore@e12d46a63a90f2fae62d114769bbf2a179198b5c
+              uses: actions/cache/restore@d4323d4df104b026a6aa633fdb11d772146be0bf
               with:
                   path: node_modules
                   key: npm-${{ hashFiles('./package-lock.json') }}
