@@ -57,7 +57,13 @@ const CallbackPage = () => {
                     .filter(key => key.startsWith('cur'))
                     .map(key => tokens[key]);
                 const is_valid_currency = currencies.includes(state?.account || currency || '');
-                const selected_currency = is_valid_currency ? state?.account || currency : 'USD';
+
+                const firstAccountKey = Object.keys(clientAccounts)[0];
+                const firstAccountCurrency = clientAccounts[tokens.acct1]
+                    ? clientAccounts[firstAccountKey].currency
+                    : null;
+                const selected_currency =
+                    (is_valid_currency ? state?.account?.currency || currency : currency) || firstAccountCurrency;
                 window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
