@@ -137,6 +137,7 @@
         "raw-loader": "^4.0.2",
         "rimraf": "^6.0.1",
         "sass": "^1.80.4",
+        "sass-embedded": "^1.85.1",
         "sass-loader": "^14.2.1",
         "sass-resources-loader": "^2.2.5",
         "stylelint": "^16.3.1",
@@ -154,6 +155,26 @@
         "webpack-dev-server": "^5.1.0"
     },
     "optionalDependencies": {
-        "@rspack/binding-linux-x64-gnu": "1.0.14"
+        "@rspack/binding-linux-x64-gnu": "1.0.14",
+        "sass-embedded-android-arm": "1.85.1",
+        "sass-embedded-android-arm64": "1.85.1",
+        "sass-embedded-android-ia32": "1.85.1",
+        "sass-embedded-android-riscv64": "1.85.1",
+        "sass-embedded-android-x64": "1.85.1",
+        "sass-embedded-darwin-arm64": "1.85.1",
+        "sass-embedded-darwin-x64": "1.85.1",
+        "sass-embedded-linux-arm": "1.85.1",
+        "sass-embedded-linux-arm64": "1.85.1",
+        "sass-embedded-linux-ia32": "1.85.1",
+        "sass-embedded-linux-musl-arm": "1.85.1",
+        "sass-embedded-linux-musl-arm64": "1.85.1",
+        "sass-embedded-linux-musl-ia32": "1.85.1",
+        "sass-embedded-linux-musl-riscv64": "1.85.1",
+        "sass-embedded-linux-musl-x64": "1.85.1",
+        "sass-embedded-linux-riscv64": "1.85.1",
+        "sass-embedded-linux-x64": "1.85.1",
+        "sass-embedded-win32-arm64": "1.85.1",
+        "sass-embedded-win32-ia32": "1.85.1",
+        "sass-embedded-win32-x64": "1.85.1"
     }
 }
