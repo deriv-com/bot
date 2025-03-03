@@ -58,8 +58,8 @@ const CallbackPage = () => {
                     .map(key => tokens[key]);
                 const is_valid_currency = currencies.includes(state?.account || currency || '');
 
-                const firstAccountKey = Object.keys(clientAccounts)[0];
-                const firstAccountCurrency = clientAccounts[tokens.acct1]
+                const firstAccountKey = tokens.acct1;
+                const firstAccountCurrency = clientAccounts[firstAccountKey]
                     ? clientAccounts[firstAccountKey].currency
                     : null;
                 const selected_currency =
