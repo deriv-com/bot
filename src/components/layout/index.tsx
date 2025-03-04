@@ -40,16 +40,16 @@ const Layout = () => {
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
             const enabled_accounts = (data.authorize.account_list || []).filter((acc: any) => !acc.is_disabled);
-            api_accounts.push(enabled_accounts);
+            api_accounts.push(enabled_accounts || []);
 
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
             let currency = 'USD';
-            const hasMissingCurrency = enabled_accounts.some(account => {
-                if (!allCurrencies.has(account.currency)) {
+            const hasMissingCurrency = api_accounts?.flat().some(data => {
+                if (!allCurrencies.has(data.currency)) {
                     sessionStorage.setItem('query_param_currency', currency);
                     return true;
                 }
-                currency = account.currency;
+                currency = data.currency;
                 return false;
             });
 
