@@ -39,15 +39,17 @@ const Layout = () => {
 
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
-            api_accounts.push(data.authorize.account_list || []);
+            const enabled_accounts = (data.authorize.account_list || []).filter((acc: any) => !acc.is_disabled);
+            api_accounts.push(enabled_accounts);
+
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
             let currency = 'USD';
-            const hasMissingCurrency = api_accounts?.flat().some(data => {
-                if (!allCurrencies.has(data.currency)) {
+            const hasMissingCurrency = enabled_accounts.some(account => {
+                if (!allCurrencies.has(account.currency)) {
                     sessionStorage.setItem('query_param_currency', currency);
                     return true;
                 }
-                currency = data.currency;
+                currency = account.currency;
                 return false;
             });
 
@@ -59,7 +61,7 @@ const Layout = () => {
             }
 
             if (subscription) {
-                subscription?.unsubscribe();
+                subscription.unsubscribe();
             }
         }
     };
