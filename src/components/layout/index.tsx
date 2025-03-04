@@ -61,7 +61,7 @@ const Layout = () => {
             }
 
             if (subscription) {
-                subscription.unsubscribe();
+                subscription?.unsubscribe();
             }
         }
     };
