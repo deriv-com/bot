@@ -105,6 +105,9 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 error?.code === 'InvalidToken'
             ) {
                 await oAuthLogout();
+                if (sessionStorage.getItem('query_param_currency')) {
+                    sessionStorage.removeItem('query_param_currency');
+                }
             }
 
             if (msg_type === 'balance' && data && !error) {
