@@ -39,7 +39,7 @@ const Layout = () => {
 
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
-            const enabled_accounts = (data.authorize.account_list || []).filter((acc: any) => !acc.is_disabled);
+            const enabled_accounts = (data?.authorize?.account_list || []).filter((acc: any) => !acc.is_disabled);
             api_accounts.push(enabled_accounts || []);
 
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
@@ -56,18 +56,22 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
-                const enabled_account_currency = enabled_accounts
-                    ?.filter(acc => acc.currency === currency)
-                    .map(acc => acc.currency);
+                const enabled_account_currency =
+                    enabled_accounts?.find(acc => acc.currency === currency)?.currency || 'USD';
 
-                window.history.pushState(
-                    {},
-                    '',
-                    `${window.location.pathname}?${(sessionStorage.getItem('query_param_currency') || `account=${enabled_account_currency}`).toString()}`
-                );
+                let session_storage_currency = sessionStorage.getItem('query_param_currency');
+
+                if (session_storage_currency) {
+                    session_storage_currency = `account=${session_storage_currency}`;
+                } else {
+                    session_storage_currency = `account=${enabled_account_currency}`;
+                }
+
+                window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
+
                 sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
-                console.log('all accounts present');
+                console.log('All accounts present');
             }
 
             if (subscription) {
