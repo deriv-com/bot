@@ -56,8 +56,18 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
+                const enabled_account_currency = enabled_accounts
+                    ?.filter(acc => acc.currency === currency)
+                    .map(acc => acc.currency);
+
+                window.history.pushState(
+                    {},
+                    '',
+                    `${window.location.pathname}?${(sessionStorage.getItem('query_param_currency') || `account=${enabled_account_currency}`).toString()}`
+                );
                 sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
+                console.log('all accounts present');
             }
 
             if (subscription) {
