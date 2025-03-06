@@ -39,7 +39,9 @@ const Layout = () => {
 
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
-            api_accounts.push(data.authorize.account_list || []);
+            const enabled_accounts = (data?.authorize?.account_list || []).filter((acc: any) => !acc.is_disabled);
+            api_accounts.push(enabled_accounts || []);
+
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
             let currency = 'USD';
             const hasMissingCurrency = api_accounts?.flat().some(data => {
@@ -54,8 +56,22 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
+                const enabled_account_currency =
+                    enabled_accounts?.find(acc => acc.currency === currency)?.currency || 'USD';
+
+                let session_storage_currency = sessionStorage.getItem('query_param_currency');
+
+                if (session_storage_currency) {
+                    session_storage_currency = `account=${session_storage_currency}`;
+                } else {
+                    session_storage_currency = `account=${enabled_account_currency}`;
+                }
+
+                window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
+
                 sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
+                console.log('All accounts present');
             }
 
             if (subscription) {
@@ -77,7 +93,6 @@ const Layout = () => {
             !clientHasCurrency
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
-            console.log('query_param_currency', query_param_currency);
             sessionStorage.setItem('query_param_currency', currency);
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,

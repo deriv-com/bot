@@ -64,12 +64,6 @@ const CallbackPage = () => {
                     : null;
                 const selected_currency =
                     (is_valid_currency ? state?.account?.currency || currency : currency) || firstAccountCurrency;
-                console.log('selected_currency', {
-                    firstAccountCurrency,
-                    stateAccountCurrency: state?.account?.currency,
-                    currency,
-                    selected_currency,
-                });
                 window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {

@@ -171,7 +171,8 @@ class APIBase {
                     this.active_symbols_promise = this.getActiveSymbols();
                 }
                 this.account_info = authorize;
-                setAccountList(authorize.account_list);
+                const filtered_accounts = (authorize?.account_list || []).filter(acc => !acc?.is_disabled);
+                setAccountList(filtered_accounts);
                 setAuthData(authorize);
                 setIsAuthorized(true);
                 this.is_authorized = true;
