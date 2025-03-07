@@ -68,8 +68,6 @@ const Layout = () => {
                 }
 
                 setClientHasCurrency(true);
-                window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
-                sessionStorage.removeItem('query_param_currency');
             }
 
             if (subscription) {
@@ -91,6 +89,7 @@ const Layout = () => {
             !clientHasCurrency
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+            console.log('query_param_currency', query_param_currency);
             sessionStorage.setItem('query_param_currency', currency);
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
