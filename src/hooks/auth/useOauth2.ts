@@ -42,9 +42,6 @@ export const useOauth2 = ({
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
         await oAuthLogout();
-        if (sessionStorage.getItem('query_param_currency')) {
-            sessionStorage.removeItem('query_param_currency');
-        }
     };
 
     return { isOAuth2Enabled, oAuthLogout: logoutHandler };
