@@ -67,9 +67,9 @@ const Layout = () => {
                     session_storage_currency = `account=${enabled_account_currency}`;
                 }
 
-                sessionStorage.removeItem('query_param_currency');
                 setClientHasCurrency(true);
-                console.log('All accounts present');
+                window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
+                sessionStorage.removeItem('query_param_currency');
             }
 
             if (subscription) {
