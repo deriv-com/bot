@@ -34,19 +34,18 @@ const Layout = () => {
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
     const query_currency = (getQueryParams.get('account') ?? '')?.toUpperCase();
     const isCurrencyValid = validCurrencies.includes(query_currency);
-    const api_accounts = [];
+    const api_accounts: any[][] = [];
     let subscription: { unsubscribe: () => void };
 
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
-            const enabled_accounts = (data?.authorize?.account_list || []).filter((acc: any) => !acc.is_disabled);
-            api_accounts.push(enabled_accounts || []);
-
+            const account_list = data?.authorize?.account_list || [];
+            api_accounts.push(account_list || []);
+            let currency;
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
-            let currency = 'USD';
             const hasMissingCurrency = api_accounts?.flat().some(data => {
                 if (!allCurrencies.has(data.currency)) {
-                    sessionStorage.setItem('query_param_currency', currency);
+                    sessionStorage.setItem('query_param_currency', data.currency);
                     return true;
                 }
                 currency = data.currency;
@@ -56,15 +55,17 @@ const Layout = () => {
             if (hasMissingCurrency) {
                 setClientHasCurrency(false);
             } else {
-                const enabled_account_currency =
-                    enabled_accounts?.find(acc => acc.currency === currency)?.currency || 'USD';
+                sessionStorage.setItem('query_param_currency', query_currency);
+                const account_list_ =
+                    account_list?.find((acc: { currency: string }) => acc.currency === currency) || account_list?.[0];
 
-                let session_storage_currency = sessionStorage.getItem('query_param_currency');
+                let session_storage_currency =
+                    sessionStorage.getItem('query_param_currency') || account_list_?.currency || 'USD';
 
-                if (session_storage_currency) {
-                    session_storage_currency = `account=${session_storage_currency}`;
-                } else {
-                    session_storage_currency = `account=${enabled_account_currency}`;
+                session_storage_currency = `account=${session_storage_currency}`;
+                setClientHasCurrency(true);
+                if (!new URLSearchParams(window.location.search).has('account')) {
+                    window.history.pushState({}, '', `${window.location.pathname}?${session_storage_currency}`);
                 }
 
                 setClientHasCurrency(true);
@@ -90,7 +91,6 @@ const Layout = () => {
         ) {
             sessionStorage.setItem('query_param_currency', currency);
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
-            console.log('query_param_currency', query_param_currency);
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 ...(query_param_currency
