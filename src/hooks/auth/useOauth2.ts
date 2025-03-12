@@ -1,5 +1,5 @@
 import RootStore from '@/stores/root-store';
-import { TOAuth2EnabledAppList, useIsOAuth2Enabled, useOAuth2 } from '@deriv-com/auth-client';
+import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
 
 /**
@@ -32,16 +32,13 @@ export const useOauth2 = ({
         OAuth2EnabledAppsInitialised
     );
 
-    const oAuthGrowthbookConfig = {
-        OAuth2EnabledApps: oAuth2EnabledApps as unknown as TOAuth2EnabledAppList,
-        OAuth2EnabledAppsInitialised,
-    };
-
-    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout ?? (() => Promise.resolve()));
-
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
-        await oAuthLogout();
+        await OAuth2Logout({
+            redirectCallbackUri: `${window.location.origin}/callback`,
+            WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
+            postLogoutRedirectUri: window.location.origin,
+        });
     };
 
     return { isOAuth2Enabled, oAuthLogout: logoutHandler };

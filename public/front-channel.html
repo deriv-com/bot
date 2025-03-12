@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Deriv</title>
+        <meta charset="utf-8" />
+        <script>
+            try {
+                // we check if we can access the top.location, if we can't it will throw an error
+                // and this means this front-channel is not rendered on the same window as the application which is logging out
+                let isSameOrigin = top.location.hostname === self.location.hostname;
+            } catch (err) {
+                localStorage.removeItem('accountsList');
+                localStorage.removeItem('clientAccounts');
+                localStorage.removeItem('callback_token');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('active_loginid');
+                localStorage.removeItem('client.accounts');
+            }
+        </script>
+    </head>
+
+    <body></body>
+</html>
