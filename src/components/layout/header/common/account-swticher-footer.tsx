@@ -4,6 +4,8 @@ import RectangleSkeleton from '@/components/loader/rectangle-skeleton';
 import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
+import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
+import { getWalletUrl,handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
@@ -12,10 +14,12 @@ import { AccountSwitcherDivider } from './utils';
 
 const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccountSwitcherFooter) => {
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
+    const { has_wallet = false } = useStoreWalletAccountsList() || {};
+    const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
 
     return (
         <div className=''>
-            <UIAccountSwitcher.TradersHubLink href={standalone_routes.traders_hub}>
+            <UIAccountSwitcher.TradersHubLink href={redirect_url}>
                 {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
             </UIAccountSwitcher.TradersHubLink>
             <AccountSwitcherDivider />
@@ -28,7 +32,14 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
                     <Button
                         id='manage-button'
                         className='manage-button'
-                        onClick={() => location.replace('https://app.deriv.com')}
+                        onClick={() => {
+                            if (has_wallet) {
+                                const wallet_url = getWalletUrl();
+                                location.replace(wallet_url);
+                            } else {
+                                location.replace('https://app.deriv.com');
+                            }
+                        }}
                     >
                         <Localize i18n_default_text='Manage accounts' />
                     </Button>

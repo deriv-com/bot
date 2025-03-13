@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
+import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
+import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { useTranslations } from '@deriv-com/translations';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
 import { MenuItems as items, TRADERS_HUB_LINK_CONFIG } from '../header-config';
@@ -36,17 +38,22 @@ export const MenuItems = observer(() => {
     );
 });
 
-export const TradershubLink = () => (
-    <MenuItem
-        as='a'
-        className='app-header__menu'
-        href={TRADERS_HUB_LINK_CONFIG.href}
-        key={TRADERS_HUB_LINK_CONFIG.label}
-        leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
-    >
-        <Text>{TRADERS_HUB_LINK_CONFIG.label}</Text>
-    </MenuItem>
-);
+export const TradershubLink = () => {
+    const { has_wallet = false } = useStoreWalletAccountsList() || {};
+    const redirect_url = handleTraderHubRedirect('tradershub', has_wallet) || TRADERS_HUB_LINK_CONFIG.href;
+
+    return (
+        <MenuItem
+            as='a'
+            className='app-header__menu'
+            href={redirect_url}
+            key={TRADERS_HUB_LINK_CONFIG.label}
+            leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
+        >
+            <Text>{TRADERS_HUB_LINK_CONFIG.label}</Text>
+        </MenuItem>
+    );
+};
 
 MenuItems.TradershubLink = TradershubLink;
 export default MenuItems;
