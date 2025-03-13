@@ -5,6 +5,7 @@ import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
+import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
@@ -17,7 +18,7 @@ type TAccountSwitcherWalletProps = {
 };
 
 export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
-    const { data: wallet_list } = useStoreWalletAccountsList();
+    const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
@@ -41,7 +42,8 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const handleTradersHubRedirect = async () => {
         closeAccountsDialog();
-        window.location.assign(standalone_routes.traders_hub);
+        const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
+        window.location.assign(redirect_url);
     };
 
     return (
