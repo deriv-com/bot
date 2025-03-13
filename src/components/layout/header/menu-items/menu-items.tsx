@@ -40,7 +40,7 @@ export const MenuItems = observer(() => {
 
 export const TradershubLink = () => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
-    const redirect_url = handleTraderHubRedirect('options', has_wallet) || TRADERS_HUB_LINK_CONFIG.href;
+    const redirect_url = handleTraderHubRedirect('tradershub', has_wallet) || TRADERS_HUB_LINK_CONFIG.href;
 
     return (
         <MenuItem

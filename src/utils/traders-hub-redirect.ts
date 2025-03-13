@@ -31,9 +31,12 @@ export const getBaseTraderHubUrl = (): string => {
  * @param product_type - The type of product to redirect to ('options' or 'cfds')
  * @returns The URL to redirect to
  */
-export const getTraderHubUrl = (product_type: 'options' | 'cfds'): string => {
+export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds'): string => {
     const base_url = getBaseTraderHubUrl();
-    const url = `${base_url}/tradershub/${product_type}`;
+    let url = `${base_url}/tradershub`;
+    if (product_type === 'cfds') {
+        url = `${base_url}/tradershub/${product_type}`;
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const account = urlParams.get('account');
@@ -74,11 +77,11 @@ export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
 
 /**
  * Handles redirection to Trader's Hub
- * @param product_type - The type of product to redirect to ('options' or 'cfds')
+ * @param product_type - The type of product to redirect to ('tradershub' or 'cfds')
  * @param has_wallet - Whether the user has wallets
  * @returns The URL to redirect to, or null if no redirection should happen
  */
-export const handleTraderHubRedirect = (product_type: 'options' | 'cfds', has_wallet: boolean): string | null => {
+export const handleTraderHubRedirect = (product_type: 'cfds' | 'tradershub', has_wallet: boolean): string | null => {
     if (shouldRedirectToTraderHub(has_wallet)) {
         return getTraderHubUrl(product_type);
     }

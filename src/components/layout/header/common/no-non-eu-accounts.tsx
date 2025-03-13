@@ -27,7 +27,7 @@ const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoNon
                     className='add-button'
                     onClick={() => {
                         const redirect_url =
-                            handleTraderHubRedirect('options', has_wallet) || standalone_routes.traders_hub;
+                            handleTraderHubRedirect('tradershub', has_wallet) || standalone_routes.traders_hub;
                         location.replace(redirect_url);
                     }}
                 >
