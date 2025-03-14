@@ -28,20 +28,25 @@ export const getBaseTraderHubUrl = (): string => {
 
 /**
  * Determines the appropriate Trader's Hub URL based on environment and product type
- * @param product_type - The type of product to redirect to ('options' or 'cfds')
+ * @param product_type - The type of product to redirect to ('tradershub' or 'cfds')
  * @returns The URL to redirect to
  */
 export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds'): string => {
     const base_url = getBaseTraderHubUrl();
-    let url = `${base_url}/tradershub`;
-    if (product_type === 'cfds') {
-        url = `${base_url}/tradershub/${product_type}`;
-    }
+
+    // Map product_type to redirect_to parameter
+    const redirect_to = product_type === 'tradershub' ? 'home' : 'cfds';
+
+    // Construct the redirect URL
+    const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=${redirect_to}`;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const account = urlParams.get('account');
+    const account_param = urlParams.get('account');
 
-    return account ? `${url}?account=${account}` : url;
+    // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
+    const account_value = account_param === 'demo' ? 'demo' : account_param;
+
+    return account_value ? `${url}&account=${account_value}` : url;
 };
 
 /**
@@ -50,12 +55,15 @@ export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds'): string => 
  */
 export const getWalletUrl = (): string => {
     const base_url = getBaseTraderHubUrl();
-    const url = `${base_url}/tradershub/wallets/recent-transactions`;
+    const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=wallet`;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const account = urlParams.get('account');
+    const account_param = urlParams.get('account');
 
-    return account ? `${url}?account=${account}` : url;
+    // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
+    const account_value = account_param === 'demo' ? 'demo' : account_param;
+
+    return account_value ? `${url}&account=${account_value}` : url;
 };
 
 /**
