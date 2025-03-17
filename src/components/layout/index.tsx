@@ -7,6 +7,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
+import SSOLoader from '../sso-loader';
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
@@ -15,7 +16,7 @@ import './layout.scss';
 const Layout = () => {
     const { isDesktop } = useDevice();
 
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
 
     const isCallbackPage = window.location.pathname === '/callback';
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
@@ -113,11 +114,12 @@ const Layout = () => {
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            {!isCallbackPage && <AppHeader />}
+            {!isCallbackPage && !isSingleLoggingIn && <AppHeader />}
             <Body>
-                <Outlet />
+                {isSingleLoggingIn && <SSOLoader />}
+                {!isSingleLoggingIn && <Outlet />}
             </Body>
-            {!isCallbackPage && isDesktop && <Footer />}
+            {!isCallbackPage && !isSingleLoggingIn && isDesktop && <Footer />}
         </div>
     );
 };

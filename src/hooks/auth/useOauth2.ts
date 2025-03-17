@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
 import { TOAuth2EnabledAppList, useIsOAuth2Enabled, useOAuth2 } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
@@ -31,6 +34,24 @@ export const useOauth2 = ({
         oAuth2EnabledApps as unknown as TOAuth2EnabledAppList,
         OAuth2EnabledAppsInitialised
     );
+    const [isSingleLoggingIn, setIsSingleLoggingIn] = useState(false);
+
+    const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+    const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
+    const isSilentLoginExcluded =
+        window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
+
+    const loggedState = Cookies.get('logged_state');
+
+    useEffect(() => {
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+
+        if (!isSilentLoginExcluded && willEventuallySSO) {
+            setIsSingleLoggingIn(true);
+        } else {
+            setIsSingleLoggingIn(false);
+        }
+    }, [isClientAccountsPopulated, loggedState]);
 
     const oAuthGrowthbookConfig = {
         OAuth2EnabledApps: oAuth2EnabledApps as unknown as TOAuth2EnabledAppList,
@@ -44,5 +65,5 @@ export const useOauth2 = ({
         await oAuthLogout();
     };
 
-    return { isOAuth2Enabled, oAuthLogout: logoutHandler };
+    return { isOAuth2Enabled, oAuthLogout: logoutHandler, isSingleLoggingIn };
 };
