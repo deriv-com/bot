@@ -25,9 +25,10 @@ const AppHeader = observer(() => {
     const { client } = useStore() ?? {};
 
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
-    const { accounts } = client ?? {};
+    const { accounts, getCurrency } = client ?? {};
     const has_wallet = Object.keys(accounts ?? {}).some(id => accounts?.[id].account_category === 'wallet');
 
+    const currency = getCurrency?.();
     const { localize } = useTranslations();
 
     const { isOAuth2Enabled } = useOauth2();
@@ -57,14 +58,24 @@ const AppHeader = observer(() => {
                                 className='manage-funds-button'
                                 has_effect
                                 text={localize('Manage funds')}
-                                onClick={() => window.location.assign(standalone_routes.wallets_transfer)}
+                                onClick={() => {
+                                    const redirect_url = new URL(standalone_routes.wallets_transfer);
+                                    if (currency) {
+                                        redirect_url.searchParams.set('account', currency);
+                                    }
+                                    window.location.assign(redirect_url.toString());
+                                }}
                                 primary
                             />
                         ) : (
                             <Button
                                 primary
                                 onClick={() => {
-                                    window.location.assign(standalone_routes.cashier_deposit);
+                                    const redirect_url = new URL(standalone_routes.cashier_deposit);
+                                    if (currency) {
+                                        redirect_url.searchParams.set('account', currency);
+                                    }
+                                    window.location.assign(redirect_url.toString());
                                 }}
                                 className='deposit-button'
                             >

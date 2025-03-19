@@ -248,6 +248,11 @@ export default class ClientStore {
         this.is_logged_in = is_logged_in;
     };
 
+    getCurrency = () => {
+        const clientAccounts = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
+        return clientAccounts[this.loginid]?.currency ?? '';
+    };
+
     getToken = () => {
         const accountList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
         return accountList[this.loginid] ?? '';
