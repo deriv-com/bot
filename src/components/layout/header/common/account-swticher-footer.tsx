@@ -15,7 +15,6 @@ import { AccountSwitcherDivider } from './utils';
 const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccountSwitcherFooter) => {
     const accountList = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
     const account_currency = loginid ? accountList[loginid]?.currency : '';
-    console.log(account_currency, 'account_currency dsss');
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
