@@ -30,7 +30,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         closeAccountsDialog();
         let redirect_url = standalone_routes.traders_hub;
         if (has_wallet) {
-            redirect_url = 'https://hub.deriv.com/tradershub/cfds';
+            redirect_url = standalone_routes.cfds;
         }
         window.location.assign(redirect_url);
     };

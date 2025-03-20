@@ -44,7 +44,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
         //const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
         let redirect_url = standalone_routes.traders_hub;
         if (has_wallet) {
-            redirect_url = 'https://hub.deriv.com/tradershub/cfds';
+            redirect_url = standalone_routes.cfds;
         }
         window.location.assign(redirect_url);
     };
