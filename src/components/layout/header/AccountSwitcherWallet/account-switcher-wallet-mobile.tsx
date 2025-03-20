@@ -6,7 +6,7 @@ import MobileDialog from '@/components/shared_ui/mobile-dialog';
 import Text from '@/components/shared_ui/text';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
-import { getWalletUrl,handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
+import { getWalletUrl } from '@/utils/traders-hub-redirect';
 import { Localize } from '@deriv-com/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet-mobile.scss';
@@ -28,7 +28,10 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
 
     const handleTradersHubRedirect = () => {
         closeAccountsDialog();
-        const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
+        let redirect_url = standalone_routes.traders_hub;
+        if (has_wallet) {
+            redirect_url = 'https://hub.deriv.com/tradershub/cfds';
+        }
         window.location.assign(redirect_url);
     };
 

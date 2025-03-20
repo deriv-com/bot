@@ -4,6 +4,7 @@ import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
+import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
@@ -20,6 +21,7 @@ import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
 const AppHeader = observer(() => {
+    const { isGBLoaded, isGBAvailable } = useIsGrowthbookIsLoaded();
     const { isDesktop } = useDevice();
     const { isAuthorizing, activeLoginid } = useApiBase();
     const { client } = useStore() ?? {};
@@ -59,7 +61,12 @@ const AppHeader = observer(() => {
                                 has_effect
                                 text={localize('Manage funds')}
                                 onClick={() => {
-                                    const redirect_url = new URL(standalone_routes.wallets_transfer);
+                                    let redirect_url = new URL(standalone_routes.wallets_transfer);
+
+                                    if (isGBAvailable && isGBLoaded) {
+                                        redirect_url = new URL(standalone_routes.recent_transactions);
+                                    }
+
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
