@@ -114,6 +114,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
         const field_placeholder = label ? '' : placeholder;
 
+        console.log(maxLength);
         return (
             <InputWrapper has_footer={has_footer}>
                 <div
@@ -158,7 +159,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 })}
                                 onFocus={props.onFocus}
                                 onBlur={props.onBlur}
-                                onChange={props.onChange}
+                                onChange={changeHandler}
                                 onKeyDown={props.onKeyDown}
                                 onMouseDown={props.onMouseDown}
                                 onMouseUp={props.onMouseUp}
