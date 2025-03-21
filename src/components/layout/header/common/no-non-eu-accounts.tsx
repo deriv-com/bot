@@ -9,6 +9,11 @@ import { AccountSwitcherDivider, no_account } from './utils';
 const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoNonEuAccounts) => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
 
+    // Check if the account is a demo account from both isVirtual prop and URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const account_param = urlParams.get('account');
+    const is_demo = isVirtual || account_param === 'demo' || false;
+
     if (!is_low_risk_country) {
         return null;
     }
@@ -26,9 +31,23 @@ const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoNon
                     id='add-button'
                     className='add-button'
                     onClick={() => {
-                        const redirect_url =
-                            handleTraderHubRedirect('tradershub', has_wallet) || standalone_routes.traders_hub;
-                        location.replace(redirect_url);
+                        // Get the redirect URL from handleTraderHubRedirect
+                        let redirect_url_str =
+                            handleTraderHubRedirect('tradershub', has_wallet, is_demo) || standalone_routes.traders_hub;
+
+                        // Add the account parameter to the URL
+                        try {
+                            const redirect_url = new URL(redirect_url_str);
+                            if (is_demo) {
+                                // For demo accounts, set the account parameter to 'demo'
+                                redirect_url.searchParams.set('account', 'demo');
+                            }
+                            redirect_url_str = redirect_url.toString();
+                        } catch (error) {
+                            console.error('Error parsing redirect URL:', error);
+                        }
+
+                        location.replace(redirect_url_str);
                     }}
                 >
                     <Localize i18n_default_text='Add' />

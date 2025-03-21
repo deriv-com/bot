@@ -6,7 +6,7 @@ import MobileDialog from '@/components/shared_ui/mobile-dialog';
 import Text from '@/components/shared_ui/text';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
-import { getWalletUrl } from '@/utils/traders-hub-redirect';
+import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { Localize } from '@deriv-com/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet-mobile.scss';
@@ -28,22 +28,61 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
 
     const handleTradersHubRedirect = () => {
         closeAccountsDialog();
-        let redirect_url = standalone_routes.traders_hub;
-        if (has_wallet) {
-            redirect_url = standalone_routes.cfds;
+
+        // Check if the account is a demo account
+        const urlParams = new URLSearchParams(window.location.search);
+        const account_param = urlParams.get('account');
+        const is_virtual = account_param === 'demo' || false;
+
+        // Get the redirect URL from handleTraderHubRedirect
+        const redirect_url_str =
+            handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+
+        // Add the account parameter to the URL
+        let final_url = redirect_url_str;
+        try {
+            const redirect_url = new URL(redirect_url_str);
+            if (is_virtual) {
+                // For demo accounts, set the account parameter to 'demo'
+                redirect_url.searchParams.set('account', 'demo');
+            } else if (account_param) {
+                // For real accounts, set the account parameter to the currency
+                redirect_url.searchParams.set('account', account_param);
+            }
+            final_url = redirect_url.toString();
+        } catch (error) {
+            console.error('Error parsing redirect URL:', error);
         }
-        window.location.assign(redirect_url);
+
+        window.location.assign(final_url);
     };
 
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
+
+        // Check if the account is a demo account
+        const urlParams = new URLSearchParams(window.location.search);
+        const account_param = urlParams.get('account');
+        const is_virtual = account_param === 'demo' || false;
+
         // Directly redirect to the wallet page in Trader's Hub if conditions are met
         if (has_wallet) {
             const wallet_url = getWalletUrl();
             window.location.assign(wallet_url);
         } else {
             // Fallback to the default wallet transfer page if conditions are not met
-            window.location.assign(standalone_routes.wallets_transfer);
+            const redirect_url = new URL(standalone_routes.wallets_transfer);
+
+            // Add the account parameter to the URL
+            if (is_virtual) {
+                // For demo accounts, set the account parameter to 'demo'
+                redirect_url.searchParams.set('account', 'demo');
+            } else if (account_param) {
+                // For real accounts, set the account parameter to the currency
+                redirect_url.searchParams.set('account', account_param);
+            }
+
+            window.location.assign(redirect_url.toString());
         }
     };
 
