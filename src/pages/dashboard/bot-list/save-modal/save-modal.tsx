@@ -83,6 +83,7 @@ const SaveModalForm: React.FC<TSaveModalForm> = ({
                                             onFocus={e => setCurrentFocus(e.currentTarget.value)}
                                             onBlur={() => setCurrentFocus('')}
                                             {...field}
+                                            max_characters={25}
                                         />
                                     )}
                                 </Field>
