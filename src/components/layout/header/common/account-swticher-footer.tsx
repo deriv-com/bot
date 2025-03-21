@@ -17,15 +17,34 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
     const account_currency = loginid ? accountList[loginid]?.currency : '';
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
-    const redirect_url = handleTraderHubRedirect('cfds', has_wallet) || standalone_routes.traders_hub;
-    const final_url = new URL(redirect_url);
-    if (account_currency) {
-        final_url.searchParams.set('account', account_currency);
+
+    // Check if the account is a demo account from both loginid and URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const account_param = urlParams.get('account');
+    const is_virtual = loginid?.startsWith('VRTC') || account_param === 'demo' || false;
+
+    // Get the redirect URL from handleTraderHubRedirect
+    const redirect_url_str = handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+
+    // Add the account parameter to the URL
+    let final_url_str = redirect_url_str;
+    try {
+        const redirect_url = new URL(redirect_url_str);
+        if (is_virtual) {
+            // For demo accounts, set the account parameter to 'demo'
+            redirect_url.searchParams.set('account', 'demo');
+        } else if (account_currency) {
+            // For real accounts, set the account parameter to the currency
+            redirect_url.searchParams.set('account', account_currency);
+        }
+        final_url_str = redirect_url.toString();
+    } catch (error) {
+        console.error('Error parsing redirect URL:', error);
     }
 
     return (
         <div className=''>
-            <UIAccountSwitcher.TradersHubLink href={final_url.toString()}>
+            <UIAccountSwitcher.TradersHubLink href={final_url_str}>
                 {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
             </UIAccountSwitcher.TradersHubLink>
             <AccountSwitcherDivider />
@@ -43,7 +62,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
                                 const wallet_url = getWalletUrl();
                                 location.replace(wallet_url);
                             } else {
-                                location.replace(final_url);
+                                location.replace(final_url_str);
                             }
                         }}
                     >

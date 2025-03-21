@@ -1,8 +1,10 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
 import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
+import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { useTranslations } from '@deriv-com/translations';
 import { MenuItem, Text, useDevice } from '@deriv-com/ui';
 import { MenuItems as items, TRADERS_HUB_LINK_CONFIG } from '../header-config';
@@ -21,11 +23,21 @@ export const MenuItems = observer(() => {
     const getCurrency = client.getCurrency;
     const currency = getCurrency?.();
 
+    // Check if the account is a demo account
+    // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
+    const urlParams = new URLSearchParams(window.location.search);
+    const account_param = urlParams.get('account');
+    const is_virtual = client.is_virtual || account_param === 'demo' || false;
+
+    // Use handleTraderHubRedirect for all links
     const getModifiedHref = (originalHref: string) => {
-        // Apply the redirection logic to all routes
         const redirect_url = new URL(originalHref);
 
-        if (currency) {
+        if (is_virtual) {
+            // For demo accounts, set the account parameter to 'demo'
+            redirect_url.searchParams.set('account', 'demo');
+        } else if (currency) {
+            // For real accounts, set the account parameter to the currency
             redirect_url.searchParams.set('account', currency);
         }
 
@@ -73,6 +85,7 @@ export const MenuItems = observer(() => {
 });
 
 export const TradershubLink = observer(() => {
+    const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const store = useStore();
     const { isGBLoaded, isGBAvailable } = useIsGrowthbookIsLoaded();
 
@@ -82,22 +95,55 @@ export const TradershubLink = observer(() => {
     const getCurrency = client.getCurrency;
     const currency = getCurrency?.();
 
-    // Apply the same redirection logic as MenuItems
-    let redirect_url = new URL(standalone_routes.wallets_transfer);
+    // Check if the account is a demo account
+    // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
+    const urlParams = new URLSearchParams(window.location.search);
+    const account_param = urlParams.get('account');
+    const is_virtual = client.is_virtual || account_param === 'demo' || false;
 
-    if (isGBAvailable && isGBLoaded) {
-        redirect_url = new URL(standalone_routes.recent_transactions);
-    }
+    // Use the handleTraderHubRedirect function with the is_virtual flag
+    const redirect_url_str = handleTraderHubRedirect('tradershub', has_wallet, is_virtual);
 
-    if (currency) {
-        redirect_url.searchParams.set('account', currency);
+    // If the redirect_url_str is null, use the default URL with appropriate parameters
+    let href = redirect_url_str;
+    if (!href) {
+        let redirect_url = new URL(standalone_routes.wallets_transfer);
+
+        if (isGBAvailable && isGBLoaded) {
+            redirect_url = new URL(standalone_routes.recent_transactions);
+        }
+
+        if (is_virtual) {
+            // For demo accounts, set the account parameter to 'demo'
+            redirect_url.searchParams.set('account', 'demo');
+        } else if (currency) {
+            // For real accounts, set the account parameter to the currency
+            redirect_url.searchParams.set('account', currency);
+        }
+
+        href = redirect_url.toString();
+    } else if (redirect_url_str) {
+        // If we have a redirect_url_str, we still need to add the account parameter
+        try {
+            const redirect_url = new URL(redirect_url_str);
+            if (is_virtual) {
+                // For demo accounts, set the account parameter to 'demo'
+                redirect_url.searchParams.set('account', 'demo');
+            } else if (currency) {
+                // For real accounts, set the account parameter to the currency
+                redirect_url.searchParams.set('account', currency);
+            }
+            href = redirect_url.toString();
+        } catch (error) {
+            console.error('Error parsing redirect URL:', error);
+        }
     }
 
     return (
         <MenuItem
             as='a'
             className='app-header__menu'
-            href={redirect_url.toString()}
+            href={href}
             key={TRADERS_HUB_LINK_CONFIG.label}
             leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
         >

@@ -28,14 +28,17 @@ export const getBaseTraderHubUrl = (): string => {
 
 /**
  * Determines the appropriate Trader's Hub URL based on environment and product type
- * @param product_type - The type of product to redirect to ('tradershub' or 'cfds')
+ * @param product_type - The type of product to redirect to ('tradershub', 'cfds', 'reports', or 'cashier')
  * @returns The URL to redirect to
  */
-export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds'): string => {
+export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds' | 'reports' | 'cashier'): string => {
     const base_url = getBaseTraderHubUrl();
 
     // Map product_type to redirect_to parameter
-    const redirect_to = product_type === 'tradershub' ? 'home' : 'cfds';
+    let redirect_to = 'home';
+    if (product_type === 'cfds') redirect_to = 'cfds';
+    else if (product_type === 'reports') redirect_to = 'reports';
+    else if (product_type === 'cashier') redirect_to = 'cashier';
 
     // Construct the redirect URL
     const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=${redirect_to}`;
@@ -85,15 +88,29 @@ export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
 
 /**
  * Handles redirection to Trader's Hub
- * @param product_type - The type of product to redirect to ('tradershub' or 'cfds')
+ * @param product_type - The type of product to redirect to ('tradershub', 'cfds', 'reports', or 'cashier')
  * @param has_wallet - Whether the user has wallets
+ * @param is_virtual - Whether the account is a demo account
  * @returns The URL to redirect to, or null if no redirection should happen
  */
-export const handleTraderHubRedirect = (product_type: 'cfds' | 'tradershub', has_wallet: boolean): string | null => {
+export const handleTraderHubRedirect = (
+    product_type: 'cfds' | 'tradershub' | 'reports' | 'cashier',
+    has_wallet: boolean,
+    is_virtual: boolean = false
+): string | null => {
     if (shouldRedirectToTraderHub(has_wallet)) {
         return getTraderHubUrl(product_type);
     }
 
     // If no redirection should happen, return the default Trader's Hub URL
-    return standalone_routes.traders_hub;
+    const url = standalone_routes.traders_hub;
+
+    // If it's a demo account, append the demo parameter
+    if (is_virtual) {
+        const redirect_url = new URL(url);
+        redirect_url.searchParams.set('account', 'demo');
+        return redirect_url.toString();
+    }
+
+    return url;
 };
