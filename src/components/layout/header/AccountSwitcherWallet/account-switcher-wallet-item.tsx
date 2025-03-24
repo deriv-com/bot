@@ -42,6 +42,7 @@ export const AccountSwitcherWalletItem = observer(
         const switchAccount = async (loginId: number) => {
             const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
             const token = account_list[loginId];
+            // If token is missing, just return - the parent component will handle setting clientHasCurrency
             if (!token) return;
             localStorage.setItem('authToken', token);
             localStorage.setItem('active_loginid', loginId.toString());

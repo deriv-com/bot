@@ -59,14 +59,14 @@ function App() {
         };
     }, []);
 
-    // const updateAccountParamInURL = (account_data: TAuthData['account_list'][number], fallback_currency = '') => {
-    //     const search_params = new URLSearchParams(window.location.search);
-    //     const account_param = account_data.loginid.startsWith('VR')
-    //         ? 'demo'
-    //         : account_data.currency || fallback_currency;
-    //     search_params.set('account', account_param);
-    //     window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
-    // };
+    const updateAccountParamInURL = (account_data: TAuthData['account_list'][number], fallback_currency = '') => {
+        const search_params = new URLSearchParams(window.location.search);
+        const account_param = account_data.loginid.startsWith('VR')
+            ? 'demo'
+            : account_data.currency || fallback_currency;
+        search_params.set('account', account_param);
+        window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
+    };
 
     React.useEffect(() => {
         const accounts_list = localStorage.getItem('accountsList');
@@ -85,7 +85,7 @@ function App() {
                 );
                 if (!selected_account) return;
                 const [/* eslint-disable-line @typescript-eslint/no-unused-vars */ _, account] = selected_account;
-                //updateAccountParamInURL(account);
+                updateAccountParamInURL(account);
             } catch (e) {
                 console.warn('Error', e); // eslint-disable-line no-console
             }
@@ -142,7 +142,7 @@ function App() {
                 );
                 if (!selected_account) return;
                 const [_, account] = selected_account; // eslint-disable-line @typescript-eslint/no-unused-vars
-                //updateAccountParamInURL(account, 'USD');
+                updateAccountParamInURL(account, 'USD');
             }
         } catch (e) {
             console.warn('Error', e); // eslint-disable-line no-console
