@@ -32,6 +32,15 @@ const Layout = () => {
         currency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
 
+    // Expose setClientHasCurrency to window for global access
+    useEffect(() => {
+        (window as any).setClientHasCurrency = setClientHasCurrency;
+
+        return () => {
+            delete (window as any).setClientHasCurrency;
+        };
+    }, []);
+
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
     const query_currency = (getQueryParams.get('account') ?? '')?.toUpperCase();
     const isCurrencyValid = validCurrencies.includes(query_currency);
@@ -44,6 +53,8 @@ const Layout = () => {
             api_accounts.push(account_list || []);
             let currency;
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
+
+            // Check for missing currency
             const hasMissingCurrency = api_accounts?.flat().some(data => {
                 if (!allCurrencies.has(data.currency)) {
                     sessionStorage.setItem('query_param_currency', data.currency);
@@ -53,10 +64,26 @@ const Layout = () => {
                 return false;
             });
 
-            if (hasMissingCurrency) {
+            // Check for missing tokens
+            const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+            let hasMissingToken = false;
+            let missingTokenCurrency = '';
+
+            for (const acc of account_list) {
+                if (acc.loginid && !accountsList[acc.loginid]) {
+                    hasMissingToken = true;
+                    missingTokenCurrency = acc.currency || '';
+                    // Store the missing token's currency in session storage
+                    if (missingTokenCurrency) {
+                        sessionStorage.setItem('query_param_currency', missingTokenCurrency);
+                    }
+                    break;
+                }
+            }
+
+            if (hasMissingCurrency || hasMissingToken) {
                 setClientHasCurrency(false);
             } else {
-                sessionStorage.setItem('query_param_currency', query_currency);
                 const account_list_ =
                     account_list?.find((acc: { currency: string }) => acc.currency === currency) || account_list?.[0];
 
@@ -86,12 +113,23 @@ const Layout = () => {
     }, []);
 
     useEffect(() => {
+        // Always set the currency in session storage, even if the user is not logged in
+        // This ensures the currency is available on the callback page
+        if (currency) {
+            sessionStorage.setItem('query_param_currency', currency);
+        }
+
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
             !clientHasCurrency
         ) {
-            sessionStorage.setItem('query_param_currency', currency);
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+
+            // Make sure we have the currency in session storage before redirecting
+            if (query_param_currency) {
+                sessionStorage.setItem('query_param_currency', query_param_currency);
+            }
+
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 ...(query_param_currency

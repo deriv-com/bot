@@ -53,15 +53,24 @@ const CallbackPage = () => {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
+                // Get the currency from session storage that was set before the redirect
                 const currency = sessionStorage.getItem('query_param_currency');
 
                 const firstAccountKey = tokens.acct1;
                 const firstAccountCurrency = clientAccounts[firstAccountKey]
                     ? clientAccounts[firstAccountKey].currency
                     : null;
-                const selected_account = clientAccounts[state?.account || firstAccountKey];
-                const selected_currency = selected_account?.currency || currency || firstAccountCurrency;
 
+                // Prioritize the currency from session storage if available
+                let selected_currency;
+                if (currency) {
+                    selected_currency = currency;
+                } else {
+                    const selected_account = clientAccounts[state?.account || firstAccountKey];
+                    selected_currency = selected_account?.currency || firstAccountCurrency || 'USD';
+                }
+
+                // Make sure we have the currency in the URL when redirecting back
                 window.location.assign(`/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {

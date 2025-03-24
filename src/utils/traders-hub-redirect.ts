@@ -9,13 +9,6 @@ import { Analytics } from '@deriv-com/analytics';
  */
 export const getBaseTraderHubUrl = (): string => {
     const { is_staging_deriv_app, is_test_link, is_test_deriv_app } = getPlatformFromUrl();
-    console.log(
-        is_staging_deriv_app,
-        is_test_link,
-        is_test_deriv_app,
-        'is_staging_deriv_app, is_test_link, is_test_deriv_app'
-    );
-
     // Get the domain from deriv_urls (e.g., deriv.com, deriv.me, deriv.be)
     const domain = deriv_urls.DERIV_HOST_NAME;
 
@@ -80,7 +73,6 @@ export const getWalletUrl = (): string => {
 export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
     // Check if the country is in the enabled list from GrowthBook
     const is_country_enabled = !!Analytics?.getFeatureValue('hub_enabled_country_list_bot', {});
-    console.log(is_country_enabled, 'is_country_enabled');
 
     // User should be redirected if they have wallets and their country is enabled
     return has_wallet && is_country_enabled;

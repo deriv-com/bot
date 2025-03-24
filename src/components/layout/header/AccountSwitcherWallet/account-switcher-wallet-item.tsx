@@ -42,7 +42,21 @@ export const AccountSwitcherWalletItem = observer(
         const switchAccount = async (loginId: number) => {
             const account_list = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
             const token = account_list[loginId];
-            if (!token) return;
+
+            // If token is missing, store the currency in session storage and return
+            if (!token) {
+                // Store the currency in session storage
+                if (currency) {
+                    sessionStorage.setItem('query_param_currency', currency);
+                }
+
+                // Set clientHasCurrency to false
+                if (typeof (window as any).setClientHasCurrency === 'function') {
+                    (window as any).setClientHasCurrency(false);
+                }
+                return;
+            }
+
             localStorage.setItem('authToken', token);
             localStorage.setItem('active_loginid', loginId.toString());
             await api_base?.init(true);

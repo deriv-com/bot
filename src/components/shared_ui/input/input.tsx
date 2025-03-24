@@ -113,8 +113,6 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
 
         const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
         const field_placeholder = label ? '' : placeholder;
-
-        console.log(maxLength);
         return (
             <InputWrapper has_footer={has_footer}>
                 <div

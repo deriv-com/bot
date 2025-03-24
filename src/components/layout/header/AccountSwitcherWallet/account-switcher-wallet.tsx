@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
 import Text from '@/components/shared_ui/text';
@@ -22,6 +22,35 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
+
+    // Check if all accounts have tokens when the component is visible
+    useEffect(() => {
+        if (is_visible && dtrade_account_wallets?.length) {
+            const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
+
+            // Check if any account is missing a token
+            let hasMissingToken = false;
+            let missingTokenCurrency = '';
+
+            for (const wallet of dtrade_account_wallets) {
+                const loginId = wallet.dtrade_loginid;
+                if (!accountsList[loginId]) {
+                    hasMissingToken = true;
+                    missingTokenCurrency = wallet.currency || '';
+                    // Store the missing token's currency in session storage
+                    if (missingTokenCurrency) {
+                        sessionStorage.setItem('query_param_currency', missingTokenCurrency);
+                    }
+                    break;
+                }
+            }
+
+            // If any account is missing a token, set clientHasCurrency to false
+            if (hasMissingToken && typeof (window as any).setClientHasCurrency === 'function') {
+                (window as any).setClientHasCurrency(false);
+            }
+        }
+    }, [is_visible, dtrade_account_wallets]);
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
