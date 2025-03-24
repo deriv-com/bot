@@ -29,10 +29,21 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
             const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
 
             // Check if any account is missing a token
-            const hasMissingToken = dtrade_account_wallets.some(wallet => {
+            let hasMissingToken = false;
+            let missingTokenCurrency = '';
+
+            for (const wallet of dtrade_account_wallets) {
                 const loginId = wallet.dtrade_loginid;
-                return !accountsList[loginId];
-            });
+                if (!accountsList[loginId]) {
+                    hasMissingToken = true;
+                    missingTokenCurrency = wallet.currency || '';
+                    // Store the missing token's currency in session storage
+                    if (missingTokenCurrency) {
+                        sessionStorage.setItem('query_param_currency', missingTokenCurrency);
+                    }
+                    break;
+                }
+            }
 
             // If any account is missing a token, set clientHasCurrency to false
             if (hasMissingToken && typeof (window as any).setClientHasCurrency === 'function') {
