@@ -141,16 +141,26 @@ export default class RunPanelStore {
 
     setShowBotStopMessage = (show_bot_stop_message: boolean) => {
         this.show_bot_stop_message = show_bot_stop_message;
-        if (show_bot_stop_message)
-            botNotification(notification_message().bot_stop, {
-                label: localize('Reports'),
-                onClick: () => {
-                    const contract_type = getSelectedTradeType();
-                    const url = new URL(standalone_routes.positions);
-                    url.searchParams.set('contract_type_bots', contract_type);
-                    window.location.assign(url.toString());
-                },
-            });
+        if (!show_bot_stop_message) return;
+        const handleNotificationClick = () => {
+            const contract_type = getSelectedTradeType();
+            const url = new URL(standalone_routes.positions);
+            url.searchParams.set('contract_type_bots', contract_type);
+
+            const getQueryParams = new URLSearchParams(window.location.search);
+            const account = getQueryParams.get('account') || sessionStorage.getItem('query_param_currency') || '';
+
+            if (account) {
+                url.searchParams.set('account', account);
+            }
+
+            window.location.assign(url.toString());
+        };
+
+        botNotification(notification_message().bot_stop, {
+            label: localize('Reports'),
+            onClick: handleNotificationClick,
+        });
     };
 
     performSelfExclusionCheck = async () => {
