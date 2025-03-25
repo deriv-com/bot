@@ -42,17 +42,29 @@ const AppHeader = observer(() => {
             return (
                 <>
                     {/* <CustomNotifications /> */}
-                    {isDesktop && (
-                        <Tooltip
-                            as='a'
-                            href={standalone_routes.personal_details}
-                            tooltipContent={localize('Manage account settings')}
-                            tooltipPosition='bottom'
-                            className='app-header__account-settings'
-                        >
-                            <StandaloneCircleUserRegularIcon className='app-header__profile_icon' />
-                        </Tooltip>
-                    )}
+                    {isDesktop &&
+                        (() => {
+                            const redirect_url = new URL(standalone_routes.personal_details);
+                            const is_virtual = client?.is_virtual;
+                            if (is_virtual) {
+                                // For demo accounts, set the account parameter to 'demo'
+                                redirect_url.searchParams.set('account', 'demo');
+                            } else if (currency) {
+                                // For real accounts, set the account parameter to the currency
+                                redirect_url.searchParams.set('account', currency);
+                            }
+                            return (
+                                <Tooltip
+                                    as='a'
+                                    href={redirect_url.toString()}
+                                    tooltipContent={localize('Manage account settings')}
+                                    tooltipPosition='bottom'
+                                    className='app-header__account-settings'
+                                >
+                                    <StandaloneCircleUserRegularIcon className='app-header__profile_icon' />
+                                </Tooltip>
+                            );
+                        })()}
                     <AccountSwitcher activeAccount={activeAccount} />
                     {isDesktop &&
                         (has_wallet ? (
