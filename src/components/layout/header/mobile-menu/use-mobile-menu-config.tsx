@@ -51,6 +51,27 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const icAvailable = useIsIntercomAvailable();
 
+    // Function to add account parameter to URLs
+    const getAccountUrl = (url: string) => {
+        try {
+            const redirect_url = new URL(url);
+            const is_virtual = client?.is_virtual;
+            const currency = client?.getCurrency?.();
+
+            if (is_virtual) {
+                // For demo accounts, set the account parameter to 'demo'
+                redirect_url.searchParams.set('account', 'demo');
+            } else if (currency) {
+                // For real accounts, set the account parameter to the currency
+                redirect_url.searchParams.set('account', currency);
+            }
+
+            return redirect_url.toString();
+        } catch (error) {
+            return url;
+        }
+    };
+
     const menuConfig: TMenuConfig[] = [
         [
             {
@@ -73,7 +94,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
             },
             {
                 as: 'a',
-                href: standalone_routes.personal_details,
+                href: getAccountUrl(standalone_routes.personal_details),
                 label: localize('Account Settings'),
                 LeftComponent: LegacyProfileSmIcon,
             },
