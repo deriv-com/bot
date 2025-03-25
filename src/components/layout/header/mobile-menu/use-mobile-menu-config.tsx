@@ -55,7 +55,11 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const getAccountUrl = (url: string) => {
         try {
             const redirect_url = new URL(url);
-            const is_virtual = client?.is_virtual;
+            // Check if the account is a demo account
+            // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
+            const urlParams = new URLSearchParams(window.location.search);
+            const account_param = urlParams.get('account');
+            const is_virtual = client?.is_virtual || account_param === 'demo';
             const currency = client?.getCurrency?.();
 
             if (is_virtual) {

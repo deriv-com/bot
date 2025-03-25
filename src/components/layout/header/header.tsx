@@ -45,7 +45,12 @@ const AppHeader = observer(() => {
                     {isDesktop &&
                         (() => {
                             const redirect_url = new URL(standalone_routes.personal_details);
-                            const is_virtual = client?.is_virtual;
+                            // Check if the account is a demo account
+                            // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const account_param = urlParams.get('account');
+                            const is_virtual = client?.is_virtual || account_param === 'demo';
+
                             if (is_virtual) {
                                 // For demo accounts, set the account parameter to 'demo'
                                 redirect_url.searchParams.set('account', 'demo');
