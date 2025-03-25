@@ -129,17 +129,20 @@ const Layout = () => {
             if (query_param_currency) {
                 sessionStorage.setItem('query_param_currency', query_param_currency);
             }
-
-            requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                ...(query_param_currency
-                    ? {
-                          state: {
-                              account: query_param_currency,
-                          },
-                      }
-                    : {}),
-            });
+            try {
+                requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    ...(query_param_currency
+                        ? {
+                              state: {
+                                  account: query_param_currency,
+                              },
+                          }
+                        : {}),
+                });
+            } catch (err) {
+                console.error(err);
+            }
         }
     }, [
         isLoggedInCookie,
