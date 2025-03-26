@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
 import Text from '@/components/shared_ui/text';
@@ -23,34 +23,9 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
-    // Check if all accounts have tokens when the component is visible
-    useEffect(() => {
-        if (is_visible && dtrade_account_wallets?.length) {
-            const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
-
-            // Check if any account is missing a token
-            let hasMissingToken = false;
-            let missingTokenCurrency = '';
-
-            for (const wallet of dtrade_account_wallets) {
-                const loginId = wallet.dtrade_loginid;
-                if (!accountsList[loginId]) {
-                    hasMissingToken = true;
-                    missingTokenCurrency = wallet.currency || '';
-                    // Store the missing token's currency in session storage
-                    if (missingTokenCurrency) {
-                        sessionStorage.setItem('query_param_currency', missingTokenCurrency);
-                    }
-                    break;
-                }
-            }
-
-            // If any account is missing a token, set clientHasCurrency to false
-            if (hasMissingToken && typeof (window as any).setClientHasCurrency === 'function') {
-                (window as any).setClientHasCurrency(false);
-            }
-        }
-    }, [is_visible, dtrade_account_wallets]);
+    // We're removing the token check from the account switcher component
+    // This check is now handled in the Layout component to avoid triggering
+    // OIDC login when opening the account switcher
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
