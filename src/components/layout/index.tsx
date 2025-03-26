@@ -60,6 +60,7 @@ const Layout = () => {
                 ?.filter(data => data?.is_disabled === 1)
                 .some(data => {
                     if (!allCurrencies.has(data.currency)) {
+                        console.log('Missing currency:', data.currency);
                         sessionStorage.setItem('query_param_currency', data.currency);
                         return true;
                     }
@@ -125,6 +126,12 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount =
             isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
+        console.log('test oidc retrigger', {
+            isOAuth2Enabled,
+            isEndpointPage,
+            isCallbackPage,
+            clientHasCurrency,
+        });
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
