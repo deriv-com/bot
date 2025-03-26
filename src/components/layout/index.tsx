@@ -56,11 +56,10 @@ const Layout = () => {
 
             // Check for missing currency
             const hasMissingCurrency = api_accounts
-                ?.filter(data => data?.is_disabled === 1)
                 .flat()
+                ?.filter(data => data?.is_disabled === 1)
                 .some(data => {
                     if (!allCurrencies.has(data.currency)) {
-                        console.log('Missing currency:', data.currency);
                         sessionStorage.setItem('query_param_currency', data.currency);
                         return true;
                     }
