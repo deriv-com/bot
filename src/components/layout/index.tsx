@@ -55,14 +55,17 @@ const Layout = () => {
             const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
 
             // Check for missing currency
-            const hasMissingCurrency = api_accounts?.flat().some(data => {
-                if (!allCurrencies.has(data.currency)) {
-                    sessionStorage.setItem('query_param_currency', data.currency);
-                    return true;
-                }
-                currency = data.currency;
-                return false;
-            });
+            const hasMissingCurrency = api_accounts
+                .flat()
+                ?.filter(data => data?.is_disabled === 1)
+                .some(data => {
+                    if (!allCurrencies.has(data.currency)) {
+                        sessionStorage.setItem('query_param_currency', data.currency);
+                        return true;
+                    }
+                    currency = data.currency;
+                    return false;
+                });
 
             // Check for missing tokens
             const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
@@ -119,9 +122,12 @@ const Layout = () => {
             sessionStorage.setItem('query_param_currency', currency);
         }
 
+        const checkOIDCEnabledWithMissingAccount =
+            isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !clientHasCurrency;
+
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
-            !clientHasCurrency
+            checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
 
