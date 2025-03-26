@@ -50,29 +50,28 @@ const Layout = () => {
     const validateApiAccounts = ({ data }: any) => {
         if (data.msg_type === 'authorize') {
             const account_list = data?.authorize?.account_list || [];
-            api_accounts.push(account_list || []);
-            let currency;
-            const allCurrencies = new Set(Object.values(checkClientAccount).map(acc => acc.currency));
+            const account_list_filter = account_list.filter((acc: any) => acc.is_disabled === 0);
+            api_accounts.push(account_list_filter || []);
+            const allCurrencies = new Set(Object.values(checkClientAccount).map((acc: any) => acc.currency));
 
-            // Check for missing currency
-            const hasMissingCurrency = api_accounts
-                .flat()
-                ?.filter(data => data?.is_disabled === 1)
-                .some(data => {
-                    if (!allCurrencies.has(data.currency)) {
-                        sessionStorage.setItem('query_param_currency', data.currency);
-                        return true;
-                    }
-                    currency = data.currency;
-                    return false;
-                });
+            // Skip disabled accounts when checking for missing currency
+            const accounts = api_accounts.flat();
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            let detected_currency = '';
+            const hasMissingCurrency = accounts.some(data => {
+                if (!allCurrencies.has(data.currency)) {
+                    console.log('Missing currency:', data.currency);
+                    sessionStorage.setItem('query_param_currency', data.currency);
+                    return true;
+                }
+                detected_currency = data.currency;
+                return false;
+            });
 
-            // Check for missing tokens
-            const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
             let hasMissingToken = false;
             let missingTokenCurrency = '';
 
-            for (const acc of account_list) {
+            for (const acc of account_list_filter) {
                 if (acc.loginid && !accountsList[acc.loginid]) {
                     hasMissingToken = true;
                     missingTokenCurrency = acc.currency || '';
@@ -88,7 +87,8 @@ const Layout = () => {
                 setClientHasCurrency(false);
             } else {
                 const account_list_ =
-                    account_list?.find((acc: { currency: string }) => acc.currency === currency) || account_list?.[0];
+                    account_list_filter?.find((acc: { currency: string }) => acc.currency === currency) ||
+                    account_list_filter?.[0];
 
                 let session_storage_currency =
                     sessionStorage.getItem('query_param_currency') || account_list_?.currency || 'USD';
@@ -125,6 +125,12 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount =
             isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
+        console.log('test oidc retrigger', {
+            isOAuth2Enabled,
+            isEndpointPage,
+            isCallbackPage,
+            clientHasCurrency,
+        });
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
