@@ -70,7 +70,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         }
     }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count, setFieldValue, setFieldError]);
 
-    const validateMinMaxForAccumulators = async values => {
+    const validateMinMaxForAccumulators = async (values: TFormData) => {
         const growth_rate = Number(values.growth_rate);
         const amount = Number(values.stake);
         const take_profit = Number(values.take_profit);
@@ -89,9 +89,19 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             const response = await requestProposalForQS(request_proposal, api_base.api);
             const min_ticks = 1;
             const max_ticks = response?.proposal?.validation_params?.max_ticks;
+
+            // Extract max_stake from the correct path in the API response
+            const max_stake = response?.proposal?.contract_details?.maximum_stake;
+            const min_stake = response?.proposal?.contract_details?.minimum_stake;
+
             let min_error = '';
             let max_error = '';
-            setAdditionalData({ max_payout: ref_max_payout.current, max_ticks });
+            setAdditionalData({
+                max_payout: ref_max_payout.current,
+                max_ticks,
+                max_stake: Number(max_stake) || 1000,
+                min_stake: Number(min_stake) || 1,
+            });
             ref_max_payout.current = response?.proposal?.validation_params?.max_payout;
             const current_tick_count = Number(values.tick_count);
 
@@ -112,8 +122,22 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             let error_message = error_response?.message ?? error_response?.error?.message;
 
             if (values.boolean_tick_count) {
+                // For tick count, replace the generic stake error message with a more appropriate one
+                if (error_message.includes("Please enter a stake amount that's at least")) {
+                    error_message = localize('Minimum tick count allowed is 1');
+                } else if (error_message.includes('Maximum stake allowed is')) {
+                    error_message = localize('Maximum tick count allowed is 1000');
+                }
                 setFieldError('tick_count', error_message);
                 prev_error.current.tick_count = error_message;
+
+                // Force rerender by updating the field value
+                const current_value = Number(values.tick_count);
+                if (current_value > 1000) {
+                    setFieldValue('tick_count', 1000);
+                } else if (current_value < 1) {
+                    setFieldValue('tick_count', 1);
+                }
             } else {
                 if (error_response?.error?.details?.field === 'take_profit') {
                     if (Number(values.take_profit) === 0) {
@@ -128,10 +152,31 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 }
 
                 if (error_response?.error?.details?.field === 'stake') {
-                    error_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
+                    // Get the min stake and max payout values from the error message
+                    const min_stake_match = error_response?.error?.message.match(/minimum stake of (\d+\.\d+)/i);
+                    const max_payout_match = error_response?.error?.message.match(/maximum payout of (\d+\.\d+)/i);
+
+                    if (min_stake_match && max_payout_match) {
+                        const min_stake = min_stake_match[1];
+                        const max_payout = max_payout_match[1];
+                        const current_payout = Number(values.take_profit) + Number(values.stake);
+
+                        error_message = localize(
+                            `Minimum stake of ${min_stake} and maximum payout of ${max_payout}. Current payout is ${current_payout.toFixed(2)}.`
+                        );
+                    } else if (error_message.includes('Maximum stake allowed is')) {
+                        const max_stake = quick_strategy?.additional_data?.max_stake || '1000.00';
+                        error_message = localize(`Maximum stake allowed is ${max_stake}. Update your initial stake.`);
+                    } else {
+                        error_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
+                    }
+
+                    // Set the error on the stake field instead of take_profit
+                    setFieldError('stake', error_message);
+                } else {
+                    setFieldError('take_profit', error_message);
+                    prev_error.current.take_profit = error_message;
                 }
-                setFieldError('take_profit', error_message);
-                prev_error.current.take_profit = error_message;
             }
         }
     };

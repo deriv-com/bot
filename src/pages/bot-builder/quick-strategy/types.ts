@@ -15,6 +15,7 @@ export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | '
 
 export interface ValidationObject {
     getMessage: (min: number | string) => string;
+    getDynamicValue?: (store: any) => number;
 }
 
 export type TValidationItem =
@@ -34,7 +35,7 @@ export type TConfigItem = Partial<{
     name: keyof TFormData;
     dependencies: string[];
     label: string;
-    description: ReactNode;
+    description: ReactNode | ((additional_data: any) => ReactNode);
     attached: boolean;
     hide: string[];
     validation: TValidationItem[];
