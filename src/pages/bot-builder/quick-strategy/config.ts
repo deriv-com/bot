@@ -69,6 +69,16 @@ const TAKE_PROFIT = (): TConfigItem => ({
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: true,
+    validation: [
+        'number',
+        'required',
+        'ceil',
+        {
+            type: 'min',
+            value: 0.35,
+            getMessage: (min: string | number) => localize('Minimum take profit allowed is {{ min }}', { min }),
+        },
+    ],
 });
 
 const TICK_COUNT = (): TConfigItem => ({
@@ -78,6 +88,16 @@ const TICK_COUNT = (): TConfigItem => ({
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: false,
+    validation: [
+        'number',
+        'required',
+        'ceil',
+        {
+            type: 'min',
+            value: 1,
+            getMessage: (min: string | number) => localize('Minimum tick count allowed is {{ min }}', { min }),
+        },
+    ],
 });
 
 const NUMBER_DEFAULT_VALIDATION = (): TValidationItem => ({
@@ -130,7 +150,23 @@ const LABEL_STAKE = (): TConfigItem => ({
 const STAKE = (): TConfigItem => ({
     type: 'number',
     name: 'stake',
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION()],
+    validation: [
+        'number',
+        'required',
+        'ceil',
+        {
+            type: 'min',
+            value: 0.35,
+            getMessage: (min: string | number) => localize('Minimum stake allowed is {{ min }}', { min }),
+            getDynamicValue: (store: any) => store.quick_strategy?.additional_data?.min_stake || 0.35,
+        },
+        {
+            type: 'max',
+            value: 1000,
+            getMessage: (max: string | number) => localize('Maximum stake allowed is {{ max }}', { max }),
+            getDynamicValue: (store: any) => store.quick_strategy?.additional_data?.max_stake || 1000,
+        },
+    ],
     has_currency_unit: true,
 });
 

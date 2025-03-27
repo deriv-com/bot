@@ -166,10 +166,12 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                     }
                                 } else if (typeof validation === 'object') {
                                     if (validation?.type) {
-                                        schema = schema[validation.type](
-                                            validation.value,
-                                            localize(validation.getMessage(validation.value))
-                                        );
+                                        // Use dynamic value if available
+                                        const value = validation.getDynamicValue
+                                            ? validation.getDynamicValue(quick_strategy)
+                                            : validation.value;
+
+                                        schema = schema[validation.type](value, localize(validation.getMessage(value)));
                                     }
                                 }
                             });
