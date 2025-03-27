@@ -146,6 +146,17 @@ const QSInput: React.FC<TQSInput> = observer(
                                         bottom_label={is_exclusive_field ? currency : ''}
                                         max_characters={2}
                                         maxLength={2}
+                                        inputMode={name === 'tick_count' ? 'numeric' : undefined}
+                                        pattern={name === 'tick_count' ? '[0-9]*' : undefined}
+                                        onKeyPress={
+                                            name === 'tick_count'
+                                                ? e => {
+                                                      if (e.key === '.') {
+                                                          e.preventDefault();
+                                                      }
+                                                  }
+                                                : undefined
+                                        }
                                     />
                                 </Popover>
                             </div>
