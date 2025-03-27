@@ -27,7 +27,7 @@ import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
 
-const Chart = lazy(() => import('../chart'));
+const ChartWrapper = lazy(() => import('../chart/chart-wrapper'));
 const Tutorial = lazy(() => import('../tutorials'));
 
 const AppWrapper = observer(() => {
@@ -211,7 +211,7 @@ const AppWrapper = observer(() => {
                             }
                         >
                             <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
-                                <Chart show_digits_stats={false} />
+                                <ChartWrapper show_digits_stats={false} />
                             </Suspense>
                         </div>
                         <div
