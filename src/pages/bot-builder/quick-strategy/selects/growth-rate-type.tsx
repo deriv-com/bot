@@ -165,10 +165,10 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                             `Minimum stake of ${min_stake} and maximum payout of ${max_payout}. Current payout is ${current_payout.toFixed(2)}.`
                         );
                     } else if (error_message.includes('Maximum stake allowed is')) {
-                        const max_stake = quick_strategy?.additional_data?.max_stake || '1000.00';
-                        error_message = localize(`Maximum stake allowed is ${max_stake}. Update your initial stake.`);
+                        const max_stake = quick_strategy?.additional_data?.max_stake || '1000';
+                        error_message = localize(`Maximum stake allowed is ${max_stake}`);
                     } else {
-                        error_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
+                        error_message = `${error_response?.error?.message}`;
                     }
 
                     // Set the error on the stake field instead of take_profit

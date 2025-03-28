@@ -187,7 +187,7 @@ const DURATION = (): TConfigItem => ({
     type: 'number',
     name: 'duration',
     attached: true,
-    validation: ['number', 'required', 'min', 'max'],
+    validation: ['number', 'required', 'min', 'max', 'integer'],
 });
 
 const LABEL_PROFIT = (): TConfigItem => ({
