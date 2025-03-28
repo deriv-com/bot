@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
@@ -16,6 +16,34 @@ type TQSInput = {
     min?: number;
     max?: number;
     has_currency_unit?: boolean;
+};
+
+// Create a context to share error state between components
+const MaxStakeErrorContext = React.createContext<{
+    hasError: boolean;
+    errorMessage: string | null;
+    setError: (hasError: boolean, message: string | null) => void;
+}>({
+    hasError: false,
+    errorMessage: null,
+    setError: () => {},
+});
+
+// Create a provider component to wrap the QSInput components
+export const MaxStakeErrorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [hasError, setHasError] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
+    const setError = React.useCallback((hasError: boolean, message: string | null) => {
+        setHasError(hasError);
+        setErrorMessage(message);
+    }, []);
+
+    return (
+        <MaxStakeErrorContext.Provider value={{ hasError, errorMessage, setError }}>
+            {children}
+        </MaxStakeErrorContext.Provider>
+    );
 };
 
 const QSInput: React.FC<TQSInput> = observer(
@@ -43,6 +71,116 @@ const QSInput: React.FC<TQSInput> = observer(
         }>();
         const is_number = type === 'number';
         const max_value = 999999999999;
+
+        // Add useEffect to watch for changes in stake values and update error message accordingly
+        useEffect(() => {
+            // For max_stake field: show error if initial stake > max stake
+            if (name === 'max_stake' && values.stake && values.max_stake) {
+                // Convert to numbers with fixed precision to handle floating point comparison correctly
+                const initial_stake = parseFloat(Number(values.stake).toFixed(2));
+                const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
+
+                console.log(`useEffect max_stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
+
+                if (initial_stake > max_stake) {
+                    // If initial stake is greater than max stake, show error
+                    setErrorMessage(`Initial stake cannot be greater than max stake`);
+
+                    // Also update the UI to show the error state
+                    const max_stake_input = document.querySelector('input[name="max_stake"]');
+                    if (max_stake_input) {
+                        // Add error class to the input
+                        max_stake_input.closest('.qs__input')?.classList.add('error');
+
+                        // Force the popover to show
+                        const popover = max_stake_input
+                            .closest('.qs__form__field__input')
+                            ?.querySelector('.qs__warning-bubble');
+                        if (popover) {
+                            popover.setAttribute('data-show', 'true');
+                        }
+                    }
+                } else {
+                    // Clear error message if values are now valid
+                    setErrorMessage(null);
+                }
+            }
+
+            // For stake field: trigger validation on max_stake field when initial stake changes
+            if (name === 'stake' && values.stake && values.max_stake) {
+                // Convert to numbers with fixed precision to handle floating point comparison correctly
+                const initial_stake = parseFloat(Number(values.stake).toFixed(2));
+                const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
+
+                console.log(`useEffect stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
+
+                if (initial_stake > max_stake) {
+                    // If initial stake is greater than max stake, update the max_stake field's error state
+                    // Find the max_stake input and its popover
+                    const max_stake_input = document.querySelector('input[name="max_stake"]');
+                    if (max_stake_input) {
+                        // Add error class to the input
+                        const inputElement = max_stake_input.closest('.qs__input');
+                        if (inputElement) {
+                            inputElement.classList.add('error');
+                        }
+
+                        // Set error message on the max_stake field
+                        const max_stake_component = document.querySelector('[data-testid="max_stake-popover"]');
+                        if (max_stake_component) {
+                            // Force the popover to be visible by setting a custom attribute
+                            max_stake_component.setAttribute('data-force-show', 'true');
+
+                            // Find the message element inside the popover
+                            const messageElement = max_stake_component.querySelector('.qs__warning-bubble div');
+                            if (messageElement) {
+                                messageElement.textContent = 'Initial stake cannot be greater than max stake';
+                            }
+
+                            // Try to force the popover to be visible by directly manipulating the DOM
+                            const popoverElement = max_stake_component.querySelector('.qs__warning-bubble');
+                            if (popoverElement) {
+                                // Make the popover visible
+                                (popoverElement as HTMLElement).style.display = 'block';
+                                (popoverElement as HTMLElement).style.opacity = '1';
+                                (popoverElement as HTMLElement).style.visibility = 'visible';
+                                (popoverElement as HTMLElement).style.position = 'absolute';
+                                (popoverElement as HTMLElement).style.zIndex = '9999';
+                            }
+                        }
+
+                        // Update the Formik state for the max_stake field
+                        setFieldValue('max_stake', values.max_stake);
+                        setFieldTouched('max_stake', true, true);
+
+                        // Create a custom error message for the max_stake field
+                        const errorMessage = 'Initial stake cannot be greater than max stake';
+
+                        // Find all QSInput components for max_stake
+                        const allMaxStakeInputs = document.querySelectorAll('input[name="max_stake"]');
+                        allMaxStakeInputs.forEach(input => {
+                            // Set a custom attribute to indicate there's an error
+                            input.setAttribute('data-has-error', 'true');
+                            input.setAttribute('data-error-message', errorMessage);
+
+                            // Dispatch events to trigger validation
+                            const blurEvent = new Event('blur', { bubbles: true });
+                            input.dispatchEvent(blurEvent);
+
+                            const keyupEvent = new Event('keyup', { bubbles: true });
+                            input.dispatchEvent(keyupEvent);
+
+                            // Create a custom event to notify the component of the error
+                            const errorEvent = new CustomEvent('qs-error', {
+                                detail: { message: errorMessage },
+                                bubbles: true,
+                            });
+                            input.dispatchEvent(errorEvent);
+                        });
+                    }
+                }
+            }
+        }, [name, values.stake, values.max_stake]);
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -152,7 +290,7 @@ const QSInput: React.FC<TQSInput> = observer(
                 const initial_stake_value = values.stake;
                 if (initial_stake_value && Number(initial_stake_value) > numValue) {
                     // If initial stake is greater than max stake, show error
-                    setErrorMessage(`Maximum stake cannot be less than initial stake (${initial_stake_value})`);
+                    setErrorMessage(`Initial stake cannot be greater than max stake`);
                 }
             }
 
@@ -185,6 +323,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                     classNameBubble='qs__warning-bubble'
                                     has_error
                                     should_disable_pointer_events
+                                    data-testid={`${name}-popover`}
                                 >
                                     <Input
                                         data_testId='qs-input'
@@ -290,22 +429,65 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     }
                                                 }
 
-                                                // Only validate max_stake against initial stake
-                                                if (name === 'max_stake') {
-                                                    // When max stake changes, validate initial stake
+                                                // Cross-validate between stake and max_stake
+                                                if (name === 'stake') {
+                                                    // When initial stake changes, validate against max_stake
+                                                    const max_stake_value = values.max_stake;
+                                                    const numValue = Number(value);
+                                                    // Convert to numbers with fixed precision to handle floating point comparison correctly
+                                                    const numValueFixed = parseFloat(numValue.toFixed(2));
+                                                    const maxStakeFixed = max_stake_value
+                                                        ? parseFloat(Number(max_stake_value).toFixed(2))
+                                                        : 0;
+
+                                                    if (max_stake_value && maxStakeFixed < numValueFixed) {
+                                                        // Don't show error on initial stake field
+                                                        // Instead, trigger validation on the max stake field to show the error there
+                                                        const max_stake_input =
+                                                            document.querySelector('input[name="max_stake"]');
+                                                        if (max_stake_input) {
+                                                            // Update the max stake field value to trigger validation
+                                                            // This ensures the max stake field listens to changes in the initial stake field
+                                                            setFieldValue('max_stake', max_stake_value);
+                                                            setFieldTouched('max_stake', true, true);
+
+                                                            // Dispatch both blur and keyup events to ensure validation runs
+                                                            const blurEvent = new Event('blur', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(blurEvent);
+
+                                                            const keyupEvent = new Event('keyup', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(keyupEvent);
+                                                        }
+                                                    } else if (max_stake_value) {
+                                                        // Clear error message if values are now valid
+                                                        // Also trigger validation on the max_stake field to clear its error
+                                                        const max_stake_input =
+                                                            document.querySelector('input[name="max_stake"]');
+                                                        if (max_stake_input) {
+                                                            const event = new Event('keyup', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(event);
+                                                        }
+                                                    }
+                                                } else if (name === 'max_stake') {
+                                                    // When max stake changes, validate against initial stake
                                                     const initial_stake_value = values.stake;
-                                                    if (
-                                                        initial_stake_value &&
-                                                        Number(initial_stake_value) > Number(value)
-                                                    ) {
+                                                    const numValue = Number(value);
+                                                    // Convert to numbers with fixed precision to handle floating point comparison correctly
+                                                    const numValueFixed = parseFloat(numValue.toFixed(2));
+                                                    const initialStakeFixed = initial_stake_value
+                                                        ? parseFloat(Number(initial_stake_value).toFixed(2))
+                                                        : 0;
+
+                                                    if (initial_stake_value && initialStakeFixed > numValueFixed) {
                                                         // If initial stake is greater than max stake, show error
                                                         setErrorMessage(
-                                                            `Maximum stake cannot be less than initial stake (${initial_stake_value})`
+                                                            `Initial stake cannot be greater than max stake`
                                                         );
+                                                    } else {
+                                                        // Clear error message if values are now valid
+                                                        setErrorMessage(null);
                                                     }
                                                 }
-                                                // Note: We're not adding a custom error message for when initial stake > max stake
-                                                // The standard error message will be displayed by the form validation
                                             }
                                         }}
                                         placeholder={is_exclusive_field ? '0.00' : ''}
@@ -337,8 +519,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                         onKeyUp={e => {
                                             // Check value on each keystroke for stake field
                                             if (name === 'stake' || name === 'max_stake') {
-                                                const min_stake = (quick_strategy?.additional_data as any)?.min_stake;
-                                                const max_stake = (quick_strategy?.additional_data as any)?.max_stake;
+                                                const min_stake =
+                                                    (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                                                const max_stake =
+                                                    (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.currentTarget.value;
 
                                                 // For empty values, show error message but don't reset
@@ -363,19 +547,61 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                                                 }
 
-                                                // Only validate max_stake against initial stake
-                                                if (name === 'max_stake') {
-                                                    // When max stake changes, validate initial stake
+                                                // Cross-validate between stake and max_stake
+                                                if (name === 'stake') {
+                                                    // When initial stake changes, validate against max_stake
+                                                    const max_stake_value = values.max_stake;
+                                                    const numValueFixed = parseFloat(Number(value).toFixed(2));
+                                                    const maxStakeFixed = max_stake_value
+                                                        ? parseFloat(Number(max_stake_value).toFixed(2))
+                                                        : 0;
+
+                                                    if (max_stake_value && maxStakeFixed < numValueFixed) {
+                                                        // Don't show error on initial stake field
+                                                        // Instead, trigger validation on the max stake field to show the error there
+                                                        const max_stake_input =
+                                                            document.querySelector('input[name="max_stake"]');
+                                                        if (max_stake_input) {
+                                                            // Update the max stake field value to trigger validation
+                                                            // This ensures the max stake field listens to changes in the initial stake field
+                                                            setFieldValue('max_stake', max_stake_value);
+                                                            setFieldTouched('max_stake', true, true);
+
+                                                            // Dispatch both blur and keyup events to ensure validation runs
+                                                            const blurEvent = new Event('blur', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(blurEvent);
+
+                                                            const keyupEvent = new Event('keyup', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(keyupEvent);
+                                                        }
+                                                    } else if (max_stake_value) {
+                                                        // Clear error message if values are now valid
+                                                        // Also trigger validation on the max_stake field to clear its error
+                                                        const max_stake_input =
+                                                            document.querySelector('input[name="max_stake"]');
+                                                        if (max_stake_input) {
+                                                            const event = new Event('keyup', { bubbles: true });
+                                                            max_stake_input.dispatchEvent(event);
+                                                        }
+                                                    }
+                                                } else if (name === 'max_stake') {
+                                                    // When max stake changes, validate against initial stake
                                                     const initial_stake_value = values.stake;
-                                                    if (initial_stake_value && Number(initial_stake_value) > numValue) {
+                                                    const numValueFixed = parseFloat(Number(value).toFixed(2));
+                                                    const initialStakeFixed = initial_stake_value
+                                                        ? parseFloat(Number(initial_stake_value).toFixed(2))
+                                                        : 0;
+
+                                                    if (initial_stake_value && initialStakeFixed > numValueFixed) {
                                                         // If initial stake is greater than max stake, show error
                                                         setErrorMessage(
-                                                            `Maximum stake cannot be less than initial stake (${initial_stake_value})`
+                                                            `Initial stake cannot be greater than max stake`
                                                         );
+                                                    } else {
+                                                        // Clear error message if values are now valid
+                                                        setErrorMessage(null);
                                                     }
                                                 }
-                                                // Note: We're not adding a custom error message for when initial stake > max stake
-                                                // The standard error message will be displayed by the form validation
                                             }
                                         }}
                                     />

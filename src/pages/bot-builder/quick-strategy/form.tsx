@@ -43,6 +43,13 @@ const QuickStrategyForm = observer(() => {
         };
     }, []);
 
+    // Ensure toggle switch state is synchronized with form values
+    React.useEffect(() => {
+        if (values?.boolean_max_stake !== undefined) {
+            setIsEnabledToggleSwitch(!!values.boolean_max_stake);
+        }
+    }, [values?.boolean_max_stake]);
+
     React.useEffect(() => {
         if (!isEnabledToggleSwitch && values?.max_stake) {
             setFieldValue('max_stake', 0);
@@ -53,6 +60,31 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value, true);
+
+        // Cross-validate stake and max_stake when either value changes
+        if (key === 'stake' || key === 'max_stake') {
+            // Always re-validate both fields when either changes
+            // This ensures error messages are cleared when values are corrected
+            setFieldTouched('stake', true, true);
+            setFieldTouched('max_stake', true, true);
+
+            // Force immediate validation
+            if (key === 'stake') {
+                // When stake changes, we need to validate max_stake as well
+                const input_elements = document.querySelectorAll('input[name="max_stake"]');
+                if (input_elements.length > 0) {
+                    const event = new Event('keyup', { bubbles: true });
+                    input_elements[0].dispatchEvent(event);
+                }
+            } else if (key === 'max_stake') {
+                // When max_stake changes, we need to validate stake as well
+                const input_elements = document.querySelectorAll('input[name="stake"]');
+                if (input_elements.length > 0) {
+                    const event = new Event('keyup', { bubbles: true });
+                    input_elements[0].dispatchEvent(event);
+                }
+            }
+        }
     };
 
     const handleEnter = (event: KeyboardEvent) => {
@@ -164,7 +196,7 @@ const QuickStrategyForm = observer(() => {
                                     <QSInputLabel
                                         key={key}
                                         label={field.label}
-                                        description={field.description ?? ''}
+                                        description={field.description ? String(field.description) : ''}
                                         additional_data={additional_data}
                                     />
                                 );
@@ -172,10 +204,10 @@ const QuickStrategyForm = observer(() => {
                             case 'checkbox':
                                 return (
                                     <QSCheckbox
-                                        {...field}
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
+                                        description={field.description ? String(field.description) : undefined}
                                         isEnabledToggleSwitch={!!isEnabledToggleSwitch}
                                         setIsEnabledToggleSwitch={toggleSwitch}
                                     />
