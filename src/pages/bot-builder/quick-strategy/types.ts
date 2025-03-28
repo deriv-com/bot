@@ -16,13 +16,15 @@ export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | '
 export interface ValidationObject {
     getMessage: (min: number | string) => string;
     getDynamicValue?: (store: any) => number;
+    name?: string;
+    test?: (value: any, context: any) => boolean | string;
 }
 
 export type TValidationItem =
     | TValidationType
     | ({
           type: TValidationType;
-          value: number | string;
+          value?: number | string;
       } & ValidationObject);
 
 export type TStrategyDescription = {
