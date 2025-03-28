@@ -118,7 +118,7 @@ const QSInput: React.FC<TQSInput> = observer(
                 } else {
                     // Show error message if value is less than minimum stake
                     if (numValue < min_stake) {
-                        setErrorMessage(`Minimum stake allowed is 0.35`);
+                        setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                     } else if (numValue > max_stake) {
                         // Allow entering any value but show error message
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
@@ -147,7 +147,7 @@ const QSInput: React.FC<TQSInput> = observer(
                 } else {
                     // Show error message if value is less than minimum stake
                     if (numValue < min_stake) {
-                        setErrorMessage(`Minimum stake allowed is 0.35`);
+                        setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                     } else if (numValue > max_stake) {
                         // Allow entering any value but show error message
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
@@ -350,10 +350,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                         onKeyUp={e => {
                                             // Check value on each keystroke for stake field
                                             if (name === 'stake' || name === 'max_stake') {
-                                                const min_stake =
-                                                    (quick_strategy?.additional_data as any)?.min_stake || 0.35;
-                                                const max_stake =
-                                                    (quick_strategy?.additional_data as any)?.max_stake || 1000;
+                                                const min_stake = (quick_strategy?.additional_data as any)?.min_stake;
+                                                const max_stake = (quick_strategy?.additional_data as any)?.max_stake;
                                                 const value = e.currentTarget.value;
 
                                                 // For empty values, show error message but don't reset
@@ -372,7 +370,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
                                                 // Show error message if value is less than minimum stake or greater than maximum
                                                 if (numValue < min_stake) {
-                                                    setErrorMessage(`Minimum stake allowed is 0.35`);
+                                                    setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                 } else if (numValue > max_stake) {
                                                     // Allow entering any value but show error message for maximum
                                                     setErrorMessage(`Maximum stake allowed is ${max_stake}`);
