@@ -125,14 +125,8 @@ const QSInput: React.FC<TQSInput> = observer(
                     }
                 }
 
-                // Cross-validate with max_stake
-                const max_stake_value = values.max_stake;
-                if (max_stake_value && Number(max_stake_value) < numValue) {
-                    // If max stake is less than initial stake, show error
-                    setErrorMessage(
-                        `Initial stake (${numValue}) cannot be greater than max stake (${max_stake_value})`
-                    );
-                }
+                ``; // Note: We're not adding a custom error message for when initial stake > max stake
+                // The standard error message will be displayed by the form validation
             }
 
             // For max_stake field, check if value is within the allowed range
@@ -296,17 +290,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     }
                                                 }
 
-                                                // Cross-validate with the other stake field
-                                                if (name === 'stake') {
-                                                    // When initial stake changes, validate max_stake
-                                                    const max_stake_value = values.max_stake;
-                                                    if (max_stake_value && Number(max_stake_value) < Number(value)) {
-                                                        // If max stake is less than initial stake, show error
-                                                        setErrorMessage(
-                                                            `Initial stake (${value}) cannot be greater than max stake (${max_stake_value})`
-                                                        );
-                                                    }
-                                                } else if (name === 'max_stake') {
+                                                // Only validate max_stake against initial stake
+                                                if (name === 'max_stake') {
                                                     // When max stake changes, validate initial stake
                                                     const initial_stake_value = values.stake;
                                                     if (
@@ -319,6 +304,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         );
                                                     }
                                                 }
+                                                // Note: We're not adding a custom error message for when initial stake > max stake
+                                                // The standard error message will be displayed by the form validation
                                             }
                                         }}
                                         placeholder={is_exclusive_field ? '0.00' : ''}
@@ -376,17 +363,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                                                 }
 
-                                                // Cross-validate with the other stake field
-                                                if (name === 'stake') {
-                                                    // When initial stake changes, validate max_stake
-                                                    const max_stake_value = values.max_stake;
-                                                    if (max_stake_value && Number(max_stake_value) < numValue) {
-                                                        // If max stake is less than initial stake, show error
-                                                        setErrorMessage(
-                                                            `Initial stake (${numValue}) cannot be greater than max stake (${max_stake_value})`
-                                                        );
-                                                    }
-                                                } else if (name === 'max_stake') {
+                                                // Only validate max_stake against initial stake
+                                                if (name === 'max_stake') {
                                                     // When max stake changes, validate initial stake
                                                     const initial_stake_value = values.stake;
                                                     if (initial_stake_value && Number(initial_stake_value) > numValue) {
@@ -396,6 +374,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         );
                                                     }
                                                 }
+                                                // Note: We're not adding a custom error message for when initial stake > max stake
+                                                // The standard error message will be displayed by the form validation
                                             }
                                         }}
                                     />
