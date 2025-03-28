@@ -11,7 +11,7 @@ export type TFormData = {
     [key: string]: string | number | boolean;
 };
 
-export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor' | 'integer' | 'test';
+export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor' | 'integer';
 
 export interface ValidationObject {
     getMessage: (min: number | string) => string;
