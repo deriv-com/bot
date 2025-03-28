@@ -325,7 +325,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                             name === 'loss' ||
                                             name === 'profit' ||
                                             name === 'take_profit' ||
-                                            name === 'tick_count')
+                                            name === 'tick_count' ||
+                                            name === 'size')
                                     } // Show error message for all input fields that need validation
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
