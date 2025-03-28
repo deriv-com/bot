@@ -220,7 +220,7 @@ const QSInput: React.FC<TQSInput> = observer(
             if (input_value === '' || input_value === '0' || input_value === '0.') {
                 onChange(name, input_value);
 
-                // Show error message for empty values in stake and max_stake fields
+                // Show error message for empty values in fields
                 if (name === 'stake' || name === 'max_stake') {
                     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
@@ -318,7 +318,15 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error || error_message} // Prioritize backend error over client-side error
-                                    is_open={!!(error || error_message) && (name === 'stake' || name === 'max_stake')} // Show error message for stake and max_stake fields
+                                    is_open={
+                                        !!(error || error_message) &&
+                                        (name === 'stake' ||
+                                            name === 'max_stake' ||
+                                            name === 'loss' ||
+                                            name === 'profit' ||
+                                            name === 'take_profit' ||
+                                            name === 'tick_count')
+                                    } // Show error message for all input fields that need validation
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error
@@ -332,7 +340,12 @@ const QSInput: React.FC<TQSInput> = observer(
                                             {
                                                 error:
                                                     (has_error || !!error_message) &&
-                                                    (name === 'stake' || name === 'max_stake'),
+                                                    (name === 'stake' ||
+                                                        name === 'max_stake' ||
+                                                        name === 'loss' ||
+                                                        name === 'profit' ||
+                                                        name === 'take_profit' ||
+                                                        name === 'tick_count'),
                                             },
                                             { highlight: loss_threshold_warning_data?.highlight_field?.includes(name) }
                                         )}
