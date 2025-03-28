@@ -37,7 +37,10 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const [, setFocus] = React.useState(false);
         const [error_message, setErrorMessage] = React.useState<string | null>(null);
-        const { setFieldValue, setFieldTouched } = useFormikContext();
+        const { setFieldValue, setFieldTouched, values } = useFormikContext<{
+            stake?: string | number;
+            max_stake?: string | number;
+        }>();
         const is_number = type === 'number';
         const max_value = 999999999999;
 
@@ -78,6 +81,12 @@ const QSInput: React.FC<TQSInput> = observer(
             // Allow empty string or partial input to support backspace
             if (input_value === '' || input_value === '0' || input_value === '0.') {
                 onChange(name, input_value);
+
+                // Show error message for empty values in stake and max_stake fields
+                if (name === 'stake' || name === 'max_stake') {
+                    const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                    setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                }
                 return;
             }
 
@@ -115,6 +124,15 @@ const QSInput: React.FC<TQSInput> = observer(
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                     }
                 }
+
+                // Cross-validate with max_stake
+                const max_stake_value = values.max_stake;
+                if (max_stake_value && Number(max_stake_value) < numValue) {
+                    // If max stake is less than initial stake, show error
+                    setErrorMessage(
+                        `Initial stake (${numValue}) cannot be greater than max stake (${max_stake_value})`
+                    );
+                }
             }
 
             // For max_stake field, check if value is within the allowed range
@@ -134,6 +152,13 @@ const QSInput: React.FC<TQSInput> = observer(
                         // Allow entering any value but show error message
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                     }
+                }
+
+                // Cross-validate with initial stake
+                const initial_stake_value = values.stake;
+                if (initial_stake_value && Number(initial_stake_value) > numValue) {
+                    // If initial stake is greater than max stake, show error
+                    setErrorMessage(`Maximum stake cannot be less than initial stake (${initial_stake_value})`);
                 }
             }
 
@@ -248,21 +273,51 @@ const QSInput: React.FC<TQSInput> = observer(
                                         disabled={disabled}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
                                         onBlur={e => {
-                                            // Apply minimum value validation on blur for stake and max_stake fields
+                                            // Don't reset empty values, just show error message
                                             if (name === 'stake' || name === 'max_stake') {
                                                 const min_stake =
                                                     (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                                                const max_stake =
+                                                    (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.target.value;
 
-                                                // If empty or less than minimum, set to minimum
-                                                if (
-                                                    value === '' ||
-                                                    value === '0' ||
-                                                    value === '0.' ||
-                                                    Number(value) < min_stake
-                                                ) {
-                                                    setFieldValue(name, min_stake);
-                                                    onChange(name, min_stake);
+                                                // For empty values, show error message but don't reset
+                                                if (value === '' || value === '0' || value === '0.') {
+                                                    setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                                                } else {
+                                                    // For non-empty values, validate and show appropriate message
+                                                    const numValue = Number(value);
+                                                    if (numValue < min_stake) {
+                                                        setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                                                    } else if (numValue > max_stake) {
+                                                        setErrorMessage(`Maximum stake allowed is ${max_stake}`);
+                                                    } else {
+                                                        setErrorMessage(null);
+                                                    }
+                                                }
+
+                                                // Cross-validate with the other stake field
+                                                if (name === 'stake') {
+                                                    // When initial stake changes, validate max_stake
+                                                    const max_stake_value = values.max_stake;
+                                                    if (max_stake_value && Number(max_stake_value) < Number(value)) {
+                                                        // If max stake is less than initial stake, show error
+                                                        setErrorMessage(
+                                                            `Initial stake (${value}) cannot be greater than max stake (${max_stake_value})`
+                                                        );
+                                                    }
+                                                } else if (name === 'max_stake') {
+                                                    // When max stake changes, validate initial stake
+                                                    const initial_stake_value = values.stake;
+                                                    if (
+                                                        initial_stake_value &&
+                                                        Number(initial_stake_value) > Number(value)
+                                                    ) {
+                                                        // If initial stake is greater than max stake, show error
+                                                        setErrorMessage(
+                                                            `Maximum stake cannot be less than initial stake (${initial_stake_value})`
+                                                        );
+                                                    }
                                                 }
                                             }
                                         }}
@@ -301,8 +356,9 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.currentTarget.value;
 
-                                                // Skip validation for empty or partial inputs
+                                                // For empty values, show error message but don't reset
                                                 if (value === '' || value === '0' || value === '0.') {
+                                                    setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                     return;
                                                 }
 
@@ -320,6 +376,27 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 } else if (numValue > max_stake) {
                                                     // Allow entering any value but show error message for maximum
                                                     setErrorMessage(`Maximum stake allowed is ${max_stake}`);
+                                                }
+
+                                                // Cross-validate with the other stake field
+                                                if (name === 'stake') {
+                                                    // When initial stake changes, validate max_stake
+                                                    const max_stake_value = values.max_stake;
+                                                    if (max_stake_value && Number(max_stake_value) < numValue) {
+                                                        // If max stake is less than initial stake, show error
+                                                        setErrorMessage(
+                                                            `Initial stake (${numValue}) cannot be greater than max stake (${max_stake_value})`
+                                                        );
+                                                    }
+                                                } else if (name === 'max_stake') {
+                                                    // When max stake changes, validate initial stake
+                                                    const initial_stake_value = values.stake;
+                                                    if (initial_stake_value && Number(initial_stake_value) > numValue) {
+                                                        // If initial stake is greater than max stake, show error
+                                                        setErrorMessage(
+                                                            `Maximum stake cannot be less than initial stake (${initial_stake_value})`
+                                                        );
+                                                    }
                                                 }
                                             }
                                         }}
