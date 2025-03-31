@@ -74,6 +74,7 @@ function App() {
         const active_loginid = localStorage.getItem('active_loginid');
         const url_params = new URLSearchParams(window.location.search);
         const account_currency = url_params.get('account');
+        console.log(account_currency);
 
         if (!account_currency) {
             try {
