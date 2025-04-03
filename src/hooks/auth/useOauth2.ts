@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
-import { OAuth2Logout,TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
+import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
 
 /**
@@ -45,13 +45,16 @@ export const useOauth2 = ({
 
     useEffect(() => {
         const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+        const isDebuggingScenario =
+            loggedState === 'false' && isClientAccountsPopulated && client?.is_logged_in === false;
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isDebuggingScenario;
 
-        if (!isSilentLoginExcluded && willEventuallySSO) {
+        if (!isSilentLoginExcluded && (willEventuallySSO || willEventuallySLO)) {
             setIsSingleLoggingIn(true);
         } else {
             setIsSingleLoggingIn(false);
         }
-    }, [isClientAccountsPopulated, loggedState, isSilentLoginExcluded]);
+    }, [isClientAccountsPopulated, loggedState, isSilentLoginExcluded, client?.is_logged_in]);
 
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);

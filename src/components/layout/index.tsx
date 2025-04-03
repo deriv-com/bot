@@ -5,9 +5,8 @@ import { Outlet } from 'react-router-dom';
 import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
-import { useDevice } from '@deriv-com/ui';
+import { Loader,useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
-import SSOLoader from '../sso-loader';
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
@@ -27,7 +26,7 @@ const Layout = () => {
     const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const ifClientAccountHasCurrency =
-        Object.values(checkClientAccount).some(account => account.currency === currency) ||
+        Object.values(checkClientAccount).some((account: any) => account.currency === currency) ||
         currency === 'demo' ||
         currency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
@@ -164,12 +163,12 @@ const Layout = () => {
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            {!isCallbackPage && !isSingleLoggingIn && <AppHeader />}
+            {!isCallbackPage && <AppHeader />}
             <Body>
-                {isSingleLoggingIn && <SSOLoader />}
+                {isSingleLoggingIn && <Loader isFullScreen />}
                 {!isSingleLoggingIn && <Outlet />}
             </Body>
-            {!isCallbackPage && !isSingleLoggingIn && isDesktop && <Footer />}
+            {!isCallbackPage && isDesktop && <Footer />}
         </div>
     );
 };

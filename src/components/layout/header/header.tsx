@@ -33,10 +33,10 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
 
     const renderAccountSection = () => {
-        if (isAuthorizing) {
+        if (isAuthorizing || isSingleLoggingIn) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
