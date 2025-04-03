@@ -76,7 +76,7 @@ const LocalComponent = observer(() => {
                 <input
                     type='file'
                     ref={file_input_ref}
-                    accept='.xml, application/xml, text/xml'
+                    accept='.xml, text/*, application/*'
                     style={{ display: 'none' }}
                     onChange={e => setIsFileSupported(handleFileChange(e, false))}
                     data-testid='dt-load-strategy-file-input'
