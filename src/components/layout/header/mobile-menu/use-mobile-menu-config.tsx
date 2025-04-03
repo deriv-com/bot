@@ -15,6 +15,7 @@ import {
     LegacyHomeOldIcon,
     LegacyLogout1pxIcon,
     LegacyProfileSmIcon,
+    LegacyReportsIcon,
     LegacyResponsibleTradingIcon,
     LegacyTheme1pxIcon,
     LegacyWhatsappIcon,
@@ -92,7 +93,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
             },
             {
                 as: 'a',
-                href: standalone_routes.trade,
+                href: standalone_routes.bot,
                 label: localize('Trade'),
                 LeftComponent: LegacyChartsIcon,
             },
@@ -107,6 +108,12 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                 href: standalone_routes.cashier_deposit,
                 label: localize('Cashier'),
                 LeftComponent: LegacyCashierIcon,
+            },
+            {
+                as: 'a',
+                href: standalone_routes.reports,
+                label: localize('Reports'),
+                LeftComponent: LegacyReportsIcon,
             },
             {
                 as: 'button',

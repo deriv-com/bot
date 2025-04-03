@@ -44,6 +44,10 @@
             cursor: pointer;
         }
 
+        .deriv-context-menu {
+            box-shadow: none !important;
+        }
+
         &__items {
             position: relative;
             height: 100%;
@@ -119,10 +123,6 @@
         span {
             margin-inline-start: 1.6rem;
         }
-    }
-
-    .deriv-drawer__container {
-        background: var(--general-section-1);
     }
 
     &__toggle,
