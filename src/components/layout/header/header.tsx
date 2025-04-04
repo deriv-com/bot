@@ -33,10 +33,10 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
 
     const renderAccountSection = () => {
-        if (isAuthorizing) {
+        if (isAuthorizing || isSingleLoggingIn) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
@@ -121,16 +121,24 @@ const AppHeader = observer(() => {
                                 const currency = getQueryParams.get('account') ?? '';
                                 const query_param_currency =
                                     sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                                await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(query_param_currency
-                                        ? {
-                                              state: {
-                                                  account: query_param_currency,
-                                              },
-                                          }
-                                        : {}),
-                                });
+                                try {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                } catch (error) {
+                                    // eslint-disable-next-line no-console
+                                    console.error(error);
+                                }
                             }
                         }}
                     >
