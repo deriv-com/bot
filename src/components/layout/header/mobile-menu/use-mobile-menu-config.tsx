@@ -25,11 +25,11 @@ import { useTranslations } from '@deriv-com/translations';
 import { ToggleSwitch } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 
-export type TSubmenuSection = 'accountSettings' | 'cashier';
+export type TSubmenuSection = 'accountSettings' | 'cashier' | 'reports';
 
 //IconTypes
 type TMenuConfig = {
-    LeftComponent: ReactNode | React.ElementType;
+    LeftComponent: React.ElementType;
     RightComponent?: ReactNode;
     as: 'a' | 'button';
     href?: string;
@@ -110,10 +110,11 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                 LeftComponent: LegacyCashierIcon,
             },
             client?.is_logged_in && {
-                as: 'a',
-                href: standalone_routes.reports,
+                as: 'button',
                 label: localize('Reports'),
                 LeftComponent: LegacyReportsIcon,
+                submenu: 'reports',
+                onClick: () => {},
             },
             {
                 as: 'button',

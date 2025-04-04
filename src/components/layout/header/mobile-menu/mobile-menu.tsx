@@ -9,11 +9,13 @@ import ServerTime from './../../footer/ServerTime';
 import BackButton from './back-button';
 import MenuContent from './menu-content';
 import MenuHeader from './menu-header';
+import ReportsSubmenu from './reports-submenu';
 import ToggleButton from './toggle-button';
 import './mobile-menu.scss';
 
 const MobileMenu = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const { currentLang = 'EN', localize, switchLanguage } = useTranslations();
     const { hideModal, isModalOpenFor, showModal } = useModalManager();
     const { isDesktop } = useDevice();
@@ -23,6 +25,9 @@ const MobileMenu = () => {
 
     const openLanguageSetting = () => showModal('MobileLanguagesDrawer');
     const isLanguageSettingVisible = Boolean(isModalOpenFor('MobileLanguagesDrawer'));
+
+    const openSubmenu = (submenu: string) => setActiveSubmenu(submenu);
+    const closeSubmenu = () => setActiveSubmenu(null);
 
     if (isDesktop) return null;
     return (
@@ -59,8 +64,15 @@ const MobileMenu = () => {
                                 wrapperClassName='mobile-menu__language-drawer'
                             />
                         </>
+                    ) : activeSubmenu === 'reports' ? (
+                        <>
+                            <div className='mobile-menu__back-btn'>
+                                <BackButton buttonText={localize('Reports')} onClick={closeSubmenu} />
+                            </div>
+                            <ReportsSubmenu />
+                        </>
                     ) : (
-                        <MenuContent />
+                        <MenuContent onOpenSubmenu={openSubmenu} />
                     )}
                 </Drawer.Content>
 
