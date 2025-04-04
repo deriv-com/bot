@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useStore } from '@/hooks/useStore';
 import Chart from './chart';
 import './chart.scss';
+
 interface ChartWrapperProps {
     prefix?: string;
     show_digits_stats: boolean;
