@@ -40,8 +40,12 @@
             justify-content: center;
             align-items: center;
             border-bottom: 1px solid var(--general-section-1);
-            height: 7rem;
+            min-height: 7rem;
             cursor: pointer;
+        }
+
+        .deriv-context-menu {
+            box-shadow: none !important;
         }
 
         &__items {
@@ -71,6 +75,11 @@
 
             &--right-margin {
                 margin-inline-end: 1.6rem;
+            }
+
+            &--chevron {
+                position: absolute;
+                right: 1.5rem;
             }
 
             &__icons {
@@ -122,7 +131,7 @@
     }
 
     .deriv-drawer__container {
-        background: var(--general-section-1);
+        background: var(--general-main-1);
     }
 
     &__toggle,
