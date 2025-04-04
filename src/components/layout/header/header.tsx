@@ -121,16 +121,24 @@ const AppHeader = observer(() => {
                                 const currency = getQueryParams.get('account') ?? '';
                                 const query_param_currency =
                                     sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                                await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(query_param_currency
-                                        ? {
-                                              state: {
-                                                  account: query_param_currency,
-                                              },
-                                          }
-                                        : {}),
-                                });
+                                try {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                } catch (error) {
+                                    // eslint-disable-next-line no-console
+                                    console.error(error);
+                                }
                             }
                         }}
                     >

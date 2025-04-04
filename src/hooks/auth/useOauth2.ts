@@ -44,26 +44,39 @@ export const useOauth2 = ({
     const loggedState = Cookies.get('logged_state');
 
     useEffect(() => {
+        window.addEventListener('unhandledrejection', event => {
+            if (event?.reason?.error?.code === 'InvalidToken') {
+                setIsSingleLoggingIn(false);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
         const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
-        const isDebuggingScenario =
-            loggedState === 'false' && isClientAccountsPopulated && client?.is_logged_in === false;
-        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isDebuggingScenario;
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
 
         if (!isSilentLoginExcluded && (willEventuallySSO || willEventuallySLO)) {
             setIsSingleLoggingIn(true);
         } else {
             setIsSingleLoggingIn(false);
         }
-    }, [isClientAccountsPopulated, loggedState, isSilentLoginExcluded, client?.is_logged_in]);
+    }, [isClientAccountsPopulated, loggedState, isSilentLoginExcluded]);
 
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
-        await OAuth2Logout({
-            redirectCallbackUri: `${window.location.origin}/callback`,
-            WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
-            postLogoutRedirectUri: window.location.origin,
-        });
+        try {
+            await OAuth2Logout({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
+                postLogoutRedirectUri: window.location.origin,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        }
     };
-
     return { isOAuth2Enabled, oAuthLogout: logoutHandler, isSingleLoggingIn };
 };
