@@ -5,9 +5,8 @@ import { Outlet } from 'react-router-dom';
 import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
-import { useDevice } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
-import SSOLoader from '../sso-loader';
 import Footer from './footer';
 import AppHeader from './header';
 import Body from './main-body';
@@ -27,7 +26,7 @@ const Layout = () => {
     const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const ifClientAccountHasCurrency =
-        Object.values(checkClientAccount).some(account => account.currency === currency) ||
+        Object.values(checkClientAccount).some((account: any) => account.currency === currency) ||
         currency === 'demo' ||
         currency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
@@ -125,12 +124,6 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount =
             isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
-        console.log('test oidc retrigger', {
-            isOAuth2Enabled,
-            isEndpointPage,
-            isCallbackPage,
-            clientHasCurrency,
-        });
         if (
             (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
@@ -141,17 +134,24 @@ const Layout = () => {
             if (query_param_currency) {
                 sessionStorage.setItem('query_param_currency', query_param_currency);
             }
-
-            requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                ...(query_param_currency
-                    ? {
-                          state: {
-                              account: query_param_currency,
-                          },
-                      }
-                    : {}),
-            });
+            try {
+                requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    ...(query_param_currency
+                        ? {
+                              state: {
+                                  account: query_param_currency,
+                              },
+                          }
+                        : {}),
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            }
         }
     }, [
         isLoggedInCookie,
@@ -164,12 +164,12 @@ const Layout = () => {
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            {!isCallbackPage && !isSingleLoggingIn && <AppHeader />}
+            {!isCallbackPage && <AppHeader />}
             <Body>
-                {isSingleLoggingIn && <SSOLoader />}
+                {isSingleLoggingIn && <Loader isFullScreen />}
                 {!isSingleLoggingIn && <Outlet />}
             </Body>
-            {!isCallbackPage && !isSingleLoggingIn && isDesktop && <Footer />}
+            {!isCallbackPage && isDesktop && <Footer />}
         </div>
     );
 };

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
-import { OAuth2Logout,TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
+import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
 
 /**
@@ -44,9 +44,18 @@ export const useOauth2 = ({
     const loggedState = Cookies.get('logged_state');
 
     useEffect(() => {
-        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+        window.addEventListener('unhandledrejection', event => {
+            if (event?.reason?.error?.code === 'InvalidToken') {
+                setIsSingleLoggingIn(false);
+            }
+        });
+    }, []);
 
-        if (!isSilentLoginExcluded && willEventuallySSO) {
+    useEffect(() => {
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
+
+        if (!isSilentLoginExcluded && (willEventuallySSO || willEventuallySLO)) {
             setIsSingleLoggingIn(true);
         } else {
             setIsSingleLoggingIn(false);
@@ -55,12 +64,19 @@ export const useOauth2 = ({
 
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
-        await OAuth2Logout({
-            redirectCallbackUri: `${window.location.origin}/callback`,
-            WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
-            postLogoutRedirectUri: window.location.origin,
-        });
+        try {
+            await OAuth2Logout({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
+                postLogoutRedirectUri: window.location.origin,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
+        }
     };
-
     return { isOAuth2Enabled, oAuthLogout: logoutHandler, isSingleLoggingIn };
 };
