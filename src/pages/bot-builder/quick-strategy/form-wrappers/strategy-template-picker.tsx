@@ -54,6 +54,15 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                         setActiveTab(DBOT_TABS.TUTORIAL);
                         setActiveTabTutorial(2);
                         setFormVisibility(false);
+                        console.log('guide');
+
+                        // Add a small delay to ensure the tab is selected before scrolling
+                        setTimeout(() => {
+                            const tutorialsSection = document.getElementById('id-tutorials');
+                            if (tutorialsSection) {
+                                tutorialsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                        }, 100);
                     }}
                 >
                     <LegacyGuide1pxIcon iconSize='sm' />

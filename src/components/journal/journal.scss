@@ -32,6 +32,14 @@
         flex-direction: column;
         justify-content: center;
 
+        svg {
+            g {
+                path {
+                    fill: var(--text-less-prominent);
+                }
+            }
+        }
+
         &__header {
             padding: 0.8rem;
         }

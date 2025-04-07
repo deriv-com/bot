@@ -10,6 +10,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 2.4rem;
         margin-inline-end: 12rem;
+        margin-bottom: 5rem;
 
         @include mobile-or-tablet-screen {
             width: 100%;
