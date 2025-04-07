@@ -21,7 +21,10 @@ const MobileMenu = () => {
     const { isDesktop } = useDevice();
 
     const openDrawer = () => setIsDrawerOpen(true);
-    const closeDrawer = () => setIsDrawerOpen(false);
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+        setActiveSubmenu(null);
+    };
 
     const openLanguageSetting = () => showModal('MobileLanguagesDrawer');
     const isLanguageSettingVisible = Boolean(isModalOpenFor('MobileLanguagesDrawer'));
