@@ -35,7 +35,17 @@ const MenuContent = observer(({ onOpenSubmenu }: TMenuContentProps) => {
                             key={index}
                         >
                             {item.map(
-                                ({ LeftComponent, RightComponent, as, href, label, onClick, submenu, target }) => {
+                                ({
+                                    LeftComponent,
+                                    RightComponent,
+                                    as,
+                                    href,
+                                    label,
+                                    onClick,
+                                    submenu,
+                                    target,
+                                    isActive,
+                                }) => {
                                     const is_deriv_logo = label === 'Deriv.com';
                                     if (as === 'a') {
                                         return (
@@ -43,6 +53,7 @@ const MenuContent = observer(({ onOpenSubmenu }: TMenuContentProps) => {
                                                 as='a'
                                                 className={clsx('mobile-menu__content__items__item', {
                                                     'mobile-menu__content__items__icons': !is_deriv_logo,
+                                                    'mobile-menu__content__items__item--active': isActive,
                                                 })}
                                                 disableHover
                                                 href={href}
@@ -65,6 +76,7 @@ const MenuContent = observer(({ onOpenSubmenu }: TMenuContentProps) => {
                                             as='button'
                                             className={clsx('mobile-menu__content__items__item', {
                                                 'mobile-menu__content__items__icons': !is_deriv_logo,
+                                                'mobile-menu__content__items__item--active': isActive,
                                             })}
                                             disableHover
                                             key={label}

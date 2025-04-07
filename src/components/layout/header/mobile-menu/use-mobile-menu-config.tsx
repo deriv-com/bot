@@ -38,6 +38,7 @@ type TMenuConfig = {
     removeBorderBottom?: boolean;
     submenu?: TSubmenuSection;
     target?: ComponentProps<'a'>['target'];
+    isActive?: boolean;
 }[];
 
 const useMobileMenuConfig = (client?: RootStore['client']) => {
@@ -96,6 +97,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                 href: standalone_routes.bot,
                 label: localize('Trade'),
                 LeftComponent: LegacyChartsIcon,
+                isActive: true, // Always highlight Trade as active
             },
             {
                 as: 'a',
