@@ -12,17 +12,20 @@ import './tnc-status-update-modal.scss';
 
 const TncStatusUpdateModal: React.FC = observer(() => {
     const { isAuthorized } = useApiBase();
-    const { client } = useStore();
+    const { client, dashboard } = useStore();
+    const { is_tour_dialog_visible } = dashboard;
     const { is_cr_account } = client;
     const [is_tnc_open, setIsTncOpen] = React.useState(false);
     const { isDesktop } = useDevice();
     const is_tnc_needed = useIsTNCNeeded();
 
     React.useEffect(() => {
-        if (is_tnc_needed) {
+        if (true && !is_tour_dialog_visible) {
             setIsTncOpen(true);
+        } else {
+            setIsTncOpen(false);
         }
-    }, [is_tnc_needed]);
+    }, [is_tnc_needed, is_tour_dialog_visible]);
 
     const onClick = async () => {
         if (isAuthorized) {
