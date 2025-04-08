@@ -169,6 +169,9 @@ export const load = async ({
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
         }
+        else {
+            botNotification(notification_message().BOT_IMPORT);
+        }
     } catch (e) {
         return showInvalidStrategyError();
     }
