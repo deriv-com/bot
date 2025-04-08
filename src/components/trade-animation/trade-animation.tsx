@@ -230,6 +230,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 className={classNames('animation__container', className, {
                     'animation--running': contract_stage > 0,
                     'animation--completed': show_overlay,
+                    'animation--disabled': is_disabled,
                 })}
             >
                 {show_overlay && <ContractResultOverlay profit={profit} />}

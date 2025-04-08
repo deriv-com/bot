@@ -103,6 +103,12 @@
     height: 40px !important;
     padding: 8px 16px !important;
     line-height: 24px !important;
+
+    &:disabled {
+        .right-side {
+            opacity: 0.32; // Reduced opacity for disabled state
+        }
+    }
 }
 
 // Mobile-specific adjustments
@@ -158,4 +164,8 @@
             }
         }
     }
+}
+
+.animation--disabled {
+    opacity: 0.32;
 }
