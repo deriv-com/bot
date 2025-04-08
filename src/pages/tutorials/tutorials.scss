@@ -105,7 +105,9 @@
         }
 
         &:last-child {
-            margin-bottom: 100px;
+            @include mobile-or-tablet-screen {
+                margin-bottom: 100px;
+            }
         }
     }
 
