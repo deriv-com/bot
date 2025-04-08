@@ -313,7 +313,7 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
-                    setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                   // setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
                     const upload_type = getStrategyType(response.body);
                     rudderStackSendUploadStrategyCompletedEvent({
                         upload_provider: 'google_drive',
