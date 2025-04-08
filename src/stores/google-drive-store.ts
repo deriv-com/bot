@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { botNotification } from '@/components/bot-notification/bot-notification';
-import { notification_message, NOTIFICATION_TYPE } from '@/components/bot-notification/bot-notification-utils';
+import { notification_message } from '@/components/bot-notification/bot-notification-utils';
 import { button_status } from '@/constants/button-status';
 import { config, importExternal } from '@/external/bot-skeleton';
 import { getInitialLanguage, localize } from '@deriv-com/translations';
@@ -305,7 +305,6 @@ export default class GoogleDriveStore {
                     const file_name = file.name;
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
-                    const { setOpenSettings } = this.root_store.dashboard;
 
                     const response = await files.get({
                         alt: 'media',
@@ -313,7 +312,6 @@ export default class GoogleDriveStore {
                     });
 
                     resolve({ xml_doc: response.body, file_name });
-                   // setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
                     const upload_type = getStrategyType(response.body);
                     rudderStackSendUploadStrategyCompletedEvent({
                         upload_provider: 'google_drive',
