@@ -33,7 +33,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy } = useStore();
-    const { setValue, setAdditionalData } = quick_strategy;
+    const { setValue, setAdditionalData, setDropdownState } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
     const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
@@ -254,7 +254,6 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_contract_type'
                             autoComplete='off'
                             className='qs__select contract-type'
@@ -266,6 +265,16 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                                     handleChange(value);
                                 }
                             }}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            data_testid='dt_qs_contract_type'
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                         />
                     );
                 }}

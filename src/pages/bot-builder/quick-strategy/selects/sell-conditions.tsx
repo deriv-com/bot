@@ -22,7 +22,7 @@ const list_options = [
 
 const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const { quick_strategy } = useStore();
-    const { setValue } = quick_strategy;
+    const { setValue, setDropdownState } = quick_strategy;
     const { setFieldValue, values } = useFormikContext<TFormData>();
     const [selectedValue, setSelectedValue] = useState<TSellConditionItem>(
         values.boolean_tick_count ? list_options[1] : list_options[0]
@@ -51,13 +51,23 @@ const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) =>
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_sell_conditions'
+                            data_testid='dt_qs_sell_conditions'
                             autoComplete='off'
                             className='qs__select'
                             value={selectedValue.text}
                             list_items={list_options}
                             onItemSelection={handleItemSelection}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            // Add required props with default values to satisfy TypeScript
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                         />
                     );
                 }}

@@ -19,7 +19,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { isDesktop } = useDevice();
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy } = useStore();
-    const { setValue } = quick_strategy;
+    const { setValue, setDropdownState } = quick_strategy;
     const { setFieldValue, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
 
@@ -81,8 +81,8 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_contract_type'
+                            data_testid='dt_qs_contract_type'
                             autoComplete='off'
                             className='qs__select contract-type'
                             value={selected_item?.text || ''}
@@ -93,6 +93,15 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                                     handleChange(value);
                                 }
                             }}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                         />
                     );
                 }}

@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 import classNames from 'classnames';
-import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
+import { ArrowContainer, Popover as TinyPopover, PopoverState } from 'react-tiny-popover';
 import { useHover, useHoverCallback } from '@/hooks/useHover';
 import {
     LabelPairedCircleDotCaptionFillIcon,
@@ -101,7 +101,15 @@ const Popover = ({
                     {...(relative_render
                         ? {
                               parentElement: popover_ref,
-                              contentLocation: ({ childRect, popoverRect, nudgedLeft }) => {
+                              contentLocation: ({
+                                  childRect,
+                                  popoverRect,
+                                  nudgedLeft,
+                              }: {
+                                  childRect: DOMRect;
+                                  popoverRect: DOMRect;
+                                  nudgedLeft: number;
+                              }) => {
                                   const screen_width = document.body.clientWidth;
                                   const total_width = childRect.right + (popoverRect.width - childRect.width / 2);
                                   let top_offset = 0;
@@ -155,8 +163,87 @@ const Popover = ({
                               },
                           }
                         : { containerStyle: { zIndex } })}
-                    content={({ position, childRect, popoverRect }) => {
-                        return (
+                    content={(popoverState: PopoverState): JSX.Element => {
+                        const { position, childRect, popoverRect } = popoverState;
+                        const modalContent = document.querySelector('.qs__body__content');
+                        const modalHeader = document.querySelector('.modal__header');
+                        const modalFooter = document.querySelector('.modal__footer');
+
+                        const contentRect = modalContent?.getBoundingClientRect();
+                        const headerRect = modalHeader?.getBoundingClientRect();
+                        const footerRect = modalFooter?.getBoundingClientRect();
+
+                        // Add safety margins
+                        const safetyMargin = 8;
+                        // Initialize offsets
+                        let offsetTop = 0;
+                        let offsetLeft = 0;
+
+                        // Only proceed if we have all required elements
+                        if (contentRect && childRect) {
+                            // Define safe zone between header and footer
+                            const safeTop = headerRect ? headerRect.bottom + safetyMargin : contentRect.top;
+                            const safeBottom = footerRect ? footerRect.top - safetyMargin : contentRect.bottom;
+
+                            // Check if input is outside safe zone
+                            const isOutsideSafeZone =
+                                childRect.bottom < safeTop ||
+                                childRect.top > safeBottom ||
+                                childRect.right < contentRect.left + safetyMargin ||
+                                childRect.left > contentRect.right - safetyMargin;
+
+                            if (isOutsideSafeZone) {
+                                return <div style={{ display: 'none' }} />;
+                            }
+
+                            // If popover exists, adjust its position if needed
+                            if (popoverRect) {
+                                // Adjust vertical position
+                                if (popoverRect.top < safeTop) {
+                                    offsetTop = safeTop - popoverRect.top;
+                                } else if (popoverRect.bottom > safeBottom) {
+                                    offsetTop = safeBottom - popoverRect.bottom;
+                                }
+
+                                // Adjust horizontal position
+                                if (popoverRect.left < contentRect.left + safetyMargin) {
+                                    offsetLeft = contentRect.left + safetyMargin - popoverRect.left;
+                                } else if (popoverRect.right > contentRect.right - safetyMargin) {
+                                    offsetLeft = contentRect.right - safetyMargin - popoverRect.right;
+                                }
+                            }
+                        }
+
+                        // Create the popover content
+                        const PopoverContent = () => (
+                            <div
+                                id={id}
+                                onMouseEnter={onMouseEnter}
+                                onMouseLeave={onMouseLeave}
+                                className={classNames(classNameBubble, 'dc-popover__bubble', {
+                                    'dc-popover__bubble--error': has_error,
+                                })}
+                                ref={bubble_hover_ref as (node: HTMLDivElement) => void}
+                            >
+                                {!disable_message_icon && icon === 'info' && (
+                                    <i className='dc-popover__bubble__icon'>
+                                        <LabelPairedCircleInfoCaptionRegularIcon />
+                                    </i>
+                                )}
+                                {(has_error && (
+                                    <Text size='xxs' color='colored-background'>
+                                        {message}
+                                    </Text>
+                                )) || (
+                                    <Text lineHeight='md' size='xxs' className='dc-popover__bubble__text'>
+                                        {message}
+                                    </Text>
+                                )}
+                            </div>
+                        );
+
+                        // Create the arrow container with content
+                        const ArrowContainerWithContent = () => (
                             <ArrowContainer
                                 position={position}
                                 childRect={childRect}
@@ -183,31 +270,22 @@ const Popover = ({
                                           }
                                 }
                             >
-                                <div
-                                    id={id}
-                                    onMouseEnter={onMouseEnter}
-                                    onMouseLeave={onMouseLeave}
-                                    className={classNames(classNameBubble, 'dc-popover__bubble', {
-                                        'dc-popover__bubble--error': has_error,
-                                    })}
-                                    ref={bubble_hover_ref as (node: HTMLDivElement) => void}
-                                >
-                                    {!disable_message_icon && icon === 'info' && (
-                                        <i className='dc-popover__bubble__icon'>
-                                            <LabelPairedCircleInfoCaptionRegularIcon />
-                                        </i>
-                                    )}
-                                    {(has_error && (
-                                        <Text size='xxs' color='colored-background'>
-                                            {message}
-                                        </Text>
-                                    )) || (
-                                        <Text lineHeight='md' size='xxs' className='dc-popover__bubble__text'>
-                                            {message}
-                                        </Text>
-                                    )}
-                                </div>
+                                <PopoverContent />
                             </ArrowContainer>
+                        );
+
+                        // Return with or without transform wrapper
+                        return offsetTop !== 0 || offsetLeft !== 0 ? (
+                            <div
+                                style={{
+                                    transform: `translate(${offsetLeft}px, ${offsetTop}px)`,
+                                    transition: 'transform 0.2s ease-out',
+                                }}
+                            >
+                                <ArrowContainerWithContent />
+                            </div>
+                        ) : (
+                            <ArrowContainerWithContent />
                         );
                     }}
                 >

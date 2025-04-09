@@ -61,16 +61,100 @@ const QSInput: React.FC<TQSInput> = observer(
             client: { currency },
         } = useStore();
         const { quick_strategy } = useStore();
-        const { loss_threshold_warning_data } = quick_strategy;
-
+        const { loss_threshold_warning_data, is_dropdown_open: store_dropdown_open } = quick_strategy;
+        const popoverRef = React.useRef<HTMLDivElement>(null);
         const [, setFocus] = React.useState(false);
         const [error_message, setErrorMessage] = React.useState<string | null>(null);
+        const [local_dropdown_open, setLocalDropdownOpen] = React.useState(false);
         const { setFieldValue, setFieldTouched, values } = useFormikContext<{
             stake?: string | number;
             max_stake?: string | number;
         }>();
+
+        // Use either the store's dropdown state or our local state
+        const is_dropdown_open = store_dropdown_open || local_dropdown_open;
+
+        console.log(
+            'QSInput component store_dropdown_open:',
+            store_dropdown_open,
+            'local_dropdown_open:',
+            local_dropdown_open
+        );
+
+        // Set up a MutationObserver to detect when the dropdown opens/closes
+        useEffect(() => {
+            // Function to check if dropdown is open
+            const checkDropdownState = () => {
+                // Look for elements that might indicate an open dropdown
+                const openDropdowns = document.querySelectorAll(
+                    '.dropdown-open, [data-open="true"], [aria-expanded="true"]'
+                );
+                const dropdownMenus = document.querySelectorAll('.dropdown-menu, .select-dropdown, .menu-open');
+
+                // Check if there's a dropdown with "Continuous Indices" text (from the screenshot)
+                const continuousIndicesElements = Array.from(document.querySelectorAll('*')).filter(el =>
+                    el.textContent?.includes('Continuous Indices')
+                );
+
+                // If any of these elements exist, consider the dropdown open
+                const isOpen =
+                    openDropdowns.length > 0 || dropdownMenus.length > 0 || continuousIndicesElements.length > 0;
+
+                console.log('Detected dropdown state:', isOpen);
+                setLocalDropdownOpen(isOpen);
+            };
+
+            // Check initial state
+            checkDropdownState();
+
+            // Set up observer to watch for DOM changes
+            const observer = new MutationObserver(checkDropdownState);
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['class', 'style', 'aria-expanded', 'data-open'],
+            });
+
+            // Clean up
+            return () => observer.disconnect();
+        }, []);
         const is_number = type === 'number';
         const max_value = 999999999999;
+
+        // Add useEffect to add a global style to hide all popovers when dropdown is open
+        useEffect(() => {
+            console.log('Applying style based on dropdown state:', is_dropdown_open);
+            // Create a style element
+            const styleElement = document.createElement('style');
+            styleElement.id = 'hide-popovers-style';
+
+            // Add CSS to hide all popovers when dropdown is open
+            if (is_dropdown_open) {
+                styleElement.textContent = `
+                    .qs__warning-bubble {
+                        display: none !important;
+                        opacity: 0 !important;
+                        visibility: hidden !important;
+                    }
+                `;
+                document.head.appendChild(styleElement);
+            } else {
+                // Remove the style element when dropdown is closed
+                const existingStyle = document.getElementById('hide-popovers-style');
+                if (existingStyle) {
+                    document.head.removeChild(existingStyle);
+                }
+            }
+
+            // Cleanup function to remove the style element when component unmounts
+            return () => {
+                const existingStyle = document.getElementById('hide-popovers-style');
+                if (existingStyle) {
+                    document.head.removeChild(existingStyle);
+                }
+            };
+        }, [is_dropdown_open]);
 
         // Add useEffect to watch for changes in stake values and update error message accordingly
         useEffect(() => {
@@ -90,12 +174,14 @@ const QSInput: React.FC<TQSInput> = observer(
                         // Add error class to the input
                         max_stake_input.closest('.qs__input')?.classList.add('error');
 
-                        // Force the popover to show
+                        // Force the popover to show only if dropdown is not open
                         const popover = max_stake_input
                             .closest('.qs__form__field__input')
                             ?.querySelector('.qs__warning-bubble');
-                        if (popover) {
+                        if (popover && !is_dropdown_open) {
                             popover.setAttribute('data-show', 'true');
+                        } else if (popover) {
+                            popover.removeAttribute('data-show');
                         }
                     }
                 } else {
@@ -133,15 +219,22 @@ const QSInput: React.FC<TQSInput> = observer(
                                 messageElement.textContent = 'Initial stake cannot be greater than max stake';
                             }
 
-                            // Try to force the popover to be visible by directly manipulating the DOM
+                            // Try to force the popover to be visible by directly manipulating the DOM, but only if dropdown is not open
                             const popoverElement = max_stake_component.querySelector('.qs__warning-bubble');
                             if (popoverElement) {
-                                // Make the popover visible
-                                (popoverElement as HTMLElement).style.display = 'block';
-                                (popoverElement as HTMLElement).style.opacity = '1';
-                                (popoverElement as HTMLElement).style.visibility = 'visible';
-                                (popoverElement as HTMLElement).style.position = 'absolute';
-                                (popoverElement as HTMLElement).style.zIndex = '9999';
+                                if (!is_dropdown_open) {
+                                    // Make the popover visible
+                                    (popoverElement as HTMLElement).style.display = 'block';
+                                    (popoverElement as HTMLElement).style.opacity = '1';
+                                    (popoverElement as HTMLElement).style.visibility = 'visible';
+                                    (popoverElement as HTMLElement).style.position = 'absolute';
+                                    (popoverElement as HTMLElement).style.zIndex = '9999';
+                                } else {
+                                    // Hide the popover when dropdown is open
+                                    (popoverElement as HTMLElement).style.display = 'none';
+                                    (popoverElement as HTMLElement).style.opacity = '0';
+                                    (popoverElement as HTMLElement).style.visibility = 'hidden';
+                                }
                             }
                         }
 
@@ -176,7 +269,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     }
                 }
             }
-        }, [name, values.stake, values.max_stake]);
+        }, [name, values.stake, values.max_stake, is_dropdown_open]);
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -187,8 +280,8 @@ const QSInput: React.FC<TQSInput> = observer(
                 value = String(intValue);
             }
 
-            // For stake field, ensure the value is within the allowed range
-            if (name === 'stake') {
+            // For stake and max_stake fields, ensure the value is within the allowed range
+            if (name === 'stake' || name === 'max_stake') {
                 const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
                 const max_stake = (quick_strategy?.additional_data as any)?.max_stake || 1000;
 
@@ -240,10 +333,14 @@ const QSInput: React.FC<TQSInput> = observer(
                 value = Math.floor(Number(value));
             }
 
-            // For all number fields, prevent decimal values less than 1
-            if (is_number && typeof value === 'number' && value < 1 && !Number.isInteger(value)) {
-                value = 1;
-            }
+            // // Only enforce minimum stake for stake fields, not all number fields
+            // if (is_number && typeof value === 'number' && (name === 'stake' || name === 'max_stake')) {
+            //     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+            //     if (value < min_stake) {
+            //         // Show error but don't force the value to change
+            //         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+            //     }
+            // }
 
             // For stake field, check if value is within the allowed range
             if (name === 'stake' && is_number) {
@@ -298,6 +395,8 @@ const QSInput: React.FC<TQSInput> = observer(
             onChange(name, value);
         };
 
+        console.log(quick_strategy.form_data?.durationtype);
+
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
@@ -316,25 +415,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 onMouseEnter={() => setFocus(true)}
                                 onMouseLeave={() => setFocus(false)}
                             >
-                                <Popover
-                                    alignment='bottom'
-                                    message={error || error_message} // Prioritize backend error over client-side error
-                                    is_open={
-                                        !!(error || error_message) &&
-                                        (name === 'stake' ||
-                                            name === 'max_stake' ||
-                                            name === 'loss' ||
-                                            name === 'profit' ||
-                                            name === 'take_profit' ||
-                                            name === 'tick_count' ||
-                                            name === 'size')
-                                    } // Show error message for all input fields that need validation
-                                    zIndex='9999'
-                                    classNameBubble='qs__warning-bubble'
-                                    has_error
-                                    should_disable_pointer_events
-                                    data-testid={`${name}-popover`}
-                                >
+                                <>
                                     <Input
                                         data_testId='qs-input'
                                         className={classNames(
@@ -358,37 +439,72 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     disabled={
                                                         disabled ||
                                                         (!!min && Number(field.value) === min) ||
-                                                        (name === 'stake' &&
+                                                        ((name === 'stake' || name === 'max_stake') &&
                                                             Number(field.value) <=
                                                                 ((quick_strategy?.additional_data as any)?.min_stake ||
                                                                     0.35)) ||
-                                                        Number(field.value) <= 1 // Disable minus button for all inputs when value is <= 1
+                                                        (name !== 'stake' &&
+                                                            name !== 'max_stake' &&
+                                                            Number(field.value) <= 1) // Only disable minus button for non-stake inputs when value is <= 1
                                                     }
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const min_stake =
                                                             (quick_strategy?.additional_data as any)?.min_stake || 0.35;
                                                         const current_value = Number(field.value);
-                                                        const field_min = name === 'stake' ? min_stake : min || 1;
+                                                        const field_min =
+                                                            name === 'stake' || name === 'max_stake'
+                                                                ? min_stake
+                                                                : min || 1;
 
-                                                        // For all fields
-                                                        // If value is greater than 1, subtract 1 from the value
-                                                        if (current_value > 1) {
-                                                            const new_value = current_value - 1;
-                                                            handleButtonInputChange(
-                                                                e,
-                                                                String(new_value % 1 ? new_value.toFixed(2) : new_value)
-                                                            );
-                                                            return;
+                                                        // For stake and max_stake fields
+                                                        if (name === 'stake' || name === 'max_stake') {
+                                                            // If value is greater than minimum + 1, subtract 1
+                                                            if (current_value > field_min + 1) {
+                                                                const new_value = current_value - 1;
+                                                                handleButtonInputChange(
+                                                                    e,
+                                                                    String(
+                                                                        new_value % 1 ? new_value.toFixed(2) : new_value
+                                                                    )
+                                                                );
+                                                                return;
+                                                            }
+                                                            // If value is between minimum and minimum + 1, set to minimum
+                                                            else if (
+                                                                current_value > field_min &&
+                                                                current_value <= field_min + 1
+                                                            ) {
+                                                                handleButtonInputChange(e, String(field_min));
+                                                                return;
+                                                            }
+                                                            // If already at minimum, do nothing
+                                                            else if (current_value <= field_min) {
+                                                                return;
+                                                            }
                                                         }
-                                                        // If value is less than or equal to 1 but greater than minimum, set to minimum
-                                                        else if (current_value <= 1 && current_value > field_min) {
-                                                            handleButtonInputChange(e, String(field_min));
-                                                            return;
-                                                        }
-                                                        // If already at minimum, do nothing
-                                                        else if (current_value <= field_min) {
-                                                            return;
+                                                        // For all other fields
+                                                        else {
+                                                            // If value is greater than 1, subtract 1 from the value
+                                                            if (current_value > 1) {
+                                                                const new_value = current_value - 1;
+                                                                handleButtonInputChange(
+                                                                    e,
+                                                                    String(
+                                                                        new_value % 1 ? new_value.toFixed(2) : new_value
+                                                                    )
+                                                                );
+                                                                return;
+                                                            }
+                                                            // If value is less than or equal to 1 but greater than minimum, set to minimum
+                                                            else if (current_value <= 1 && current_value > field_min) {
+                                                                handleButtonInputChange(e, String(field_min));
+                                                                return;
+                                                            }
+                                                            // If already at minimum, do nothing
+                                                            else if (current_value <= field_min) {
+                                                                return;
+                                                            }
                                                         }
                                                     }}
                                                 >
@@ -436,11 +552,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     // For non-empty values, validate and show appropriate message
                                                     const numValue = Number(value);
 
-                                                    // Prevent decimal values less than 1
-                                                    if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                        setFieldValue(name, 1);
-                                                        return;
-                                                    }
+                                                    // // Prevent decimal values less than 1
+                                                    // if (numValue < 1 && !Number.isInteger(numValue)) {
+                                                    //     setFieldValue(name, 1);
+                                                    //     return;
+                                                    // }
 
                                                     if (numValue < min_stake) {
                                                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
@@ -530,7 +646,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         }
                                         onKeyPress={
                                             name === 'tick_count' ||
-                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
+                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 's')
                                                 ? e => {
                                                       if (e.key === '.') {
                                                           e.preventDefault();
@@ -555,11 +671,11 @@ const QSInput: React.FC<TQSInput> = observer(
 
                                                 const numValue = Number(value);
 
-                                                // Prevent decimal values less than 1
-                                                if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                    setFieldValue(name, 1);
-                                                    return;
-                                                }
+                                                // // Prevent decimal values less than 1
+                                                // if (numValue < 1 && !Number.isInteger(numValue)) {
+                                                //     setFieldValue(name, 1);
+                                                //     return;
+                                                // }
 
                                                 // Clear error message if value is valid
                                                 if (numValue >= min_stake && numValue <= max_stake) {
@@ -633,7 +749,31 @@ const QSInput: React.FC<TQSInput> = observer(
                                             }
                                         }}
                                     />
-                                </Popover>
+                                    {/* Only render the Popover component when dropdown is not open */}
+                                    {!is_dropdown_open && (
+                                        <div ref={popoverRef}>
+                                            <Popover
+                                                alignment='bottom'
+                                                message={error || error_message}
+                                                is_open={
+                                                    !!(error || error_message) &&
+                                                    (name === 'stake' ||
+                                                        name === 'max_stake' ||
+                                                        name === 'loss' ||
+                                                        name === 'profit' ||
+                                                        name === 'take_profit' ||
+                                                        name === 'tick_count' ||
+                                                        name === 'size')
+                                                }
+                                                zIndex='9999'
+                                                classNameBubble='qs__warning-bubble'
+                                                has_error
+                                                should_disable_pointer_events
+                                                data-testid={`${name}-popover`}
+                                            />
+                                        </div>
+                                    )}
+                                </>
                             </div>
                         </div>
                     );

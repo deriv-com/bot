@@ -56,6 +56,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
+    is_dropdown_open = false;
     current_duration_min_max = {
         min: 0,
         max: 10,
@@ -73,6 +74,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             is_contract_dialog_open: observable,
             is_open: observable,
             is_stop_bot_dialog_open: observable,
+            is_dropdown_open: observable,
             initializeLossThresholdWarningData: action,
             selected_strategy: observable,
             loss_threshold_warning_data: observable,
@@ -222,5 +224,10 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
         this.setFormVisibility(false);
+    };
+
+    setDropdownState = (is_open: boolean): void => {
+        this.is_dropdown_open = is_open;
+        console.log('[QuickStrategyStore] Dropdown state:', is_open);
     };
 }

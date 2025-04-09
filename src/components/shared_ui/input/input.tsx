@@ -94,6 +94,19 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         ref?
     ) => {
         const [counter, setCounter] = React.useState(0);
+        const [, setIsDropdownOpen] = React.useState(false);
+
+        const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setIsDropdownOpen(true);
+            console.log('[Input] Dropdown state:', true);
+            props.onFocus?.(e);
+        };
+
+        const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setIsDropdownOpen(false);
+            console.log('[Input] Dropdown state:', false);
+            props.onBlur?.(e);
+        };
 
         React.useEffect(() => {
             if (initial_character_count || initial_character_count === 0) {
@@ -171,8 +184,8 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 className={classNames('dc-input__field', field_className, {
                                     'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
-                                onFocus={props.onFocus}
-                                onBlur={props.onBlur}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
                                 onChange={changeHandler}
                                 onKeyDown={props.onKeyDown}
                                 onMouseDown={props.onMouseDown}
