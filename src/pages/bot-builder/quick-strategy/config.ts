@@ -75,7 +75,7 @@ const TAKE_PROFIT = (): TConfigItem => ({
         'ceil',
         {
             type: 'min',
-            value: 0.35,
+            value: 1,
             getMessage: (min: string | number) => localize('Minimum take profit allowed is {{ min }}', { min }),
         },
     ],
@@ -156,9 +156,9 @@ const STAKE = (): TConfigItem => ({
         'ceil',
         {
             type: 'min',
-            value: 0.35,
+            value: 1,
             getMessage: (min: string | number) => localize('Minimum stake allowed is {{ min }}', { min }),
-            getDynamicValue: (store: any) => store.quick_strategy?.additional_data?.min_stake || 0.35,
+            getDynamicValue: (store: any) => store.quick_strategy?.additional_data?.min_stake || 1,
         },
         {
             type: 'max',
