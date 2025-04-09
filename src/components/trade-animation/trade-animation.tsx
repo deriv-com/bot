@@ -61,7 +61,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         };
         checkBots();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dashboard_strategies, is_delete_modal_open]);
+    }, [dashboard_strategies, is_delete_modal_open, is_stop_button_visible]);
 
     // Force re-render when delete modal is closed (which happens after deletion)
     React.useEffect(() => {
@@ -72,15 +72,17 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 await new Promise(resolve => setTimeout(resolve, 100));
                 await blockly_store.checkForSavedBots();
                 // Force component to re-render
-                setShouldDisable(true);
-                setTimeout(() => setShouldDisable(false), 0);
+                if (!is_stop_button_visible) {
+                    setShouldDisable(true);
+                    setTimeout(() => setShouldDisable(false), 0);
+                }
             };
             checkBotsAfterDelete();
         }
         // Update ref for next render
         prevDeleteModalOpen.current = is_delete_modal_open;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_delete_modal_open]);
+    }, [is_delete_modal_open, is_stop_button_visible]);
 
     React.useEffect(() => {
         if (shouldDisable) {
@@ -88,7 +90,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 setShouldDisable(false);
             }, 1000);
         }
-    }, [shouldDisable]);
+    }, [shouldDisable, is_stop_button_visible]);
 
     const status_classes = ['', '', ''];
     const is_purchase_sent = contract_stage === (contract_stages.PURCHASE_SENT as unknown);
@@ -117,15 +119,16 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     // Disable the RUN button if:
     // 1. There are no active or saved bots AND the user is not in the bot builder tab
     const should_disable_run = has_no_bots && !is_bot_builder_tab;
-    const is_disabled = is_stop_button_disabled || shouldDisable || should_disable_run;
+
+    const is_disabled = is_stop_button_visible ? false : shouldDisable || should_disable_run;
 
     // Show the tooltip when:
     // 1. The user is NOT in the bot builder tab, AND
     // 2. There are no bots
-    const should_show_tooltip = !is_bot_builder_tab && has_no_bots;
+    const should_show_tooltip = !is_stop_button_visible && !is_bot_builder_tab && has_no_bots;
 
     const button_props = React.useMemo(() => {
-        if (is_stop_button_visible) {
+        if (is_stop_button_visible && !is_stop_button_disabled) {
             return {
                 id: 'db-animation__stop-button',
                 class: 'animation__stop-button',
@@ -143,7 +146,8 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     const show_overlay = should_show_overlay && is_contract_completed;
 
     // Fix TypeScript error by ensuring active_tab is a number
-    const safeActiveTab: number = typeof active_tab === 'number' ? active_tab : 0;
+    // Use a non-null assertion to tell TypeScript that active_tab will be a number
+    const safeActiveTab = (typeof active_tab === 'number' ? active_tab : 0) as number;
 
     // Function to determine tooltip alignment based on run panel position
     const determineTooltipAlignment = (): string => {
@@ -204,7 +208,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 </div>
             ) : (
                 <Button
-                    is_disabled={is_disabled && !is_unavailable_for_payment_agent}
+                    is_disabled={is_disabled && is_unavailable_for_payment_agent}
                     className={button_props.class}
                     id={button_props.id}
                     icon={button_props.icon}
