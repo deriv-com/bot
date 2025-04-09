@@ -16,7 +16,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [prevSymbol, setPrevSymbol] = React.useState('');
     const [prevTradeType, setPrevTradeType] = React.useState('');
     const { quick_strategy } = useStore();
-    const { setValue, setCurrentDurationMinMax, current_duration_min_max } = quick_strategy;
+    const { setValue, setCurrentDurationMinMax, current_duration_min_max, setDropdownState } = quick_strategy;
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
 
@@ -68,7 +68,6 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_durationtype'
                             autoComplete='off'
                             className='qs__select'
@@ -86,6 +85,16 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                                     setValue('duration', min);
                                 }
                             }}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            data_testid='dt_qs_durationtype'
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                         />
                     );
                 }}
