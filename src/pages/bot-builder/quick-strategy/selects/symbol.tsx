@@ -80,7 +80,6 @@ const SymbolSelect: React.FC = () => {
     const handleFocus = () => {
         if (isDesktop && !is_input_started) {
             setIsInputStarted(true);
-            setInputValue({ text: '', value: '' });
         }
     };
 
