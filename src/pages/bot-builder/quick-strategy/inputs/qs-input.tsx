@@ -286,7 +286,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
             // For stake and max_stake fields, ensure the value is within the allowed range
             if (name === 'stake' || name === 'max_stake') {
-                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                 const max_stake = (quick_strategy?.additional_data as any)?.max_stake || 1000;
 
                 if (Number(value) < min_stake) {
@@ -315,7 +315,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
                 // Show error message for empty values in fields
                 if (name === 'stake' || name === 'max_stake') {
-                    const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                    const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                 }
                 return;
@@ -348,7 +348,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
             // For stake field, check if value is within the allowed range
             if (name === 'stake' && is_number) {
-                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                 const max_stake = (quick_strategy?.additional_data as any)?.max_stake || 1000;
                 const numValue = Number(value);
 
@@ -371,7 +371,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
             // For max_stake field, check if value is within the allowed range
             if (name === 'max_stake' && is_number) {
-                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                 const max_stake = (quick_strategy?.additional_data as any)?.max_stake || 1000;
                 const numValue = Number(value);
 
@@ -446,7 +446,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         ((name === 'stake' || name === 'max_stake') &&
                                                             Number(field.value) <=
                                                                 ((quick_strategy?.additional_data as any)?.min_stake ||
-                                                                    0.35)) ||
+                                                                    1)) ||
                                                         (name !== 'stake' &&
                                                             name !== 'max_stake' &&
                                                             Number(field.value) <= 1) // Only disable minus button for non-stake inputs when value is <= 1
@@ -454,7 +454,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const min_stake =
-                                                            (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                                                            (quick_strategy?.additional_data as any)?.min_stake || 1;
                                                         const current_value = Number(field.value);
                                                         const field_min =
                                                             name === 'stake' || name === 'max_stake'
@@ -544,7 +544,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                             // Don't reset empty values, just show error message
                                             if (name === 'stake' || name === 'max_stake') {
                                                 const min_stake =
-                                                    (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                                                    (quick_strategy?.additional_data as any)?.min_stake || 1;
                                                 const max_stake =
                                                     (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.target.value;
@@ -662,7 +662,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                             // Check value on each keystroke for stake field
                                             if (name === 'stake' || name === 'max_stake') {
                                                 const min_stake =
-                                                    (quick_strategy?.additional_data as any)?.min_stake || 0.35;
+                                                    (quick_strategy?.additional_data as any)?.min_stake || 1;
                                                 const max_stake =
                                                     (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.currentTarget.value;
