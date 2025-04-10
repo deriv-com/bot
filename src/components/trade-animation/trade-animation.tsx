@@ -178,6 +178,8 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         }
     };
 
+    console.log(contract_stage, 'contract_stage');
+
     return (
         <div className={classNames('animation__wrapper', className)}>
             {should_show_tooltip ? (
@@ -208,7 +210,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 </div>
             ) : (
                 <Button
-                    is_disabled={is_disabled && is_unavailable_for_payment_agent}
+                    is_disabled={(is_disabled && !is_unavailable_for_payment_agent) || contract_stage === 3}
                     className={button_props.class}
                     id={button_props.id}
                     icon={button_props.icon}
@@ -243,7 +245,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
                 </span>
                 <div className='animation__progress'>
                     <div className='animation__progress-line'>
-                        <div className='animation__progress-bar' />
+                        <div className={`animation__progress-bar animation__progress-${contract_stage}`} />
                     </div>
                     {status_classes.map((status_class, i) => (
                         <CircularWrapper key={`status_class-${status_class}-${i}`} className={status_class} />
