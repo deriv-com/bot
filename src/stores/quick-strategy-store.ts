@@ -228,6 +228,5 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
     setDropdownState = (is_open: boolean): void => {
         this.is_dropdown_open = is_open;
-        console.log('[QuickStrategyStore] Dropdown state:', is_open);
     };
 }

@@ -98,13 +98,11 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
 
         const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setIsDropdownOpen(true);
-            console.log('[Input] Dropdown state:', true);
             props.onFocus?.(e);
         };
 
         const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setIsDropdownOpen(false);
-            console.log('[Input] Dropdown state:', false);
             props.onBlur?.(e);
         };
 
