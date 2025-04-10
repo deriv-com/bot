@@ -75,10 +75,28 @@ window.Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = 
  * @param {Element} block_node
  * @public
  */
+// Keep track of the last added block
+window.Blockly.WorkspaceSvg.prototype.lastAddedBlock = null;
+
 window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const { flyout } = DBotStore.instance;
     const block = window.Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
     const top_blocks = this.getTopBlocks(true);
+
+    // // Remove highlight from all blocks
+    window.Blockly.derivWorkspace.getAllBlocks().forEach(b => {
+        if (b.svgGroup_) {
+            window.Blockly.utils.dom.removeClass(b.svgGroup_, 'blocklySelected');
+            if (b === window.Blockly.derivWorkspace.lastAddedBlock) {
+                window.Blockly.derivWorkspace.lastAddedBlock = null;
+            }
+        }
+    });
+
+    // Add highlight to the new block and update lastAddedBlock
+    console.log(block);
+    window.Blockly.utils.dom.addClass(block.svgGroup_, 'blocklySelected');
+    window.Blockly.derivWorkspace.lastAddedBlock = block;
 
     if (config().single_instance_blocks.includes(block.type)) {
         this.getAllBlocks().forEach(ws_block => {
