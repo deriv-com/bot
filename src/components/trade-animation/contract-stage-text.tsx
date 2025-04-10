@@ -3,7 +3,7 @@ import { contract_stages } from '@/constants/contract-stage';
 import { Localize } from '@deriv-com/translations';
 
 type TContractStageText = {
-    contract_stage: number;
+    contract_stage: number | undefined;
 };
 
 export const text_contract_stages = Object.freeze({
@@ -17,7 +17,9 @@ export const text_contract_stages = Object.freeze({
 });
 
 const ContractStageText: React.FC<TContractStageText> = ({ contract_stage }) => {
-    switch (contract_stage) {
+    const stage = contract_stage !== undefined ? contract_stage : contract_stages.NOT_RUNNING;
+
+    switch (stage) {
         case contract_stages.STARTING:
             return <Localize i18n_default_text={text_contract_stages.STARTING} />;
         case contract_stages.RUNNING:
