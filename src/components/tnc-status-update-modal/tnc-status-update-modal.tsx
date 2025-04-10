@@ -20,7 +20,7 @@ const TncStatusUpdateModal: React.FC = observer(() => {
     const is_tnc_needed = useIsTNCNeeded();
 
     React.useEffect(() => {
-        if (is_tnc_needed && !is_tour_dialog_visible) {
+        if (true && !is_tour_dialog_visible) {
             setIsTncOpen(true);
         } else {
             setIsTncOpen(false);
