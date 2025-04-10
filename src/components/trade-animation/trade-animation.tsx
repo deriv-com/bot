@@ -178,8 +178,6 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
         }
     };
 
-    console.log(contract_stage, 'contract_stage');
-
     return (
         <div className={classNames('animation__wrapper', className)}>
             {should_show_tooltip ? (
