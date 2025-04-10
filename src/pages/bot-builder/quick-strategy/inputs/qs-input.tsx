@@ -6,6 +6,25 @@ import Input from '@/components/shared_ui/input';
 import Popover from '@/components/shared_ui/popover';
 import { useStore } from '@/hooks/useStore';
 
+// Helper function to format numbers based on currency
+const formatNumberForCurrency = (value: number, currency?: string): string => {
+    // Format the number based on the currency
+    switch (currency) {
+        case 'BTC':
+            // For BTC, show 8 decimal places
+            return value.toFixed(8);
+        case 'ETH':
+            // For ETH, show 6 decimal places
+            return value.toFixed(6);
+        case 'LTC':
+            // For LTC, show 8 decimal places
+            return value.toFixed(8);
+        default:
+            // For other currencies (USD, tUSDT, eUSDT), show 2 decimal places
+            return value.toFixed(2);
+    }
+};
+
 type TQSInput = {
     name: string;
     onChange: (key: string, value: string | number | boolean) => void;
@@ -74,13 +93,6 @@ const QSInput: React.FC<TQSInput> = observer(
         // Use either the store's dropdown state or our local state
         const is_dropdown_open = store_dropdown_open || local_dropdown_open;
 
-        console.log(
-            'QSInput component store_dropdown_open:',
-            store_dropdown_open,
-            'local_dropdown_open:',
-            local_dropdown_open
-        );
-
         // Set up a MutationObserver to detect when the dropdown opens/closes
         useEffect(() => {
             // Function to check if dropdown is open
@@ -100,7 +112,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 const isOpen =
                     openDropdowns.length > 0 || dropdownMenus.length > 0 || continuousIndicesElements.length > 0;
 
-                console.log('Detected dropdown state:', isOpen);
                 setLocalDropdownOpen(isOpen);
             };
 
@@ -124,7 +135,6 @@ const QSInput: React.FC<TQSInput> = observer(
 
         // Add useEffect to add a global style to hide all popovers when dropdown is open
         useEffect(() => {
-            console.log('Applying style based on dropdown state:', is_dropdown_open);
             // Create a style element
             const styleElement = document.createElement('style');
             styleElement.id = 'hide-popovers-style';
@@ -164,8 +174,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 const initial_stake = parseFloat(Number(values.stake).toFixed(2));
                 const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
 
-                console.log(`useEffect max_stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
-
                 if (initial_stake > max_stake) {
                     // If initial stake is greater than max stake, show error
                     setErrorMessage(`Initial stake cannot be greater than max stake`);
@@ -197,8 +205,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 // Convert to numbers with fixed precision to handle floating point comparison correctly
                 const initial_stake = parseFloat(Number(values.stake).toFixed(2));
                 const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
-
-                console.log(`useEffect stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
 
                 if (initial_stake > max_stake) {
                     // If initial stake is greater than max stake, update the max_stake field's error state
@@ -276,7 +282,7 @@ const QSInput: React.FC<TQSInput> = observer(
         }, [name, values.stake, values.max_stake, is_dropdown_open]);
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
-            e?.preventDefault();
+            e.preventDefault(); // Changed from e?.preventDefault() to ensure it always runs
 
             // For tick_count field or duration field with ticks, ensure we only allow integer values
             if (name === 'tick_count' || (name === 'duration' && quick_strategy.form_data?.durationtype === 't')) {
@@ -296,9 +302,29 @@ const QSInput: React.FC<TQSInput> = observer(
                 }
             }
 
-            onChange(name, value);
-            setFieldTouched(name, true, true);
-            setFieldValue(name, value);
+            // For Accumulators trade type, we need to ensure the value is properly updated
+            // in both Formik state and the store
+            const is_accumulator = quick_strategy.selected_strategy.includes('ACCUMULATORS');
+
+            // Note: We're not using window.userStakeValue anymore as it's not a proper approach
+            // The userStakeValue ref in growth-rate-type.tsx will be updated when the form values change
+
+            if (is_accumulator) {
+                // For Accumulators, update the store first, then Formik state
+                onChange(name, value);
+                setFieldTouched(name, true, true);
+
+                // Use a small timeout to ensure the value is updated in the DOM
+                // This helps with synchronization issues between Formik and the store
+                setTimeout(() => {
+                    setFieldValue(name, value);
+                }, 0);
+            } else {
+                // For Options, update Formik state first, then the store
+                setFieldValue(name, value);
+                setFieldTouched(name, true, true);
+                onChange(name, value);
+            }
         };
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -311,12 +337,30 @@ const QSInput: React.FC<TQSInput> = observer(
 
             // Allow empty string or partial input to support backspace
             if (input_value === '' || input_value === '0' || input_value === '0.') {
-                onChange(name, input_value);
-
                 // Show error message for empty values in fields
                 if (name === 'stake' || name === 'max_stake') {
                     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                }
+
+                // For Accumulators trade type, we need to ensure the value is properly updated
+                // in both Formik state and the store
+                const is_accumulator = quick_strategy.selected_strategy.includes('ACCUMULATORS');
+
+                if (is_accumulator) {
+                    // For Accumulators, update the store first, then Formik state
+                    onChange(name, input_value);
+                    setFieldTouched(name, true, true);
+
+                    // Use a small timeout to ensure the value is updated in the DOM
+                    setTimeout(() => {
+                        setFieldValue(name, input_value);
+                    }, 0);
+                } else {
+                    // For Options, update Formik state first, then the store
+                    setFieldValue(name, input_value);
+                    setFieldTouched(name, true, true);
+                    onChange(name, input_value);
                 }
                 return;
             }
@@ -337,15 +381,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 value = Math.floor(Number(value));
             }
 
-            // // Only enforce minimum stake for stake fields, not all number fields
-            // if (is_number && typeof value === 'number' && (name === 'stake' || name === 'max_stake')) {
-            //     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
-            //     if (value < min_stake) {
-            //         // Show error but don't force the value to change
-            //         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
-            //     }
-            // }
-
             // For stake field, check if value is within the allowed range
             if (name === 'stake' && is_number) {
                 const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
@@ -365,7 +400,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     }
                 }
 
-                ``; // Note: We're not adding a custom error message for when initial stake > max stake
+                // Note: We're not adding a custom error message for when initial stake > max stake
                 // The standard error message will be displayed by the form validation
             }
 
@@ -396,10 +431,26 @@ const QSInput: React.FC<TQSInput> = observer(
                 }
             }
 
-            onChange(name, value);
-        };
+            // For Accumulators trade type, we need to ensure the value is properly updated
+            // in both Formik state and the store
+            const is_accumulator = quick_strategy.selected_strategy.includes('ACCUMULATORS');
 
-        console.log(quick_strategy.form_data?.durationtype);
+            if (is_accumulator) {
+                // For Accumulators, update the store first, then Formik state
+                onChange(name, value);
+                setFieldTouched(name, true, true);
+
+                // Use a small timeout to ensure the value is updated in the DOM
+                setTimeout(() => {
+                    setFieldValue(name, value);
+                }, 0);
+            } else {
+                // For Options, update Formik state first, then the store
+                setFieldValue(name, value);
+                setFieldTouched(name, true, true);
+                onChange(name, value);
+            }
+        };
 
         return (
             <Field name={name} key={name} id={name}>
@@ -407,6 +458,18 @@ const QSInput: React.FC<TQSInput> = observer(
                     const { error } = meta;
                     const has_error = error;
                     const is_exclusive_field = has_currency_unit;
+
+                    // Add useEffect to update error message when additional_data changes
+                    useEffect(() => {
+                        // If the field is empty and it's a stake field, show the minimum stake error
+                        if (
+                            (name === 'stake' || name === 'max_stake') &&
+                            (!field.value || field.value === '0' || field.value === '0.')
+                        ) {
+                            const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
+                            setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                        }
+                    }, [quick_strategy?.additional_data, field.value]);
                     return (
                         <div
                             className={classNames('qs__form__field qs__form__field__input', {
@@ -453,8 +516,12 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     }
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                        e.preventDefault(); // Explicitly prevent default button behavior
                                                         const min_stake =
                                                             (quick_strategy?.additional_data as any)?.min_stake || 1;
+                                                        const increment_step =
+                                                            (quick_strategy?.additional_data as any)?.increment_step ||
+                                                            1;
                                                         const current_value = Number(field.value);
                                                         const field_min =
                                                             name === 'stake' || name === 'max_stake'
@@ -463,23 +530,66 @@ const QSInput: React.FC<TQSInput> = observer(
 
                                                         // For stake and max_stake fields
                                                         if (name === 'stake' || name === 'max_stake') {
-                                                            // If value is greater than minimum + 1, subtract 1
-                                                            if (current_value > field_min + 1) {
-                                                                const new_value = current_value - 1;
-                                                                handleButtonInputChange(
-                                                                    e,
-                                                                    String(
-                                                                        new_value % 1 ? new_value.toFixed(2) : new_value
-                                                                    )
+                                                            // If value is greater than minimum + increment_step, subtract increment_step
+                                                            if (current_value > field_min + increment_step) {
+                                                                const new_value = current_value - increment_step;
+                                                                // Format the number based on the currency
+                                                                const formatted_value = formatNumberForCurrency(
+                                                                    new_value,
+                                                                    currency
                                                                 );
+                                                                handleButtonInputChange(e, formatted_value);
                                                                 return;
                                                             }
-                                                            // If value is between minimum and minimum + 1, set to minimum
+                                                            // If value is between minimum and minimum + increment_step, set to minimum
                                                             else if (
                                                                 current_value > field_min &&
-                                                                current_value <= field_min + 1
+                                                                current_value <= field_min + increment_step
                                                             ) {
-                                                                handleButtonInputChange(e, String(field_min));
+                                                                const formatted_value = formatNumberForCurrency(
+                                                                    field_min,
+                                                                    currency
+                                                                );
+                                                                handleButtonInputChange(e, formatted_value);
+                                                                return;
+                                                            }
+                                                            // If already at minimum, do nothing
+                                                            else if (current_value <= field_min) {
+                                                                return;
+                                                            }
+                                                        }
+                                                        // For profit, loss, and take_profit fields
+                                                        else if (
+                                                            name === 'profit' ||
+                                                            name === 'loss' ||
+                                                            name === 'take_profit'
+                                                        ) {
+                                                            // Get the increment step from additional_data
+                                                            const increment_step =
+                                                                (quick_strategy?.additional_data as any)
+                                                                    ?.increment_step || 1;
+
+                                                            // If value is greater than minimum + increment_step, subtract increment_step
+                                                            if (current_value > field_min + increment_step) {
+                                                                const new_value = current_value - increment_step;
+                                                                // Format the number based on the currency
+                                                                const formatted_value = formatNumberForCurrency(
+                                                                    new_value,
+                                                                    currency
+                                                                );
+                                                                handleButtonInputChange(e, formatted_value);
+                                                                return;
+                                                            }
+                                                            // If value is between minimum and minimum + increment_step, set to minimum
+                                                            else if (
+                                                                current_value > field_min &&
+                                                                current_value <= field_min + increment_step
+                                                            ) {
+                                                                const formatted_value = formatNumberForCurrency(
+                                                                    field_min,
+                                                                    currency
+                                                                );
+                                                                handleButtonInputChange(e, formatted_value);
                                                                 return;
                                                             }
                                                             // If already at minimum, do nothing
@@ -526,11 +636,39 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     }
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        const value = Number(field.value) + 1;
-                                                        handleButtonInputChange(
-                                                            e,
-                                                            String(value % 1 ? value.toFixed(2) : value)
-                                                        );
+                                                        e.preventDefault(); // Explicitly prevent default button behavior
+                                                        // Get the increment step from additional_data
+                                                        const increment_step =
+                                                            name === 'stake' ||
+                                                            name === 'max_stake' ||
+                                                            name === 'profit' ||
+                                                            name === 'loss' ||
+                                                            name === 'take_profit'
+                                                                ? (quick_strategy?.additional_data as any)
+                                                                      ?.increment_step || 1
+                                                                : 1;
+
+                                                        const value = Number(field.value) + increment_step;
+
+                                                        // Format the value based on the currency if it's a stake, max_stake, profit, loss, or take_profit field
+                                                        if (
+                                                            name === 'stake' ||
+                                                            name === 'max_stake' ||
+                                                            name === 'profit' ||
+                                                            name === 'loss' ||
+                                                            name === 'take_profit'
+                                                        ) {
+                                                            const formatted_value = formatNumberForCurrency(
+                                                                value,
+                                                                currency
+                                                            );
+                                                            handleButtonInputChange(e, formatted_value);
+                                                        } else {
+                                                            handleButtonInputChange(
+                                                                e,
+                                                                String(value % 1 ? value.toFixed(2) : value)
+                                                            );
+                                                        }
                                                     }}
                                                 >
                                                     +
