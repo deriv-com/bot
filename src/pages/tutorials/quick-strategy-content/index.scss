@@ -15,6 +15,7 @@
         @include mobile-or-tablet-screen {
             width: 100%;
             grid-template-columns: 1fr;
+            margin-bottom: 10rem;
         }
     }
 
