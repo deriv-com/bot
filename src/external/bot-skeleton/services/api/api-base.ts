@@ -164,7 +164,7 @@ class APIBase {
             try {
                 const { authorize, error } = await this.api.authorize(this.token);
                 if (error) return error;
-
+                localStorage.setItem('client_account_details', JSON.stringify(authorize?.account_list));
                 if (this.has_active_symbols) {
                     this.toggleRunButton(false);
                 } else {

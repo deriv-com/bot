@@ -72,20 +72,32 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
         const tmp_notifications: TNotifications[] = [];
         const temp_localstorage_data: Record<string, boolean> | null = {};
+        const loggedInAccountId = localStorage.getItem('active_loginid');
+        let allUserAccounts = localStorage.getItem('client_account_details');
+        let accountDate = null;
+        if (allUserAccounts) {
+            allUserAccounts = JSON.parse(allUserAccounts);
+            const currentAccount = allUserAccounts?.find(account => account.loginid == loggedInAccountId);
+            accountDate = new Date(currentAccount.created_at * 1000);
+        }
+
         BOT_ANNOUNCEMENTS_LIST.map(item => {
             let is_not_read = true;
             if (data && Object.hasOwn(data, item.id)) {
                 is_not_read = data[item.id];
             }
-            tmp_notifications.push({
-                id: item.id,
-                icon: <item.icon announce={is_not_read} />,
-                title: <TitleAnnounce title={item.title} announce={is_not_read} />,
-                message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,
-                buttonAction: performButtonAction(item, modalButtonAction, handleRedirect),
-                actionText: item.actionText,
-            });
-            temp_localstorage_data[item.id] = is_not_read;
+            const notificationDate = new Date(item.date);
+            if (accountDate && notificationDate > accountDate) {
+                tmp_notifications.push({
+                    id: item.id,
+                    icon: <item.icon announce={is_not_read} />,
+                    title: <TitleAnnounce title={item.title} announce={is_not_read} />,
+                    message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,
+                    buttonAction: performButtonAction(item, modalButtonAction, handleRedirect),
+                    actionText: item.actionText,
+                });
+                temp_localstorage_data[item.id] = is_not_read;
+            }
         });
         setNotifications(tmp_notifications);
         return temp_localstorage_data;
