@@ -21,6 +21,8 @@ const TncStatusUpdateModal: React.FC = observer(() => {
     React.useEffect(() => {
         if (is_tnc_needed) {
             setIsTncOpen(true);
+        } else {
+            setIsTncOpen(false);
         }
     }, [is_tnc_needed]);
 
