@@ -1,6 +1,8 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
+import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
@@ -28,7 +30,13 @@ const setLocalStorageToken = async (loginInfo: URLUtils.LoginInfo[], paramsToDel
             if (api) {
                 const { authorize, error } = await api.authorize(loginInfo[0].token);
                 api.disconnect();
-                if (!error) {
+                if (error) {
+                    // Check if the error is due to an invalid token and if the logged_state cookie is true
+                    if (error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
+                        // Emit an event that can be caught by the application to retrigger OIDC authentication
+                        globalObserver.emit('InvalidToken', { error });
+                    }
+                } else {
                     const firstId = authorize?.account_list[0]?.loginid;
                     const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
                     if (filteredTokens.length) {

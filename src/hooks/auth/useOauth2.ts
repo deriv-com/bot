@@ -2,21 +2,28 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
-import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
+import {
+    OAuth2Logout,
+    requestOidcAuthentication,
+    TOAuth2EnabledAppList,
+    useIsOAuth2Enabled,
+} from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../growthbook/useGrowthbookGetFeatureValue';
 
 /**
- * Provides an object with two properties: `isOAuth2Enabled` and `oAuthLogout`.
+ * Provides an object with properties: `isOAuth2Enabled`, `oAuthLogout`, and `retriggerOAuth2Login`.
  *
  * `isOAuth2Enabled` is a boolean that indicates whether OAuth2 is enabled.
  *
  * `oAuthLogout` is a function that logs out the user of the OAuth2-enabled app.
  *
+ * `retriggerOAuth2Login` is a function that retriggers the OAuth2 login flow to get a new token.
+ *
  * The `handleLogout` argument is an optional function that will be called after logging out the user.
  * If `handleLogout` is not provided, the function will resolve immediately.
  *
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
- * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
+ * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void>; retriggerOAuth2Login: () => Promise<void> }}
  */
 export const useOauth2 = ({
     handleLogout,
@@ -78,5 +85,20 @@ export const useOauth2 = ({
             console.error(error);
         }
     };
-    return { isOAuth2Enabled, oAuthLogout: logoutHandler, isSingleLoggingIn };
+    const retriggerOAuth2Login = async () => {
+        try {
+            await requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                postLogoutRedirectUri: window.location.origin,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error('Error during OAuth2 login retrigger:', err);
+            });
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error during OAuth2 login retrigger:', error);
+        }
+    };
+
+    return { isOAuth2Enabled, oAuthLogout: logoutHandler, retriggerOAuth2Login, isSingleLoggingIn };
 };

@@ -1,4 +1,6 @@
+import Cookies from 'js-cookie';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
+import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
 
@@ -36,9 +38,15 @@ const CallbackPage = () => {
                 const api = await generateDerivApiInstance();
                 if (api) {
                     const { authorize, error } = await api.authorize(tokens.token1);
-                    localStorage.setItem('callback_token', authorize.toString());
                     api.disconnect();
-                    if (!error) {
+                    if (error) {
+                        // Check if the error is due to an invalid token and if the logged_state cookie is true
+                        if (error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
+                            // Emit an event that can be caught by the application to retrigger OIDC authentication
+                            globalObserver.emit('InvalidToken', { error });
+                        }
+                    } else {
+                        localStorage.setItem('callback_token', authorize.toString());
                         const clientAccountsArray = Object.values(clientAccounts);
                         const firstId = authorize?.account_list[0]?.loginid;
                         const filteredTokens = clientAccountsArray.filter(account => account.loginid === firstId);
