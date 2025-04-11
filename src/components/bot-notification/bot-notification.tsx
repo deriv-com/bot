@@ -45,6 +45,7 @@ export const botNotification = (
             pauseOnHover: custom_style?.pauseOnHover ?? notification_style.pauseOnHover,
             pauseOnFocusLoss: custom_style?.pauseOnFocusLoss ?? notification_style.pauseOnFocusLoss,
             closeButton: custom_style?.closeButton ?? true,
+            className: custom_style?.className ?? '',
         }
     );
 };
