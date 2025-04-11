@@ -26,7 +26,7 @@ export const DBOT_ONBOARDING = [
         target: '#id-bot-builder',
         content: (
             <TourSteps
-                label={<Localize i18n_default_text='Get started on Deriv Bot' />}
+                label={<Localize i18n_default_text='Build from scratch' />}
                 content={[
                     <>
                         <Localize i18n_default_text='Create your bot using our drag-and-drop blocks or click Quick Strategy to choose from the ready-to-use bot templates.' />

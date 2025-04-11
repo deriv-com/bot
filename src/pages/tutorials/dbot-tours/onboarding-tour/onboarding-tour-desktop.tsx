@@ -25,7 +25,14 @@ const OnboardingTourDesktop = observer(() => {
         <>
             <TourStartDialog />
             {active_tour && (
-                <ReactJoyrideWrapper handleCallback={handleJoyrideCallback} steps={DBOT_ONBOARDING} spotlightClicks />
+                <ReactJoyrideWrapper
+                    handleCallback={handleJoyrideCallback}
+                    steps={DBOT_ONBOARDING}
+                    spotlightClicks
+                    disableCloseOnEsc
+                    disableOverlay={false}
+                    disableOverlayClose={true}
+                />
             )}
         </>
     );
