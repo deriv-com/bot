@@ -13,12 +13,10 @@ import { useOauth2 } from './auth/useOauth2';
  * @returns {{ unregisterHandler: () => void }} An object containing a function to unregister the event handler
  */
 export const useInvalidTokenHandler = (): { unregisterHandler: () => void } => {
-    const { retriggerOAuth2Login, isOAuth2Enabled } = useOauth2();
+    const { retriggerOAuth2Login } = useOauth2();
 
     const handleInvalidToken = () => {
-        if (isOAuth2Enabled) {
-            retriggerOAuth2Login();
-        }
+        retriggerOAuth2Login();
     };
 
     // Subscribe to the InvalidToken event
@@ -29,7 +27,7 @@ export const useInvalidTokenHandler = (): { unregisterHandler: () => void } => {
         return () => {
             globalObserver.unregister('InvalidToken', handleInvalidToken);
         };
-    }, [retriggerOAuth2Login, isOAuth2Enabled]);
+    }, [retriggerOAuth2Login]);
 
     // Return a function to unregister the handler manually if needed
     return {

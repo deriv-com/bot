@@ -15,7 +15,7 @@ import './layout.scss';
 const Layout = () => {
     const { isDesktop } = useDevice();
 
-    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
+    const { isSingleLoggingIn } = useOauth2();
 
     const isCallbackPage = window.location.pathname === '/callback';
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
@@ -121,11 +121,10 @@ const Layout = () => {
             sessionStorage.setItem('query_param_currency', currency);
         }
 
-        const checkOIDCEnabledWithMissingAccount =
-            isOAuth2Enabled && !isEndpointPage && !isCallbackPage && !clientHasCurrency;
+        const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
         if (
-            (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && !isEndpointPage && !isCallbackPage) ||
+            (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
@@ -153,14 +152,7 @@ const Layout = () => {
                 console.error(err);
             }
         }
-    }, [
-        isLoggedInCookie,
-        isClientAccountsPopulated,
-        isOAuth2Enabled,
-        isEndpointPage,
-        isCallbackPage,
-        clientHasCurrency,
-    ]);
+    }, [isLoggedInCookie, isClientAccountsPopulated, isEndpointPage, isCallbackPage, clientHasCurrency]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
