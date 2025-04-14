@@ -16,7 +16,6 @@ export const useInvalidTokenHandler = (): { unregisterHandler: () => void } => {
     const { retriggerOAuth2Login, isOAuth2Enabled } = useOauth2();
 
     const handleInvalidToken = () => {
-        console.log('Invalid token detected, retriggering OIDC authentication');
         if (isOAuth2Enabled) {
             retriggerOAuth2Login();
         }
