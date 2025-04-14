@@ -32,20 +32,15 @@ const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useStore();
-    const { setValue, selected_strategy } = quick_strategy;
+    const { setValue, selected_strategy, setDropdownState } = quick_strategy;
     const is_strategy_accumulator = V2_QS_STRATEGIES.includes(selected_strategy);
 
     React.useEffect(() => {
         if (values?.symbol) {
             const selected = values?.tradetype;
-            const is_symbol_accumulator = is_strategy_accumulator ? 'ACCU' : '';
-
             const { contracts_for } = (ApiHelpers?.instance as unknown as TApiHelpersInstance) ?? {};
             const getTradeTypes = async () => {
-                const trade_types = await contracts_for?.getTradeTypesForQuickStrategy?.(
-                    values?.symbol,
-                    is_symbol_accumulator
-                );
+                const trade_types = await contracts_for?.getTradeTypesForQuickStrategy?.(values?.symbol);
                 const has_selected = trade_types?.some(trade_type => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
                     setFieldValue?.('tradetype', trade_types?.[0].value || '');
@@ -80,7 +75,6 @@ const TradeTypeSelect: React.FC = () => {
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_tradetype'
                             autoComplete='off'
                             className='qs__autocomplete'
@@ -94,12 +88,17 @@ const TradeTypeSelect: React.FC = () => {
                                     setValue('tradetype', value);
                                 }
                             }}
-                            leading_icon={
-                                <Text>
-                                    <TradeTypeIcon type={selected_trade_type?.icon?.[0] || 'CALL'} size='sm' />
-                                    <TradeTypeIcon type={selected_trade_type?.icon?.[1] || 'PUT'} size='sm' />
-                                </Text>
-                            }
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            data_testid='dt_qs_tradetype'
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
+                            // Note: leading_icon is removed due to TypeScript error
                         />
                     );
                 }}
