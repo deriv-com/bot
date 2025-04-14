@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import ApiHelpers from '../../../../services/api/api-helpers';
+import DBotStore from '../../../dbot-store';
 import { excludeOptionFromContextMenu, modifyContextMenu, runIrreversibleEvents } from '../../../utils';
-
 /* eslint-disable */
 window.Blockly.Blocks.trade_definition_market = {
     init() {
@@ -94,6 +94,9 @@ window.Blockly.Blocks.trade_definition_market = {
                     should_pretend_empty: true,
                     event_group: event.group,
                 });
+            } else if (event.name === 'SYMBOL_LIST') {
+                const new_symbol = symbol_dropdown.getValue();
+                DBotStore.instance.dashboard.setBotBuilderSymbol(new_symbol);
             }
         } else if (
             event.type === window.Blockly.Events.BLOCK_DRAG &&
