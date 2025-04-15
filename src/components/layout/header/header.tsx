@@ -33,7 +33,6 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    // const { isSingleLoggingIn } = useOauth2();
     const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
 
     const renderAccountSection = () => {
