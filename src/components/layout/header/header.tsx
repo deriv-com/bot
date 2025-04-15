@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
@@ -33,7 +33,8 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    const { isSingleLoggingIn } = useOauth2();
+    // const { isSingleLoggingIn } = useOauth2();
+    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -114,27 +115,31 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={async () => {
-                            const getQueryParams = new URLSearchParams(window.location.search);
-                            const currency = getQueryParams.get('account') ?? '';
-                            const query_param_currency =
-                                sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                            try {
-                                await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(query_param_currency
-                                        ? {
-                                              state: {
-                                                  account: query_param_currency,
-                                              },
-                                          }
-                                        : {}),
-                                }).catch(err => {
+                            if (!isOAuth2Enabled) {
+                                window.location.replace(generateOAuthURL());
+                            } else {
+                                const getQueryParams = new URLSearchParams(window.location.search);
+                                const currency = getQueryParams.get('account') ?? '';
+                                const query_param_currency =
+                                    sessionStorage.getItem('query_param_currency') || currency || 'USD';
+                                try {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                } catch (error) {
                                     // eslint-disable-next-line no-console
-                                    console.error(err);
-                                });
-                            } catch (error) {
-                                // eslint-disable-next-line no-console
-                                console.error(error);
+                                    console.error(error);
+                                }
                             }
                         }}
                     >
