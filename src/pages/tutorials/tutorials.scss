@@ -105,7 +105,9 @@
         }
 
         &:last-child {
-            margin-bottom: 0;
+            @include mobile-or-tablet-screen {
+                margin-bottom: 15rem;
+            }
         }
     }
 
@@ -183,6 +185,7 @@
 
             @include mobile-or-tablet-screen {
                 width: 100%;
+                margin-bottom: 15rem;
             }
         }
 
@@ -403,7 +406,7 @@
 .tutorials-mobile {
     padding: 1.6rem;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
 
     @include tablet-screen {
         width: 100%;
@@ -478,7 +481,7 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 250px);
+            height: calc(100vh - 350px);
             overflow: auto;
 
             .tutorials-wrap {

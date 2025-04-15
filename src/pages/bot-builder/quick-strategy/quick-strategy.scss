@@ -346,6 +346,9 @@
                     line-height: var(--input-height);
                     text-align: center;
                     font-size: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     &:first-child {
                         border-top-left-radius: 4px;

@@ -32,7 +32,7 @@ const SELL_CONDITIONS_TYPE_INFO = (): TConfigItem => ({
 const LABEL_ACCUMULAORTS_SIZE = (): TConfigItem => ({
     type: 'label',
     label: localize('Size'),
-    description: localize('The size used to multiply the stake after a successful trade for the next trade.'),
+    description: localize('The size used to multiply the stake after a losing trade for the next trade.'),
 });
 
 // This will trigger the boolean_tick_count value to render the take profit and tick count fields
