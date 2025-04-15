@@ -68,6 +68,7 @@ export default class DashboardStore implements IDashboardStore {
     core: TStores;
     tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent | TQuickStrategyContent)[] = [];
     combined_search: string[] = [];
+    bot_builder_symbol: string | null = null;
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
@@ -119,6 +120,7 @@ export default class DashboardStore implements IDashboardStore {
             setShowMobileTourDialog: action.bound,
             is_chart_modal_visible: observable,
             is_trading_view_modal_visible: observable,
+            bot_builder_symbol: observable,
         });
         this.root_store = root_store;
         this.core = core;
@@ -262,6 +264,16 @@ export default class DashboardStore implements IDashboardStore {
         } = this.root_store;
         return is_dark_mode_on;
     }
+
+    setBotBuilderSymbol = (bot_builder_symbol: string | null) => {
+        this.bot_builder_symbol = bot_builder_symbol;
+
+        // Update chart symbol when bot builder symbol changes
+        const { chart_store } = this.root_store;
+        if (chart_store && bot_builder_symbol) {
+            chart_store.onSymbolChange(bot_builder_symbol);
+        }
+    };
 
     setShowMobileTourDialog = (show_mobile_tour_dialog: boolean) => {
         this.show_mobile_tour_dialog = show_mobile_tour_dialog;

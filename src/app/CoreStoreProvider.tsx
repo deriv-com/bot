@@ -22,15 +22,15 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
     const { currentLang } = useTranslations();
 
-    const { oAuthLogout, isOAuth2Enabled } = useOauth2({ handleLogout: async () => client.logout(), client });
+    const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
 
     const isLoggedOutCookie = Cookies.get('logged_state') === 'false';
 
     useEffect(() => {
-        if (isLoggedOutCookie && isOAuth2Enabled && client?.is_logged_in) {
+        if (isLoggedOutCookie && client?.is_logged_in) {
             oAuthLogout();
         }
-    }, [isLoggedOutCookie, oAuthLogout, isOAuth2Enabled, client?.is_logged_in]);
+    }, [isLoggedOutCookie, oAuthLogout, client?.is_logged_in]);
 
     const activeAccount = useMemo(
         () => accountList?.find(account => account.loginid === activeLoginid),

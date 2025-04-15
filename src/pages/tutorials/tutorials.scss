@@ -185,7 +185,7 @@
 
             @include mobile-or-tablet-screen {
                 width: 100%;
-                margin-bottom: 10rem !important;
+                margin-bottom: 15rem;
             }
         }
 
@@ -481,7 +481,7 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 250px);
+            height: calc(100vh - 350px);
             overflow: auto;
 
             .tutorials-wrap {
