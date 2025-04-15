@@ -5,6 +5,7 @@ import { useStore } from '@/hooks/useStore';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import Dialog from './shared_ui/dialog';
+import { standalone_routes } from './shared';
 
 const BotStopped = observer(() => {
     const { dashboard } = useStore();
@@ -19,7 +20,7 @@ const BotStopped = observer(() => {
             className={'dc-dialog bot-stopped-dialog'}
             cancel_button_text={localize('Go to Reports')}
             confirm_button_text={localize('Back to Bot')}
-            onCancel={() => location.replace('reports/positions')}
+            onCancel={() => (window.location.href = standalone_routes.positions)}
             onConfirm={() => location.reload()}
         >
             <div className='dc-dialog__content__header'>
