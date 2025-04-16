@@ -13,7 +13,10 @@ export const REVERSE_MARTINGALE = (): TDescriptionItem[] => [
         type: 'text',
         content: [
             localize(
-                'The Reverse Martingale strategy involves increasing your stake after each successful trade and resets to the initial stake for every losing trade. This strategy aims to secure potential profits from consecutive wins.'
+                'The Reverse Martingale strategy involves increasing your stake after each successful trade and resets to the initial stake for every losing trade as it aims to secure potential profits from consecutive wins.'
+            ),
+            localize(
+                "This article explores the Reverse Martingale strategy integrated into Deriv Bot, a versatile trading bot designed to trade assets such as forex, commodities, and derived indices. We will delve into the strategy's core parameters, its application, and provide essential takeaways for traders looking to use the bot effectively."
             ),
         ],
     },
@@ -29,7 +32,7 @@ export const REVERSE_MARTINGALE = (): TDescriptionItem[] => [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The starting trade amount. Stake is reverted to this amount after a loss or when the stake exceeds the maximum stake.'
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
             ),
         ],
     },

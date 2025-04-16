@@ -27,7 +27,11 @@ export const D_ALEMBERT = (): TDescriptionItem[] => [
     },
     {
         type: 'text',
-        content: [localize('<strong>Initial stake:</strong> The starting trade amount.')],
+        content: [
+            localize(
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
+            ),
+        ],
     },
     {
         type: 'text',
