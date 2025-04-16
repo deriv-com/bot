@@ -15,9 +15,6 @@ export const MARTINGALE = (): TDescriptionItem[] => [
             localize(
                 'The Martingale strategy involves increasing your stake after each loss to recoup prior losses with a single successful trade.'
             ),
-            localize(
-                "This article explores the Martingale strategy integrated into Deriv Bot, a versatile trading bot designed to trade assets such as forex, commodities, and derived indices. We will delve into the strategy's core parameters, its application, and provide essential takeaways for traders looking to use the bot effectively."
-            ),
         ],
     },
     {
@@ -32,7 +29,7 @@ export const MARTINGALE = (): TDescriptionItem[] => [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
+                '<strong>Initial stake:</strong> The starting trade amount. Stake is reverted to this amount after a win or when the stake exceeds the maximum stake.'
             ),
         ],
     },
