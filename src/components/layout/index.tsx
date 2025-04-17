@@ -121,10 +121,12 @@ const Layout = () => {
             sessionStorage.setItem('query_param_currency', currency);
         }
 
+        const is_com_site = /\.com$/i.test(window.location.hostname);
+
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
         if (
-            (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
+            (is_com_site && isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
