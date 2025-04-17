@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
+import { isDotComSite } from '@/utils';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
 
 /**
@@ -72,9 +73,7 @@ export const useOauth2 = ({
     };
     const retriggerOAuth2Login = async () => {
         try {
-            const is_com_site = /\.com$/i.test(window.location.hostname);
-
-            if (is_com_site) {
+            if (isDotComSite()) {
                 await requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,
                     postLogoutRedirectUri: window.location.origin,

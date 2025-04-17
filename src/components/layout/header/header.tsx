@@ -7,6 +7,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
+import { isDotComSite } from '@/utils';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -119,8 +120,7 @@ const AppHeader = observer(() => {
                             const query_param_currency =
                                 sessionStorage.getItem('query_param_currency') || currency || 'USD';
                             try {
-                                const is_com_site = /\.com$/i.test(window.location.hostname);
-                                if (is_com_site) {
+                                if (isDotComSite()) {
                                     await requestOidcAuthentication({
                                         redirectCallbackUri: `${window.location.origin}/callback`,
                                         ...(query_param_currency
