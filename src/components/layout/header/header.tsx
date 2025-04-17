@@ -12,6 +12,7 @@ import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
+import { isDotComSite } from '../../../utils';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
@@ -119,19 +120,21 @@ const AppHeader = observer(() => {
                             const query_param_currency =
                                 sessionStorage.getItem('query_param_currency') || currency || 'USD';
                             try {
-                                await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(query_param_currency
-                                        ? {
-                                              state: {
-                                                  account: query_param_currency,
-                                              },
-                                          }
-                                        : {}),
-                                }).catch(err => {
-                                    // eslint-disable-next-line no-console
-                                    console.error(err);
-                                });
+                                if (isDotComSite()) {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                }
                             } catch (error) {
                                 // eslint-disable-next-line no-console
                                 console.error(error);

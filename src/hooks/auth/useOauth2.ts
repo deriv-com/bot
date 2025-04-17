@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
+import { isDotComSite } from '../../utils';
 
 /**
  * Provides an object with properties: `oAuthLogout`, `retriggerOAuth2Login`, and `isSingleLoggingIn`.
@@ -72,13 +73,15 @@ export const useOauth2 = ({
     };
     const retriggerOAuth2Login = async () => {
         try {
-            await requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                postLogoutRedirectUri: window.location.origin,
-            }).catch(err => {
-                // eslint-disable-next-line no-console
-                console.error('Error during OAuth2 login retrigger:', err);
-            });
+            if (isDotComSite()) {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLogoutRedirectUri: window.location.origin,
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error('Error during OAuth2 login retrigger:', err);
+                });
+            }
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error('Error during OAuth2 login retrigger:', error);
