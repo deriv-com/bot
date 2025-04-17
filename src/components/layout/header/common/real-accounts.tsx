@@ -48,7 +48,6 @@ const RealAccounts = ({
                         tabs_labels={tabs_labels}
                         is_low_risk_country={is_low_risk_country}
                     />
-                    <AccountSwitcherDivider />
                 </>
             ) : (
                 <>
@@ -91,7 +90,6 @@ const RealAccounts = ({
                         tabs_labels={tabs_labels}
                         is_low_risk_country={is_low_risk_country}
                     />
-                    <AccountSwitcherDivider />
                 </>
             )}
             <AccountSwitcherFooter oAuthLogout={oAuthLogout} loginid={loginid} is_logging_out={is_logging_out} />
