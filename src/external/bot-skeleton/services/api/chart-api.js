@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { observer as globalObserver } from '../../utils/observer';
+import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
 
 class ChartAPI {
@@ -24,6 +24,12 @@ class ChartAPI {
                 if (error && error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
                     // Emit an event that can be caught by the application to retrigger OIDC authentication
                     globalObserver.emit('InvalidToken', { error });
+
+                    // Clear localStorage similar to client.logout to ensure proper cleanup
+                    localStorage.removeItem('active_loginid');
+                    localStorage.removeItem('accountsList');
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('clientAccounts');
                 }
             } catch (e) {
                 console.error('Error authorizing chart API:', e);
