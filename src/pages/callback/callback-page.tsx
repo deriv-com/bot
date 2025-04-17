@@ -79,7 +79,7 @@ const CallbackPage = () => {
                 }
 
                 // Make sure we have the currency in the URL when redirecting back
-                window.location.replace(`/?account=${selected_currency}`);
+                window.location.replace(window.location.origin + `/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (
