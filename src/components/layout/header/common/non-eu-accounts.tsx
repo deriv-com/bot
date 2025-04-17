@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 import { TNonEUAccounts } from './types';
+import { AccountSwitcherDivider } from './utils';
 
 const NonEUAccounts = ({
     isVirtual,
@@ -28,19 +29,22 @@ const NonEUAccounts = ({
                 key={!isVirtual ? tabs_labels.demo.toLowerCase() : tabs_labels?.real.toLowerCase()}
             >
                 {modifiedCRAccountList.map(account => (
-                    <span
-                        className={clsx('account-switcher__item', {
-                            'account-switcher__item--disabled': account.is_disabled,
-                        })}
-                        key={account.loginid}
-                    >
-                        <UIAccountSwitcher.AccountsItem
-                            account={account}
-                            onSelectAccount={() => {
-                                if (!account.is_disabled) switchAccount(account.loginid);
-                            }}
-                        />
-                    </span>
+                    <>
+                        <span
+                            className={clsx('account-switcher__item', {
+                                'account-switcher__item--disabled': account.is_disabled,
+                            })}
+                            key={account.loginid}
+                        >
+                            <UIAccountSwitcher.AccountsItem
+                                account={account}
+                                onSelectAccount={() => {
+                                    if (!account.is_disabled) switchAccount(account.loginid);
+                                }}
+                            />
+                        </span>
+                        {modifiedCRAccountList.length > 0 && <AccountSwitcherDivider />}
+                    </>
                 ))}
             </UIAccountSwitcher.AccountsPanel>
         </>

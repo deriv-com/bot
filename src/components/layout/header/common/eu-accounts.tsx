@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 import { TEuAccounts } from './types';
+import { AccountSwitcherDivider } from './utils';
 
 const EuAccounts = ({
     isVirtual,
@@ -25,19 +26,23 @@ const EuAccounts = ({
             {modifiedMFAccountList.map(account => {
                 account.currencyLabel = localize('Multipliers');
                 return (
-                    <span
-                        className={clsx('account-switcher__item', {
-                            'account-switcher__item--disabled': account.is_disabled,
-                        })}
-                        key={account.loginid}
-                    >
-                        <UIAccountSwitcher.AccountsItem
-                            account={account}
-                            onSelectAccount={() => {
-                                if (!account.is_disabled) switchAccount(account.loginid);
-                            }}
-                        />
-                    </span>
+                    <>
+                        {' '}
+                        <span
+                            className={clsx('account-switcher__item', {
+                                'account-switcher__item--disabled': account.is_disabled,
+                            })}
+                            key={account.loginid}
+                        >
+                            <UIAccountSwitcher.AccountsItem
+                                account={account}
+                                onSelectAccount={() => {
+                                    if (!account.is_disabled) switchAccount(account.loginid);
+                                }}
+                            />
+                        </span>
+                        {modifiedMFAccountList.length > 0 && <AccountSwitcherDivider />}
+                    </>
                 );
             })}
         </UIAccountSwitcher.AccountsPanel>
