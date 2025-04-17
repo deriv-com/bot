@@ -96,6 +96,18 @@
 
         $header-grid-items: (string.unquote('type'), string.unquote('spot'), string.unquote('profit'));
 
+        &-column {
+            @include mobile-or-tablet-screen {
+                padding: 0.5rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                word-break: break-word;
+                text-align: center;
+                margin-right: 0.2rem;
+            }
+        }
+
         @each $item in $header-grid-items {
             &-#{$item} {
                 grid-column: $item;
