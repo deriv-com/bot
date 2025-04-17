@@ -78,8 +78,11 @@ const CallbackPage = () => {
                     selected_currency = selected_account?.currency || firstAccountCurrency || 'USD';
                 }
 
-                // Make sure we have the currency in the URL when redirecting back
-                window.location.replace(`/?account=${selected_currency}`);
+                const redirect_url = new URL(window.location.origin);
+                redirect_url.pathname = '/';
+                redirect_url.searchParams.set('account', selected_currency);
+
+                window.location.replace(redirect_url.toString());
             }}
             renderReturnButton={() => {
                 return (
