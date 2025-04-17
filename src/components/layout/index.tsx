@@ -6,7 +6,7 @@ import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Loader, useDevice } from '@deriv-com/ui';
-import { isDotComSite } from '../../utils';
+import { getAppId,getDomain, isDotComSite } from '../../utils';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
 import Footer from './footer';
 import AppHeader from './header';
@@ -152,6 +152,15 @@ const Layout = () => {
                 // eslint-disable-next-line no-console
                 console.error(err);
             }
+        } else {
+            // For non-.com domains (.me, .be, etc.), construct the OAuth URL based on the current domain
+            const domain = getDomain();
+            const app_id = getAppId();
+
+            // Construct the OAuth URL with the correct domain and app_id
+            const oauth_url = `https://oauth.${domain}/oauth2/authorize?app_id=${app_id}&l=EN&brand=deriv`;
+
+            window.location.href = oauth_url;
         }
     }, [isLoggedInCookie, isClientAccountsPopulated, isEndpointPage, isCallbackPage, clientHasCurrency]);
 
