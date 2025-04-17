@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { ContentFlag, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
 import {
+    authData$,
     setAccountList,
     setAuthData,
     setIsAuthorized,
@@ -30,7 +31,16 @@ export default class ClientStore {
     // TODO: fix with self exclusion
     updateSelfExclusion = () => {};
 
+    private authDataSubscription: { unsubscribe: () => void } | null = null;
+
     constructor() {
+        // Subscribe to auth data changes
+        this.authDataSubscription = authData$.subscribe(authData => {
+            if (authData?.upgradeable_landing_companies) {
+                this.setUpgradeableLandingCompanies(authData.upgradeable_landing_companies);
+            }
+        });
+
         makeObservable(this, {
             account_list: observable,
             account_settings: observable,
