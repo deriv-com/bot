@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
-import { isDotComSite } from '@/utils';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
+import { isDotComSite } from '../../utils';
 
 /**
  * Provides an object with properties: `oAuthLogout`, `retriggerOAuth2Login`, and `isSingleLoggingIn`.
