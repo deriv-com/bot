@@ -29,6 +29,9 @@ const TncStatusUpdateModal: React.FC = observer(() => {
     const onClick = async () => {
         if (isAuthorized) {
             await api_base.api.send({ tnc_approval: 1 });
+            if (client.landing_company_shortcode) {
+                client.updateTncStatus(client.landing_company_shortcode, 1);
+            }
             setIsTncOpen(false);
         }
     };

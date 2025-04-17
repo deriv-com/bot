@@ -71,6 +71,7 @@ export default class ClientStore {
             setLoginId: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
+            updateTncStatus: action,
             is_trading_experience_incomplete: computed,
             is_cr_account: computed,
             account_open_date: computed,
@@ -270,6 +271,24 @@ export default class ClientStore {
             }
         } catch (error) {
             console.error('setAccountSettings error', error);
+        }
+    }
+
+    updateTncStatus(landing_company_shortcode: string, status: number) {
+        try {
+            if (!this.account_settings) return;
+
+            const updated_settings = {
+                ...this.account_settings,
+                tnc_status: {
+                    ...this.account_settings.tnc_status,
+                    [landing_company_shortcode]: status,
+                },
+            };
+
+            this.setAccountSettings(updated_settings);
+        } catch (error) {
+            console.error('updateTncStatus error', error);
         }
     }
 
