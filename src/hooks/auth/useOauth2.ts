@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
-import { getAppId,getDomain, isDotComSite } from '../../utils';
+import { isDotComSite } from '../../utils';
 
 /**
  * Provides an object with properties: `oAuthLogout`, `retriggerOAuth2Login`, and `isSingleLoggingIn`.
@@ -81,15 +81,6 @@ export const useOauth2 = ({
                     // eslint-disable-next-line no-console
                     console.error('Error during OAuth2 login retrigger:', err);
                 });
-            } else {
-                // For non-.com domains (.me, .be, etc.), construct the OAuth URL based on the current domain
-                const domain = getDomain();
-                const app_id = getAppId();
-
-                // Construct the OAuth URL with the correct domain and app_id
-                const oauth_url = `https://oauth.${domain}/oauth2/authorize?app_id=${app_id}&l=EN&brand=deriv`;
-
-                window.location.href = oauth_url;
             }
         } catch (error) {
             // eslint-disable-next-line no-console

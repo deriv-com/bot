@@ -12,7 +12,7 @@ import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { Tooltip } from '@deriv-com/ui';
-import { getAppId,getDomain, isDotComSite } from '../../../utils';
+import { isDotComSite } from '../../../utils';
 import { AppLogo } from '../app-logo';
 import AccountsInfoLoader from './account-info-loader';
 import AccountSwitcher from './account-switcher';
@@ -134,15 +134,6 @@ const AppHeader = observer(() => {
                                         // eslint-disable-next-line no-console
                                         console.error(err);
                                     });
-                                } else {
-                                    // For non-.com domains (.me, .be, etc.), construct the OAuth URL based on the current domain
-                                    const domain = getDomain();
-                                    const app_id = getAppId();
-
-                                    // Construct the OAuth URL with the correct domain and app_id
-                                    const oauth_url = `https://oauth.${domain}/oauth2/authorize?app_id=${app_id}&l=EN&brand=deriv`;
-
-                                    window.location.href = oauth_url;
                                 }
                             } catch (error) {
                                 // eslint-disable-next-line no-console
