@@ -26,6 +26,10 @@ class ChartAPI {
                     globalObserver.emit('InvalidToken', { error });
                 }
             } catch (e) {
+                localStorage.removeItem('active_loginid');
+                localStorage.removeItem('accountsList');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('clientAccounts');
                 console.error('Error authorizing chart API:', e);
             }
         }
