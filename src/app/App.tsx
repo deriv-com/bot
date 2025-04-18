@@ -4,7 +4,6 @@ import React from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
-import useInvalidTokenHandler from '@/hooks/useInvalidTokenHandler';
 import { StoreProvider } from '@/hooks/useStore';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
@@ -49,7 +48,6 @@ const router = createBrowserRouter(
 );
 
 function App() {
-    const { unregisterHandler } = useInvalidTokenHandler();
     React.useEffect(() => {
         // Use the invalid token handler hook to automatically retrigger OIDC authentication
         // when an invalid token is detected and the cookie logged state is true
@@ -58,8 +56,6 @@ function App() {
         window?.dataLayer?.push({ event: 'page_load' });
         return () => {
             // Clean up the invalid token handler when the component unmounts
-            unregisterHandler?.();
-
             const survicate_box = document.getElementById('survicate-box');
             if (survicate_box) {
                 survicate_box.style.display = 'none';
