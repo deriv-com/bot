@@ -1,6 +1,4 @@
-import Cookies from 'js-cookie';
-import { observer as globalObserver } from '../../utils/observer';
-import { generateDerivApiInstance, getLoginId, getToken } from './appId';
+import { generateDerivApiInstance } from './appId';
 
 class ChartAPI {
     api;
@@ -17,21 +15,6 @@ class ChartAPI {
             }
             this.api = await generateDerivApiInstance();
             this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
-        }
-        if (getLoginId()) {
-            try {
-                const { error } = await this.api.authorize(getToken().token);
-                if (error && error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
-                    // Emit an event that can be caught by the application to retrigger OIDC authentication
-                    globalObserver.emit('InvalidToken', { error });
-                }
-            } catch (e) {
-                localStorage.removeItem('active_loginid');
-                localStorage.removeItem('accountsList');
-                localStorage.removeItem('authToken');
-                localStorage.removeItem('clientAccounts');
-                console.error('Error authorizing chart API:', e);
-            }
         }
         this.getTime();
     };
