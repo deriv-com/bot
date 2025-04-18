@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
-import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
@@ -34,10 +33,8 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    const { isSingleLoggingIn } = useOauth2();
-
     const renderAccountSection = () => {
-        if (isAuthorizing || isSingleLoggingIn) {
+        if (isAuthorizing) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
