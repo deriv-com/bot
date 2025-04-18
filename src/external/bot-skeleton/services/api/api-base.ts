@@ -165,12 +165,20 @@ class APIBase {
             try {
                 const { authorize, error } = await this.api.authorize(this.token);
                 if (error) {
-                    // Check if the error is due to an invalid token and if the logged_state cookie is true
-                    if (error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
-                        // Emit an event that can be caught by the application to retrigger OIDC authentication
-                        globalObserver.emit('InvalidToken', { error });
+                    // Check if the error is due to an invalid token
+                    if (error.code === 'InvalidToken') {
+                        // Make sure we set isAuthorizing to false before returning
+                        setIsAuthorizing(false);
+
+                        // Only emit the InvalidToken event if logged_state is true
+                        if (Cookies.get('logged_state') === 'true') {
+                            // Emit an event that can be caught by the application to retrigger OIDC authentication
+                            globalObserver.emit('InvalidToken', { error });
+                        }
                         return error;
                     }
+                    // Make sure we set isAuthorizing to false for other errors too
+                    setIsAuthorizing(false);
                     return error;
                 }
 
