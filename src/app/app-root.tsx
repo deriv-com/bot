@@ -42,8 +42,11 @@ const AppRoot = () => {
     useEffect(() => {
         const initializeApi = async () => {
             if (!api_base_initialized.current) {
+                console.log('test Initializing APIBase...', api_base_initialized);
                 await api_base.init();
+                console.log('test api_base api_base', api_base);
                 api_base_initialized.current = true;
+                console.log('test setIsApiInitialized', { is_api_initialized });
                 setIsApiInitialized(true);
             }
         };
