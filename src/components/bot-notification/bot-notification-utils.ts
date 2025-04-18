@@ -37,7 +37,7 @@ export enum NOTIFICATION_TYPE {
 }
 
 export const notification_message = () => ({
-    bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
+    bot_stop: localize('Bot stopped. Check Reports for contract history'),
     workspace_change: localize('Changes you make will not affect your running bot.'),
     block_delete: localize('You’ve just deleted a block.'),
     invalid_xml: localize('Your import failed due to an invalid file. Upload a complete file in XML format.'),
