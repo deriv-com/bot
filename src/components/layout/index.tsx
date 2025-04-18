@@ -160,7 +160,7 @@ const Layout = () => {
             {!isCallbackPage && <AppHeader />}
             <Body>
                 {isSingleLoggingIn && <Loader isFullScreen />}
-                {!isSingleLoggingIn && <Outlet />}
+                <Outlet />
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}
         </div>
