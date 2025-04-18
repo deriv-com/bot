@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import CommonStore from '@/stores/common-store';
 import { TAuthData } from '@/types/api-types';
 import { observer as globalObserver } from '../../utils/observer';
@@ -163,7 +164,23 @@ class APIBase {
 
             try {
                 const { authorize, error } = await this.api.authorize(this.token);
-                if (error) return error;
+                if (error) {
+                    // Check if the error is due to an invalid token
+                    if (error.code === 'InvalidToken') {
+                        // Make sure we set isAuthorizing to false before returning
+                        setIsAuthorizing(false);
+
+                        // Only emit the InvalidToken event if logged_state is true
+                        if (Cookies.get('logged_state') === 'true') {
+                            // Emit an event that can be caught by the application to retrigger OIDC authentication
+                            globalObserver.emit('InvalidToken', { error });
+                        }
+                        return error;
+                    }
+                    // Make sure we set isAuthorizing to false for other errors too
+                    setIsAuthorizing(false);
+                    return error;
+                }
 
                 if (this.has_active_symbols) {
                     this.toggleRunButton(false);

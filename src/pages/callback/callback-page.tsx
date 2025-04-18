@@ -1,4 +1,6 @@
+import Cookies from 'js-cookie';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
+import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
 
@@ -36,9 +38,21 @@ const CallbackPage = () => {
                 const api = await generateDerivApiInstance();
                 if (api) {
                     const { authorize, error } = await api.authorize(tokens.token1);
-                    localStorage.setItem('callback_token', authorize.toString());
                     api.disconnect();
-                    if (!error) {
+                    if (error) {
+                        // Check if the error is due to an invalid token
+                        if (error.code === 'InvalidToken') {
+                            // Set is_token_set to true to prevent the app from getting stuck in loading state
+                            is_token_set = true;
+
+                            // Only emit the InvalidToken event if logged_state is true
+                            if (Cookies.get('logged_state') === 'true') {
+                                // Emit an event that can be caught by the application to retrigger OIDC authentication
+                                globalObserver.emit('InvalidToken', { error });
+                            }
+                        }
+                    } else {
+                        localStorage.setItem('callback_token', authorize.toString());
                         const clientAccountsArray = Object.values(clientAccounts);
                         const firstId = authorize?.account_list[0]?.loginid;
                         const filteredTokens = clientAccountsArray.filter(account => account.loginid === firstId);
@@ -71,7 +85,7 @@ const CallbackPage = () => {
                 }
 
                 // Make sure we have the currency in the URL when redirecting back
-                window.location.assign(`/?account=${selected_currency}`);
+                window.location.replace(window.location.origin + `/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (

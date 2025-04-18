@@ -1,4 +1,4 @@
-import { generateDerivApiInstance, getLoginId, getToken } from './appId';
+import { generateDerivApiInstance } from './appId';
 
 class ChartAPI {
     api;
@@ -15,9 +15,6 @@ class ChartAPI {
             }
             this.api = await generateDerivApiInstance();
             this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
-        }
-        if (getLoginId()) {
-            await this.api.authorize(getToken().token);
         }
         this.getTime();
     };

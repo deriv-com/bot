@@ -9,7 +9,7 @@ type TIconRadio = {
     text: string;
     onDriveConnect?: () => void;
 };
-const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIconRadio) => {
+const IconRadio = ({ icon, text, google_drive_connected }: TIconRadio) => {
     const is_drive_radio = text === 'Google Drive';
 
     return (
@@ -37,19 +37,6 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIcon
                     {localize(text)}
                 </Text>
             </div>
-            {is_drive_radio && (
-                <Text
-                    as='p'
-                    align='center'
-                    size='xs'
-                    weight='bold'
-                    styles={{ color: 'var(--brand-red-coral)' }}
-                    className='save-type__drive-status'
-                    onClick={onDriveConnect}
-                >
-                    {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
-                </Text>
-            )}
         </div>
     );
 };

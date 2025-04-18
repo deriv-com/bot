@@ -1,11 +1,17 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
+import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
 
-const setLocalStorageToken = async (loginInfo: URLUtils.LoginInfo[], paramsToDelete: string[]) => {
+const setLocalStorageToken = async (
+    loginInfo: URLUtils.LoginInfo[],
+    paramsToDelete: string[],
+    setIsAuthComplete: React.Dispatch<React.SetStateAction<boolean>>
+) => {
     if (loginInfo.length) {
         try {
             const defaultActiveAccount = URLUtils.getDefaultActiveAccount(loginInfo);
@@ -28,7 +34,19 @@ const setLocalStorageToken = async (loginInfo: URLUtils.LoginInfo[], paramsToDel
             if (api) {
                 const { authorize, error } = await api.authorize(loginInfo[0].token);
                 api.disconnect();
-                if (!error) {
+                if (error) {
+                    // Check if the error is due to an invalid token
+                    if (error.code === 'InvalidToken') {
+                        // Set isAuthComplete to true to prevent the app from getting stuck in loading state
+                        setIsAuthComplete(true);
+
+                        // Only emit the InvalidToken event if logged_state is true
+                        if (Cookies.get('logged_state') === 'true') {
+                            // Emit an event that can be caught by the application to retrigger OIDC authentication
+                            globalObserver.emit('InvalidToken', { error });
+                        }
+                    }
+                } else {
                     const firstId = authorize?.account_list[0]?.loginid;
                     const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
                     if (filteredTokens.length) {
@@ -53,7 +71,7 @@ export const AuthWrapper = () => {
 
     React.useEffect(() => {
         const initializeAuth = async () => {
-            await setLocalStorageToken(loginInfo, paramsToDelete);
+            await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
             URLUtils.filterSearchParams(['lang']);
             setIsAuthComplete(true);
         };

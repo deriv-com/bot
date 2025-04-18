@@ -49,9 +49,13 @@ const router = createBrowserRouter(
 
 function App() {
     React.useEffect(() => {
+        // Use the invalid token handler hook to automatically retrigger OIDC authentication
+        // when an invalid token is detected and the cookie logged state is true
+
         initSurvicate();
         window?.dataLayer?.push({ event: 'page_load' });
         return () => {
+            // Clean up the invalid token handler when the component unmounts
             const survicate_box = document.getElementById('survicate-box');
             if (survicate_box) {
                 survicate_box.style.display = 'none';

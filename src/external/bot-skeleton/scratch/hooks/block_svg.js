@@ -2,6 +2,13 @@ import debounce from 'lodash.debounce';
 import { localize } from '@deriv-com/translations';
 import DBotStore from '../dbot-store';
 
+window.Blockly.BlockSvg.prototype.removeSelect = function () {
+    window.Blockly.utils.dom.removeClass(this.svgGroup_, 'blocklySelected');
+    if (window.Blockly.derivWorkspace.lastAddedBlock === this) {
+        window.Blockly.derivWorkspace.lastAddedBlock = null;
+    }
+};
+
 window.Blockly.BlockSvg.prototype.addSelect = function () {
     if (!window.Blockly.derivWorkspace.isFlyoutVisible) {
         const { flyout } = DBotStore.instance;
@@ -9,7 +16,21 @@ window.Blockly.BlockSvg.prototype.addSelect = function () {
             flyout.setVisibility(false);
         }
 
+        // If there's a lastAddedBlock that's not this block, remove its highlight
+        if (
+            window.Blockly.derivWorkspace.lastAddedBlock &&
+            window.Blockly.derivWorkspace.lastAddedBlock !== this &&
+            window.Blockly.derivWorkspace.lastAddedBlock.svgGroup_
+        ) {
+            window.Blockly.utils.dom.removeClass(
+                window.Blockly.derivWorkspace.lastAddedBlock.svgGroup_,
+                'blocklySelected'
+            );
+        }
+
+        // Add highlight to this block and update lastAddedBlock
         window.Blockly.utils.dom.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+        window.Blockly.derivWorkspace.lastAddedBlock = this;
     }
 };
 
@@ -89,4 +110,16 @@ window.Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed)
     debounce(async () => {
         this.setCollapsed(collapsed);
     }, 100)();
+};
+
+// Store original onMouseDown_ function
+const originalOnMouseDown = window.Blockly.BlockSvg.prototype.onMouseDown_;
+
+// Override onMouseDown_ to handle both selection and dragging
+window.Blockly.BlockSvg.prototype.onMouseDown_ = function (e) {
+    if (!this.workspace.options.readOnly && !e.shiftKey) {
+        this.addSelect();
+    }
+    // Call original handler to maintain drag functionality
+    originalOnMouseDown.call(this, e);
 };

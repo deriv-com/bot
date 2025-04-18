@@ -28,6 +28,7 @@ export type TNotificationStyle = {
     pauseOnHover: boolean;
     pauseOnFocusLoss: boolean;
     closeButton: boolean;
+    className?: string;
 };
 
 export enum NOTIFICATION_TYPE {
@@ -44,6 +45,7 @@ export const notification_message = () => ({
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
     strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
     google_drive_error: localize('Your session has expired. Please sign in again.'),
+    xml_import_error: localize('Unsupported file format. Please import a valid XML file.'),
 });
 
 export const notification_style = {
