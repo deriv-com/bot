@@ -583,6 +583,10 @@
         padding: 0 1.6rem;
         margin-bottom: 1.6rem;
 
+        @include mobile-or-tablet-screen {
+            line-height: 1.8;
+        }
+
         &:last-child {
             margin-bottom: 3rem;
         }
