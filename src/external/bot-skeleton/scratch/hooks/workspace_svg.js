@@ -96,7 +96,6 @@ window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
         // Add highlight to the new block and update lastAddedBlock
         window.Blockly.utils.dom.addClass(block.svgGroup_, 'blocklySelected');
         window.Blockly.derivWorkspace.lastAddedBlock = block;
-
         if (config().single_instance_blocks.includes(block.type)) {
             this.getAllBlocks().forEach(ws_block => {
                 if (ws_block.type === block.type && ws_block.id !== block.id) {
@@ -116,6 +115,17 @@ window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
         flyout.setVisibility(false);
         window.Blockly.svgResize(block.workspace);
     } else {
+        this.getAllBlocks().forEach(block => {
+            if (block.svgGroup_) {
+                window.Blockly.utils.dom.removeClass(block.svgGroup_, 'blocklySelected');
+            }
+        });
+
+        const trade_definition_block = this.getAllBlocks().find(block => block.type === 'trade_definition');
+        if (trade_definition_block?.svgGroup_) {
+            window.Blockly.utils.dom.addClass(trade_definition_block.svgGroup_, 'blocklySelected');
+            window.Blockly.derivWorkspace.lastAddedBlock = trade_definition_block;
+        }
         flyout.setIsSearchFlyout(false);
         flyout.setVisibility(false);
     }
