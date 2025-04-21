@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { ContentFlag, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
+import { api_base } from '@/external/bot-skeleton';
 import {
     authData$,
     setAccountList,
@@ -323,7 +324,7 @@ export default class ClientStore {
         this.is_logging_out = is_logging_out;
     };
 
-    logout = () => {
+    logout = async () => {
         // reset all the states
         this.account_list = [];
         this.account_status = undefined;
@@ -362,5 +363,6 @@ export default class ClientStore {
                 token: null,
             });
         }
+        await api_base?.api?.logout();
     };
 }
