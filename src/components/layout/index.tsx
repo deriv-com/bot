@@ -6,6 +6,7 @@ import { api_base } from '@/external/bot-skeleton';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Loader, useDevice } from '@deriv-com/ui';
+import { isDotComSite } from '../../utils';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
 import Footer from './footer';
 import AppHeader from './header';
@@ -124,7 +125,7 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
         if (
-            (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
+            (isDotComSite() && isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
@@ -159,7 +160,7 @@ const Layout = () => {
             {!isCallbackPage && <AppHeader />}
             <Body>
                 {isSingleLoggingIn && <Loader isFullScreen />}
-                {!isSingleLoggingIn && <Outlet />}
+                <Outlet />
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}
         </div>

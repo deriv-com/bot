@@ -40,10 +40,16 @@ const CallbackPage = () => {
                     const { authorize, error } = await api.authorize(tokens.token1);
                     api.disconnect();
                     if (error) {
-                        // Check if the error is due to an invalid token and if the logged_state cookie is true
-                        if (error.code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
-                            // Emit an event that can be caught by the application to retrigger OIDC authentication
-                            globalObserver.emit('InvalidToken', { error });
+                        // Check if the error is due to an invalid token
+                        if (error.code === 'InvalidToken') {
+                            // Set is_token_set to true to prevent the app from getting stuck in loading state
+                            is_token_set = true;
+
+                            // Only emit the InvalidToken event if logged_state is true
+                            if (Cookies.get('logged_state') === 'true') {
+                                // Emit an event that can be caught by the application to retrigger OIDC authentication
+                                globalObserver.emit('InvalidToken', { error });
+                            }
                         }
                     } else {
                         localStorage.setItem('callback_token', authorize.toString());
@@ -79,7 +85,7 @@ const CallbackPage = () => {
                 }
 
                 // Make sure we have the currency in the URL when redirecting back
-                window.location.replace(`/?account=${selected_currency}`);
+                window.location.replace(window.location.origin + `/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
                 return (
