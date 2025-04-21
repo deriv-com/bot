@@ -111,6 +111,8 @@ const Layout = () => {
     useEffect(() => {
         if (isCurrencyValid && api_base.api) {
             // Subscribe to the onMessage event
+            const is_valid_currency = currency && validCurrencies.includes(currency.toUpperCase());
+            if (!is_valid_currency) return;
             subscription = api_base.api.onMessage().subscribe(validateApiAccounts);
         }
     }, []);

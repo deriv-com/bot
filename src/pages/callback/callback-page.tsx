@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { Callback } from '@deriv-com/auth-client';
@@ -85,6 +86,14 @@ const CallbackPage = () => {
                 }
 
                 // Make sure we have the currency in the URL when redirecting back
+                const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
+
+                const is_valid_currency =
+                    selected_currency && validCurrencies.includes(selected_currency.toUpperCase());
+                if (!is_valid_currency) {
+                    // If currency is invalid, set to first account currency if available, otherwise 'demo' or 'USD'
+                    selected_currency = firstAccountCurrency || (tokens.acct1?.startsWith('VR') ? 'demo' : 'USD');
+                }
                 window.location.replace(window.location.origin + `/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {
