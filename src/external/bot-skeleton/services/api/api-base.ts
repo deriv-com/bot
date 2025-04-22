@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import CommonStore from '@/stores/common-store';
 import { TAuthData } from '@/types/api-types';
+import { clearAuthData } from '@/utils/auth-utils';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import {
@@ -174,6 +175,10 @@ class APIBase {
                         if (Cookies.get('logged_state') === 'true') {
                             // Emit an event that can be caught by the application to retrigger OIDC authentication
                             globalObserver.emit('InvalidToken', { error });
+                        }
+                        if (Cookies.get('logged_state') === 'false') {
+                            // If the user is not logged out, we need to clear the local storage
+                            clearAuthData();
                         }
                         return error;
                     }
