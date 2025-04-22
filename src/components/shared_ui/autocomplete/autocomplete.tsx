@@ -336,8 +336,6 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         setFilteredItems(new_filtered_items);
     };
 
-    React.useEffect(() => {}, [should_show_list, is_list_visible, value, input_value, active_index]);
-
     return (
         <div data-testid={data_testid} className={classNames('dc-autocomplete', className)}>
             <div ref={input_wrapper_ref} className='dc-autocomplete__input-field'>
