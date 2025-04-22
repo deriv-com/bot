@@ -223,7 +223,6 @@ export default class ClientStore {
     }
 
     get should_hide_header() {
-        console.log(this.is_bot_allowed, this.is_eu, this.should_show_eu_error);
         return this.is_eu && this.should_show_eu_error;
     }
 
