@@ -15,7 +15,7 @@ type TMobileIconGuide = {
 };
 
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
-    const { load_modal, dashboard } = useStore();
+    const { load_modal, dashboard, client } = useStore();
     const { dashboard_strategies } = load_modal;
     const { active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
@@ -29,7 +29,9 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                 })}
             >
                 <div className='tab__dashboard__content'>
-                    <Announcements is_mobile={!isDesktop} is_tablet={isTablet} handleTabChange={handleTabChange} />
+                    {client.is_logged_in && (
+                        <Announcements is_mobile={!isDesktop} is_tablet={isTablet} handleTabChange={handleTabChange} />
+                    )}
                     <div className='quick-panel'>
                         <div
                             className={classNames('tab__dashboard__header', {
