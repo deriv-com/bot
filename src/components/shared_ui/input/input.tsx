@@ -113,26 +113,8 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         }, [initial_character_count]);
 
         const changeHandler: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = e => {
-            let input_value = e.target.value;
+            const input_value = e.target.value;
 
-            // Special handling for tick_count - completely prevent decimal input
-            if (e.target.name === 'tick_count') {
-                // Remove any decimal point and everything after it
-                const decimal_index = input_value.indexOf('.');
-                if (decimal_index !== -1) {
-                    input_value = input_value.substring(0, decimal_index);
-                }
-            }
-            // For other inputs, limit to 2 decimal places
-            else {
-                const decimal_index = input_value.indexOf('.');
-                if (decimal_index !== -1) {
-                    const decimal_part = input_value.substring(decimal_index + 1);
-                    if (decimal_part.length > 2) {
-                        input_value = input_value.substring(0, decimal_index + 3);
-                    }
-                }
-            }
             setCounter(input_value.length);
             e.target.value = input_value;
             props.onChange?.(e);

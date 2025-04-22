@@ -161,6 +161,9 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             },
         };
 
+        // Clear any existing errors for stake field when validating
+        setFieldError('stake', undefined);
+
         prev_proposal_payload.current = { ...request_proposal, boolean_tick_count: values.boolean_tick_count };
         try {
             const response = await requestProposalForQS(request_proposal, api_base.api);
@@ -203,6 +206,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 if (error_message.includes("Please enter a stake amount that's at least")) {
                     error_message = localize('Minimum tick count allowed is 1');
                 } else if (error_message.includes('Maximum stake allowed is')) {
+                    console.log('test max_stake', error_message);
                     error_message = localize('Maximum tick count allowed is 1000');
                 }
                 setFieldError('tick_count', error_message);
@@ -331,8 +335,11 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                             }
                         }
                     } else if (error_message.includes('Maximum stake allowed is')) {
+                        console.log('test max_stake', error_message);
                         const max_stake = quick_strategy?.additional_data?.max_stake || '1000';
-                        error_message = localize(`Maximum stake allowed is ${max_stake}`);
+                        if (!error_message) {
+                            error_message = localize(`Maximum stake allowed is ${max_stake}`);
+                        }
                     } else {
                         error_message = `${error_response?.error?.message}`;
                     }
@@ -362,6 +369,33 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         // If the user has manually entered a stake value, store it
         if (values.stake && userStakeValue.current === null) {
             userStakeValue.current = values.stake;
+        }
+
+        // Check if the current stake value is valid based on min/max constraints
+        const min_stake = quick_strategy?.additional_data?.min_stake || 1;
+        const max_stake = quick_strategy?.additional_data?.max_stake || 1000;
+        const current_stake = Number(values.stake);
+
+        // If the stake value is valid, clear any error messages
+        if (current_stake >= min_stake && current_stake <= max_stake) {
+            setFieldError('stake', undefined);
+
+            // Force update the UI to clear the error message
+            setTimeout(() => {
+                const input = document.querySelector('input[name="stake"]');
+                if (input) {
+                    const inputElement = input.closest('.qs__input');
+                    if (inputElement) {
+                        inputElement.classList.remove('error');
+                    }
+
+                    // Also clear any visible popover error messages
+                    const popover = input.closest('.qs__form__field__input')?.querySelector('.qs__warning-bubble');
+                    if (popover) {
+                        popover.removeAttribute('data-show');
+                    }
+                }
+            }, 0);
         }
 
         // Only call debounceChange if specific values have changed
@@ -400,6 +434,26 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     ]);
 
     const handleChange = async (value: string) => {
+        // Clear any existing errors when growth rate changes
+        setFieldError('stake', undefined);
+
+        // Force update the UI to clear the error message
+        setTimeout(() => {
+            const input = document.querySelector('input[name="stake"]');
+            if (input) {
+                const inputElement = input.closest('.qs__input');
+                if (inputElement) {
+                    inputElement.classList.remove('error');
+                }
+
+                // Also clear any visible popover error messages
+                const popover = input.closest('.qs__form__field__input')?.querySelector('.qs__warning-bubble');
+                if (popover) {
+                    popover.removeAttribute('data-show');
+                }
+            }
+        }, 0);
+
         setFieldValue?.(name, value);
         setValue(name, value);
     };

@@ -170,9 +170,9 @@ const QSInput: React.FC<TQSInput> = observer(
         useEffect(() => {
             // For max_stake field: show error if initial stake > max stake
             if (name === 'max_stake' && values.stake && values.max_stake) {
-                // Convert to numbers with fixed precision to handle floating point comparison correctly
-                const initial_stake = parseFloat(Number(values.stake).toFixed(2));
-                const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
+                // Convert to numbers without limiting decimal places
+                const initial_stake = parseFloat(String(values.stake));
+                const max_stake = parseFloat(String(values.max_stake));
 
                 if (initial_stake > max_stake) {
                     // If initial stake is greater than max stake, show error
@@ -330,14 +330,20 @@ const QSInput: React.FC<TQSInput> = observer(
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
             let value: number | string = 0;
-            const max_characters = 12;
+
+            // Don't restrict the number of characters
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const max_characters = undefined;
 
             // Clear any previous error message
             setErrorMessage(null);
 
+            // Check if the input is effectively zero (empty, '0', '0.', '0.00', etc.)
+            const is_effectively_zero = input_value === '' || input_value === '0' || /^0\.0*$/.test(input_value);
+
             // Allow empty string or partial input to support backspace
-            if (input_value === '' || input_value === '0' || input_value === '0.') {
-                // Show error message for empty values in fields
+            if (is_effectively_zero) {
+                // Show error message for effectively zero values in fields
                 if (name === 'stake' || name === 'max_stake') {
                     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
@@ -365,12 +371,8 @@ const QSInput: React.FC<TQSInput> = observer(
                 return;
             }
 
-            if (max_characters && input_value.length >= max_characters) {
-                value = input_value.slice(0, max_characters);
-                value = is_number ? Number(value) : value;
-            } else {
-                value = is_number ? Number(input_value) : input_value;
-            }
+            // Don't restrict the input value length
+            value = is_number ? parseFloat(input_value) : input_value;
 
             // For tick_count field or duration field with ticks, ensure we only allow integer values
             if (
@@ -395,6 +397,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     if (numValue < min_stake) {
                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                     } else if (numValue > max_stake) {
+                        console.log('test max_stake', max_stake);
                         // Allow entering any value but show error message
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                     }
@@ -418,6 +421,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     if (numValue < min_stake) {
                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                     } else if (numValue > max_stake) {
+                        console.log('test max_stake', max_stake);
                         // Allow entering any value but show error message
                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                     }
@@ -461,13 +465,18 @@ const QSInput: React.FC<TQSInput> = observer(
 
                     // Add useEffect to update error message when additional_data changes
                     useEffect(() => {
-                        // If the field is empty and it's a stake field, show the minimum stake error
-                        if (
-                            (name === 'stake' || name === 'max_stake') &&
-                            (!field.value || field.value === '0' || field.value === '0.')
-                        ) {
-                            const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
-                            setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                        // If the field is effectively zero and it's a stake field, show the minimum stake error
+                        if (name === 'stake' || name === 'max_stake') {
+                            // Check if the input is effectively zero (empty, '0', '0.', '0.00', etc.)
+                            const is_effectively_zero =
+                                !field.value ||
+                                field.value === '0' ||
+                                (typeof field.value === 'string' && /^0\.0*$/.test(field.value));
+
+                            if (is_effectively_zero) {
+                                const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 1;
+                                setErrorMessage(`Minimum stake allowed is ${min_stake}`);
+                            }
                         }
                     }, [quick_strategy?.additional_data, field.value]);
                     return (
@@ -687,8 +696,12 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.target.value;
 
-                                                // For empty values, show error message but don't reset
-                                                if (value === '' || value === '0' || value === '0.') {
+                                                // Check if the input is effectively zero (empty, '0', '0.', '0.00', etc.)
+                                                const is_effectively_zero =
+                                                    value === '' || value === '0' || /^0\.0*$/.test(value);
+
+                                                // For effectively zero values, show error message but don't reset
+                                                if (is_effectively_zero) {
                                                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                 } else {
                                                     // For non-empty values, validate and show appropriate message
@@ -703,6 +716,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     if (numValue < min_stake) {
                                                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                     } else if (numValue > max_stake) {
+                                                        console.log('test max_stake', max_stake);
                                                         setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                                                     } else {
                                                         setErrorMessage(null);
@@ -772,20 +786,16 @@ const QSInput: React.FC<TQSInput> = observer(
                                         }}
                                         placeholder={is_exclusive_field ? '0.00' : ''}
                                         bottom_label={is_exclusive_field ? currency : ''}
-                                        max_characters={2}
-                                        maxLength={2}
-                                        inputMode={
-                                            name === 'tick_count' ||
-                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
-                                                ? 'numeric'
-                                                : undefined
-                                        }
+                                        // Remove restrictions on number of characters
+                                        max_characters={undefined}
+                                        maxLength={undefined}
                                         pattern={
                                             name === 'tick_count' ||
                                             (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
                                                 ? '[0-9]*'
                                                 : undefined
                                         }
+                                        step='any' // Allow any decimal precision for all currencies
                                         onKeyPress={
                                             name === 'tick_count' ||
                                             (name === 'duration' && quick_strategy.form_data?.durationtype === 's')
@@ -796,6 +806,21 @@ const QSInput: React.FC<TQSInput> = observer(
                                                   }
                                                 : undefined
                                         }
+                                        // Remove any restrictions on decimal input for cryptocurrency fields
+                                        inputMode={
+                                            (name === 'stake' ||
+                                                name === 'max_stake' ||
+                                                name === 'profit' ||
+                                                name === 'loss' ||
+                                                name === 'take_profit') &&
+                                            (currency === 'BTC' || currency === 'ETH' || currency === 'LTC')
+                                                ? 'decimal'
+                                                : name === 'tick_count' ||
+                                                    (name === 'duration' &&
+                                                        quick_strategy.form_data?.durationtype === 't')
+                                                  ? 'numeric'
+                                                  : undefined
+                                        }
                                         onKeyUp={e => {
                                             // Check value on each keystroke for stake field
                                             if (name === 'stake' || name === 'max_stake') {
@@ -805,8 +830,12 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     (quick_strategy?.additional_data as any)?.max_stake || 1000;
                                                 const value = e.currentTarget.value;
 
-                                                // For empty values, show error message but don't reset
-                                                if (value === '' || value === '0' || value === '0.') {
+                                                // Check if the input is effectively zero (empty, '0', '0.', '0.00', etc.)
+                                                const is_effectively_zero =
+                                                    value === '' || value === '0' || /^0\.0*$/.test(value);
+
+                                                // For effectively zero values, show error message but don't reset
+                                                if (is_effectively_zero) {
                                                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                     return;
                                                 }
@@ -830,6 +859,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                 } else if (numValue > max_stake) {
                                                     // Allow entering any value but show error message for maximum
+                                                    console.log('test max_stake', max_stake);
                                                     setErrorMessage(`Maximum stake allowed is ${max_stake}`);
                                                 }
 
