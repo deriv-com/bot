@@ -103,71 +103,65 @@
             flex-direction: column;
             margin-bottom: 2.2rem;
         }
+    }
+}
 
-        &:last-child {
-            @include mobile-or-tablet-screen {
-                // margin-bottom: 15rem;
-            }
+&__placeholder {
+    @include flex-center;
+
+    background: var(--checkbox-disabled-grey);
+    margin-bottom: 0.8rem;
+    height: 16rem;
+    width: 28rem;
+    background-size: 100% 100%;
+
+    &__description {
+        width: 28rem;
+
+        @include mobile-or-tablet-screen {
+            text-align: start;
+            width: calc(100% - 14.8rem);
         }
     }
 
-    &__placeholder {
-        @include flex-center;
+    @include mobile-or-tablet-screen {
+        height: 8.7rem;
+        width: 14.8rem;
+        margin: 0 0.8rem 0.8rem 0;
+    }
 
-        background: var(--checkbox-disabled-grey);
-        margin-bottom: 0.8rem;
-        height: 16rem;
-        width: 28rem;
-        background-size: 100% 100%;
-
-        &__description {
-            width: 28rem;
-
-            @include mobile-or-tablet-screen {
-                text-align: start;
-                width: calc(100% - 14.8rem);
-            }
-        }
+    &__tours {
+        height: 13.5rem;
+        background-size: contain;
+        margin: 0 0.8rem 0.8rem 0;
+        width: 21.5rem;
+        cursor: pointer;
 
         @include mobile-or-tablet-screen {
             height: 8.7rem;
             width: 14.8rem;
-            margin: 0 0.8rem 0.8rem 0;
+        }
+    }
+
+    &__button-group {
+        @include flex-center;
+
+        padding: 1.6rem 3.2rem;
+        border-radius: 1rem;
+        cursor: pointer;
+        background-color: rgb(0 0 0 / 50%);
+
+        &--play {
+            filter: invert(1);
         }
 
-        &__tours {
-            height: 13.5rem;
-            background-size: contain;
-            margin: 0 0.8rem 0.8rem 0;
-            width: 21.5rem;
-            cursor: pointer;
-
-            @include mobile-or-tablet-screen {
-                height: 8.7rem;
-                width: 14.8rem;
-            }
+        @include mobile-or-tablet-screen {
+            padding: 0.8rem 1.6rem;
         }
+    }
 
-        &__button-group {
-            @include flex-center;
-
-            padding: 1.6rem 3.2rem;
-            border-radius: 1rem;
-            cursor: pointer;
-            background-color: rgb(0 0 0 / 50%);
-
-            &--play {
-                filter: invert(1);
-            }
-
-            @include mobile-or-tablet-screen {
-                padding: 0.8rem 1.6rem;
-            }
-        }
-
-        &--disabled {
-            pointer-events: none;
-        }
+    &--disabled {
+        pointer-events: none;
     }
 }
 
@@ -185,8 +179,6 @@
 
             @include mobile-or-tablet-screen {
                 width: 100%;
-
-                // margin-bottom: 15rem;
             }
         }
 
