@@ -3,9 +3,9 @@ export const print = (message: string) => {
 };
 
 /**
- * Checks if the current site is a .com domain or localhost
- * @returns {boolean} True if the site is a .com domain or localhost, false otherwise
+ * Checks if the current site is a .com, .be, .me domain or localhost
+ * @returns {boolean} True if the site is a .com, .be, .me domain or localhost, false otherwise
  */
 export const isDotComSite = (): boolean => {
-    return /\.com$/i.test(window.location.hostname) || window.location.hostname === 'localhost';
+    return /\.(com|be|me)$/i.test(window.location.hostname) || window.location.hostname === 'localhost';
 };
