@@ -166,25 +166,25 @@ class APIBase {
             try {
                 const { authorize, error } = await this.api.authorize(this.token);
                 if (error) {
-                    // Check if the error is due to an invalid token
-                    if (error.code === 'InvalidToken') {
-                        // Make sure we set isAuthorizing to false before returning
+                    try {
+                        if (error.code === 'InvalidToken') {
+                            setIsAuthorizing(false);
+                            if (Cookies.get('logged_state') === 'true') {
+                                globalObserver.emit('InvalidToken', { error });
+                            }
+                            if (Cookies.get('logged_state') === 'false') {
+                                clearAuthData();
+                            }
+                            return error;
+                        }
                         setIsAuthorizing(false);
-
-                        // Only emit the InvalidToken event if logged_state is true
-                        if (Cookies.get('logged_state') === 'true') {
-                            // Emit an event that can be caught by the application to retrigger OIDC authentication
-                            globalObserver.emit('InvalidToken', { error });
-                        }
-                        if (Cookies.get('logged_state') === 'false') {
-                            // If the user is not logged out, we need to clear the local storage
-                            clearAuthData();
-                        }
+                        return error;
+                    } catch (errorHandlingError) {
+                        console.error('Error while handling API error:', errorHandlingError);
+                        setIsAuthorizing(false);
+                        clearAuthData();
                         return error;
                     }
-                    // Make sure we set isAuthorizing to false for other errors too
-                    setIsAuthorizing(false);
-                    return error;
                 }
 
                 if (this.has_active_symbols) {
