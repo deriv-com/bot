@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
+import AuthLoadingWrapper from '@/components/auth-loading-wrapper';
 import useLiveChat from '@/components/chat/useLiveChat';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { getUrlBase } from '@/components/shared';
@@ -181,7 +182,7 @@ const AppContent = observer(() => {
     return is_loading ? (
         <ChunkLoader message={localize('Initializing your account...')} />
     ) : (
-        <>
+        <AuthLoadingWrapper>
             <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
                 <BlocklyLoading />
                 <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
@@ -194,7 +195,7 @@ const AppContent = observer(() => {
                     <TncStatusUpdateModal />
                 </div>
             </ThemeProvider>
-        </>
+        </AuthLoadingWrapper>
     );
 });
 
