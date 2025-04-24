@@ -157,56 +157,54 @@ class APIBase {
 
     async authorizeAndSubscribe() {
         const token = V2GetActiveToken();
-        if (token) {
-            this.token = token;
-            this.account_id = V2GetActiveClientId() ?? '';
+        if (!token || !this.api) return;
 
-            if (!this.api) return;
+        console.log('test Authorizing with token: 1', token);
+        this.token = token;
+        this.account_id = V2GetActiveClientId() ?? '';
+        setIsAuthorizing(true);
 
-            try {
-                const { authorize, error } = await this.api.authorize(this.token);
-                if (error) {
-                    try {
-                        if (error.code === 'InvalidToken') {
-                            setIsAuthorizing(false);
-                            if (Cookies.get('logged_state') === 'true') {
-                                globalObserver.emit('InvalidToken', { error });
-                            }
-                            if (Cookies.get('logged_state') === 'false') {
-                                clearAuthData();
-                            }
-                            return error;
-                        }
-                        setIsAuthorizing(false);
-                        return error;
-                    } catch (errorHandlingError) {
-                        console.error('Error while handling API error:', errorHandlingError);
-                        setIsAuthorizing(false);
+        try {
+            const { authorize, error } = await this.api.authorize(this.token);
+            console.log('test Authorizing with token: 2', authorize, error);
+            if (error) {
+                if (error.code === 'InvalidToken') {
+                    if (Cookies.get('logged_state') === 'true') {
+                        globalObserver.emit('InvalidToken', { error });
+                    } else {
                         clearAuthData();
-                        return error;
                     }
-                }
-
-                if (this.has_active_symbols) {
-                    this.toggleRunButton(false);
                 } else {
-                    this.active_symbols_promise = this.getActiveSymbols();
+                    console.error('Authorization error:', error);
                 }
-                this.account_info = authorize;
-                const filtered_accounts = authorize?.account_list || [];
-                setAccountList(filtered_accounts);
-                setAuthData(authorize);
-                setIsAuthorized(true);
-                this.is_authorized = true;
-                this.subscribe();
-                this.getSelfExclusion();
-            } catch (e) {
-                this.is_authorized = false;
-                setIsAuthorized(false);
-                globalObserver.emit('Error', e);
-            } finally {
-                setIsAuthorizing(false);
+                return error;
             }
+
+            console.log('test Authorizing with token: 3', authorize);
+            this.account_info = authorize;
+            setAccountList(authorize?.account_list || []);
+            setAuthData(authorize);
+            setIsAuthorized(true);
+            this.is_authorized = true;
+
+            if (this.has_active_symbols) {
+                this.toggleRunButton(false);
+            } else {
+                this.active_symbols_promise = this.getActiveSymbols();
+            }
+            console.log('test Authorizing with token: 4', this);
+            this.subscribe();
+            this.getSelfExclusion();
+        } catch (e) {
+            console.log('test Authorizing with token: 5', e);
+            console.error('Authorization failed:', e);
+            this.is_authorized = false;
+            clearAuthData();
+            setIsAuthorized(false);
+            globalObserver.emit('Error', e);
+        } finally {
+            console.log('test Authorizing with token: 6');
+            setIsAuthorizing(false);
         }
     }
 

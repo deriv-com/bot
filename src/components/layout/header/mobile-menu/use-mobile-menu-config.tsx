@@ -101,7 +101,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
             },
             {
                 as: 'a',
-                href: getAccountUrl(standalone_routes.personal_details),
+                href: getAccountUrl(standalone_routes.account_settings),
                 label: localize('Account Settings'),
                 LeftComponent: LegacyProfileSmIcon,
             },
