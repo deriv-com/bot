@@ -6,7 +6,7 @@ type AuthLoadingWrapperProps = {
     children: React.ReactNode;
 };
 
-const AuthLoadingWrapper: React.FC<AuthLoadingWrapperProps> = ({ children }) => {
+const AuthLoadingWrapper = ({ children }: AuthLoadingWrapperProps) => {
     const { isSingleLoggingIn } = useOauth2();
 
     if (isSingleLoggingIn) {
