@@ -4,6 +4,7 @@ import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
+import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
@@ -33,6 +34,8 @@ const AppHeader = observer(() => {
     const { localize } = useTranslations();
 
     const { isSingleLoggingIn } = useOauth2();
+
+    const hub_enabled_country_list = useGrowthbookGetFeatureValue({ featureFlag: 'hub_enabled_country_list' });
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -77,8 +80,11 @@ const AppHeader = observer(() => {
                                 has_effect
                                 text={localize('Manage funds')}
                                 onClick={() => {
-                                    const redirect_url = new URL(standalone_routes.recent_transactions);
+                                    let redirect_url = new URL(standalone_routes.wallets_transfer);
 
+                                    if (hub_enabled_country_list) {
+                                        redirect_url = new URL(standalone_routes.recent_transactions);
+                                    }
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
