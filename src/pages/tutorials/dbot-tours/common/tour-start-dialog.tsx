@@ -54,13 +54,8 @@ const TourStartDialog = observer(() => {
                     <div>
                         <Localize
                             key={0}
-                            i18n_default_text={`Let's take a quick tour to discover how Deriv Bot works.<1 />Press <0>Start</0> to begin.`}
-                            components={[<strong key={0} />, <br key={1} />]}
-                        />
-                        <Localize
-                            key={0}
-                            i18n_default_text={`Hello World`}
-                            components={[<strong key={0} />, <br key={1} />]}
+                            i18n_default_text={`Let’s take a quick tour to discover how Deriv Bot works. Press <0>Start</0> to begin.`}
+                            components={[<strong key={0} />]}
                         />
                     </div>
                 ) : (
