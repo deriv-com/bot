@@ -68,12 +68,11 @@ const getDerivDomain = (service: Service): string => {
  * Uses template literals to compose URLs dynamically.
  */
 export const standalone_routes = {
-    account_settings: `${getDerivDomain('derivHub')}/tradershub/account`,
+    account_settings: `${getDerivDomain('derivHub')}/accounts`,
     bot: `${window.location.origin}`,
     cashier: `${getDerivDomain('derivApp')}/cashier/`,
     cashier_deposit: `${getDerivDomain('derivApp')}/cashier/deposit`,
     cashier_p2p: `${getDerivDomain('derivApp')}/cashier/p2p`,
-    cfds: `${getDerivDomain('derivHub')}/tradershub/cfds`,
     contract: `${getDerivDomain('derivApp')}/contract/:contract_id`,
     personal_details: `${getDerivDomain('derivApp')}/account/personal-details`,
     positions: `${getDerivDomain('derivApp')}/reports/positions`,
@@ -84,7 +83,8 @@ export const standalone_routes = {
     statement: `${getDerivDomain('derivApp')}/reports/statement`,
     trade: `${getDerivDomain('derivApp')}/dtrader`,
     traders_hub: getDerivDomain('derivApp'),
-    recent_transactions: `${getDerivDomain('derivHub')}/tradershub/wallets/recent-transactions`,
+    traders_hub_lowcode: getDerivDomain('derivHub'),
+    recent_transactions: `${getDerivDomain('derivHub')}/tradershub/redirect?action=redirect_to&redirect_to=wallet`,
     wallets_transfer: `${getDerivDomain('derivApp')}/wallet/account-transfer`,
     signup: `${getDerivDomain('derivHub')}/tradershub/signup`,
     deriv_com: getDerivDomain('derivCom'),
