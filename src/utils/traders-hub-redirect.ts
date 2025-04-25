@@ -1,6 +1,4 @@
 import { standalone_routes } from '@/components/shared';
-import { deriv_urls } from '@/components/shared/utils/url/constants';
-import { getPlatformFromUrl } from '@/components/shared/utils/url/helpers';
 import { Analytics } from '@deriv-com/analytics';
 
 /**
@@ -8,15 +6,19 @@ import { Analytics } from '@deriv-com/analytics';
  * @returns The base Trader's Hub URL
  */
 export const getBaseTraderHubUrl = (): string => {
-    const { is_staging_deriv_app, is_test_link, is_test_deriv_app } = getPlatformFromUrl();
-    // Get the domain from deriv_urls (e.g., deriv.com, deriv.me, deriv.be)
-    const domain = deriv_urls.DERIV_HOST_NAME;
+    const hostname = window.location.hostname;
 
-    // Determine if we're in a staging or testing environment
-    const is_staging_or_test = is_staging_deriv_app || is_test_link || is_test_deriv_app;
+    const domain = 'deriv.com';
 
-    // Construct the appropriate hub URL
-    return is_staging_or_test ? `https://staging-hub.${domain}` : `https://hub.${domain}`;
+    const is_staging = hostname.includes('staging');
+    const is_test =
+        hostname.includes('localhost') || hostname.includes('test') || /^\d+\.\d+\.\d+\.\d+$/.test(hostname);
+
+    if (is_staging || is_test) {
+        return `https://staging-hub.${domain}`;
+    }
+
+    return `https://hub.${domain}`;
 };
 
 /**
