@@ -29,7 +29,7 @@ export const STRATEGY_1_3_2_6 = (): TDescriptionItem[] => [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade.'
+                '<strong>Initial stake:</strong> The starting trade amount. Stake is reverted to this amount when a session completes or after a losing trade.'
             ),
         ],
     },
