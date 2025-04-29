@@ -166,7 +166,6 @@ class APIBase {
 
         try {
             const { authorize, error } = await this.api.authorize(this.token);
-            console.log('test Authorizing with token: 2', authorize, error);
             if (error) {
                 if (error.code === 'InvalidToken') {
                     if (Cookies.get('logged_state') === 'true') {
@@ -180,7 +179,6 @@ class APIBase {
                 return error;
             }
 
-            console.log('test Authorizing with token: 3', authorize);
             this.account_info = authorize;
             setAccountList(authorize?.account_list || []);
             setAuthData(authorize);
@@ -192,18 +190,15 @@ class APIBase {
             } else {
                 this.active_symbols_promise = this.getActiveSymbols();
             }
-            console.log('test Authorizing with token: 4', this);
             this.subscribe();
             this.getSelfExclusion();
         } catch (e) {
-            console.log('test Authorizing with token: 5', e);
             console.error('Authorization failed:', e);
             this.is_authorized = false;
             clearAuthData();
             setIsAuthorized(false);
             globalObserver.emit('Error', e);
         } finally {
-            console.log('test Authorizing with token: 6');
             setIsAuthorizing(false);
         }
     }

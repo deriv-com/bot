@@ -23,7 +23,6 @@ const getSelectedCurrency = (
     const firstAccountKey = tokens.acct1;
     const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency || null;
 
-    console.log('Selected currency:', currency);
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
     return currency && validCurrencies.includes(currency.toUpperCase())
         ? currency
