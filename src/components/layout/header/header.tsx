@@ -35,7 +35,7 @@ const AppHeader = observer(() => {
 
     const { isSingleLoggingIn } = useOauth2();
 
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list_bot' });
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {

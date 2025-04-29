@@ -22,7 +22,7 @@ type TAccountSwitcherWalletMobile = {
 export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
     const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
     const { client } = useStore() ?? {};
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list_bot' });
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
