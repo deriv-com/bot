@@ -223,7 +223,7 @@ export default class ClientStore {
     }
 
     get should_hide_header() {
-        return this.is_eu && this.should_show_eu_error;
+        return (this.is_eu && this.should_show_eu_error) || (!this.is_logged_in && this.is_eu_country);
     }
 
     get account_open_date() {
