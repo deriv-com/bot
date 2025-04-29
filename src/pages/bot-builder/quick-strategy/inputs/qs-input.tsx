@@ -80,8 +80,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 const initial_stake = parseFloat(Number(values.stake).toFixed(2));
                 const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
 
-                console.log(`useEffect max_stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
-
                 if (initial_stake > max_stake) {
                     // If initial stake is greater than max stake, show error
                     setErrorMessage(`Initial stake cannot be greater than max stake`);
@@ -111,8 +109,6 @@ const QSInput: React.FC<TQSInput> = observer(
                 // Convert to numbers with fixed precision to handle floating point comparison correctly
                 const initial_stake = parseFloat(Number(values.stake).toFixed(2));
                 const max_stake = parseFloat(Number(values.max_stake).toFixed(2));
-
-                console.log(`useEffect stake comparing: initial_stake=${initial_stake}, max_stake=${max_stake}`);
 
                 if (initial_stake > max_stake) {
                     // If initial stake is greater than max stake, update the max_stake field's error state

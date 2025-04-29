@@ -35,7 +35,7 @@ const AppHeader = observer(() => {
 
     const { isSingleLoggingIn } = useOauth2();
 
-    const hub_enabled_country_list = useGrowthbookGetFeatureValue({ featureFlag: 'hub_enabled_country_list' });
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -81,8 +81,10 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
-
-                                    if (hub_enabled_country_list) {
+                                    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
+                                        client?.residence
+                                    );
+                                    if (is_hub_enabled_country) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
                                     }
                                     if (currency) {
