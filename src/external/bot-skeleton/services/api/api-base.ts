@@ -159,7 +159,6 @@ class APIBase {
         const token = V2GetActiveToken();
         if (!token || !this.api) return;
 
-        console.log('test Authorizing with token: 1', token);
         this.token = token;
         this.account_id = V2GetActiveClientId() ?? '';
         setIsAuthorizing(true);
