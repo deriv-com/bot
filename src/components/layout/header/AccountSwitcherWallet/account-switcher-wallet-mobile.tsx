@@ -78,7 +78,8 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
             let redirect_url = new URL(standalone_routes.wallets_transfer);
 
             // Check if the user's country is in the hub-enabled country list
-            if (featureFlagValue?.hub_enabled_country_list?.includes(client?.residence)) {
+            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
+            if (is_hub_enabled_country) {
                 redirect_url = new URL(standalone_routes.recent_transactions);
             }
 
