@@ -4,6 +4,8 @@ import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import MobileDialog from '@/components/shared_ui/mobile-dialog';
 import Text from '@/components/shared_ui/text';
+import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
 import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -19,6 +21,8 @@ type TAccountSwitcherWalletMobile = {
 
 export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
     const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { client } = useStore() ?? {};
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list_bot' });
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
@@ -71,7 +75,12 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
             window.location.assign(wallet_url);
         } else {
             // Fallback to the default wallet transfer page if conditions are not met
-            const redirect_url = new URL(standalone_routes.wallets_transfer);
+            let redirect_url = new URL(standalone_routes.wallets_transfer);
+
+            // Check if the user's country is in the hub-enabled country list
+            if (featureFlagValue?.hub_enabled_country_list?.includes(client?.residence)) {
+                redirect_url = new URL(standalone_routes.recent_transactions);
+            }
 
             // Add the account parameter to the URL
             if (is_virtual) {

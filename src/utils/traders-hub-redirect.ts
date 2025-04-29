@@ -74,7 +74,7 @@ export const getWalletUrl = (): string => {
  */
 export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
     // Check if the country is in the enabled list from GrowthBook
-    const is_country_enabled = !!Analytics?.getFeatureValue('hub_enabled_country_list', {});
+    const is_country_enabled = !!Analytics?.getFeatureValue('hub_enabled_country_list_bot', {});
 
     // User should be redirected if they have wallets and their country is enabled
     return has_wallet && is_country_enabled;
