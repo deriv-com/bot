@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import { generateOAuthURL } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
 import MobileWrapper from '@/components/shared_ui/mobile-wrapper';
@@ -12,6 +13,7 @@ import { DBOT_TABS, TAB_IDS } from '@/constants/bot-contents';
 import { api_base, updateWorkspaceName } from '@/external/bot-skeleton';
 import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
+import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import {
@@ -20,6 +22,7 @@ import {
     LabelPairedPuzzlePieceTwoCaptionBoldIcon,
 } from '@deriv/quill-icons/LabelPaired';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons/Legacy';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import RunPanel from '../../components/run-panel';
@@ -54,7 +57,9 @@ const AppWrapper = observer(() => {
         stopBot,
     } = run_panel;
     const { is_open } = quick_strategy;
-    const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
+    const { cancel_button_text, ok_button_text, title, message, dismissable, is_closed_on_cancel } = dialog_options as {
+        [key: string]: string;
+    };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
@@ -150,6 +155,34 @@ const AppWrapper = observer(() => {
         [active_tab]
     );
 
+    const { isOAuth2Enabled } = useOauth2();
+    const handleLoginGeneration = async () => {
+        if (!isOAuth2Enabled) {
+            window.location.replace(generateOAuthURL());
+        } else {
+            const getQueryParams = new URLSearchParams(window.location.search);
+            const currency = getQueryParams.get('account') ?? '';
+            const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+            try {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    ...(query_param_currency
+                        ? {
+                              state: {
+                                  account: query_param_currency,
+                              },
+                          }
+                        : {}),
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error(error);
+            }
+        }
+    };
     return (
         <React.Fragment>
             <div className='main'>
@@ -260,6 +293,9 @@ const AppWrapper = observer(() => {
                 onConfirm={onOkButtonClick || onCloseDialog}
                 portal_element_id='modal_root'
                 title={title}
+                login={handleLoginGeneration}
+                dismissable={dismissable} // Prevents closing on outside clicks
+                is_closed_on_cancel={is_closed_on_cancel}
             >
                 {message}
             </Dialog>

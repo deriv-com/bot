@@ -1,5 +1,6 @@
 /* eslint-disable no-confusing-arrow */
 import { Map } from 'immutable';
+import { clearAuthData } from '@/utils/auth-utils';
 import { getLast, historyToTicks } from '../../utils/binary-utils';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
@@ -256,7 +257,7 @@ export default class TicksService {
     requestTicks(options) {
         const { symbol, granularity, style } = options;
         const request_object = {
-            ticks_history: symbol,
+            ticks_history: symbol === 'na' ? 'R_100' : symbol,
             subscribe: 1,
             end: 'latest',
             count: 1000,
@@ -280,7 +281,12 @@ export default class TicksService {
                         resolve(candles);
                     }
                 })
-                .catch(reject);
+                .catch(error => {
+                    if (error?.code === 'InvalidSymbol') {
+                        clearAuthData();
+                    }
+                    reject(error);
+                });
         });
     }
 
