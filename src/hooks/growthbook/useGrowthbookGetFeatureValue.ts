@@ -16,6 +16,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
     const [featureFlagValue, setFeatureFlagValue] = useState(
         Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
+
     const { isGBLoaded } = useIsGrowthbookIsLoaded();
     const isMounted = useIsMounted();
 

@@ -1,7 +1,9 @@
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Dialog from '@/components/shared_ui/dialog';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
+import useIsTNCNeeded from '@/hooks/useIsTNCNeeded';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -30,24 +32,42 @@ const TourStartDialog = observer(() => {
     const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
     const tour_dialog_info = getTourDialogInfo(!isDesktop);
     const tour_dialog_action = getTourDialogAction(!isDesktop);
+    const [is_tour_open, setIsTourOpen] = React.useState(false);
+    const is_tnc_needed = useIsTNCNeeded();
+
+    React.useEffect(() => {
+        if (is_tnc_needed) {
+            setIsTourOpen(false);
+        } else {
+            if (is_tour_dialog_visible) {
+                setIsTourOpen(true);
+            } else {
+                setIsTourOpen(false);
+            }
+        }
+    }, [is_tnc_needed, is_tour_dialog_visible]);
 
     const getTourContent = () => {
         return (
             <>
                 {onboard_tour ? (
-                    <Localize
-                        key={0}
-                        i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
-                        components={[<strong key={0} />]}
-                    />
+                    <div>
+                        <Localize
+                            key={0}
+                            i18n_default_text={`Let’s take a quick tour to discover how Deriv Bot works. Press <0>Start</0> to begin.`}
+                            components={[<strong key={0} />]}
+                        />
+                    </div>
                 ) : (
                     <>
                         <div className='dc-dialog__content__description__text'>{tour_dialog_info}</div>
-                        <div className='dc-dialog__content__description__text'>{tour_dialog_action}</div>
+                        {tour_dialog_action && (
+                            <div className='dc-dialog__content__description__text'>{tour_dialog_action}</div>
+                        )}
                         <div className='dc-dialog__content__description__text'>
                             <Localize
                                 key={0}
-                                i18n_default_text={'Note: You can also find this tutorial in the <0>Tutorials</0> tab.'}
+                                i18n_default_text={'Note: You can find this tutorial in the <0>Tutorials</0> tab.'}
                                 components={[<strong key={0} />]}
                             />
                         </div>
@@ -70,7 +90,7 @@ const TourStartDialog = observer(() => {
     return (
         <div>
             <Dialog
-                is_visible={is_tour_dialog_visible}
+                is_visible={is_tour_open}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour()}
                 confirm_button_text={localize('Start')}

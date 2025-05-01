@@ -16,6 +16,7 @@ export const useInvalidTokenHandler = (): { unregisterHandler: () => void } => {
     const { retriggerOAuth2Login } = useOauth2();
 
     const handleInvalidToken = () => {
+        // Clear localStorage similar to client.logout
         retriggerOAuth2Login();
     };
 
