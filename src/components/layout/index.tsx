@@ -5,7 +5,6 @@ import { Outlet } from 'react-router-dom';
 import { api_base } from '@/external/bot-skeleton';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
-import { isDotComSite } from '../../utils';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
 import Footer from './footer';
 import AppHeader from './header';
@@ -124,7 +123,7 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
         if (
-            (isDotComSite() && isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
+            (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
