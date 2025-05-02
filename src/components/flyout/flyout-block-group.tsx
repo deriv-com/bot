@@ -27,7 +27,19 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 className='flyout__button-add flyout__button-add--hide'
                 has_effect
                 is_plus
-                onClick={() => window.Blockly.derivWorkspace.addBlockNode(block_node)}
+                onClick={() => {
+                    if (block_type === 'trade_definition') {
+                        const has_trade_definition = window.Blockly.derivWorkspace
+                            .getAllBlocks()
+                            .some(block => block.type === 'trade_definition');
+
+                        if (has_trade_definition) {
+                            window.Blockly.derivWorkspace.addBlockNode(null);
+                            return;
+                        }
+                    }
+                    window.Blockly.derivWorkspace.addBlockNode(block_node);
+                }}
                 type='button'
             >
                 <LabelPairedPlusLgFillIcon height='24px' width='24px' fill='var(--text-general)' />
