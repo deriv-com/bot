@@ -420,6 +420,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                         {...field}
                                         disabled={disabled}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
+                                        onWheel={e => {
+                                            // Prevent scrolling from changing the input value
+                                            e.currentTarget.blur();
+                                            e.preventDefault();
+                                        }}
                                         onBlur={e => {
                                             // Don't reset empty values, just show error message
                                             if (name === 'stake' || name === 'max_stake') {
