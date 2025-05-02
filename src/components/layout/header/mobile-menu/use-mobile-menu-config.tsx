@@ -3,6 +3,7 @@ import Livechat from '@/components/chat/Livechat';
 import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetAvailable';
 import { standalone_routes } from '@/components/shared';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
+import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useIsIntercomAvailable } from '@/hooks/useIntercom';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
@@ -57,6 +58,9 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const is_virtual = client?.is_virtual;
     const currency = client?.getCurrency?.();
     const is_logged_in = client?.is_logged_in;
+    const accounts = client?.accounts || {};
+
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     // Function to add account parameter to URLs
     const getAccountUrl = (url: string) => {
@@ -83,6 +87,18 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
         }
     };
 
+    const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
+    // Determine the appropriate redirect URL based on user's country
+    const getRedirectUrl = () => {
+        // Check if the user's country is in the hub-enabled country list
+        const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
+
+        if (has_wallet && is_hub_enabled_country) {
+            return getAccountUrl(standalone_routes.account_settings);
+        }
+        return getAccountUrl(standalone_routes.personal_details);
+    };
+
     const menuConfig = useMemo(
         (): TMenuConfig[] => [
             [
@@ -107,7 +123,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                 },
                 {
                     as: 'a',
-                    href: getAccountUrl(standalone_routes.account_settings),
+                    href: getRedirectUrl(),
                     label: localize('Account Settings'),
                     LeftComponent: LegacyProfileSmIcon,
                 },
