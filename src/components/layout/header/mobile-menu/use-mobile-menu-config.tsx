@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react';
+import { ComponentProps, ReactNode, useMemo } from 'react';
 import Livechat from '@/components/chat/Livechat';
 import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetAvailable';
 import { standalone_routes } from '@/components/shared';
@@ -53,6 +53,11 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const icAvailable = useIsIntercomAvailable();
 
+    // Get current account information for dependency tracking
+    const is_virtual = client?.is_virtual;
+    const currency = client?.getCurrency?.();
+    const is_logged_in = client?.is_logged_in;
+
     // Function to add account parameter to URLs
     const getAccountUrl = (url: string) => {
         try {
@@ -78,104 +83,107 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
         }
     };
 
-    const menuConfig: TMenuConfig[] = [
-        [
-            {
-                as: 'a',
-                href: standalone_routes.deriv_com,
-                label: localize('Deriv.com'),
-                LeftComponent: BrandDerivLogoCoralIcon,
-            },
-            {
-                as: 'a',
-                href: standalone_routes.deriv_app,
-                label: localize("Trader's Hub"),
-                LeftComponent: LegacyHomeOldIcon,
-            },
-            {
-                as: 'a',
-                href: standalone_routes.bot,
-                label: localize('Trade'),
-                LeftComponent: LegacyChartsIcon,
-                isActive: true, // Always highlight Trade as active
-            },
-            {
-                as: 'a',
-                href: getAccountUrl(standalone_routes.account_settings),
-                label: localize('Account Settings'),
-                LeftComponent: LegacyProfileSmIcon,
-            },
-            {
-                as: 'a',
-                href: standalone_routes.cashier_deposit,
-                label: localize('Cashier'),
-                LeftComponent: LegacyCashierIcon,
-            },
-            client?.is_logged_in && {
-                as: 'button',
-                label: localize('Reports'),
-                LeftComponent: LegacyReportsIcon,
-                submenu: 'reports',
-                onClick: () => {},
-            },
-            {
-                as: 'button',
-                label: localize('Dark theme'),
-                LeftComponent: LegacyTheme1pxIcon,
-                RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
-            },
-        ].filter(Boolean) as TMenuConfig,
-        [
-            {
-                as: 'a',
-                href: standalone_routes.help_center,
-                label: localize('Help center'),
-                LeftComponent: LegacyHelpCentreIcon,
-            },
-            {
-                as: 'a',
-                href: standalone_routes.account_limits,
-                label: localize('Account limits'),
-                LeftComponent: LegacyAccountLimitsIcon,
-            },
-            {
-                as: 'a',
-                href: standalone_routes.responsible,
-                label: localize('Responsible trading'),
-                LeftComponent: LegacyResponsibleTradingIcon,
-            },
-            cs_chat_whatsapp
-                ? {
-                      as: 'a',
-                      href: URLConstants.whatsApp,
-                      label: localize('WhatsApp'),
-                      LeftComponent: LegacyWhatsappIcon,
-                      target: '_blank',
-                  }
-                : null,
-            is_livechat_available || icAvailable
-                ? {
-                      as: 'button',
-                      label: localize('Live chat'),
-                      LeftComponent: Livechat,
-                      onClick: () => {
-                          icAvailable ? window.Intercom('show') : window.LiveChatWidget?.call('maximize');
+    const menuConfig = useMemo(
+        (): TMenuConfig[] => [
+            [
+                {
+                    as: 'a',
+                    href: standalone_routes.deriv_com,
+                    label: localize('Deriv.com'),
+                    LeftComponent: BrandDerivLogoCoralIcon,
+                },
+                {
+                    as: 'a',
+                    href: standalone_routes.deriv_app,
+                    label: localize("Trader's Hub"),
+                    LeftComponent: LegacyHomeOldIcon,
+                },
+                {
+                    as: 'a',
+                    href: standalone_routes.bot,
+                    label: localize('Trade'),
+                    LeftComponent: LegacyChartsIcon,
+                    isActive: true, // Always highlight Trade as active
+                },
+                {
+                    as: 'a',
+                    href: getAccountUrl(standalone_routes.account_settings),
+                    label: localize('Account Settings'),
+                    LeftComponent: LegacyProfileSmIcon,
+                },
+                {
+                    as: 'a',
+                    href: standalone_routes.cashier_deposit,
+                    label: localize('Cashier'),
+                    LeftComponent: LegacyCashierIcon,
+                },
+                client?.is_logged_in && {
+                    as: 'button',
+                    label: localize('Reports'),
+                    LeftComponent: LegacyReportsIcon,
+                    submenu: 'reports',
+                    onClick: () => {},
+                },
+                {
+                    as: 'button',
+                    label: localize('Dark theme'),
+                    LeftComponent: LegacyTheme1pxIcon,
+                    RightComponent: <ToggleSwitch value={is_dark_mode_on} onChange={toggleTheme} />,
+                },
+            ].filter(Boolean) as TMenuConfig,
+            [
+                {
+                    as: 'a',
+                    href: standalone_routes.help_center,
+                    label: localize('Help center'),
+                    LeftComponent: LegacyHelpCentreIcon,
+                },
+                {
+                    as: 'a',
+                    href: standalone_routes.account_limits,
+                    label: localize('Account limits'),
+                    LeftComponent: LegacyAccountLimitsIcon,
+                },
+                {
+                    as: 'a',
+                    href: standalone_routes.responsible,
+                    label: localize('Responsible trading'),
+                    LeftComponent: LegacyResponsibleTradingIcon,
+                },
+                cs_chat_whatsapp
+                    ? {
+                          as: 'a',
+                          href: URLConstants.whatsApp,
+                          label: localize('WhatsApp'),
+                          LeftComponent: LegacyWhatsappIcon,
+                          target: '_blank',
+                      }
+                    : null,
+                is_livechat_available || icAvailable
+                    ? {
+                          as: 'button',
+                          label: localize('Live chat'),
+                          LeftComponent: Livechat,
+                          onClick: () => {
+                              icAvailable ? window.Intercom('show') : window.LiveChatWidget?.call('maximize');
+                          },
+                      }
+                    : null,
+            ].filter(Boolean) as TMenuConfig,
+            client?.is_logged_in
+                ? [
+                      {
+                          as: 'button',
+                          label: localize('Log out'),
+                          LeftComponent: LegacyLogout1pxIcon,
+                          onClick: oAuthLogout,
+                          removeBorderBottom: true,
                       },
-                  }
-                : null,
-        ].filter(Boolean) as TMenuConfig,
-        client?.is_logged_in
-            ? [
-                  {
-                      as: 'button',
-                      label: localize('Log out'),
-                      LeftComponent: LegacyLogout1pxIcon,
-                      onClick: oAuthLogout,
-                      removeBorderBottom: true,
-                  },
-              ]
-            : [],
-    ];
+                  ]
+                : [],
+        ],
+        [is_virtual, currency, is_logged_in]
+    );
 
     return {
         config: menuConfig,
