@@ -80,45 +80,57 @@ window.Blockly.WorkspaceSvg.prototype.lastAddedBlock = null;
 
 window.Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const { flyout } = DBotStore.instance;
-    const block = window.Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
-    const top_blocks = this.getTopBlocks(true);
-
-    // // Remove highlight from all blocks
-    window.Blockly.derivWorkspace.getAllBlocks().forEach(b => {
-        if (b.svgGroup_) {
-            window.Blockly.utils.dom.removeClass(b.svgGroup_, 'blocklySelected');
-            if (b === window.Blockly.derivWorkspace.lastAddedBlock) {
-                window.Blockly.derivWorkspace.lastAddedBlock = null;
-            }
-        }
-    });
-
-    // Add highlight to the new block and update lastAddedBlock
-    console.log(block);
-    window.Blockly.utils.dom.addClass(block.svgGroup_, 'blocklySelected');
-    window.Blockly.derivWorkspace.lastAddedBlock = block;
-
-    if (config().single_instance_blocks.includes(block.type)) {
-        this.getAllBlocks().forEach(ws_block => {
-            if (ws_block.type === block.type && ws_block.id !== block.id) {
-                ws_block.dispose();
+    if (block_node) {
+        const top_blocks = this.getTopBlocks(true);
+        const block = window.Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
+        // // Remove highlight from all blocks
+        window.Blockly.derivWorkspace.getAllBlocks().forEach(b => {
+            if (b.svgGroup_) {
+                window.Blockly.utils.dom.removeClass(b.svgGroup_, 'blocklySelected');
+                if (b === window.Blockly.derivWorkspace.lastAddedBlock) {
+                    window.Blockly.derivWorkspace.lastAddedBlock = null;
+                }
             }
         });
-    }
 
-    if (top_blocks.length) {
-        const last_block = top_blocks[top_blocks.length - 1];
-        const last_block_xy = last_block.getRelativeToSurfaceXY();
-        const extra_spacing = last_block.startHat_ ? window.Blockly.BlockSvg.START_HAT_HEIGHT : 0;
-        const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
-        block.moveBy(last_block_xy.x, y);
-    }
+        // Add highlight to the new block and update lastAddedBlock
+        window.Blockly.utils.dom.addClass(block.svgGroup_, 'blocklySelected');
+        window.Blockly.derivWorkspace.lastAddedBlock = block;
+        if (config().single_instance_blocks.includes(block.type)) {
+            this.getAllBlocks().forEach(ws_block => {
+                if (ws_block.type === block.type && ws_block.id !== block.id) {
+                    ws_block.dispose();
+                }
+            });
+        }
 
-    flyout.setIsSearchFlyout(false);
-    flyout.setVisibility(false);
+        if (top_blocks.length) {
+            const last_block = top_blocks[top_blocks.length - 1];
+            const last_block_xy = last_block.getRelativeToSurfaceXY();
+            const extra_spacing = last_block.startHat_ ? window.Blockly.BlockSvg.START_HAT_HEIGHT : 0;
+            const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
+            block.moveBy(last_block_xy.x, y);
+        }
+        flyout.setIsSearchFlyout(false);
+        flyout.setVisibility(false);
+        window.Blockly.svgResize(block.workspace);
+    } else {
+        this.getAllBlocks().forEach(block => {
+            if (block.svgGroup_) {
+                window.Blockly.utils.dom.removeClass(block.svgGroup_, 'blocklySelected');
+            }
+        });
+
+        const trade_definition_block = this.getAllBlocks().find(block => block.type === 'trade_definition');
+        if (trade_definition_block?.svgGroup_) {
+            window.Blockly.utils.dom.addClass(trade_definition_block.svgGroup_, 'blocklySelected');
+            window.Blockly.derivWorkspace.lastAddedBlock = trade_definition_block;
+        }
+        flyout.setIsSearchFlyout(false);
+        flyout.setVisibility(false);
+    }
 
     // Call svgResize to avoid glitching workspace.
-    window.Blockly.svgResize(block.workspace);
     // kept this commented since it is making a glitching issue,
     // this.centerOnBlock(new_block.id, false);
 };

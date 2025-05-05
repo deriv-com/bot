@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import CommonStore from '@/stores/common-store';
 import { TAuthData } from '@/types/api-types';
+import { clearAuthData } from '@/utils/auth-utils';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone, socket_state } from '../tradeEngine/utils/helpers';
 import {
@@ -156,52 +157,48 @@ class APIBase {
 
     async authorizeAndSubscribe() {
         const token = V2GetActiveToken();
-        if (token) {
-            this.token = token;
-            this.account_id = V2GetActiveClientId() ?? '';
+        if (!token || !this.api) return;
 
-            if (!this.api) return;
+        this.token = token;
+        this.account_id = V2GetActiveClientId() ?? '';
+        setIsAuthorizing(true);
 
-            try {
-                const { authorize, error } = await this.api.authorize(this.token);
-                if (error) {
-                    // Check if the error is due to an invalid token
-                    if (error.code === 'InvalidToken') {
-                        // Make sure we set isAuthorizing to false before returning
-                        setIsAuthorizing(false);
-
-                        // Only emit the InvalidToken event if logged_state is true
-                        if (Cookies.get('logged_state') === 'true') {
-                            // Emit an event that can be caught by the application to retrigger OIDC authentication
-                            globalObserver.emit('InvalidToken', { error });
-                        }
-                        return error;
+        try {
+            const { authorize, error } = await this.api.authorize(this.token);
+            if (error) {
+                if (error.code === 'InvalidToken') {
+                    if (Cookies.get('logged_state') === 'true') {
+                        globalObserver.emit('InvalidToken', { error });
+                    } else {
+                        clearAuthData();
                     }
-                    // Make sure we set isAuthorizing to false for other errors too
-                    setIsAuthorizing(false);
-                    return error;
-                }
-
-                if (this.has_active_symbols) {
-                    this.toggleRunButton(false);
                 } else {
-                    this.active_symbols_promise = this.getActiveSymbols();
+                    console.error('Authorization error:', error);
                 }
-                this.account_info = authorize;
-                const filtered_accounts = authorize?.account_list || [];
-                setAccountList(filtered_accounts);
-                setAuthData(authorize);
-                setIsAuthorized(true);
-                this.is_authorized = true;
-                this.subscribe();
-                this.getSelfExclusion();
-            } catch (e) {
-                this.is_authorized = false;
-                setIsAuthorized(false);
-                globalObserver.emit('Error', e);
-            } finally {
-                setIsAuthorizing(false);
+                return error;
             }
+
+            this.account_info = authorize;
+            setAccountList(authorize?.account_list || []);
+            setAuthData(authorize);
+            setIsAuthorized(true);
+            this.is_authorized = true;
+
+            if (this.has_active_symbols) {
+                this.toggleRunButton(false);
+            } else {
+                this.active_symbols_promise = this.getActiveSymbols();
+            }
+            this.subscribe();
+            this.getSelfExclusion();
+        } catch (e) {
+            console.error('Authorization failed:', e);
+            this.is_authorized = false;
+            clearAuthData();
+            setIsAuthorized(false);
+            globalObserver.emit('Error', e);
+        } finally {
+            setIsAuthorizing(false);
         }
     }
 

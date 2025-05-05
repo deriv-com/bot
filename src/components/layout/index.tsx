@@ -3,10 +3,8 @@ import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
 import { api_base } from '@/external/bot-skeleton';
-import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
-import { Loader, useDevice } from '@deriv-com/ui';
-import { isDotComSite } from '../../utils';
+import { useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
 import Footer from './footer';
 import AppHeader from './header';
@@ -15,8 +13,6 @@ import './layout.scss';
 
 const Layout = () => {
     const { isDesktop } = useDevice();
-
-    const { isSingleLoggingIn } = useOauth2();
 
     const isCallbackPage = window.location.pathname === '/callback';
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
@@ -127,7 +123,7 @@ const Layout = () => {
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
 
         if (
-            (isDotComSite() && isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
+            (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
             const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
@@ -161,7 +157,6 @@ const Layout = () => {
         <div className={clsx('layout', { responsive: isDesktop })}>
             {!isCallbackPage && <AppHeader />}
             <Body>
-                {isSingleLoggingIn && <Loader isFullScreen />}
                 <Outlet />
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}

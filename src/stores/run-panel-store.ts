@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable, reaction, runInAction } f
 import { botNotification } from '@/components/bot-notification/bot-notification';
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
 import { isSafari, mobileOSDetect, standalone_routes } from '@/components/shared';
+import { redirectToSignUp } from '@/components/shared';
 import { contract_stages, TContractStage } from '@/constants/contract-stage';
 import { run_panel } from '@/constants/run-panel';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@/external/bot-skeleton';
@@ -384,11 +385,21 @@ export default class RunPanelStore {
     };
 
     showLoginDialog = () => {
-        this.onOkButtonClick = this.onCloseDialog;
-        this.onCancelButtonClick = null;
+        // Only allow closing through the buttons
+        this.onOkButtonClick = () => {
+            redirectToSignUp();
+            this.is_dialog_open = false;
+        };
+        this.onCancelButtonClick = () => {
+            this.is_dialog_open = false;
+        };
         this.dialog_options = {
-            title: localize('Please log in'),
-            message: localize('You need to log in to run the bot.'),
+            title: localize('You are not logged in'),
+            message: localize('Please log in or sign up to start trading with us.'),
+            ok_button_text: localize('Sign up'),
+            cancel_button_text: localize('Log in'),
+            dismissable: false,
+            is_closed_on_cancel: false,
         };
         this.is_dialog_open = true;
     };

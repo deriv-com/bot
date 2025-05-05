@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import { clearAuthData } from '@/utils/auth-utils';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
 
@@ -22,7 +23,6 @@ const getSelectedCurrency = (
     const firstAccountKey = tokens.acct1;
     const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency || null;
 
-    console.log('Selected currency:', currency);
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
     return currency && validCurrencies.includes(currency.toUpperCase())
         ? currency
@@ -74,6 +74,10 @@ const CallbackPage = () => {
                             if (Cookies.get('logged_state') === 'true') {
                                 // Emit an event that can be caught by the application to retrigger OIDC authentication
                                 globalObserver.emit('InvalidToken', { error });
+                            }
+                            if (Cookies.get('logged_state') === 'false') {
+                                // If the user is not logged out, we need to clear the local storage
+                                clearAuthData();
                             }
                         }
                     } else {

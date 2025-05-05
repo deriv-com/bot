@@ -22,6 +22,11 @@
 
         &__description {
             text-align: start;
+            line-height: 2.8;
+
+            @include mobile-or-tablet-screen {
+                line-height: 2.2;
+            }
 
             &__text {
                 margin-bottom: 1.6rem;
