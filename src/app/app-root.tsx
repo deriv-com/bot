@@ -43,15 +43,12 @@ const AppRoot = () => {
         const initializeApi = async () => {
             if (!api_base_initialized.current) {
                 try {
-                    console.log('test api_base initialization');
                     await api_base.init();
                     api_base_initialized.current = true;
                 } catch (error) {
-                    console.log('test catch error');
                     console.error('API initialization failed:', error);
                     api_base_initialized.current = false;
                 } finally {
-                    console.log('test finally error');
                     setIsApiInitialized(true);
                 }
             }
@@ -60,8 +57,6 @@ const AppRoot = () => {
         initializeApi();
     }, []);
 
-    console.log(store, 'test store');
-    console.log(is_api_initialized, 'test is_api_initialized');
     if (!store || !is_api_initialized) return <AppRootLoader />;
 
     return (

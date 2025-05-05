@@ -87,7 +87,7 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 .filter(item => ['DURATION', 'AMOUNT'].includes(item.name))
                 .forEach(input => {
                     const input_target = input.connection.targetBlock();
-                    const value = input_target.getFieldValue('NUM')?.toString();
+                    const value = input_target?.getFieldValue('NUM')?.toString();
                     if (value?.startsWith('0')) {
                         const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
                         input_target.setFieldValue(new_value.toString(), 'NUM');
