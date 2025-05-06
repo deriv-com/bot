@@ -157,6 +157,20 @@ const AppWrapper = observer(() => {
         if (active_tour !== '') {
             setActiveTour('');
         }
+
+        // Prevent scrolling when tutorial tab is active (only on mobile)
+        const mainElement = document.querySelector('.main__container');
+        if (active_tab === DBOT_TABS.TUTORIAL && !isDesktop) {
+            document.body.style.overflow = 'hidden';
+            if (mainElement instanceof HTMLElement) {
+                mainElement.classList.add('no-scroll');
+            }
+        } else {
+            document.body.style.overflow = '';
+            if (mainElement instanceof HTMLElement) {
+                mainElement.classList.remove('no-scroll');
+            }
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab]);
 
