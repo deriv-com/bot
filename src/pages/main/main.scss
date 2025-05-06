@@ -26,6 +26,10 @@
         max-width: 100%;
         width: 100%;
 
+        &.no-scroll {
+            overflow: hidden;
+        }
+
         &--active {
             // css for onboard tour overlay
             &:before {
