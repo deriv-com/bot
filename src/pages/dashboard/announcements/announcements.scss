@@ -78,6 +78,10 @@
         border-width: 1px;
         margin-inline-end: 1rem;
 
+        .notifications__empty {
+            width: 100%;
+        }
+
         &--desktop,
         &--tablet {
             z-index: 10;
