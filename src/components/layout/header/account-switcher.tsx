@@ -77,6 +77,7 @@ const RenderAccountItems = ({
                 oAuthLogout={oAuthLogout}
                 loginid={activeLoginId}
                 is_logging_out={client.is_logging_out}
+                upgradeable_landing_companies={client?.landing_companies?.all_company ?? null}
             />
         );
     }

@@ -8,6 +8,25 @@
     }
 }
 
+.tabs-shadow {
+    position: absolute;
+    top: 8px;
+    height: 40px;
+    width: 64px;
+    z-index: 1;
+    pointer-events: none;
+
+    &--left {
+        left: 0;
+        background: linear-gradient(-88.07deg, rgb(242 243 244 / 0%) 1.63%, #f2f3f4 50.02%);
+    }
+
+    &--right {
+        right: 0;
+        background: linear-gradient(88.07deg, rgb(242 243 244 / 0%) 1.63%, #f2f3f4 50.02%);
+    }
+}
+
 .main {
     display: flex;
     overflow: hidden;
@@ -559,7 +578,7 @@
 
     &--active {
         height: auto;
-        min-height: 17rem;
+        min-height: 18rem;
     }
 
     &__navbar {
@@ -582,6 +601,10 @@
         text-align: center;
         padding: 0 1.6rem;
         margin-bottom: 1.6rem;
+
+        @include mobile-or-tablet-screen {
+            line-height: 1.8;
+        }
 
         &:last-child {
             margin-bottom: 3rem;
@@ -607,7 +630,7 @@
     }
 
     &__progress-bar {
-        margin-bottom: 1.6rem;
+        margin: 1.6rem 0;
     }
 
     &__status {

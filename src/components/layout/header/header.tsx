@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { generateOAuthURL, standalone_routes } from '@/components/shared';
+import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
-import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
+import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
@@ -21,7 +21,6 @@ import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
 const AppHeader = observer(() => {
-    const { isGBLoaded, isGBAvailable } = useIsGrowthbookIsLoaded();
     const { isDesktop } = useDevice();
     const { isAuthorizing, activeLoginid } = useApiBase();
     const { client } = useStore() ?? {};
@@ -33,7 +32,9 @@ const AppHeader = observer(() => {
     const currency = getCurrency?.();
     const { localize } = useTranslations();
 
-    const { isOAuth2Enabled, isSingleLoggingIn } = useOauth2();
+    const { isSingleLoggingIn } = useOauth2();
+
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -44,7 +45,7 @@ const AppHeader = observer(() => {
                     {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
-                            const redirect_url = new URL(standalone_routes.personal_details);
+                            const redirect_url = new URL(standalone_routes.account_settings);
                             // Check if the account is a demo account
                             // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
                             const urlParams = new URLSearchParams(window.location.search);
@@ -79,11 +80,12 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
-
-                                    if (isGBAvailable && isGBLoaded) {
+                                    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
+                                        client?.residence
+                                    );
+                                    if (is_hub_enabled_country) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
                                     }
-
                                     if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
@@ -114,31 +116,27 @@ const AppHeader = observer(() => {
                     <Button
                         tertiary
                         onClick={async () => {
-                            if (!isOAuth2Enabled) {
-                                window.location.replace(generateOAuthURL());
-                            } else {
-                                const getQueryParams = new URLSearchParams(window.location.search);
-                                const currency = getQueryParams.get('account') ?? '';
-                                const query_param_currency =
-                                    sessionStorage.getItem('query_param_currency') || currency || 'USD';
-                                try {
-                                    await requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        ...(query_param_currency
-                                            ? {
-                                                  state: {
-                                                      account: query_param_currency,
-                                                  },
-                                              }
-                                            : {}),
-                                    }).catch(err => {
-                                        // eslint-disable-next-line no-console
-                                        console.error(err);
-                                    });
-                                } catch (error) {
+                            const getQueryParams = new URLSearchParams(window.location.search);
+                            const currency = getQueryParams.get('account') ?? '';
+                            const query_param_currency =
+                                sessionStorage.getItem('query_param_currency') || currency || 'USD';
+                            try {
+                                await requestOidcAuthentication({
+                                    redirectCallbackUri: `${window.location.origin}/callback`,
+                                    ...(query_param_currency
+                                        ? {
+                                              state: {
+                                                  account: query_param_currency,
+                                              },
+                                          }
+                                        : {}),
+                                }).catch(err => {
                                     // eslint-disable-next-line no-console
-                                    console.error(error);
-                                }
+                                    console.error(err);
+                                });
+                            } catch (error) {
+                                // eslint-disable-next-line no-console
+                                console.error(error);
                             }
                         }}
                     >

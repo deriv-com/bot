@@ -214,6 +214,19 @@ const QuickStrategy = observer(() => {
     const [current_step, setCurrentStep] = React.useState(QsSteps.StrategySelect);
     const [selected_trade_type, setSelectedTradeType] = React.useState('');
 
+    // Prevent body scrolling when modal is open
+    React.useEffect(() => {
+        if (is_open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [is_open]);
+
     const sendRudderStackQsFormCloseData = () => {
         const active_tab =
             active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'

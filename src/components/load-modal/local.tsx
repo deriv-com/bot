@@ -78,7 +78,14 @@ const LocalComponent = observer(() => {
                     ref={file_input_ref}
                     accept='application/xml, text/xml'
                     style={{ display: 'none' }}
-                    onChange={e => setIsFileSupported(handleFileChange(e, false))}
+                    onChange={e => {
+                        const is_supported = handleFileChange(e, false);
+                        !is_supported &&
+                            botNotification(notification_message().xml_import_error, undefined, {
+                                className: 'error-toast',
+                            });
+                        setIsFileSupported(is_supported);
+                    }}
                     data-testid='dt-load-strategy-file-input'
                 />
 

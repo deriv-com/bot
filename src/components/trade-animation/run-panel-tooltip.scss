@@ -1,0 +1,171 @@
+// Make the selector more specific to avoid affecting other tooltips
+.run__button_wrapper {
+    display: flex;
+    align-items: center;
+    height: 40px;
+
+    .animation__run-button {
+        height: 40px;
+        display: flex;
+        align-items: center;
+    }
+
+    .dc-btn {
+        height: 40px !important;
+        min-height: 40px !important;
+    }
+
+    .qs__tooltip {
+        display: flex;
+        align-items: center;
+
+        svg {
+            vertical-align: middle;
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+
+        &[data-tooltip] {
+            position: relative;
+
+            &:before {
+                width: 280px;
+                background-color: #d6dadb;
+                color: #000;
+                font-weight: 400;
+                border: 1px solid #e6e9e9;
+                box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                border: 8px solid transparent;
+                display: block;
+                z-index: 2;
+            }
+
+            &[data-tooltip-pos='left'] {
+                &:before {
+                    margin-right: 8px;
+                }
+
+                &:after {
+                    border-right: none;
+                    border-left-color: #d6dadb;
+                    top: 50%; /* Center vertically */
+                    transform: translateY(-50%); /* Ensure perfect centering */
+                }
+            }
+
+            &[data-tooltip-pos='top'] {
+                &:before {
+                    margin-bottom: 8px;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    max-width: 280px;
+                    width: auto !important; /* Override the fixed width */
+                    white-space: normal; /* Allow text to wrap */
+                }
+
+                &:after {
+                    border-left-color: transparent;
+                    border-top-color: #d6dadb;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+            }
+        }
+
+        // Hide the balloon icon that appears on hover
+        .dc-tooltip__balloon-icon,
+        &__balloon-icon {
+            display: none !important;
+        }
+    }
+}
+
+// Hide all balloon icons in the tooltip
+.dc-tooltip__balloon-icon {
+    display: none !important;
+}
+
+.theme--dark .run__button_wrapper .qs__tooltip {
+    svg {
+        filter: invert(1);
+    }
+}
+
+// Adjust the button to match the right side height
+.animation__run-button {
+    height: 40px !important;
+    padding: 8px 16px !important;
+    line-height: 24px !important;
+
+    &:disabled {
+        .right-side {
+            opacity: 0.32; // Reduced opacity for disabled state
+        }
+    }
+}
+
+// Mobile-specific adjustments
+@media screen and (width <= 1300px) {
+    .run__button_wrapper .qs__tooltip.dc-tooltip {
+        position: relative;
+
+        // Force tooltip to appear on top for mobile
+        &[data-tooltip] {
+            // Override any existing tooltip position
+            &[data-tooltip-pos='left'],
+            &[data-tooltip-pos='right'],
+            &[data-tooltip-pos='bottom'] {
+                &:before,
+                &:after {
+                    bottom: auto !important;
+                    right: auto !important;
+                    left: auto !important;
+                    top: auto !important;
+                    transform: none !important;
+                }
+            }
+
+            // Position tooltip above the button
+            &:before {
+                width: 280px !important; // Wider tooltip on mobile
+                min-width: 280px !important; // Ensure minimum width
+                max-width: 280px !important; // Ensure maximum width
+                font-size: 12px; // Smaller font size
+                padding: 8px; // Smaller padding
+                white-space: normal !important; // Allow text to wrap
+
+                // Position above the element
+                bottom: 100% !important;
+                left: 0 !important; // Align to the left
+                transform: none !important; // Remove transform
+                margin-bottom: 10px !important; // Space between tooltip and button
+                margin-left: 0 !important; // Ensure no left margin
+            }
+
+            // Position the arrow
+            &:after {
+                content: '' !important;
+                display: block !important;
+                position: absolute !important;
+                bottom: 15px !important; // Position at the bottom of the tooltip
+                left: 0 !important; // Position arrow on the left side
+                transform: none !important; // Remove transform
+                border-width: 8px !important;
+                border-style: solid !important;
+                border-color: #d6dadb transparent transparent !important; // Arrow pointing down
+                z-index: 3 !important;
+            }
+        }
+    }
+}
+
+.animation--disabled {
+    opacity: 0.32;
+}

@@ -35,6 +35,7 @@ const Toolbar = observer(() => {
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                             buttonOnClick={handleQuickStrategyOpen}
                             button_text={localize('Quick strategy')}
+                            is_bot_running={is_running}
                         />
                     )}
                     {isDesktop && <WorkspaceGroup />}

@@ -1,0 +1,40 @@
+@use 'components/shared/styles/constants' as *;
+@use 'components/shared/styles/mixins' as *;
+
+.real-accounts {
+    &__account-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 1.6rem;
+
+        &-left {
+            display: flex;
+            align-items: center;
+
+            .deriv-account-switcher-item__icon {
+                margin-right: 10px;
+            }
+
+            &-text {
+                font-size: 1.4rem;
+                font-weight: 500;
+            }
+        }
+
+        .add-button {
+            background: none;
+            border: none;
+            padding: 0;
+
+            span {
+                color: #000;
+                font-size: 12px;
+                border: solid 2px var(--text-disabled-1);
+                padding: 0.1rem 1.6rem;
+                border-radius: 0.5em;
+                cursor: pointer;
+            }
+        }
+    }
+}

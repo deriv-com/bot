@@ -40,6 +40,7 @@ export const crypto_currencies_display_order = [
     'TUSD',
     'USDC',
     'USDK',
+    'XRP',
 ];
 
 export const reorderCurrencies = <T extends { value: string; type: string; name: string }>(

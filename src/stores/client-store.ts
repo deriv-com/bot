@@ -1,7 +1,9 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { ContentFlag, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
+import { api_base } from '@/external/bot-skeleton';
 import {
+    authData$,
     setAccountList,
     setAuthData,
     setIsAuthorized,
@@ -30,7 +32,16 @@ export default class ClientStore {
     // TODO: fix with self exclusion
     updateSelfExclusion = () => {};
 
+    private authDataSubscription: { unsubscribe: () => void } | null = null;
+
     constructor() {
+        // Subscribe to auth data changes
+        this.authDataSubscription = authData$.subscribe(authData => {
+            if (authData?.upgradeable_landing_companies) {
+                this.setUpgradeableLandingCompanies(authData.upgradeable_landing_companies);
+            }
+        });
+
         makeObservable(this, {
             account_list: observable,
             account_settings: observable,
@@ -71,6 +82,7 @@ export default class ClientStore {
             setLoginId: action,
             setWebsiteStatus: action,
             setUpgradeableLandingCompanies: action,
+            updateTncStatus: action,
             is_trading_experience_incomplete: computed,
             is_cr_account: computed,
             account_open_date: computed,
@@ -273,6 +285,24 @@ export default class ClientStore {
         }
     }
 
+    updateTncStatus(landing_company_shortcode: string, status: number) {
+        try {
+            if (!this.account_settings) return;
+
+            const updated_settings = {
+                ...this.account_settings,
+                tnc_status: {
+                    ...this.account_settings.tnc_status,
+                    [landing_company_shortcode]: status,
+                },
+            };
+
+            this.setAccountSettings(updated_settings);
+        } catch (error) {
+            console.error('updateTncStatus error', error);
+        }
+    }
+
     setWebsiteStatus(status: WebsiteStatus | undefined) {
         this.website_status = status;
     }
@@ -294,7 +324,7 @@ export default class ClientStore {
         this.is_logging_out = is_logging_out;
     };
 
-    logout = () => {
+    logout = async () => {
         // reset all the states
         this.account_list = [];
         this.account_status = undefined;
@@ -333,5 +363,6 @@ export default class ClientStore {
                 token: null,
             });
         }
+        await api_base?.api?.logout();
     };
 }

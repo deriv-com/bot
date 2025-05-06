@@ -15,9 +15,6 @@ export const STRATEGY_1_3_2_6 = (): TDescriptionItem[] => [
             localize(
                 'The 1-3-2-6 strategy aims to maximise potential profits with four consecutive successful trades. One unit is equal to the amount of the initial stake. The stake will adjust from 1 unit to 3 units after the first successful trade, then to 2 units after your second successful trade, and to 6 units after the third successful trade. The stake for the next trade will reset to the initial stake if there is a losing trade or a completion of the trade cycle.'
             ),
-            localize(
-                "This article explores the strategy integrated into Deriv Bot, a versatile trading bot designed to trade assets such as Forex, Commodities, and Derived Indices. We will delve into the strategy's core parameters, its application, and provide essential takeaways for traders looking to use the bot effectively."
-            ),
         ],
     },
     {
@@ -32,7 +29,7 @@ export const STRATEGY_1_3_2_6 = (): TDescriptionItem[] => [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
+                '<strong>Initial stake:</strong> The starting trade amount. Stake is reverted to this amount when a session completes or after a losing trade.'
             ),
         ],
     },

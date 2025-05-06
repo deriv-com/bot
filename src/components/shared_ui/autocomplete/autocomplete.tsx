@@ -174,6 +174,13 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         }
     }, [should_show_list, is_alignment_top, list_portal_id, filtered_items?.length]);
 
+    React.useEffect(() => {
+        if (value) {
+            const index = list_items.findIndex(item => (typeof item === 'object' ? item.text : item) === value);
+            setActiveIndex(index);
+        }
+    }, [value, list_items]);
+
     const handleScrollStop = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         // pass onScrollStop func callback when scrolling stops
         if (!onScrollStop) return;

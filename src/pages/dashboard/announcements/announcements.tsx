@@ -83,7 +83,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
         BOT_ANNOUNCEMENTS_LIST.map(item => {
             let is_not_read = true;
-            if (data && Object.hasOwn(data, item.id)) {
+            if (data && Object.prototype.hasOwnProperty.call(data, item.id)) {
                 is_not_read = data[item.id];
             }
             const notificationDate = new Date(item.date);

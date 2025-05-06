@@ -130,6 +130,21 @@ const DrawerHeader = ({ is_clear_stat_disabled, is_mobile, is_drawer_open, onCle
     );
 
 const DrawerContent = ({ active_index, is_drawer_open, active_tour, setActiveTabIndex, ...props }: TDrawerContent) => {
+    const { isDesktop } = useDevice();
+    // Use the useBlockScroll hook to prevent body scrolling when drawer is open on mobile
+
+    React.useEffect(() => {
+        if (!isDesktop && is_drawer_open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [is_drawer_open]);
+
     return (
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>

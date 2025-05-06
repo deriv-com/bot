@@ -26,7 +26,7 @@ export const DBOT_ONBOARDING = [
         target: '#id-bot-builder',
         content: (
             <TourSteps
-                label={<Localize i18n_default_text='Get started on Deriv Bot' />}
+                label={<Localize i18n_default_text='Build from scratch' />}
                 content={[
                     <>
                         <Localize i18n_default_text='Create your bot using our drag-and-drop blocks or click Quick Strategy to choose from the ready-to-use bot templates.' />
@@ -483,12 +483,12 @@ export const BOT_BUILDER_MOBILE: TMobileTourConfig[] = [
 
 export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
     {
-        header: <Localize i18n_default_text='Get started on Deriv Bot' />,
+        header: <Localize i18n_default_text='Welcome to Deriv Bot' />,
         content: [
             <span key='get-started-on-deriv-bot-wrapper'>
                 <Localize
                     key='get-started-on-deriv-bot'
-                    i18n_default_text='Hi! Hit <0>Start</0> for a quick tour.'
+                    i18n_default_text='Let’s take a quick tour to discover how Deriv Bot works. Press <0>Start</0> to begin.'
                     components={[<strong key={0} />]}
                 />
             </span>,
@@ -594,10 +594,7 @@ export const getTourDialogInfo = (is_mobile: boolean) => {
             i18n_default_text='Here’s a quick guide on how to use Deriv Bot on the go.'
         />
     ) : (
-        <Localize
-            key='tour-dialog-info-desktop'
-            i18n_default_text='Learn how to build your bot from scratch using a simple strategy.'
-        />
+        <Localize key='tour-dialog-info-desktop' i18n_default_text='Learn how to build a bot with a simple strategy.' />
     );
 };
 
@@ -610,17 +607,11 @@ export const getTourDialogAction = (is_mobile: boolean) => {
             />
         );
     }
-    return (
-        <Localize
-            key='tour-dialog-action-desktop'
-            i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
-            components={[<strong key={0} />]}
-        />
-    );
+    return '';
 };
 
 export const onboarding_tour_header = (
-    <Localize key='onboarding-tour-header' i18n_default_text='Get started on Deriv Bot' />
+    <Localize key='onboarding-tour-header' i18n_default_text='Welcome to Deriv Bot' />
 );
 
 export const getBotBuilderTourHeader = (is_mobile: boolean) => {
