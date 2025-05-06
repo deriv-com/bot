@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,6 +29,7 @@ import RunPanel from '../../components/run-panel';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
 import RunStrategy from '../dashboard/run-strategy';
+import './main.scss';
 
 const ChartWrapper = lazy(() => import('../chart/chart-wrapper'));
 const Tutorial = lazy(() => import('../tutorials'));
@@ -46,7 +47,7 @@ const AppWrapper = observer(() => {
         setActiveTour,
         setTourDialogVisibility,
     } = dashboard;
-    const { onEntered, dashboard_strategies } = load_modal;
+    const { dashboard_strategies } = load_modal;
     const {
         is_dialog_open,
         is_drawer_open,
@@ -67,6 +68,8 @@ const AppWrapper = observer(() => {
     const { isDesktop } = useDevice();
     const location = useLocation();
     const navigate = useNavigate();
+    const [left_tab_shadow, setLeftTabShadow] = useState<boolean>(false);
+    const [right_tab_shadow, setRightTabShadow] = useState<boolean>(false);
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -75,6 +78,41 @@ const AppWrapper = observer(() => {
         return Number(hash.indexOf(String(tab_value)));
     };
     const active_hash_tab = GetHashedValue(active_tab);
+
+    React.useEffect(() => {
+        const el_dashboard = document.getElementById('id-dbot-dashboard');
+        const el_tutorial = document.getElementById('id-tutorials');
+
+        const observer_dashboard = new window.IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setLeftTabShadow(false);
+                    return;
+                }
+                setLeftTabShadow(true);
+            },
+            {
+                root: null,
+                threshold: 0.5, // set offset 0.1 means trigger if atleast 10% of element in viewport
+            }
+        );
+
+        const observer_tutorial = new window.IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setRightTabShadow(false);
+                    return;
+                }
+                setRightTabShadow(true);
+            },
+            {
+                root: null,
+                threshold: 0.5, // set offset 0.1 means trigger if atleast 10% of element in viewport
+            }
+        );
+        observer_dashboard.observe(el_dashboard);
+        observer_tutorial.observe(el_tutorial);
+    });
 
     React.useEffect(() => {
         if (connectionStatus !== CONNECTION_STATUS.OPENED) {
@@ -88,7 +126,23 @@ const AppWrapper = observer(() => {
         }
     }, [clear, connectionStatus, setWebSocketState, stopBot]);
 
+    // Update tab shadows height to match bot builder height
+    const updateTabShadowsHeight = () => {
+        const botBuilderEl = document.getElementById('id-bot-builder');
+        const leftShadow = document.querySelector('.tabs-shadow--left') as HTMLElement;
+        const rightShadow = document.querySelector('.tabs-shadow--right') as HTMLElement;
+
+        if (botBuilderEl && leftShadow && rightShadow) {
+            const height = botBuilderEl.offsetHeight;
+            leftShadow.style.height = `${height}px`;
+            rightShadow.style.height = `${height}px`;
+        }
+    };
+
     React.useEffect(() => {
+        // Run on mount and when active tab changes
+        updateTabShadowsHeight();
+
         if (is_open) {
             setTourDialogVisibility(false);
         }
@@ -191,85 +245,87 @@ const AppWrapper = observer(() => {
                         'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop,
                     })}
                 >
-                    <Tabs
-                        active_index={active_tab}
-                        className='main__tabs'
-                        onTabItemChange={onEntered}
-                        onTabItemClick={handleTabChange}
-                        top
-                    >
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedObjectsColumnCaptionRegularIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
-                                    <Localize i18n_default_text='Dashboard' />
-                                </>
-                            }
-                            id='id-dbot-dashboard'
-                        >
-                            <Dashboard handleTabChange={handleTabChange} />
-                        </div>
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedPuzzlePieceTwoCaptionBoldIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
-                                    <Localize i18n_default_text='Bot Builder' />
-                                </>
-                            }
-                            id='id-bot-builder'
-                        />
-                        <div
-                            label={
-                                <>
-                                    <LabelPairedChartLineCaptionRegularIcon
-                                        height='24px'
-                                        width='24px'
-                                        fill='var(--text-general)'
-                                    />
-                                    <Localize i18n_default_text='Charts' />
-                                </>
-                            }
-                            id={
-                                is_chart_modal_visible || is_trading_view_modal_visible
-                                    ? 'id-charts--disabled'
-                                    : 'id-charts'
-                            }
-                        >
-                            <Suspense fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}>
-                                <ChartWrapper show_digits_stats={false} />
-                            </Suspense>
-                        </div>
-                        <div
-                            label={
-                                <>
-                                    <LegacyGuide1pxIcon
-                                        height='16px'
-                                        width='16px'
-                                        fill='var(--text-general)'
-                                        className='icon-general-fill-g-path'
-                                    />
-                                    <Localize i18n_default_text='Tutorials' />
-                                </>
-                            }
-                            id='id-tutorials'
-                        >
-                            <div className='tutorials-wrapper'>
+                    <div>
+                        {!isDesktop && left_tab_shadow && <span className='tabs-shadow tabs-shadow--left' />}{' '}
+                        <Tabs active_index={active_tab} className='main__tabs' onTabItemClick={handleTabChange} top>
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedObjectsColumnCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Dashboard' />
+                                    </>
+                                }
+                                id='id-dbot-dashboard'
+                            >
+                                <Dashboard handleTabChange={handleTabChange} />
+                            </div>
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Bot Builder' />
+                                    </>
+                                }
+                                id='id-bot-builder'
+                            />
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedChartLineCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Charts' />
+                                    </>
+                                }
+                                id={
+                                    is_chart_modal_visible || is_trading_view_modal_visible
+                                        ? 'id-charts--disabled'
+                                        : 'id-charts'
+                                }
+                            >
                                 <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading tutorials...')} />}
+                                    fallback={<ChunkLoader message={localize('Please wait, loading chart...')} />}
                                 >
-                                    <Tutorial handleTabChange={handleTabChange} />
+                                    <ChartWrapper show_digits_stats={false} />
                                 </Suspense>
                             </div>
-                        </div>
-                    </Tabs>
+                            <div
+                                label={
+                                    <>
+                                        <LegacyGuide1pxIcon
+                                            height='16px'
+                                            width='16px'
+                                            fill='var(--text-general)'
+                                            className='icon-general-fill-g-path'
+                                        />
+                                        <Localize i18n_default_text='Tutorials' />
+                                    </>
+                                }
+                                id='id-tutorials'
+                            >
+                                <div className='tutorials-wrapper'>
+                                    <Suspense
+                                        fallback={
+                                            <ChunkLoader message={localize('Please wait, loading tutorials...')} />
+                                        }
+                                    >
+                                        <Tutorial handleTabChange={handleTabChange} />
+                                    </Suspense>
+                                </div>
+                            </div>
+                        </Tabs>
+                        {!isDesktop && right_tab_shadow && <span className='tabs-shadow tabs-shadow--right' />}{' '}
+                    </div>
                 </div>
             </div>
             <DesktopWrapper>
