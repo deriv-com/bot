@@ -4,7 +4,7 @@ import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 import AccountSwitcherFooter from './account-swticher-footer';
 import { TDemoAccounts } from './types';
-import { AccountSwitcherDivider, convertCommaValue } from './utils';
+import { convertCommaValue } from './utils';
 
 const DemoAccounts = ({
     tabs_labels,
@@ -51,7 +51,6 @@ const DemoAccounts = ({
                         </span>
                     ))}
             </UIAccountSwitcher.AccountsPanel>
-            <AccountSwitcherDivider />
             <AccountSwitcherFooter loginid={activeLoginId} oAuthLogout={oAuthLogout} is_logging_out={is_logging_out} />
         </>
     );
