@@ -183,6 +183,7 @@ class APIBase {
             setAuthData(authorize);
             setIsAuthorized(true);
             this.is_authorized = true;
+            localStorage.setItem('client_account_details', JSON.stringify(authorize?.account_list));
 
             if (this.has_active_symbols) {
                 this.toggleRunButton(false);
