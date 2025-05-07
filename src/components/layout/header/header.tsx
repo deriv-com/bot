@@ -155,6 +155,8 @@ const AppHeader = observer(() => {
         }
     };
 
+    if (client?.should_hide_header) return null;
+
     return (
         <Header
             className={clsx('app-header', {

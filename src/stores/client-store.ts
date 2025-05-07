@@ -222,6 +222,10 @@ export default class ClientStore {
         return this.loginid?.startsWith('CR');
     }
 
+    get should_hide_header() {
+        return (this.is_eu && this.should_show_eu_error) || (!this.is_logged_in && this.is_eu_country);
+    }
+
     get account_open_date() {
         if (isEmptyObject(this.accounts) || !this.accounts[this.loginid]) return undefined;
         return Object.keys(this.accounts[this.loginid]).includes('created_at')
