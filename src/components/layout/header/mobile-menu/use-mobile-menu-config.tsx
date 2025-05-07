@@ -88,10 +88,10 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     };
 
     const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
+    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
     // Determine the appropriate redirect URL based on user's country
     const getRedirectUrl = () => {
         // Check if the user's country is in the hub-enabled country list
-        const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
 
         if (has_wallet && is_hub_enabled_country) {
             return getAccountUrl(standalone_routes.account_settings);
@@ -127,12 +127,13 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                     label: localize('Account Settings'),
                     LeftComponent: LegacyProfileSmIcon,
                 },
-                {
-                    as: 'a',
-                    href: standalone_routes.cashier_deposit,
-                    label: localize('Cashier'),
-                    LeftComponent: LegacyCashierIcon,
-                },
+                has_wallet &&
+                    is_hub_enabled_country && {
+                        as: 'a',
+                        href: standalone_routes.cashier_deposit,
+                        label: localize('Cashier'),
+                        LeftComponent: LegacyCashierIcon,
+                    },
                 client?.is_logged_in && {
                     as: 'button',
                     label: localize('Reports'),

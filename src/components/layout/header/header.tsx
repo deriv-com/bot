@@ -45,7 +45,14 @@ const AppHeader = observer(() => {
                     {/* <CustomNotifications /> */}
                     {isDesktop &&
                         (() => {
-                            const redirect_url = new URL(standalone_routes.account_settings);
+                            let redirect_url = new URL(standalone_routes.personal_details);
+                            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
+                                client?.residence
+                            );
+
+                            if (has_wallet && is_hub_enabled_country) {
+                                redirect_url = new URL(standalone_routes.account_settings);
+                            }
                             // Check if the account is a demo account
                             // Use the URL parameter to determine if it's a demo account, as this will update when the account changes
                             const urlParams = new URLSearchParams(window.location.search);
