@@ -92,7 +92,10 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     // Determine the appropriate redirect URL based on user's country
     const getRedirectUrl = () => {
         // Check if the user's country is in the hub-enabled country list
-
+        console.log('test is_virtual', featureFlagValue?.hub_enabled_country_list);
+        console.log('test residence', client?.residence);
+        console.log('test is_hub_enabled_country', is_hub_enabled_country);
+        console.log('test has_wallet', has_wallet);
         if (has_wallet && is_hub_enabled_country) {
             return getAccountUrl(standalone_routes.account_settings);
         }
