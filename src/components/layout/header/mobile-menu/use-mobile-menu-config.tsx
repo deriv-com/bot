@@ -58,6 +58,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const is_virtual = client?.is_virtual;
     const currency = client?.getCurrency?.();
     const is_logged_in = client?.is_logged_in;
+    const client_residence = client?.residence;
     const accounts = client?.accounts || {};
 
     const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
@@ -202,7 +203,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                   ]
                 : [],
         ],
-        [is_virtual, currency, is_logged_in]
+        [is_virtual, currency, is_logged_in, client_residence]
     );
 
     return {
