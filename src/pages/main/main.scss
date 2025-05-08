@@ -18,12 +18,12 @@
 
     &--left {
         left: 0;
-        background: linear-gradient(-88.07deg, rgb(242 243 244 / 0%) 1.63%, #f2f3f4 50.02%);
+        background: linear-gradient(-88.07deg, transparent 1.63%, var(--general-section-1) 50.02%);
     }
 
     &--right {
         right: 0;
-        background: linear-gradient(88.07deg, rgb(242 243 244 / 0%) 1.63%, #f2f3f4 50.02%);
+        background: linear-gradient(88.07deg, transparent 1.63%, var(--general-section-1) 50.02%);
     }
 }
 
