@@ -26,7 +26,7 @@ const AppHeader = observer(() => {
     const { client } = useStore() ?? {};
 
     const { data: activeAccount } = useActiveAccount({ allBalanceData: client?.all_accounts_balance });
-    const { accounts, getCurrency } = client ?? {};
+    const { accounts, getCurrency, is_virtual } = client ?? {};
     const has_wallet = Object.keys(accounts ?? {}).some(id => accounts?.[id].account_category === 'wallet');
 
     const currency = getCurrency?.();
@@ -93,7 +93,9 @@ const AppHeader = observer(() => {
                                     if (is_hub_enabled_country) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
                                     }
-                                    if (currency) {
+                                    if (is_virtual) {
+                                        redirect_url.searchParams.set('account', 'demo');
+                                    } else if (currency) {
                                         redirect_url.searchParams.set('account', currency);
                                     }
                                     window.location.assign(redirect_url.toString());
