@@ -57,7 +57,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 1rem;
-            background-color: var(--general-main-1);
+            background-color: var(--du-general-main-2);
 
             &--hide-manage-button {
                 justify-content: flex-end;
@@ -240,8 +240,8 @@
     }
 
     &__tradershub-link {
-        padding: 1.2rem 2.5rem 0.6rem 0.8rem;
-        background: var(--general-main-1);
+        padding: 1.2rem 2.5rem 0.6rem 0;
+        background: var(--du-general-main-2);
     }
 
     &__footer {
