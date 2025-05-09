@@ -64,14 +64,11 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
 
-        // Check if the account is a demo account
-        const urlParams = new URLSearchParams(window.location.search);
-        const account_param = urlParams.get('account');
-        const is_virtual = account_param === 'demo' || false;
+        const { is_virtual, currency } = client ?? {};
 
         // Directly redirect to the wallet page in Trader's Hub if conditions are met
         if (has_wallet) {
-            const wallet_url = getWalletUrl();
+            const wallet_url = getWalletUrl(is_virtual, currency);
             window.location.assign(wallet_url);
         } else {
             // Fallback to the default wallet transfer page if conditions are not met
@@ -87,9 +84,9 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
             if (is_virtual) {
                 // For demo accounts, set the account parameter to 'demo'
                 redirect_url.searchParams.set('account', 'demo');
-            } else if (account_param) {
+            } else if (currency) {
                 // For real accounts, set the account parameter to the currency
-                redirect_url.searchParams.set('account', account_param);
+                redirect_url.searchParams.set('account', currency);
             }
 
             window.location.assign(redirect_url.toString());
