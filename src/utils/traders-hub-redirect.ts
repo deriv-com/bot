@@ -65,6 +65,27 @@ export const getWalletUrl = (): string => {
 };
 
 /**
+ * Gets the URL for managing funds in the wallet page of Trader's Hub
+ * @param is_virtual - Whether the account is a demo account
+ * @param currency - The currency of the account (e.g. USD, BTC)
+ * @returns The URL for managing funds in the wallet, with appropriate account parameter
+ *
+ * Example return values:
+ * - For demo account: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet&account=demo"
+ * - For real account: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet&account=USD"
+ * - If no account/currency: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet"
+ */
+export const getWalletUrlManageFunds = (is_virtual: boolean, currency: string): string => {
+    const base_url = getBaseTraderHubUrl();
+    const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=wallet`;
+
+    // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
+    const account_value = is_virtual ? 'demo' : currency;
+
+    return account_value ? `${url}&account=${account_value}` : url;
+};
+
+/**
  * Checks if the user should be redirected to Trader's Hub based on:
  * 1. If they have wallets
  * 2. If their country is in the enabled list from GrowthBook
