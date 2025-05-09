@@ -20,6 +20,7 @@ declare global {
         Survicate?: {
             track: (attribute: string, value: string) => void;
         };
+        TrackJS: { configure: (config: { onError: (payload: any) => boolean }) => void };
     }
 }
 
@@ -37,11 +38,16 @@ const setSurvicateCalledValue = (value: boolean) => {
 };
 
 const loadSurvicateScript = (callback: () => void) => {
+    if (document.getElementById('dbot-survicate')) return;
+
     const script = document.createElement('script');
     script.id = 'dbot-survicate';
     script.async = true;
     script.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
     script.onload = callback;
+    script.onerror = () => {
+        console.warn('Survicate script failed to load, ignoring error.');
+    };
 
     const firstScript = document.getElementsByTagName('script')[0];
     if (firstScript?.parentNode) {
