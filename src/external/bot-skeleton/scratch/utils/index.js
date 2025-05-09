@@ -144,6 +144,7 @@ export const load = async ({
     from,
     workspace,
     showIncompatibleStrategyDialog,
+    show_snackbar = true,
 }) => {
     if (!DBotStore?.instance || !workspace) return;
     const { setLoading, load_modal } = DBotStore.instance;
@@ -168,9 +169,8 @@ export const load = async ({
         const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
         if (xmlDoc.getElementsByTagName('parsererror').length) {
             return showInvalidStrategyError();
-        }
-        else {
-            botNotification(notification_message().BOT_IMPORT);
+        } else {
+            show_snackbar && botNotification(notification_message().BOT_IMPORT);
         }
     } catch (e) {
         return showInvalidStrategyError();

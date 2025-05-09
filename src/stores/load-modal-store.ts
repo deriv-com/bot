@@ -541,7 +541,7 @@ export default class LoadModalStore {
         }
 
         const upload_type = getStrategyType(load_options?.block_string ?? '');
-        const result = await load(load_options);
+        const result = await load({ ...load_options, show_snackbar: false });
         if (!result?.error) {
             rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
         } else if (result?.error) {
