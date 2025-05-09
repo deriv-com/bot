@@ -94,6 +94,17 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         ref?
     ) => {
         const [counter, setCounter] = React.useState(0);
+        const [, setIsDropdownOpen] = React.useState(false);
+
+        const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setIsDropdownOpen(true);
+            props.onFocus?.(e);
+        };
+
+        const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setIsDropdownOpen(false);
+            props.onBlur?.(e);
+        };
 
         React.useEffect(() => {
             if (initial_character_count || initial_character_count === 0) {
@@ -102,26 +113,8 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         }, [initial_character_count]);
 
         const changeHandler: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = e => {
-            let input_value = e.target.value;
+            const input_value = e.target.value;
 
-            // Special handling for tick_count - completely prevent decimal input
-            if (e.target.name === 'tick_count') {
-                // Remove any decimal point and everything after it
-                const decimal_index = input_value.indexOf('.');
-                if (decimal_index !== -1) {
-                    input_value = input_value.substring(0, decimal_index);
-                }
-            }
-            // For other inputs, limit to 2 decimal places
-            else {
-                const decimal_index = input_value.indexOf('.');
-                if (decimal_index !== -1) {
-                    const decimal_part = input_value.substring(decimal_index + 1);
-                    if (decimal_part.length > 2) {
-                        input_value = input_value.substring(0, decimal_index + 3);
-                    }
-                }
-            }
             setCounter(input_value.length);
             e.target.value = input_value;
             props.onChange?.(e);
@@ -171,8 +164,8 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 className={classNames('dc-input__field', field_className, {
                                     'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
-                                onFocus={props.onFocus}
-                                onBlur={props.onBlur}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
                                 onChange={changeHandler}
                                 onKeyDown={props.onKeyDown}
                                 onMouseDown={props.onMouseDown}
