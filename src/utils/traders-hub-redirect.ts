@@ -51,15 +51,20 @@ export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds' | 'reports' 
  * Gets the URL for the wallet page in Trader's Hub
  * @returns The URL for the wallet page
  */
-export const getWalletUrl = (): string => {
+export const getWalletUrl = (is_virtual?: boolean, currency?: string): string => {
     const base_url = getBaseTraderHubUrl();
     const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=wallet`;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const account_param = urlParams.get('account');
+    let account_value;
+    if (currency) {
+        account_value = is_virtual ? 'demo' : currency;
+    } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const account_param = urlParams.get('account');
 
-    // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
-    const account_value = account_param === 'demo' ? 'demo' : account_param;
+        // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
+        account_value = account_param === 'demo' ? 'demo' : account_param;
+    }
 
     return account_value ? `${url}&account=${account_value}` : url;
 };

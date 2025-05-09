@@ -8,7 +8,7 @@ import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFea
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
-import { getWalletUrlManageFunds, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
+import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { Localize } from '@deriv-com/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet-mobile.scss';
@@ -68,7 +68,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
 
         // Directly redirect to the wallet page in Trader's Hub if conditions are met
         if (has_wallet) {
-            const wallet_url = getWalletUrlManageFunds(is_virtual, currency);
+            const wallet_url = getWalletUrl(is_virtual, currency);
             window.location.assign(wallet_url);
         } else {
             // Fallback to the default wallet transfer page if conditions are not met
