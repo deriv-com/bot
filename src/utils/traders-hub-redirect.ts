@@ -69,11 +69,7 @@ export const getWalletUrl = (): string => {
  * @param is_virtual - Whether the account is a demo account
  * @param currency - The currency of the account (e.g. USD, BTC)
  * @returns The URL for managing funds in the wallet, with appropriate account parameter
- *
- * Example return values:
- * - For demo account: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet&account=demo"
- * - For real account: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet&account=USD"
- * - If no account/currency: ".../tradershub/redirect?action=redirect_to&redirect_to=wallet"
+
  */
 export const getWalletUrlManageFunds = (is_virtual: boolean, currency: string): string => {
     const base_url = getBaseTraderHubUrl();
