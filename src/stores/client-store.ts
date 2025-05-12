@@ -43,6 +43,7 @@ export default class ClientStore {
         });
 
         makeObservable(this, {
+            accounts: observable,
             account_list: observable,
             account_settings: observable,
             account_status: observable,
