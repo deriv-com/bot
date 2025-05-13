@@ -16,9 +16,9 @@ const getSelectedCurrency = (
 ): string => {
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency =
-        (state && state?.account) ||
-        getQueryParams.get('account') ||
         sessionStorage.getItem('query_param_currency') ||
+        getQueryParams.get('account') ||
+        (state && state?.account) ||
         '';
     const firstAccountKey = tokens.acct1;
     const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency;
