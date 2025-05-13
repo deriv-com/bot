@@ -33,9 +33,10 @@ const getSelectedCurrency = (
 
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
 
-    if (tokens.acct1?.startsWith('VR') || currency === 'demo') return 'demo';
+    if (tokens.acct1?.startsWith('VR')) return 'demo';
     if (currency && validCurrencies.includes(currency.toUpperCase())) return currency;
-    return firstAccountCurrency || 'USD';
+    if (firstAccountCurrency) return firstAccountCurrency;
+    return 'USD';
 };
 
 const CallbackPage = () => {
