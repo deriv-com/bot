@@ -230,7 +230,9 @@ const AppWrapper = observer(() => {
         } else {
             const getQueryParams = new URLSearchParams(window.location.search);
             const currency = getQueryParams.get('account') ?? '';
-            const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
+
+            const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+            console.log(currency, 'currency', getQueryParams, query_param_currency);
             try {
                 await requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,
