@@ -126,13 +126,12 @@ const Layout = () => {
             (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount
         ) {
-            const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+            const query_param_currency = sessionStorage.getItem('query_param_currency') || currency || 'USD';
 
             // Make sure we have the currency in session storage before redirecting
             if (query_param_currency) {
                 sessionStorage.setItem('query_param_currency', query_param_currency);
             }
-            console.log(query_param_currency, 'query_param_currency', currency);
             try {
                 requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,
