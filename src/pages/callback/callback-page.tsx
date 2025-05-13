@@ -27,7 +27,6 @@ const getSelectedCurrency = (
         getQueryParams.get('account'),
         sessionStorage.getItem('query_param_currency')
     );
-    alert(state);
 
     const firstAccountKey = tokens.acct1;
     const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency;
