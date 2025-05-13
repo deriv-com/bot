@@ -53,6 +53,7 @@ const setLocalStorageToken = async (
                         }
                     }
                 } else {
+                    localStorage.setItem('client.country', authorize.country);
                     const firstId = authorize?.account_list[0]?.loginid;
                     const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
                     if (filteredTokens.length) {

@@ -78,10 +78,17 @@ export const getWalletUrl = (is_virtual?: boolean, currency?: string): string =>
  * @returns Boolean indicating if redirection should happen
  */
 export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
-    // Check if the country is in the enabled list from GrowthBook
-    const is_country_enabled = !!Analytics?.getFeatureValue('hub_enabled_country_list', {});
+    const enabled_countries = Analytics?.getFeatureValue('hub_enabled_country_list', {}) as {
+        hub_enabled_country_list: string[];
+    };
+    const user_country = localStorage.getItem('client.country');
 
-    // User should be redirected if they have wallets and their country is enabled
+    // Ensure enabled_countries is an array and user_country is defined
+    const is_country_enabled =
+        Array.isArray(enabled_countries?.hub_enabled_country_list) && user_country
+            ? enabled_countries?.hub_enabled_country_list?.includes(user_country.toLowerCase())
+            : false;
+
     return has_wallet && is_country_enabled;
 };
 

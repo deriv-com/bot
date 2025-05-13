@@ -12,5 +12,6 @@ export const clearAuthData = (): void => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('active_loginid');
     localStorage.removeItem('client.accounts');
+    localStorage.removeItem('client.country');
     location.reload();
 };
