@@ -21,12 +21,14 @@ const getSelectedCurrency = (
         sessionStorage.getItem('query_param_currency') ||
         '';
     const firstAccountKey = tokens.acct1;
-    const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency || null;
+    const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency;
 
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
-    return currency && validCurrencies.includes(currency.toUpperCase())
-        ? currency
-        : firstAccountCurrency || (tokens.acct1?.startsWith('VR') ? 'demo' : 'USD');
+
+    if (tokens.acct1?.startsWith('VR')) return 'demo';
+    if (currency && validCurrencies.includes(currency.toUpperCase())) return currency;
+    if (firstAccountCurrency) return firstAccountCurrency;
+    return 'USD';
 };
 
 const CallbackPage = () => {
