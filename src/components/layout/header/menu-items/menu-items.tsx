@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
@@ -87,6 +87,12 @@ export const TradershubLink = observer(() => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const store = useStore();
 
+    const [redirect_url_str, setRedirectUrlStr] = useState<null | string>(null);
+
+    useEffect(() => {
+        setRedirectUrlStr(handleTraderHubRedirect('tradershub', has_wallet, store?.client?.is_virtual));
+    }, [has_wallet, store?.client?.is_virtual]);
+
     if (!store) return null;
 
     const client = store.client ?? {};
@@ -100,7 +106,6 @@ export const TradershubLink = observer(() => {
     const is_virtual = client.is_virtual || account_param === 'demo' || false;
 
     // Use the handleTraderHubRedirect function with the is_virtual flag
-    const redirect_url_str = handleTraderHubRedirect('tradershub', has_wallet, is_virtual);
 
     // If the redirect_url_str is null, use the default URL with appropriate parameters
     let href = redirect_url_str;
@@ -125,7 +130,7 @@ export const TradershubLink = observer(() => {
         <MenuItem
             as='a'
             className='app-header__menu'
-            href={href}
+            href={href ?? undefined}
             key={TRADERS_HUB_LINK_CONFIG.label}
             leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
         >
