@@ -31,7 +31,7 @@ export const crypto_currencies_display_order = [
     'ETH',
     'LTC',
     'UST',
-    'eUSDT',
+    'EUSDT',
     'BUSD',
     'DAI',
     'EURS',
