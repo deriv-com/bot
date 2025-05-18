@@ -40,6 +40,7 @@ const PageError = ({
             setError?.(false, null);
             if (window.location.hostname.includes('staging')) {
                 window.location.assign('https://staging-app.deriv.com');
+                return;
             }
             window.location.assign('https://app.deriv.com');
         } else {

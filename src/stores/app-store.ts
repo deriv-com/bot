@@ -84,6 +84,7 @@ export default class AppStore {
 
     handleErrorForEu = () => {
         const { client, common } = this.core;
+        const { is_landing_company_loaded } = client;
 
         // Check if we're in the process of logging in
         // When isSingleLoggingIn is true, we don't want to show the EU error message
@@ -102,12 +103,12 @@ export default class AppStore {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
-        if (!client.is_landing_company_loaded) {
+        if (is_landing_company_loaded !== undefined && !is_landing_company_loaded) {
             common.setError(false, {});
             return false;
         }
 
-        this.throwErrorForExceptionCountries(client?.account_settings?.clients_country as string);
+        this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
         if (client.should_show_eu_error) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
@@ -360,6 +361,6 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = () => {
-        this.handleErrorForEu(true);
+        this.handleErrorForEu();
     };
 }
