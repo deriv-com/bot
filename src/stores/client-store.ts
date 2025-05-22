@@ -25,7 +25,7 @@ export default class ClientStore {
     landing_companies: TLandingCompany | undefined;
     upgradeable_landing_companies: string[] = [];
     accounts: Record<string, TAuthData['account_list'][number]> = {};
-    is_landing_company_loaded = false;
+    is_landing_company_loaded: boolean | undefined;
     all_accounts_balance: Balance | null = null;
     is_logging_out = false;
 
