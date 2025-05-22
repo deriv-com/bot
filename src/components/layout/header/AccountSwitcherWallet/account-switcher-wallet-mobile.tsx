@@ -97,7 +97,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         <React.Fragment>
             <hr className='account-switcher-wallet-mobile__divider' />
             <button className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect} type='button'>
-                <Text weight='normal' size='xs'>
+                <Text weight='normal' size='xs' color='prominent'>
                     <Localize i18n_default_text='Looking for CFDs? Go to Trader’s Hub' />
                 </Text>
                 <Icon icon={'IcChevronRightBold'} />
