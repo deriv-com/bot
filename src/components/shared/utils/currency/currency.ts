@@ -266,6 +266,14 @@ export const CryptoConfig = (() => {
                 pa_min_withdrawal: 0.002,
                 fractional_digits: 8,
             },
+            XRP: {
+                display_code: 'XRP',
+                name: 'Ripple',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 6,
+            },
             UST: {
                 display_code: 'USDT',
                 name: 'Tether Omni',
