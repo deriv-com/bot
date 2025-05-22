@@ -90,7 +90,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
                 onClick={handleTradersHubRedirect}
                 type='button'
             >
-                <Text size='xs' lineHeight='xl'>
+                <Text size='xs' lineHeight='xl' color='prominent'>
                     <Localize i18n_default_text="Looking for CFDs? Go to Trader's Hub" />
                 </Text>
                 <div data-testid='dt_go_to_arrow' className='account-switcher-wallet__arrow'>
