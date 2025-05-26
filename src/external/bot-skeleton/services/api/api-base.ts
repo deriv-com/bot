@@ -167,8 +167,13 @@ class APIBase {
             const { authorize, error } = await this.api.authorize(this.token);
             if (error) {
                 if (error.code === 'InvalidToken') {
+                    const is_tmb_enabled = JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false');
                     if (Cookies.get('logged_state') === 'true') {
-                        globalObserver.emit('InvalidToken', { error });
+                        if (!is_tmb_enabled) {
+                            globalObserver.emit('InvalidToken', { error });
+                        } else {
+                            clearAuthData();
+                        }
                     } else {
                         clearAuthData();
                     }

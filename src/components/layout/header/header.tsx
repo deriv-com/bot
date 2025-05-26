@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -7,6 +8,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
+import useTMB from '@/hooks/useTMB';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -35,6 +37,8 @@ const AppHeader = observer(() => {
     const { isSingleLoggingIn } = useOauth2();
 
     const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
+    const { onRenderTMBCheck } = useTMB();
+    const is_tmb_enabled = useMemo(() => JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'), []);
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -128,19 +132,23 @@ const AppHeader = observer(() => {
                             const query_param_currency =
                                 sessionStorage.getItem('query_param_currency') || currency || 'USD';
                             try {
-                                await requestOidcAuthentication({
-                                    redirectCallbackUri: `${window.location.origin}/callback`,
-                                    ...(query_param_currency
-                                        ? {
-                                              state: {
-                                                  account: query_param_currency,
-                                              },
-                                          }
-                                        : {}),
-                                }).catch(err => {
-                                    // eslint-disable-next-line no-console
-                                    console.error(err);
-                                });
+                                if (is_tmb_enabled) {
+                                    onRenderTMBCheck();
+                                } else {
+                                    await requestOidcAuthentication({
+                                        redirectCallbackUri: `${window.location.origin}/callback`,
+                                        ...(query_param_currency
+                                            ? {
+                                                  state: {
+                                                      account: query_param_currency,
+                                                  },
+                                              }
+                                            : {}),
+                                    }).catch(err => {
+                                        // eslint-disable-next-line no-console
+                                        console.error(err);
+                                    });
+                                }
                             } catch (error) {
                                 // eslint-disable-next-line no-console
                                 console.error(error);
