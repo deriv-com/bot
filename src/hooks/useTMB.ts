@@ -19,15 +19,8 @@ interface TokenItem {
     cur?: string;
 }
 
-interface SessionCache {
-    data: any;
-    timestamp: number;
-}
-
 const TMBState = {
     isInitialized: false,
-    sessionsCache: null as SessionCache | null,
-    lastCheckTimestamp: 0,
     checkInProgress: false,
 };
 
@@ -95,20 +88,8 @@ const useTMB = (): UseTMBReturn => {
     }, [logout, domains, currentDomain, redirectToAuth]);
 
     const getActiveSessions = useCallback(async () => {
-        // Check if we have cached data and it's less than 30 seconds old
-        const now = Date.now();
-        if (TMBState.sessionsCache && now - TMBState.sessionsCache.timestamp < 30000) {
-            return TMBState.sessionsCache.data;
-        }
-
         try {
-            const data = await requestSessionActive();
-            // Cache the result
-            TMBState.sessionsCache = {
-                data,
-                timestamp: now,
-            };
-            return data;
+            return await requestSessionActive();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error('Failed to get active sessions', error);
@@ -143,21 +124,21 @@ const useTMB = (): UseTMBReturn => {
         if (isCallbackPage) return;
         if (TMBState.checkInProgress) return;
 
-        const now = Date.now();
-        if (now - TMBState.lastCheckTimestamp < 2000) return;
-
         TMBState.checkInProgress = true;
-        TMBState.lastCheckTimestamp = now;
 
         try {
             const activeSessions = await getActiveSessions();
 
-            if (!activeSessions?.active && !isEndpointPage) {
+            if (!activeSessions) {
+                console.error('Failed to get active sessions: No data returned');
                 TMBState.checkInProgress = false;
-                return handleLogout();
+                return;
             }
 
-            if (activeSessions?.active) {
+            if (!activeSessions.active && !isEndpointPage) {
+                TMBState.checkInProgress = false;
+                return handleLogout();
+            } else if (activeSessions.active) {
                 if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
                     const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
 
@@ -188,7 +169,7 @@ const useTMB = (): UseTMBReturn => {
                                     setAuthData({
                                         loginid: selectedToken.loginid,
                                         currency: selectedToken.cur || '',
-                                        token: selectedToken.token, // Keeping token property as requested, despite TypeScript error
+                                        token: selectedToken.token, // Keeping token property, despite TypeScript error Need to check this later
                                     });
                                 }
                             });
