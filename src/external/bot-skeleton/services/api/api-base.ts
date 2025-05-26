@@ -168,12 +168,8 @@ class APIBase {
             if (error) {
                 if (error.code === 'InvalidToken') {
                     const is_tmb_enabled = JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false');
-                    if (Cookies.get('logged_state') === 'true') {
-                        if (!is_tmb_enabled) {
-                            globalObserver.emit('InvalidToken', { error });
-                        } else {
-                            clearAuthData();
-                        }
+                    if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
+                        globalObserver.emit('InvalidToken', { error });
                     } else {
                         clearAuthData();
                     }
