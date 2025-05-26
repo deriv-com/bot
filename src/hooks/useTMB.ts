@@ -129,13 +129,8 @@ const useTMB = (): UseTMBReturn => {
         try {
             const activeSessions = await getActiveSessions();
 
-            if (!activeSessions) {
-                console.error('Failed to get active sessions: No data returned');
-                TMBState.checkInProgress = false;
-                return handleLogout();
-            }
-
             if (!activeSessions?.active && !isEndpointPage) {
+                console.error('Failed to get active sessions: No data returned');
                 TMBState.checkInProgress = false;
                 return handleLogout();
             } else if (activeSessions?.active) {
