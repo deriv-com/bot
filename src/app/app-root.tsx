@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import ErrorBoundary from '@/components/error-component/error-boundary';
 import ErrorComponent from '@/components/error-component/error-component';
 import ChunkLoader from '@/components/loader/chunk-loader';
-import TradingAssesmentModal from '@/components/trading-assesment-modal';
 import { api_base } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import { localize } from '@deriv-com/translations';
@@ -12,7 +11,7 @@ import './app-root.scss';
 const AppContent = lazy(() => import('./app-content'));
 
 const AppRootLoader = () => {
-    return <ChunkLoader message={localize('Initializing Deriv Bot...')} />;
+    return <ChunkLoader message={localize('Loading...')} />;
 };
 
 const ErrorComponentWrapper = observer(() => {
@@ -42,12 +41,15 @@ const AppRoot = () => {
     useEffect(() => {
         const initializeApi = async () => {
             if (!api_base_initialized.current) {
-                console.log('test Initializing APIBase...', api_base_initialized);
-                await api_base.init();
-                console.log('test api_base api_base', api_base);
-                api_base_initialized.current = true;
-                console.log('test setIsApiInitialized', { is_api_initialized });
-                setIsApiInitialized(true);
+                try {
+                    await api_base.init();
+                    api_base_initialized.current = true;
+                } catch (error) {
+                    console.error('API initialization failed:', error);
+                    api_base_initialized.current = false;
+                } finally {
+                    setIsApiInitialized(true);
+                }
             }
         };
 
@@ -61,7 +63,6 @@ const AppRoot = () => {
             <ErrorBoundary root_store={store}>
                 <ErrorComponentWrapper />
                 <AppContent />
-                <TradingAssesmentModal />
             </ErrorBoundary>
         </Suspense>
     );

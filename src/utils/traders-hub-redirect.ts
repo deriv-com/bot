@@ -1,6 +1,4 @@
 import { standalone_routes } from '@/components/shared';
-import { deriv_urls } from '@/components/shared/utils/url/constants';
-import { getPlatformFromUrl } from '@/components/shared/utils/url/helpers';
 import { Analytics } from '@deriv-com/analytics';
 
 /**
@@ -8,15 +6,19 @@ import { Analytics } from '@deriv-com/analytics';
  * @returns The base Trader's Hub URL
  */
 export const getBaseTraderHubUrl = (): string => {
-    const { is_staging_deriv_app, is_test_link, is_test_deriv_app } = getPlatformFromUrl();
-    // Get the domain from deriv_urls (e.g., deriv.com, deriv.me, deriv.be)
-    const domain = deriv_urls.DERIV_HOST_NAME;
+    const hostname = window.location.hostname;
 
-    // Determine if we're in a staging or testing environment
-    const is_staging_or_test = is_staging_deriv_app || is_test_link || is_test_deriv_app;
+    const domain = 'deriv.com';
 
-    // Construct the appropriate hub URL
-    return is_staging_or_test ? `https://staging-hub.${domain}` : `https://hub.${domain}`;
+    const is_staging = hostname.includes('staging');
+    const is_test =
+        hostname.includes('localhost') || hostname.includes('test') || /^\d+\.\d+\.\d+\.\d+$/.test(hostname);
+
+    if (is_staging || is_test) {
+        return `https://staging-hub.${domain}`;
+    }
+
+    return `https://hub.${domain}`;
 };
 
 /**
@@ -49,15 +51,20 @@ export const getTraderHubUrl = (product_type: 'tradershub' | 'cfds' | 'reports' 
  * Gets the URL for the wallet page in Trader's Hub
  * @returns The URL for the wallet page
  */
-export const getWalletUrl = (): string => {
+export const getWalletUrl = (is_virtual?: boolean, currency?: string): string => {
     const base_url = getBaseTraderHubUrl();
     const url = `${base_url}/tradershub/redirect?action=redirect_to&redirect_to=wallet`;
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const account_param = urlParams.get('account');
+    let account_value;
+    if (currency) {
+        account_value = is_virtual ? 'demo' : currency;
+    } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const account_param = urlParams.get('account');
 
-    // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
-    const account_value = account_param === 'demo' ? 'demo' : account_param;
+        // Determine account value: if Demo → 'demo' else Currency (USD/BTC)
+        account_value = account_param === 'demo' ? 'demo' : account_param;
+    }
 
     return account_value ? `${url}&account=${account_value}` : url;
 };
@@ -71,10 +78,17 @@ export const getWalletUrl = (): string => {
  * @returns Boolean indicating if redirection should happen
  */
 export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
-    // Check if the country is in the enabled list from GrowthBook
-    const is_country_enabled = !!Analytics?.getFeatureValue('hub_enabled_country_list_bot', {});
+    const enabled_countries = Analytics?.getFeatureValue('hub_enabled_country_list', {}) as {
+        hub_enabled_country_list: string[];
+    };
+    const user_country = localStorage.getItem('client.country');
 
-    // User should be redirected if they have wallets and their country is enabled
+    // Ensure enabled_countries is an array and user_country is defined
+    const is_country_enabled =
+        Array.isArray(enabled_countries?.hub_enabled_country_list) && user_country
+            ? enabled_countries?.hub_enabled_country_list?.includes(user_country.toLowerCase())
+            : false;
+
     return has_wallet && is_country_enabled;
 };
 

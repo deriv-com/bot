@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { tabs_title } from '@/constants/bot-contents';
-import { getSavedWorkspaces,onWorkspaceResize } from '@/external/bot-skeleton';
+import { getSavedWorkspaces, onWorkspaceResize } from '@/external/bot-skeleton';
 import { getSetting, storeSetting } from '@/utils/settings';
 import RootStore from './root-store';
 

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import { clearAuthData } from '@/utils/auth-utils';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
@@ -45,8 +46,14 @@ const setLocalStorageToken = async (
                             // Emit an event that can be caught by the application to retrigger OIDC authentication
                             globalObserver.emit('InvalidToken', { error });
                         }
+
+                        if (Cookies.get('logged_state') === 'false') {
+                            // If the user is not logged out, we need to clear the local storage
+                            clearAuthData();
+                        }
                     }
                 } else {
+                    localStorage.setItem('client.country', authorize.country);
                     const firstId = authorize?.account_list[0]?.loginid;
                     const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
                     if (filteredTokens.length) {

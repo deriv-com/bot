@@ -103,12 +103,6 @@
             flex-direction: column;
             margin-bottom: 2.2rem;
         }
-
-        &:last-child {
-            @include mobile-or-tablet-screen {
-                margin-bottom: 15rem;
-            }
-        }
     }
 
     &__placeholder {
@@ -185,7 +179,6 @@
 
             @include mobile-or-tablet-screen {
                 width: 100%;
-                margin-bottom: 15rem;
             }
         }
 
@@ -407,6 +400,7 @@
     padding: 1.6rem;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-bottom: 100px;
 
     @include tablet-screen {
         width: 100%;

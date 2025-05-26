@@ -1,8 +1,33 @@
 import Cookies from 'js-cookie';
+import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import { clearAuthData } from '@/utils/auth-utils';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
+
+/**
+ * Gets the selected currency or falls back to appropriate defaults
+ */
+const getSelectedCurrency = (
+    tokens: Record<string, string>,
+    clientAccounts: Record<string, any>,
+    state: any
+): string => {
+    const getQueryParams = new URLSearchParams(window.location.search);
+    const currency =
+        (state && state?.account) ||
+        getQueryParams.get('account') ||
+        sessionStorage.getItem('query_param_currency') ||
+        '';
+    const firstAccountKey = tokens.acct1;
+    const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency;
+
+    const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
+    if (tokens.acct1?.startsWith('VR') || currency === 'demo') return 'demo';
+    if (currency && validCurrencies.includes(currency.toUpperCase())) return currency;
+    return firstAccountCurrency || 'USD';
+};
 
 const CallbackPage = () => {
     return (
@@ -50,6 +75,10 @@ const CallbackPage = () => {
                                 // Emit an event that can be caught by the application to retrigger OIDC authentication
                                 globalObserver.emit('InvalidToken', { error });
                             }
+                            if (Cookies.get('logged_state') === 'false') {
+                                // If the user is not logged out, we need to clear the local storage
+                                clearAuthData();
+                            }
                         }
                     } else {
                         localStorage.setItem('callback_token', authorize.toString());
@@ -67,24 +96,9 @@ const CallbackPage = () => {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
-                // Get the currency from session storage that was set before the redirect
-                const currency = sessionStorage.getItem('query_param_currency');
+                // Determine the appropriate currency to use
+                const selected_currency = getSelectedCurrency(tokens, clientAccounts, state);
 
-                const firstAccountKey = tokens.acct1;
-                const firstAccountCurrency = clientAccounts[firstAccountKey]
-                    ? clientAccounts[firstAccountKey].currency
-                    : null;
-
-                // Prioritize the currency from session storage if available
-                let selected_currency;
-                if (currency) {
-                    selected_currency = currency;
-                } else {
-                    const selected_account = clientAccounts[state?.account || firstAccountKey];
-                    selected_currency = selected_account?.currency || firstAccountCurrency || 'USD';
-                }
-
-                // Make sure we have the currency in the URL when redirecting back
                 window.location.replace(window.location.origin + `/?account=${selected_currency}`);
             }}
             renderReturnButton={() => {

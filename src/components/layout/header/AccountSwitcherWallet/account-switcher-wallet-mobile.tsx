@@ -4,6 +4,8 @@ import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import MobileDialog from '@/components/shared_ui/mobile-dialog';
 import Text from '@/components/shared_ui/text';
+import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
 import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -19,6 +21,8 @@ type TAccountSwitcherWalletMobile = {
 
 export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
     const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { client } = useStore() ?? {};
+    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
@@ -60,26 +64,29 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
 
-        // Check if the account is a demo account
-        const urlParams = new URLSearchParams(window.location.search);
-        const account_param = urlParams.get('account');
-        const is_virtual = account_param === 'demo' || false;
+        const { is_virtual, currency } = client ?? {};
 
         // Directly redirect to the wallet page in Trader's Hub if conditions are met
         if (has_wallet) {
-            const wallet_url = getWalletUrl();
+            const wallet_url = getWalletUrl(is_virtual, currency);
             window.location.assign(wallet_url);
         } else {
             // Fallback to the default wallet transfer page if conditions are not met
-            const redirect_url = new URL(standalone_routes.wallets_transfer);
+            let redirect_url = new URL(standalone_routes.wallets_transfer);
+
+            // Check if the user's country is in the hub-enabled country list
+            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
+            if (is_hub_enabled_country) {
+                redirect_url = new URL(standalone_routes.recent_transactions);
+            }
 
             // Add the account parameter to the URL
             if (is_virtual) {
                 // For demo accounts, set the account parameter to 'demo'
                 redirect_url.searchParams.set('account', 'demo');
-            } else if (account_param) {
+            } else if (currency) {
                 // For real accounts, set the account parameter to the currency
-                redirect_url.searchParams.set('account', account_param);
+                redirect_url.searchParams.set('account', currency);
             }
 
             window.location.assign(redirect_url.toString());
@@ -90,7 +97,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
         <React.Fragment>
             <hr className='account-switcher-wallet-mobile__divider' />
             <button className='account-switcher-wallet-mobile__footer' onClick={handleTradersHubRedirect} type='button'>
-                <Text weight='normal' size='xs'>
+                <Text weight='normal' size='xs' color='prominent'>
                     <Localize i18n_default_text='Looking for CFDs? Go to Trader’s Hub' />
                 </Text>
                 <Icon icon={'IcChevronRightBold'} />

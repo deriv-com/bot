@@ -58,7 +58,12 @@ const TradingAssesmentModal: React.FC = observer(() => {
                     text={localize('OK')}
                     primary
                     onClick={() => {
-                        window.location.assign('https://app.deriv.com/account/trading-assessment');
+                        const is_staging = window.location.hostname.includes('staging');
+                        if (is_staging) {
+                            window.location.assign('https://staging-app.deriv.com/account/trading-assessment');
+                        } else {
+                            window.location.assign('https://app.deriv.com/account/trading-assessment');
+                        }
                     }}
                 />
             </Modal.Footer>

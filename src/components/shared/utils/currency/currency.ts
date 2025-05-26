@@ -31,7 +31,7 @@ export const crypto_currencies_display_order = [
     'ETH',
     'LTC',
     'UST',
-    'eUSDT',
+    'EUSDT',
     'BUSD',
     'DAI',
     'EURS',
@@ -40,6 +40,7 @@ export const crypto_currencies_display_order = [
     'TUSD',
     'USDC',
     'USDK',
+    'XRP',
 ];
 
 export const reorderCurrencies = <T extends { value: string; type: string; name: string }>(
@@ -264,6 +265,14 @@ export const CryptoConfig = (() => {
                 pa_max_withdrawal: 5,
                 pa_min_withdrawal: 0.002,
                 fractional_digits: 8,
+            },
+            XRP: {
+                display_code: 'XRP',
+                name: 'Ripple',
+                min_withdrawal: 0.002,
+                pa_max_withdrawal: 5,
+                pa_min_withdrawal: 0.002,
+                fractional_digits: 6,
             },
             UST: {
                 display_code: 'USDT',

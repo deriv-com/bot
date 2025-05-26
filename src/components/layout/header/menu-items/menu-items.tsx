@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
-import useIsGrowthbookIsLoaded from '@/hooks/growthbook/useIsGrowthbookLoaded';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -53,6 +51,7 @@ export const MenuItems = observer(() => {
         return true;
     });
 
+    // TODO : need to add the skeleton loader when growthbook is not loaded
     return (
         <>
             {is_logged_in &&
@@ -87,7 +86,12 @@ export const MenuItems = observer(() => {
 export const TradershubLink = observer(() => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const store = useStore();
-    const { isGBLoaded, isGBAvailable } = useIsGrowthbookIsLoaded();
+
+    const [redirect_url_str, setRedirectUrlStr] = useState<null | string>(null);
+
+    useEffect(() => {
+        setRedirectUrlStr(handleTraderHubRedirect('tradershub', has_wallet, store?.client?.is_virtual));
+    }, [has_wallet, store?.client?.is_virtual]);
 
     if (!store) return null;
 
@@ -102,27 +106,10 @@ export const TradershubLink = observer(() => {
     const is_virtual = client.is_virtual || account_param === 'demo' || false;
 
     // Use the handleTraderHubRedirect function with the is_virtual flag
-    const redirect_url_str = handleTraderHubRedirect('tradershub', has_wallet, is_virtual);
 
     // If the redirect_url_str is null, use the default URL with appropriate parameters
     let href = redirect_url_str;
-    if (!href) {
-        let redirect_url = new URL(standalone_routes.wallets_transfer);
-
-        if (isGBAvailable && isGBLoaded) {
-            redirect_url = new URL(standalone_routes.recent_transactions);
-        }
-
-        if (is_virtual) {
-            // For demo accounts, set the account parameter to 'demo'
-            redirect_url.searchParams.set('account', 'demo');
-        } else if (currency) {
-            // For real accounts, set the account parameter to the currency
-            redirect_url.searchParams.set('account', currency);
-        }
-
-        href = redirect_url.toString();
-    } else if (redirect_url_str) {
+    if (redirect_url_str) {
         // If we have a redirect_url_str, we still need to add the account parameter
         try {
             const redirect_url = new URL(redirect_url_str);
@@ -143,7 +130,7 @@ export const TradershubLink = observer(() => {
         <MenuItem
             as='a'
             className='app-header__menu'
-            href={href}
+            href={href ?? undefined}
             key={TRADERS_HUB_LINK_CONFIG.label}
             leftComponent={TRADERS_HUB_LINK_CONFIG.icon}
         >

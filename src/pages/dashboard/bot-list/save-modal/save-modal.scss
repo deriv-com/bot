@@ -89,6 +89,10 @@ div.radio-group {
 
     &__input {
         margin: 2rem 0 0 !important;
+
+        input::placeholder {
+            background-color: transparent;
+        }
     }
 
     &__radio {
