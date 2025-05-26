@@ -132,13 +132,13 @@ const useTMB = (): UseTMBReturn => {
             if (!activeSessions) {
                 console.error('Failed to get active sessions: No data returned');
                 TMBState.checkInProgress = false;
-                return;
+                return handleLogout();
             }
 
-            if (!activeSessions.active && !isEndpointPage) {
+            if (!activeSessions?.active && !isEndpointPage) {
                 TMBState.checkInProgress = false;
                 return handleLogout();
-            } else if (activeSessions.active) {
+            } else if (activeSessions?.active) {
                 if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
                     const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
 
