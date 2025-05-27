@@ -4,7 +4,7 @@ import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import MobileDialog from '@/components/shared_ui/mobile-dialog';
 import Text from '@/components/shared_ui/text';
-import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { Icon } from '@/utils/tmp/dummy';
@@ -22,7 +22,7 @@ type TAccountSwitcherWalletMobile = {
 export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAccountSwitcherWalletMobile) => {
     const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
     const { client } = useStore() ?? {};
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
@@ -40,7 +40,8 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
 
         // Get the redirect URL from handleTraderHubRedirect
         const redirect_url_str =
-            handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+            handleTraderHubRedirect('cfds', has_wallet, is_virtual, client?.residence, hubEnabledCountryList) ||
+            standalone_routes.traders_hub;
 
         // Add the account parameter to the URL
         let final_url = redirect_url_str;
@@ -75,7 +76,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle }: TAc
             let redirect_url = new URL(standalone_routes.wallets_transfer);
 
             // Check if the user's country is in the hub-enabled country list
-            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
+            const is_hub_enabled_country = hubEnabledCountryList.includes(client?.residence || '');
             if (is_hub_enabled_country) {
                 redirect_url = new URL(standalone_routes.recent_transactions);
             }

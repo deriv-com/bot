@@ -4,7 +4,7 @@ import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
-import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
@@ -34,7 +34,7 @@ const AppHeader = observer(() => {
 
     const { isSingleLoggingIn } = useOauth2();
 
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -46,9 +46,7 @@ const AppHeader = observer(() => {
                     {isDesktop &&
                         (() => {
                             let redirect_url = new URL(standalone_routes.personal_details);
-                            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
-                                client?.residence
-                            );
+                            const is_hub_enabled_country = hubEnabledCountryList.includes(client?.residence || '');
 
                             if (has_wallet && is_hub_enabled_country) {
                                 redirect_url = new URL(standalone_routes.account_settings);
@@ -87,8 +85,8 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
-                                    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
-                                        client?.residence
+                                    const is_hub_enabled_country = hubEnabledCountryList.includes(
+                                        client?.residence || ''
                                     );
                                     if (is_hub_enabled_country) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);

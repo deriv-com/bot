@@ -1,5 +1,4 @@
 import { standalone_routes } from '@/components/shared';
-import { Analytics } from '@deriv-com/analytics';
 
 /**
  * Gets the base Trader's Hub URL based on the current environment
@@ -72,22 +71,20 @@ export const getWalletUrl = (is_virtual?: boolean, currency?: string): string =>
 /**
  * Checks if the user should be redirected to Trader's Hub based on:
  * 1. If they have wallets
- * 2. If their country is in the enabled list from GrowthBook
+ * 2. If their country is in the enabled list from Firebase config
  *
  * @param has_wallet - Whether the user has wallets
+ * @param residence - The user's residence country code
+ * @param hubEnabledCountryList - List of countries enabled for the hub
  * @returns Boolean indicating if redirection should happen
  */
-export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
-    const enabled_countries = Analytics?.getFeatureValue('hub_enabled_country_list', {}) as {
-        hub_enabled_country_list: string[];
-    };
-    const user_country = localStorage.getItem('client.country');
-
-    // Ensure enabled_countries is an array and user_country is defined
-    const is_country_enabled =
-        Array.isArray(enabled_countries?.hub_enabled_country_list) && user_country
-            ? enabled_countries?.hub_enabled_country_list?.includes(user_country.toLowerCase())
-            : false;
+export const shouldRedirectToTraderHub = (
+    has_wallet: boolean,
+    residence?: string,
+    hubEnabledCountryList: string[] = []
+): boolean => {
+    // Check if the country is in the enabled list
+    const is_country_enabled = residence ? hubEnabledCountryList.includes(residence) : false;
 
     return has_wallet && is_country_enabled;
 };
@@ -102,9 +99,11 @@ export const shouldRedirectToTraderHub = (has_wallet: boolean): boolean => {
 export const handleTraderHubRedirect = (
     product_type: 'cfds' | 'tradershub' | 'reports' | 'cashier',
     has_wallet: boolean,
-    is_virtual: boolean = false
+    is_virtual: boolean = false,
+    residence?: string,
+    hubEnabledCountryList: string[] = []
 ): string | null => {
-    if (shouldRedirectToTraderHub(has_wallet)) {
+    if (shouldRedirectToTraderHub(has_wallet, residence, hubEnabledCountryList)) {
         return getTraderHubUrl(product_type);
     }
 
