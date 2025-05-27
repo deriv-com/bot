@@ -36,6 +36,7 @@ const RenderAccountItems = ({
     const { oAuthLogout } = useOauth2({ handleLogout: async () => client.logout(), client });
     const is_low_risk_country = LOW_RISK_COUNTRIES().includes(client.account_settings?.country_code ?? '');
     const is_virtual = !!isVirtual;
+    const residence = client.residence;
 
     useEffect(() => {
         // Update the max-height from the accordion content set from deriv-com/ui
@@ -78,6 +79,7 @@ const RenderAccountItems = ({
                 loginid={activeLoginId}
                 is_logging_out={client.is_logging_out}
                 upgradeable_landing_companies={client?.landing_companies?.all_company ?? null}
+                residence={residence}
             />
         );
     }

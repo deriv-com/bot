@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
 import Text from '@/components/shared_ui/text';
 import ThemedScrollbars from '@/components/shared_ui/themed-scrollbars';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -15,10 +16,12 @@ import '../wallets/wallet.scss';
 type TAccountSwitcherWalletProps = {
     is_visible: boolean;
     toggle: (value?: boolean) => void;
+    residence?: string;
 };
 
-export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountSwitcherWalletProps) => {
+export const AccountSwitcherWallet = observer(({ is_visible, toggle, residence }: TAccountSwitcherWalletProps) => {
     const { data: wallet_list, has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
@@ -53,8 +56,14 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
         const is_virtual = account_param === 'demo' || false;
 
         // Get the redirect URL from handleTraderHubRedirect
-        const redirect_url_str =
-            handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+        const redirectParams = {
+            product_type: 'cfds' as const,
+            has_wallet,
+            is_virtual,
+            residence,
+            hubEnabledCountryList,
+        };
+        const redirect_url_str = handleTraderHubRedirect(redirectParams) || standalone_routes.traders_hub;
 
         // Add the account parameter to the URL
         let final_url = redirect_url_str;

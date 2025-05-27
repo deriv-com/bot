@@ -1,4 +1,5 @@
 import { standalone_routes } from '@/components/shared';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { Localize, localize } from '@deriv-com/translations';
@@ -6,8 +7,13 @@ import { AccountSwitcher as UIAccountSwitcher, Button } from '@deriv-com/ui';
 import { TNoNonEuAccounts } from './types';
 import { AccountSwitcherDivider, no_account } from './utils';
 
-const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoNonEuAccounts) => {
+type TNoNonEuAccountsWithResidence = TNoNonEuAccounts & {
+    residence?: string;
+};
+
+const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country, residence }: TNoNonEuAccountsWithResidence) => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     // Check if the account is a demo account from both isVirtual prop and URL parameter
     const urlParams = new URLSearchParams(window.location.search);
@@ -32,8 +38,14 @@ const NoNonEuAccounts = ({ isVirtual, tabs_labels, is_low_risk_country }: TNoNon
                     className='add-button'
                     onClick={() => {
                         // Get the redirect URL from handleTraderHubRedirect
-                        let redirect_url_str =
-                            handleTraderHubRedirect('tradershub', has_wallet, is_demo) || standalone_routes.traders_hub;
+                        const redirectParams = {
+                            product_type: 'tradershub' as const,
+                            has_wallet,
+                            is_virtual: is_demo,
+                            residence,
+                            hubEnabledCountryList,
+                        };
+                        let redirect_url_str = handleTraderHubRedirect(redirectParams) || standalone_routes.traders_hub;
 
                         // Add the account parameter to the URL
                         try {

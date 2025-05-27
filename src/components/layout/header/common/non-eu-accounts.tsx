@@ -5,13 +5,13 @@ import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 import { TNonEUAccounts } from './types';
 
 const NonEUAccounts = ({
-    isVirtual,
-    tabs_labels,
     modifiedCRAccountList,
     modifiedMFAccountList,
-    is_low_risk_country,
     switchAccount,
-}: TNonEUAccounts) => {
+    isVirtual,
+    tabs_labels,
+    is_low_risk_country,
+}: TNonEUAccounts & { residence?: string }) => {
     if (!is_low_risk_country && modifiedCRAccountList && modifiedCRAccountList?.length === 0) {
         return null;
     }

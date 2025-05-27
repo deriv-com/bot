@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -11,6 +12,7 @@ import './platform-switcher.scss';
 const PlatformSwitcher = observer(() => {
     const { localize } = useTranslations();
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
     const store = useStore();
 
     // Get the URL parameters to check if it's a demo account
@@ -22,7 +24,14 @@ const PlatformSwitcher = observer(() => {
     const is_virtual = client.is_virtual || account_param === 'demo' || false;
 
     // Get the redirect URL from handleTraderHubRedirect
-    const redirect_url_str = handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+    const redirectParams = {
+        product_type: 'cfds' as const,
+        has_wallet,
+        is_virtual,
+        residence: client.residence,
+        hubEnabledCountryList,
+    };
+    const redirect_url_str = handleTraderHubRedirect(redirectParams) || standalone_routes.traders_hub;
 
     // Add the account parameter to the URL
     let final_url = redirect_url_str;
