@@ -16,6 +16,7 @@ import { isDbotRTL } from '@/external/bot-skeleton/utils/workspace';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
+import useTMB from '@/hooks/useTMB';
 import {
     LabelPairedChartLineCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
@@ -78,6 +79,8 @@ const AppWrapper = observer(() => {
         return Number(hash.indexOf(String(tab_value)));
     };
     const active_hash_tab = GetHashedValue(active_tab);
+
+    const { is_tmb_enabled, onRenderTMBCheck } = useTMB();
 
     React.useEffect(() => {
         const el_dashboard = document.getElementById('id-dbot-dashboard');
@@ -232,19 +235,23 @@ const AppWrapper = observer(() => {
             const currency = getQueryParams.get('account') ?? '';
             const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
             try {
-                await requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                    ...(query_param_currency
-                        ? {
-                              state: {
-                                  account: query_param_currency,
-                              },
-                          }
-                        : {}),
-                }).catch(err => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
+                if (is_tmb_enabled) {
+                    onRenderTMBCheck();
+                } else {
+                    await requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                        ...(query_param_currency
+                            ? {
+                                  state: {
+                                      account: query_param_currency,
+                                  },
+                              }
+                            : {}),
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                }
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.error(error);

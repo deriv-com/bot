@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
 import { api_base } from '@/external/bot-skeleton';
+import useTMB from '@/hooks/useTMB';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
@@ -15,6 +16,7 @@ const Layout = () => {
     const { isDesktop } = useDevice();
 
     const isCallbackPage = window.location.pathname === '/callback';
+    const { is_tmb_enabled = false, onRenderTMBCheck } = useTMB();
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
@@ -133,19 +135,23 @@ const Layout = () => {
                 sessionStorage.setItem('query_param_currency', query_param_currency);
             }
             try {
-                requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                    ...(query_param_currency
-                        ? {
-                              state: {
-                                  account: query_param_currency,
-                              },
-                          }
-                        : {}),
-                }).catch(err => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
+                if (is_tmb_enabled) {
+                    onRenderTMBCheck();
+                } else {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                        ...(query_param_currency
+                            ? {
+                                  state: {
+                                      account: query_param_currency,
+                                  },
+                              }
+                            : {}),
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                }
             } catch (err) {
                 // eslint-disable-next-line no-console
                 console.error(err);

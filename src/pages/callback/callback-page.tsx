@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import useTMB from '@/hooks/useTMB';
 import { clearAuthData } from '@/utils/auth-utils';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
@@ -71,7 +72,8 @@ const CallbackPage = () => {
                             is_token_set = true;
 
                             // Only emit the InvalidToken event if logged_state is true
-                            if (Cookies.get('logged_state') === 'true') {
+                            const { is_tmb_enabled = false } = useTMB();
+                            if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
                                 // Emit an event that can be caught by the application to retrigger OIDC authentication
                                 globalObserver.emit('InvalidToken', { error });
                             }
