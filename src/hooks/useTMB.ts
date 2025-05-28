@@ -58,7 +58,7 @@ const useTMB = (): UseTMBReturn => {
 
             const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.dbot;
             // Update localStorage with the result so non-React components can access it
-
+            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
             return isEnabled;
         } catch (e) {
             // eslint-disable-next-line no-console
