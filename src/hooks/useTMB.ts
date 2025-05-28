@@ -2,9 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { generateOAuthURL } from '@/components/shared';
 import { removeCookies } from '@/components/shared/utils/storage/storage';
-import { isStaging as isStaging_util } from '@/components/shared/utils/url/helpers';
+import { isStaging } from '@/components/shared/utils/url/helpers';
 import { api_base } from '@/external/bot-skeleton';
 import { setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
+import { TAuthData } from '@/types/api-types';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 type UseTMBReturn = {
@@ -41,16 +42,16 @@ const useTMB = (): UseTMBReturn => {
     );
     const currentDomain = useMemo(() => window.location.hostname.split('.').slice(-2).join('.'), []);
 
-    const isProduction = useMemo(() => process.env.APP_ENV === 'production', []);
-    const isStaging = useMemo(() => process.env.APP_ENV === 'staging', []);
-    const isOAuth2Enabled = useMemo(() => isProduction || isStaging, [isProduction, isStaging]);
+    const is_production = useMemo(() => !isStaging(), []);
+    const is_staging = useMemo(() => isStaging(), []);
+    const isOAuth2Enabled = useMemo(() => is_production || is_staging, [is_production, is_staging]);
     const [is_tmb_enabled, setIsTmbEnabled] = useState(JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'));
     const authTokenRef = useRef(localStorage.getItem('authToken'));
 
     const isTmbEnabled = useCallback(async () => {
         const storedValue = localStorage.getItem('is_tmb_enabled');
         try {
-            const url = isStaging_util()
+            const url = is_staging
                 ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
                 : 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
             const response = await fetch(url);
@@ -69,7 +70,7 @@ const useTMB = (): UseTMBReturn => {
             localStorage.setItem('is_tmb_enabled', 'false');
             return isEnabled;
         }
-    }, []);
+    }, [is_staging]);
 
     useEffect(() => {
         if (!TMBState.isInitialized) {
@@ -199,8 +200,8 @@ const useTMB = (): UseTMBReturn => {
                                     setAuthData({
                                         loginid: selectedToken.loginid,
                                         currency: selectedToken.cur || '',
-                                        token: selectedToken.token, // Keeping token property, despite TypeScript error Need to check this later
-                                    });
+                                        token: selectedToken.token,
+                                    } as TAuthData & { token: string });
                                 }
                             });
                         }
