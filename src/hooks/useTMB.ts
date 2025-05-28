@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
+import { generateOAuthURL } from '@/components/shared';
 import { removeCookies } from '@/components/shared/utils/storage/storage';
 import { api_base } from '@/external/bot-skeleton';
 import { setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
@@ -57,7 +58,7 @@ const useTMB = (): UseTMBReturn => {
 
             const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.dbot;
             // Update localStorage with the result so non-React components can access it
-            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
+
             return isEnabled;
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -65,7 +66,7 @@ const useTMB = (): UseTMBReturn => {
             // by default it will fallback to true if firebase error happens
             const isEnabled = storedValue !== null ? storedValue === 'true' : true;
             // Update localStorage with the result so non-React components can access it
-            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
+            localStorage.setItem('is_tmb_enabled', 'false');
             return isEnabled;
         }
     }, []);
@@ -87,9 +88,12 @@ const useTMB = (): UseTMBReturn => {
             localStorage.removeItem('active_loginid');
             localStorage.removeItem('clientAccounts');
             localStorage.removeItem('accountsList');
+            // Redirect to OAuth authentication instead of just logging out
+            window.location.replace(generateOAuthURL());
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Failed to logout', error);
+            console.error('Failed to redirect to OAuth:', error);
+            return handleLogout();
         }
     }, []);
 
@@ -156,7 +160,14 @@ const useTMB = (): UseTMBReturn => {
             if (!activeSessions?.active && !isEndpointPage) {
                 console.error('Failed to get active sessions: No data returned');
                 TMBState.checkInProgress = false;
-                return handleLogout();
+
+                try {
+                    window.location.replace(generateOAuthURL());
+                } catch (error) {
+                    console.error('Failed to redirect to OAuth:', error);
+                    return handleLogout();
+                }
+                return;
             } else if (activeSessions?.active) {
                 if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
                     const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
