@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { generateOAuthURL } from '@/components/shared';
 import { removeCookies } from '@/components/shared/utils/storage/storage';
+import { isStaging as isStaging_util } from '@/components/shared/utils/url/helpers';
 import { api_base } from '@/external/bot-skeleton';
 import { setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { requestSessionActive } from '@deriv-com/auth-client';
@@ -49,10 +50,9 @@ const useTMB = (): UseTMBReturn => {
     const isTmbEnabled = useCallback(async () => {
         const storedValue = localStorage.getItem('is_tmb_enabled');
         try {
-            const url =
-                process.env.NODE_ENV === 'production'
-                    ? 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
-                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+            const url = isStaging_util()
+                ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
+                : 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
             const response = await fetch(url);
             const result = await response.json();
 
