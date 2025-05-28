@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { removeCookies } from '@/components/shared/utils/storage/storage';
 import { api_base } from '@/external/bot-skeleton';
@@ -10,6 +10,7 @@ type UseTMBReturn = {
     isOAuth2Enabled: boolean;
     is_tmb_enabled: boolean;
     onRenderTMBCheck: () => Promise<void>;
+    isTmbEnabled: () => Promise<boolean>;
 };
 
 interface TokenItem {
@@ -41,14 +42,44 @@ const useTMB = (): UseTMBReturn => {
     const isProduction = useMemo(() => process.env.APP_ENV === 'production', []);
     const isStaging = useMemo(() => process.env.APP_ENV === 'staging', []);
     const isOAuth2Enabled = useMemo(() => isProduction || isStaging, [isProduction, isStaging]);
-    const is_tmb_enabled = useMemo(() => JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'), []);
+    const [is_tmb_enabled, setIsTmbEnabled] = useState(JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'));
     const authTokenRef = useRef(localStorage.getItem('authToken'));
+
+    const isTmbEnabled = useCallback(async () => {
+        const storedValue = localStorage.getItem('is_tmb_enabled');
+        try {
+            const url =
+                process.env.NODE_ENV === 'production'
+                    ? 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
+                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+            const response = await fetch(url);
+            const result = await response.json();
+
+            const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.app;
+            // Update localStorage with the result so non-React components can access it
+            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
+            return isEnabled;
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            // by default it will fallback to true if firebase error happens
+            const isEnabled = storedValue !== null ? storedValue === 'true' : true;
+            // Update localStorage with the result so non-React components can access it
+            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
+            return isEnabled;
+        }
+    }, []);
 
     useEffect(() => {
         if (!TMBState.isInitialized) {
             TMBState.isInitialized = true;
         }
-    }, []);
+
+        // Check TMB status on mount
+        isTmbEnabled().then(enabled => {
+            setIsTmbEnabled(enabled);
+        });
+    }, [isTmbEnabled]);
 
     const logout = useCallback(async () => {
         try {
@@ -185,8 +216,9 @@ const useTMB = (): UseTMBReturn => {
             isOAuth2Enabled,
             is_tmb_enabled,
             onRenderTMBCheck,
+            isTmbEnabled,
         }),
-        [handleLogout, isOAuth2Enabled, is_tmb_enabled, onRenderTMBCheck]
+        [handleLogout, isOAuth2Enabled, is_tmb_enabled, onRenderTMBCheck, isTmbEnabled]
     );
 };
 
