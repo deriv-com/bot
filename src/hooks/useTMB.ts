@@ -55,7 +55,7 @@ const useTMB = (): UseTMBReturn => {
             const response = await fetch(url);
             const result = await response.json();
 
-            const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.app;
+            const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.dbot;
             // Update localStorage with the result so non-React components can access it
             localStorage.setItem('is_tmb_enabled', isEnabled.toString());
             return isEnabled;
