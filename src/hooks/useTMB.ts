@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 import { generateOAuthURL } from '@/components/shared';
 import { removeCookies } from '@/components/shared/utils/storage/storage';
-import { isStaging } from '@/components/shared/utils/url/helpers';
 import { api_base } from '@/external/bot-skeleton';
 import { setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { TAuthData } from '@/types/api-types';
@@ -42,8 +41,8 @@ const useTMB = (): UseTMBReturn => {
     );
     const currentDomain = useMemo(() => window.location.hostname.split('.').slice(-2).join('.'), []);
 
-    const is_production = useMemo(() => !isStaging(), []);
-    const is_staging = useMemo(() => isStaging(), []);
+    const is_staging = useMemo(() => window.location.hostname.includes('staging'), []);
+    const is_production = useMemo(() => !is_staging, [is_staging]);
     const isOAuth2Enabled = useMemo(() => is_production || is_staging, [is_production, is_staging]);
     const [is_tmb_enabled, setIsTmbEnabled] = useState(JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'));
     const authTokenRef = useRef(localStorage.getItem('authToken'));
