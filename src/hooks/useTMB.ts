@@ -65,7 +65,8 @@ const useTMB = (): UseTMBReturn => {
             const isEnabled = !!result.dbot;
 
             // Store in window object for all components to access
-            window.is_tmb_enabled = isEnabled;
+            const storedValue = localStorage.getItem('is_tmb_enabled');
+            window.is_tmb_enabled = storedValue ? JSON.parse(storedValue) : isEnabled;
 
             return isEnabled;
         } catch (e) {
@@ -75,7 +76,8 @@ const useTMB = (): UseTMBReturn => {
             const isEnabled = false;
 
             // Store in window object for all components to access
-            window.is_tmb_enabled = isEnabled;
+            const storedValue = localStorage.getItem('is_tmb_enabled');
+            window.is_tmb_enabled = storedValue ? JSON.parse(storedValue) : isEnabled;
 
             return isEnabled;
         }
