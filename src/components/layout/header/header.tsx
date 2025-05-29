@@ -38,7 +38,7 @@ const AppHeader = observer(() => {
 
     const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
     const { onRenderTMBCheck } = useTMB();
-    const is_tmb_enabled = useMemo(() => JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'), []);
+    const is_tmb_enabled = useMemo(() => window.is_tmb_enabled === true, []);
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
