@@ -7,6 +7,13 @@ import { setAuthData } from '@/external/bot-skeleton/services/api/observables/co
 import { TAuthData } from '@/types/api-types';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
+// Extend Window interface to include is_tmb_enabled property
+declare global {
+    interface Window {
+        is_tmb_enabled?: boolean;
+    }
+}
+
 type UseTMBReturn = {
     handleLogout: () => void;
     isOAuth2Enabled: boolean;
@@ -44,11 +51,10 @@ const useTMB = (): UseTMBReturn => {
     const is_staging = useMemo(() => window.location.hostname.includes('staging'), []);
     const is_production = useMemo(() => !is_staging, [is_staging]);
     const isOAuth2Enabled = useMemo(() => is_production || is_staging, [is_production, is_staging]);
-    const [is_tmb_enabled, setIsTmbEnabled] = useState(JSON.parse(localStorage.getItem('is_tmb_enabled') || 'false'));
+    const [is_tmb_enabled, setIsTmbEnabled] = useState(false);
     const authTokenRef = useRef(localStorage.getItem('authToken'));
 
     const isTmbEnabled = useCallback(async () => {
-        const storedValue = localStorage.getItem('is_tmb_enabled');
         try {
             const url = is_staging
                 ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
@@ -56,17 +62,21 @@ const useTMB = (): UseTMBReturn => {
             const response = await fetch(url);
             const result = await response.json();
 
-            const isEnabled = storedValue !== null ? storedValue === 'true' : !!result.dbot;
-            // Update localStorage with the result so non-React components can access it
-            localStorage.setItem('is_tmb_enabled', isEnabled.toString());
+            const isEnabled = !!result.dbot;
+
+            // Store in window object for all components to access
+            window.is_tmb_enabled = isEnabled;
+
             return isEnabled;
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);
-            // by default it will fallback to true if firebase error happens
-            const isEnabled = storedValue !== null ? storedValue === 'true' : true;
-            // Update localStorage with the result so non-React components can access it
-            localStorage.setItem('is_tmb_enabled', 'false');
+            // by default it will fallback to false if firebase error happens
+            const isEnabled = false;
+
+            // Store in window object for all components to access
+            window.is_tmb_enabled = isEnabled;
+
             return isEnabled;
         }
     }, [is_staging]);
