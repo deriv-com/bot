@@ -64,9 +64,10 @@ const useTMB = (): UseTMBReturn => {
 
             const isEnabled = !!result.dbot;
 
-            // Store in window object for all components to access
+            // Always use the latest value from the API
             const storedValue = localStorage.getItem('is_tmb_enabled');
             window.is_tmb_enabled = storedValue ? JSON.parse(storedValue) : isEnabled;
+            console.log(`TMB is`, { result, window_is_tmb_enabled: window.is_tmb_enabled });
 
             return isEnabled;
         } catch (e) {
@@ -233,6 +234,15 @@ const useTMB = (): UseTMBReturn => {
         }
     }, [isCallbackPage, getActiveSessions, isEndpointPage, handleLogout, processTokens, domains, currentDomain]);
 
+    console.log('test is_tmb_enabled', {
+        is_tmb_enabled,
+        window_is_tmb_enabled: window.is_tmb_enabled,
+        isTmbEnabled: isTmbEnabled(),
+        isOAuth2Enabled,
+        isEndpointPage,
+        isCallbackPage,
+        currentDomain,
+    });
     return useMemo(
         () => ({
             handleLogout,

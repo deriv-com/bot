@@ -133,6 +133,8 @@ const AppHeader = observer(() => {
                             const currency = getQueryParams.get('account') ?? '';
                             const query_param_currency =
                                 currency || sessionStorage.getItem('query_param_currency') || 'USD';
+
+                            console.log('test log in query_param_currency', is_tmb_enabled);
                             try {
                                 if (is_tmb_enabled) {
                                     onRenderTMBCheck();
