@@ -56,6 +56,16 @@ const useTMB = (): UseTMBReturn => {
 
     const isTmbEnabled = useCallback(async () => {
         try {
+            // Check if we have a manually set value in localStorage
+            const storedValue = localStorage.getItem('is_tmb_enabled');
+
+            // If localStorage value is explicitly 'true', use that
+            if (storedValue === 'true') {
+                window.is_tmb_enabled = true;
+                return true;
+            }
+
+            // Otherwise, use the API value
             const url = is_staging
                 ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
                 : 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
@@ -64,23 +74,27 @@ const useTMB = (): UseTMBReturn => {
 
             const isEnabled = !!result.dbot;
 
-            // Always use the latest value from the API
-            const storedValue = localStorage.getItem('is_tmb_enabled');
-            window.is_tmb_enabled = storedValue ? JSON.parse(storedValue) : isEnabled;
+            // Update window property with API value
+            window.is_tmb_enabled = isEnabled;
             console.log(`TMB is`, { result, window_is_tmb_enabled: window.is_tmb_enabled });
 
             return isEnabled;
         } catch (e) {
             // eslint-disable-next-line no-console
             console.error(e);
-            // by default it will fallback to false if firebase error happens
-            const isEnabled = false;
 
-            // Store in window object for all components to access
+            // Check if we have a manually set value in localStorage
             const storedValue = localStorage.getItem('is_tmb_enabled');
-            window.is_tmb_enabled = storedValue ? JSON.parse(storedValue) : isEnabled;
 
-            return isEnabled;
+            // If localStorage value is explicitly 'true', use that
+            if (storedValue === 'true') {
+                window.is_tmb_enabled = true;
+                return true;
+            }
+
+            // By default it will fallback to false if firebase error happens
+            window.is_tmb_enabled = false;
+            return false;
         }
     }, [is_staging]);
 
