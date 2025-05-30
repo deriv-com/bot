@@ -126,7 +126,7 @@ const useTMB = (): UseTMBReturn => {
                 // Otherwise, use the API value
                 const url = is_staging
                     ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
-                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+                    : 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
                 const response = await fetch(url);
                 const result = await response.json();
 
