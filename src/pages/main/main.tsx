@@ -80,7 +80,7 @@ const AppWrapper = observer(() => {
     };
     const active_hash_tab = GetHashedValue(active_tab);
 
-    const { is_tmb_enabled, onRenderTMBCheck } = useTMB();
+    const { onRenderTMBCheck, isTmbEnabled } = useTMB();
 
     React.useEffect(() => {
         const el_dashboard = document.getElementById('id-dbot-dashboard');
@@ -234,9 +234,13 @@ const AppWrapper = observer(() => {
             const getQueryParams = new URLSearchParams(window.location.search);
             const currency = getQueryParams.get('account') ?? '';
             const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+
             try {
-                if (is_tmb_enabled) {
-                    onRenderTMBCheck();
+                // First, explicitly wait for TMB status to be determined
+                const tmbEnabled = await isTmbEnabled();
+                // Now use the result of the explicit check
+                if (tmbEnabled) {
+                    await onRenderTMBCheck();
                 } else {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,

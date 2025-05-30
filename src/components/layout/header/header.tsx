@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -37,8 +36,7 @@ const AppHeader = observer(() => {
     const { isSingleLoggingIn } = useOauth2();
 
     const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
-    const { onRenderTMBCheck } = useTMB();
-    const is_tmb_enabled = useMemo(() => window.is_tmb_enabled === true, []);
+    const { onRenderTMBCheck, isTmbEnabled } = useTMB();
 
     const renderAccountSection = () => {
         if (isAuthorizing || isSingleLoggingIn) {
@@ -135,9 +133,14 @@ const AppHeader = observer(() => {
                                 currency || sessionStorage.getItem('query_param_currency') || 'USD';
 
                             try {
-                                if (is_tmb_enabled) {
-                                    onRenderTMBCheck();
+                                // First, explicitly wait for TMB status to be determined
+                                const tmbEnabled = await isTmbEnabled();
+
+                                // Now use the result of the explicit check
+                                if (tmbEnabled) {
+                                    await onRenderTMBCheck();
                                 } else {
+                                    // Always use OIDC if TMB is not enabled
                                     await requestOidcAuthentication({
                                         redirectCallbackUri: `${window.location.origin}/callback`,
                                         ...(query_param_currency
