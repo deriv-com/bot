@@ -76,8 +76,6 @@ const useTMB = (): UseTMBReturn => {
 
             // Update window property with API value
             window.is_tmb_enabled = isEnabled;
-            console.log(`TMB is`, { result, window_is_tmb_enabled: window.is_tmb_enabled });
-
             return isEnabled;
         } catch (e) {
             // eslint-disable-next-line no-console
@@ -248,15 +246,6 @@ const useTMB = (): UseTMBReturn => {
         }
     }, [isCallbackPage, getActiveSessions, isEndpointPage, handleLogout, processTokens, domains, currentDomain]);
 
-    console.log('test is_tmb_enabled', {
-        is_tmb_enabled,
-        window_is_tmb_enabled: window.is_tmb_enabled,
-        isTmbEnabled: isTmbEnabled(),
-        isOAuth2Enabled,
-        isEndpointPage,
-        isCallbackPage,
-        currentDomain,
-    });
     return useMemo(
         () => ({
             handleLogout,
