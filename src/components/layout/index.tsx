@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
@@ -16,7 +16,12 @@ const Layout = () => {
     const { isDesktop } = useDevice();
 
     const isCallbackPage = window.location.pathname === '/callback';
-    const { is_tmb_enabled = false, onRenderTMBCheck } = useTMB();
+    const { onRenderTMBCheck, is_tmb_enabled: tmb_enabled_from_hook, isTmbEnabled } = useTMB();
+    const is_tmb_enabled = useMemo(
+        () => window.is_tmb_enabled === true || tmb_enabled_from_hook,
+        [tmb_enabled_from_hook]
+    );
+
     const isLoggedInCookie = Cookies.get('logged_state') === 'true';
     const isEndpointPage = window.location.pathname.includes('endpoint');
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
@@ -123,21 +128,27 @@ const Layout = () => {
         }
 
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
-
-        if (
+        const shouldAuthenticate =
             (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
-            checkOIDCEnabledWithMissingAccount
-        ) {
-            const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+            checkOIDCEnabledWithMissingAccount;
 
-            // Make sure we have the currency in session storage before redirecting
-            if (query_param_currency) {
-                sessionStorage.setItem('query_param_currency', query_param_currency);
-            }
+        // Create an async IIFE to handle authentication
+        (async () => {
             try {
-                if (is_tmb_enabled) {
-                    onRenderTMBCheck();
-                } else {
+                // First, explicitly wait for TMB status to be determined
+                // This ensures we have the correct TMB status before proceeding
+                const tmbEnabled = await isTmbEnabled();
+
+                // Now use the result of the explicit check
+                if (tmbEnabled) {
+                    await onRenderTMBCheck();
+                } else if (shouldAuthenticate) {
+                    const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+
+                    // Make sure we have the currency in session storage before redirecting
+                    if (query_param_currency) {
+                        sessionStorage.setItem('query_param_currency', query_param_currency);
+                    }
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
                         ...(query_param_currency
@@ -154,10 +165,20 @@ const Layout = () => {
                 }
             } catch (err) {
                 // eslint-disable-next-line no-console
-                console.error(err);
+                console.error('Authentication error:', err);
             }
-        }
-    }, [isLoggedInCookie, isClientAccountsPopulated, isEndpointPage, isCallbackPage, clientHasCurrency]);
+        })();
+    }, [
+        isLoggedInCookie,
+        isClientAccountsPopulated,
+        isEndpointPage,
+        isCallbackPage,
+        clientHasCurrency,
+        tmb_enabled_from_hook,
+        onRenderTMBCheck,
+        currency,
+        is_tmb_enabled,
+    ]);
 
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>

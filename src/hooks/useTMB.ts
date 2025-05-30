@@ -20,12 +20,20 @@ type UseTMBReturn = {
     is_tmb_enabled: boolean;
     onRenderTMBCheck: () => Promise<void>;
     isTmbEnabled: () => Promise<boolean>;
+    isInitialized: boolean;
+    isTmbCheckComplete: boolean;
 };
 
 interface TokenItem {
     loginid?: string;
     token?: string;
     cur?: string;
+}
+
+interface TMBWebsocketTokens {
+    active: boolean;
+    tokens: TokenItem[];
+    [key: string]: any;
 }
 
 const TMBState = {
@@ -52,60 +60,180 @@ const useTMB = (): UseTMBReturn => {
     const is_production = useMemo(() => !is_staging, [is_staging]);
     const isOAuth2Enabled = useMemo(() => is_production || is_staging, [is_production, is_staging]);
     const [is_tmb_enabled, setIsTmbEnabled] = useState(false);
+    const [, setIsApiInitialized] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [isTmbCheckComplete, setIsTmbCheckComplete] = useState(false);
     const authTokenRef = useRef(localStorage.getItem('authToken'));
+    const activeSessionsRef = useRef<TMBWebsocketTokens | undefined>(undefined);
+
+    const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
+        try {
+            return (await requestSessionActive()) as TMBWebsocketTokens;
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to get active sessions', error);
+            return undefined;
+        }
+    }, []);
+
+    const processTokens = useCallback((tokens: TokenItem[]) => {
+        const accountsList: Record<string, string> = {};
+        const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
+
+        tokens.forEach((token: TokenItem) => {
+            if (token.loginid && token.token) {
+                accountsList[token.loginid] = token.token;
+                clientAccounts[token.loginid] = {
+                    loginid: token.loginid,
+                    token: token.token,
+                    currency: token.cur || '',
+                };
+            }
+        });
+
+        return { accountsList, clientAccounts };
+    }, []);
+
+    // Use a ref to track if we've already determined TMB status
+    const tmbStatusDeterminedRef = useRef(false);
+    const tmbStatusPromiseRef = useRef<Promise<boolean> | null>(null);
 
     const isTmbEnabled = useCallback(async () => {
-        try {
-            // Check if we have a manually set value in localStorage
-            const storedValue = localStorage.getItem('is_tmb_enabled');
-
-            // If localStorage value is explicitly 'true', use that
-            if (storedValue === 'true') {
-                window.is_tmb_enabled = true;
-                return true;
-            }
-
-            // Otherwise, use the API value
-            const url = is_staging
-                ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
-                : 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
-            const response = await fetch(url);
-            const result = await response.json();
-
-            const isEnabled = !!result.dbot;
-
-            // Update window property with API value
-            window.is_tmb_enabled = isEnabled;
-            return isEnabled;
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e);
-
-            // Check if we have a manually set value in localStorage
-            const storedValue = localStorage.getItem('is_tmb_enabled');
-
-            // If localStorage value is explicitly 'true', use that
-            if (storedValue === 'true') {
-                window.is_tmb_enabled = true;
-                return true;
-            }
-
-            // By default it will fallback to false if firebase error happens
-            window.is_tmb_enabled = false;
-            return false;
+        // If we've already determined the status, return the cached value
+        if (tmbStatusDeterminedRef.current) {
+            return window.is_tmb_enabled === true;
         }
+
+        // If we're already in the process of determining the status, wait for that promise
+        if (tmbStatusPromiseRef.current) {
+            return tmbStatusPromiseRef.current;
+        }
+
+        // Create a new promise to determine the status
+        tmbStatusPromiseRef.current = (async () => {
+            try {
+                // Check if we have a manually set value in localStorage
+                const storedValue = localStorage.getItem('is_tmb_enabled');
+
+                // If localStorage value is explicitly 'true', use that
+                if (storedValue === 'true') {
+                    window.is_tmb_enabled = true;
+                    setIsTmbEnabled(true);
+                    tmbStatusDeterminedRef.current = true;
+                    return true;
+                }
+
+                // Otherwise, use the API value
+                const url = is_staging
+                    ? 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
+                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+                const response = await fetch(url);
+                const result = await response.json();
+
+                const isEnabled = !!result.dbot;
+
+                // Update window property with API value and mark as determined
+                window.is_tmb_enabled = isEnabled;
+                setIsTmbEnabled(isEnabled);
+                tmbStatusDeterminedRef.current = true;
+                return isEnabled;
+            } catch (e) {
+                // eslint-disable-next-line no-console
+                console.error(e);
+
+                // Check if we have a manually set value in localStorage
+                const storedValue = localStorage.getItem('is_tmb_enabled');
+
+                // If localStorage value is explicitly 'true', use that
+                if (storedValue === 'true') {
+                    window.is_tmb_enabled = true;
+                    setIsTmbEnabled(true);
+                    tmbStatusDeterminedRef.current = true;
+                    return true;
+                }
+
+                // By default it will fallback to false if firebase error happens
+                window.is_tmb_enabled = false;
+                setIsTmbEnabled(false);
+                tmbStatusDeterminedRef.current = true;
+                return false;
+            }
+        })();
+
+        return tmbStatusPromiseRef.current;
     }, [is_staging]);
 
+    // Initialize the hook and check TMB status - only run once
     useEffect(() => {
-        if (!TMBState.isInitialized) {
-            TMBState.isInitialized = true;
+        if (TMBState.isInitialized) {
+            return; // Only run initialization once
         }
 
-        // Check TMB status on mount
-        isTmbEnabled().then(enabled => {
-            setIsTmbEnabled(enabled);
-        });
-    }, [isTmbEnabled]);
+        TMBState.isInitialized = true;
+
+        // Don't set states to true until all async operations are complete
+        setIsInitialized(false);
+        setIsTmbCheckComplete(false);
+
+        // Add a safety timeout to ensure the hook always completes initialization
+        const safetyTimeout = setTimeout(() => {
+            setIsInitialized(true);
+            setIsTmbCheckComplete(true);
+        }, 2500);
+
+        const initializeHook = async () => {
+            try {
+                // Pre-fetch active sessions if needed
+                if (!isCallbackPage) {
+                    try {
+                        // This is a critical step - we need to await this
+                        const activeSessions = await getActiveSessions();
+                        activeSessionsRef.current = activeSessions;
+
+                        // Process tokens in advance if available
+                        if (
+                            activeSessions?.active &&
+                            Array.isArray(activeSessions.tokens) &&
+                            activeSessions.tokens.length > 0
+                        ) {
+                            const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
+                            localStorage.setItem('accountsList', JSON.stringify(accountsList));
+                            localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
+                        }
+                    } catch (error) {
+                        console.error('Failed to pre-fetch active sessions:', error);
+                    } finally {
+                        setIsApiInitialized(true);
+                    }
+                } else {
+                    setIsApiInitialized(true);
+                }
+
+                // Only after all operations are complete, mark as initialized
+                setIsInitialized(true);
+                setIsTmbCheckComplete(true);
+
+                // Clear the safety timeout since we completed normally
+                clearTimeout(safetyTimeout);
+            } catch (error) {
+                console.error('Failed to initialize TMB hook:', error);
+                // Still mark as initialized to avoid blocking the app completely
+                setIsInitialized(true);
+                setIsTmbCheckComplete(true);
+
+                // Clear the safety timeout since we're handling the error
+                clearTimeout(safetyTimeout);
+            }
+        };
+
+        // Start initialization immediately
+        initializeHook();
+
+        // Clean up the safety timeout if the component unmounts
+        return () => {
+            clearTimeout(safetyTimeout);
+        };
+    }, [isTmbEnabled, isCallbackPage, processTokens, getActiveSessions]);
 
     const logout = useCallback(async () => {
         try {
@@ -140,33 +268,6 @@ const useTMB = (): UseTMBReturn => {
         }
     }, [logout, domains, currentDomain]);
 
-    const getActiveSessions = useCallback(async () => {
-        try {
-            return await requestSessionActive();
-        } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Failed to get active sessions', error);
-        }
-    }, []);
-
-    const processTokens = useCallback((tokens: TokenItem[]) => {
-        const accountsList: Record<string, string> = {};
-        const clientAccounts: Record<string, { loginid: string; token: string; currency: string }> = {};
-
-        tokens.forEach((token: TokenItem) => {
-            if (token.loginid && token.token) {
-                accountsList[token.loginid] = token.token;
-                clientAccounts[token.loginid] = {
-                    loginid: token.loginid,
-                    token: token.token,
-                    currency: token.cur || '',
-                };
-            }
-        });
-
-        return { accountsList, clientAccounts };
-    }, []);
-
     // Get account from URL query parameter
     const getAccountFromURL = useCallback(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -180,7 +281,13 @@ const useTMB = (): UseTMBReturn => {
         TMBState.checkInProgress = true;
 
         try {
-            const activeSessions = await getActiveSessions();
+            // Use pre-fetched active sessions if available, otherwise fetch them
+            let activeSessions = activeSessionsRef.current;
+
+            if (!activeSessions) {
+                activeSessions = await getActiveSessions();
+                activeSessionsRef.current = activeSessions;
+            }
 
             if (!activeSessions?.active && !isEndpointPage) {
                 console.error('Failed to get active sessions: No data returned');
@@ -253,8 +360,18 @@ const useTMB = (): UseTMBReturn => {
             is_tmb_enabled,
             onRenderTMBCheck,
             isTmbEnabled,
+            isInitialized,
+            isTmbCheckComplete,
         }),
-        [handleLogout, isOAuth2Enabled, is_tmb_enabled, onRenderTMBCheck, isTmbEnabled]
+        [
+            handleLogout,
+            isOAuth2Enabled,
+            is_tmb_enabled,
+            onRenderTMBCheck,
+            isTmbEnabled,
+            isInitialized,
+            isTmbCheckComplete,
+        ]
     );
 };
 
