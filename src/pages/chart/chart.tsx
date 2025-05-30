@@ -137,7 +137,11 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
-                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
+                topWidgets={() => (
+                    <div style={{ zIndex: 9999 }}>
+                        <ChartTitle onChange={onSymbolChange} />
+                    </div>
+                )}
                 isConnectionOpened={is_connection_opened}
                 getMarketsOrder={getMarketsOrder}
                 isLive
