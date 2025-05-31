@@ -138,7 +138,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 settings={settings}
                 symbol={symbol}
                 topWidgets={() => (
-                    <div style={{ height: '100vh', zIndex: 99999 }}>
+                    <div style={{ height: '100vh', zIndex: 99999, position: 'relative', width: '100vw' }}>
                         {' '}
                         <ChartTitle onChange={onSymbolChange} />
                     </div>
