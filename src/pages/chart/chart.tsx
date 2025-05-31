@@ -138,8 +138,14 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 settings={settings}
                 symbol={symbol}
                 topWidgets={() => (
-                    <div style={{ height: '100vh', zIndex: 99999, position: 'relative', width: '100vw' }}>
-                        {' '}
+                    <div
+                        style={{
+                            position: 'relative',
+                            zIndex: 99,
+                            width: '100%',
+                            paddingTop: isMobile ? '4rem' : '0', // Add padding for mobile to account for header
+                        }}
+                    >
                         <ChartTitle onChange={onSymbolChange} />
                     </div>
                 )}
