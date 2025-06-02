@@ -43,3 +43,13 @@
 strong {
     font-weight: bold;
 }
+
+.sq-dialog .cq-menu-dropdown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    height: 100vh !important;
+    width: 100vw !important;
+    background-color: 'green';
+}
