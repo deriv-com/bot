@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { standalone_routes } from '@/components/shared';
@@ -37,8 +38,9 @@ const AppHeader = observer(() => {
 
     const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
     const { onRenderTMBCheck, isTmbEnabled } = useTMB();
+    const is_tmb_enabled = isTmbEnabled() || window.is_tmb_enabled === true;
 
-    const renderAccountSection = () => {
+    const renderAccountSection = useCallback(() => {
         if (isAuthorizing || isSingleLoggingIn) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
@@ -174,7 +176,22 @@ const AppHeader = observer(() => {
                 </div>
             );
         }
-    };
+    }, [
+        isAuthorizing,
+        isSingleLoggingIn,
+        isDesktop,
+        activeLoginid,
+        standalone_routes,
+        featureFlagValue,
+        client,
+        has_wallet,
+        currency,
+        localize,
+        activeAccount,
+        is_virtual,
+        onRenderTMBCheck,
+        is_tmb_enabled,
+    ]);
 
     if (client?.should_hide_header) return null;
 
