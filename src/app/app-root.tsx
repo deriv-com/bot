@@ -5,6 +5,7 @@ import ErrorComponent from '@/components/error-component/error-component';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { api_base } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
+import useTMB from '@/hooks/useTMB';
 import { localize } from '@deriv-com/translations';
 import './app-root.scss';
 
@@ -37,6 +38,8 @@ const AppRoot = () => {
     const store = useStore();
     const api_base_initialized = useRef(false);
     const [is_api_initialized, setIsApiInitialized] = useState(false);
+    const { isTmbEnabled } = useTMB();
+    const is_tmb_enabled = isTmbEnabled() || window.is_tmb_enabled === true;
 
     useEffect(() => {
         const initializeApi = async () => {
@@ -54,9 +57,9 @@ const AppRoot = () => {
         };
 
         initializeApi();
-    }, []);
+    }, [is_tmb_enabled]);
 
-    if (!store || !is_api_initialized) return <AppRootLoader />;
+    if (!store || (!is_api_initialized && !is_tmb_enabled)) return <AppRootLoader />;
 
     return (
         <Suspense fallback={<AppRootLoader />}>
