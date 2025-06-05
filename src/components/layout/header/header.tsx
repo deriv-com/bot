@@ -138,10 +138,14 @@ const AppHeader = observer(() => {
                                 // First, explicitly wait for TMB status to be determined
                                 const tmbEnabled = await isTmbEnabled();
 
+                                console.log('TMB Enabled:', tmbEnabled);
                                 // Now use the result of the explicit check
                                 if (tmbEnabled) {
+                                    console.log('TMB is enabled, proceeding with TMB authentication');
                                     await onRenderTMBCheck();
+                                    console.log('TMB check completed');
                                 } else {
+                                    console.log('requestOidcAuthentication started');
                                     // Always use OIDC if TMB is not enabled
                                     await requestOidcAuthentication({
                                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -156,6 +160,8 @@ const AppHeader = observer(() => {
                                         // eslint-disable-next-line no-console
                                         console.error(err);
                                     });
+
+                                    console.log('requestOidcAuthentication ended');
                                 }
                             } catch (error) {
                                 // eslint-disable-next-line no-console
