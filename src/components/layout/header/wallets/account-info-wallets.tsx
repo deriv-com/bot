@@ -114,7 +114,7 @@ const DesktopInfoIcons = observer(({ gradients, icons, icon_type }: TInfoIcons) 
 
 const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInfoWallets) => {
     const { client, ui } = useStore();
-    const { loginid, accounts, all_accounts_balance } = client;
+    const { loginid, accounts, all_accounts_balance, residence } = client;
     const { account_switcher_disabled_message } = ui;
     const { data: wallet_list } = useStoreWalletAccountsList();
     const { isDesktop } = useDevice();
@@ -182,11 +182,18 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     unmountOnExit
                 >
                     <div className='acc-switcher__wrapper acc-switcher__wrapper--wallets'>
-                        <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} />
+                        <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} residence={residence} />
                     </div>
                 </CSSTransition>
             ) : (
-                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} loginid={loginid} />
+                <AccountSwitcherWalletMobile
+                    is_visible={is_dialog_on}
+                    toggle={toggleDialog}
+                    loginid={loginid}
+                    residence={residence}
+                    is_virtual={active_account?.is_virtual}
+                    currency={active_account?.currency}
+                />
             )}
         </div>
     );

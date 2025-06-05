@@ -21,6 +21,7 @@ const RealAccounts = ({
     loginid,
     is_logging_out,
     upgradeable_landing_companies,
+    residence,
 }: TRealAccounts) => {
     const hasNonEuAccounts = modifiedCRAccountList && modifiedCRAccountList?.length > 0;
     const hasEuAccounts = modifiedMFAccountList && modifiedMFAccountList?.length > 0;
@@ -55,6 +56,7 @@ const RealAccounts = ({
                         is_low_risk_country={is_low_risk_country}
                         isVirtual={isVirtual}
                         tabs_labels={tabs_labels}
+                        residence={residence}
                     />
                     <AccountSwitcherDivider />
                 </>
@@ -93,7 +95,12 @@ const RealAccounts = ({
                     <AccountSwitcherDivider />
                 </>
             )}
-            <AccountSwitcherFooter oAuthLogout={oAuthLogout} loginid={loginid} is_logging_out={is_logging_out} />
+            <AccountSwitcherFooter
+                oAuthLogout={oAuthLogout}
+                loginid={loginid}
+                is_logging_out={is_logging_out}
+                residence={residence}
+            />
         </>
     );
 };

@@ -932,4 +932,5 @@ export type TAuthData = {
     scopes: string[];
     upgradeable_landing_companies: string[];
     user_id: number;
+    token?: string;
 };

@@ -3,7 +3,7 @@ import Livechat from '@/components/chat/Livechat';
 import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetAvailable';
 import { standalone_routes } from '@/components/shared';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
-import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useIsIntercomAvailable } from '@/hooks/useIntercom';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
@@ -64,7 +64,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { isTmbEnabled } = useTMB();
     const is_tmb_enabled = window.is_tmb_enabled || isTmbEnabled();
 
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     // Function to add account parameter to URLs
     const getAccountUrl = (url: string) => {
@@ -92,7 +92,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     };
 
     const has_wallet = Object.keys(accounts).some(id => accounts[id].account_category === 'wallet');
-    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(client?.residence);
+    const is_hub_enabled_country = hubEnabledCountryList.includes(client?.residence || '');
     // Determine the appropriate redirect URL based on user's country
     const getRedirectUrl = () => {
         // Check if the user's country is in the hub-enabled country list
