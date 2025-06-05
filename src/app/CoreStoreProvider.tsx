@@ -81,7 +81,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
     useEffect(() => {
         if (client && !isAuthorizing && !appInitialization.current) {
-            if (!api_base.api) return;
+            if (!api_base?.api) return;
             appInitialization.current = true;
 
             api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
