@@ -115,12 +115,17 @@ const useTMB = (): UseTMBReturn => {
                 // Check if we have a manually set value in localStorage
                 const storedValue = localStorage.getItem('is_tmb_enabled');
 
-                // If localStorage value is explicitly 'true', use that
+                // If localStorage value is explicitly set, use that value
                 if (storedValue === 'true') {
                     window.is_tmb_enabled = true;
                     setIsTmbEnabled(true);
                     tmbStatusDeterminedRef.current = true;
                     return true;
+                } else if (storedValue === 'false') {
+                    window.is_tmb_enabled = false;
+                    setIsTmbEnabled(false);
+                    tmbStatusDeterminedRef.current = true;
+                    return false;
                 }
 
                 // Otherwise, use the API value
@@ -144,12 +149,17 @@ const useTMB = (): UseTMBReturn => {
                 // Check if we have a manually set value in localStorage
                 const storedValue = localStorage.getItem('is_tmb_enabled');
 
-                // If localStorage value is explicitly 'true', use that
+                // If localStorage value is explicitly set, use that value
                 if (storedValue === 'true') {
                     window.is_tmb_enabled = true;
                     setIsTmbEnabled(true);
                     tmbStatusDeterminedRef.current = true;
                     return true;
+                } else if (storedValue === 'false') {
+                    window.is_tmb_enabled = false;
+                    setIsTmbEnabled(false);
+                    tmbStatusDeterminedRef.current = true;
+                    return false;
                 }
 
                 // By default it will fallback to false if firebase error happens
