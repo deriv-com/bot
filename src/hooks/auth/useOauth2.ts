@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
+import { Analytics } from '@deriv-com/analytics';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
 
 /**
@@ -65,6 +66,7 @@ export const useOauth2 = ({
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
+            Analytics.reset();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

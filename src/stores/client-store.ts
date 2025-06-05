@@ -10,6 +10,7 @@ import {
 } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import type { TAuthData, TLandingCompany } from '@/types/api-types';
 import type { Balance, GetAccountStatus, GetSettings, WebsiteStatus } from '@deriv/api-types';
+import { Analytics } from '@deriv-com/analytics';
 
 const eu_shortcode_regex = /^maltainvest$/;
 const eu_excluded_regex = /^mt$/;
@@ -355,6 +356,8 @@ export default class ClientStore {
         setAuthData(null);
 
         this.setIsLoggingOut(false);
+
+        Analytics.reset();
 
         // disable livechat
         window.LC_API?.close_chat?.();

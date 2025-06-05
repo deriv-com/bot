@@ -7,6 +7,7 @@ import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountrie
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useIsIntercomAvailable } from '@/hooks/useIntercom';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
+import useTMB from '@/hooks/useTMB';
 import RootStore from '@/stores/root-store';
 import {
     LegacyAccountLimitsIcon,
@@ -60,6 +61,8 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
     const is_logged_in = client?.is_logged_in;
     const client_residence = client?.residence;
     const accounts = client?.accounts || {};
+    const { isTmbEnabled } = useTMB();
+    const is_tmb_enabled = window.is_tmb_enabled || isTmbEnabled();
 
     const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
@@ -199,7 +202,7 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                   ]
                 : [],
         ],
-        [is_virtual, currency, is_logged_in, client_residence]
+        [is_virtual, currency, is_logged_in, client_residence, is_tmb_enabled]
     );
 
     return {
