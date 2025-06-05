@@ -81,6 +81,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
 
     useEffect(() => {
         if (client && !isAuthorizing && !appInitialization.current) {
+            if (!api_base?.api) return;
             appInitialization.current = true;
 
             api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
@@ -99,7 +100,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                     });
             }, 10000);
         }
-    }, [client, common, isAuthorizing]);
+    }, [client, common, isAuthorizing, is_tmb_enabled]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
