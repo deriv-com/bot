@@ -64,7 +64,6 @@ const AppRoot = () => {
     // Initialize API when TMB check is complete with timeout fallback
     useEffect(() => {
         if (!is_tmb_check_complete) {
-            console.log('Waiting for TMB check to complete before initializing API...');
             return; // Wait until TMB check is complete
         }
 

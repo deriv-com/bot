@@ -18,7 +18,7 @@ type UseTMBReturn = {
     handleLogout: () => void;
     isOAuth2Enabled: boolean;
     is_tmb_enabled: boolean;
-    onRenderTMBCheck: () => Promise<void>;
+    onRenderTMBCheck: (fromLoginButton?: boolean) => Promise<void>;
     isTmbEnabled: () => Promise<boolean>;
     isInitialized: boolean;
     isTmbCheckComplete: boolean;
@@ -274,87 +274,88 @@ const useTMB = (): UseTMBReturn => {
         return urlParams.get('account');
     }, []);
 
-    const onRenderTMBCheck = useCallback(async () => {
-        if (isCallbackPage) return;
-        if (TMBState.checkInProgress) return;
+    const onRenderTMBCheck = useCallback(
+        async (fromLoginButton = false) => {
+            if (isCallbackPage) return;
+            if (TMBState.checkInProgress) return;
 
-        TMBState.checkInProgress = true;
+            TMBState.checkInProgress = true;
 
-        try {
-            // Use pre-fetched active sessions if available, otherwise fetch them
-            let activeSessions = activeSessionsRef.current;
+            try {
+                // Use pre-fetched active sessions if available, otherwise fetch them
+                let activeSessions = activeSessionsRef.current;
 
-            if (!activeSessions) {
-                activeSessions = await getActiveSessions();
-                activeSessionsRef.current = activeSessions;
-            }
+                if (!activeSessions) {
+                    activeSessions = await getActiveSessions();
+                    activeSessionsRef.current = activeSessions;
+                }
 
-            if (!activeSessions?.active) {
-                console.log('No active sessions found, redirecting to OAuth');
-                console.error('Failed to get active sessions: No data returned');
+                // If no active sessions and either not on endpoint page or explicitly from login button
+                if (!activeSessions?.active && (!isEndpointPage || fromLoginButton)) {
+                    console.error('Failed to get active sessions: No data returned');
+                    TMBState.checkInProgress = false;
+
+                    try {
+                        window.location.replace(generateOAuthURL());
+                    } catch (error) {
+                        console.error('Failed to redirect to OAuth:', error);
+                        return handleLogout();
+                    }
+                    return;
+                } else if (activeSessions?.active) {
+                    if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
+                        const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
+
+                        localStorage.setItem('accountsList', JSON.stringify(accountsList));
+                        localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
+
+                        const accountParam = getAccountFromURL();
+
+                        let selectedToken = activeSessions.tokens[0];
+                        if (accountParam) {
+                            const matchingToken = activeSessions.tokens.find(
+                                (token: TokenItem) => token.cur === accountParam
+                            );
+                            if (matchingToken) {
+                                selectedToken = matchingToken;
+                            }
+                        }
+
+                        if (selectedToken.loginid && selectedToken.token) {
+                            localStorage.setItem('authToken', selectedToken.token);
+                            localStorage.setItem('active_loginid', selectedToken.loginid);
+
+                            authTokenRef.current = selectedToken.token;
+
+                            if (api_base) {
+                                api_base.init(true).then(() => {
+                                    if (selectedToken.loginid) {
+                                        setAuthData({
+                                            loginid: selectedToken.loginid,
+                                            currency: selectedToken.cur || '',
+                                            token: selectedToken.token,
+                                        } as TAuthData & { token: string });
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    if (domains.includes(currentDomain)) {
+                        Cookies.set('logged_state', 'true', {
+                            domain: currentDomain,
+                            expires: 30,
+                            path: '/',
+                            secure: true,
+                        });
+                    }
+                }
+            } finally {
                 TMBState.checkInProgress = false;
-
-                try {
-                    window.location.replace(generateOAuthURL());
-                } catch (error) {
-                    console.error('Failed to redirect to OAuth:', error);
-                    return handleLogout();
-                }
-                return;
-            } else if (activeSessions?.active) {
-                console.log('active sessions found, redirecting to OAuth');
-                if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
-                    const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
-
-                    localStorage.setItem('accountsList', JSON.stringify(accountsList));
-                    localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
-
-                    const accountParam = getAccountFromURL();
-
-                    let selectedToken = activeSessions.tokens[0];
-                    if (accountParam) {
-                        const matchingToken = activeSessions.tokens.find(
-                            (token: TokenItem) => token.cur === accountParam
-                        );
-                        if (matchingToken) {
-                            selectedToken = matchingToken;
-                        }
-                    }
-
-                    if (selectedToken.loginid && selectedToken.token) {
-                        localStorage.setItem('authToken', selectedToken.token);
-                        localStorage.setItem('active_loginid', selectedToken.loginid);
-
-                        authTokenRef.current = selectedToken.token;
-
-                        if (api_base) {
-                            api_base.init(true).then(() => {
-                                if (selectedToken.loginid) {
-                                    setAuthData({
-                                        loginid: selectedToken.loginid,
-                                        currency: selectedToken.cur || '',
-                                        token: selectedToken.token,
-                                    } as TAuthData & { token: string });
-                                }
-                            });
-                        }
-                    }
-                }
-
-                if (domains.includes(currentDomain)) {
-                    Cookies.set('logged_state', 'true', {
-                        domain: currentDomain,
-                        expires: 30,
-                        path: '/',
-                        secure: true,
-                    });
-                }
             }
-        } finally {
-            TMBState.checkInProgress = false;
-            console.log('TMB check completed');
-        }
-    }, [isCallbackPage, getActiveSessions, isEndpointPage, handleLogout, processTokens, domains, currentDomain]);
+        },
+        [isCallbackPage, getActiveSessions, handleLogout, processTokens, domains, currentDomain]
+    );
 
     return useMemo(
         () => ({
