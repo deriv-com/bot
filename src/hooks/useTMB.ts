@@ -289,7 +289,8 @@ const useTMB = (): UseTMBReturn => {
                 activeSessionsRef.current = activeSessions;
             }
 
-            if (!activeSessions?.active && !isEndpointPage) {
+            if (!activeSessions?.active) {
+                console.log('No active sessions found, redirecting to OAuth');
                 console.error('Failed to get active sessions: No data returned');
                 TMBState.checkInProgress = false;
 
@@ -301,6 +302,7 @@ const useTMB = (): UseTMBReturn => {
                 }
                 return;
             } else if (activeSessions?.active) {
+                console.log('active sessions found, redirecting to OAuth');
                 if (Array.isArray(activeSessions.tokens) && activeSessions.tokens.length > 0) {
                     const { accountsList, clientAccounts } = processTokens(activeSessions.tokens);
 
@@ -350,6 +352,7 @@ const useTMB = (): UseTMBReturn => {
             }
         } finally {
             TMBState.checkInProgress = false;
+            console.log('TMB check completed');
         }
     }, [isCallbackPage, getActiveSessions, isEndpointPage, handleLogout, processTokens, domains, currentDomain]);
 
