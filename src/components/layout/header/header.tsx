@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
@@ -9,6 +9,7 @@ import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFea
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
+import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -142,19 +143,21 @@ const AppHeader = observer(() => {
                                     await onRenderTMBCheck(true); // Pass true to indicate it's from login button
                                 } else {
                                     // Always use OIDC if TMB is not enabled
-                                    await requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        ...(query_param_currency
-                                            ? {
-                                                  state: {
-                                                      account: query_param_currency,
-                                                  },
-                                              }
-                                            : {}),
-                                    }).catch(err => {
-                                        // eslint-disable-next-line no-console
-                                        console.error(err);
-                                    });
+                                    try {
+                                        await requestOidcAuthentication({
+                                            redirectCallbackUri: `${window.location.origin}/callback`,
+                                            ...(query_param_currency
+                                                ? {
+                                                      state: {
+                                                          account: query_param_currency,
+                                                      },
+                                                  }
+                                                : {}),
+                                        });
+                                    } catch (err) {
+                                        handleOidcAuthFailure(err);
+                                        window.location.replace(generateOAuthURL());
+                                    }
                                 }
                             } catch (error) {
                                 // eslint-disable-next-line no-console

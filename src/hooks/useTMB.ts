@@ -48,7 +48,7 @@ const useTMB = (): UseTMBReturn => {
         hasLoggedRef.current = true;
     }
 
-    const isEndpointPage = useMemo(() => window.location.pathname.includes('endpoint'), []);
+    // const isEndpointPage = useMemo(() => window.location.pathname.includes('endpoint'), []);
     const isCallbackPage = useMemo(() => window.location.pathname === '/callback', []);
     const domains = useMemo(
         () => ['deriv.com', 'deriv.dev', 'binary.sx', 'pages.dev', 'localhost', 'deriv.be', 'deriv.me'],
@@ -251,11 +251,11 @@ const useTMB = (): UseTMBReturn => {
             localStorage.removeItem('active_loginid');
             localStorage.removeItem('clientAccounts');
             localStorage.removeItem('accountsList');
-            // Redirect to OAuth authentication instead of just logging out
-            window.location.replace(generateOAuthURL());
+            // Go to logged out version of the app instead of redirecting to OAuth
+            window.location.reload();
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Failed to redirect to OAuth:', error);
+            console.error('Failed to logout:', error);
             return handleLogout();
         }
     }, []);
@@ -300,8 +300,8 @@ const useTMB = (): UseTMBReturn => {
                     activeSessionsRef.current = activeSessions;
                 }
 
-                // If no active sessions and either not on endpoint page or explicitly from login button
-                if (!activeSessions?.active && (!isEndpointPage || fromLoginButton)) {
+                // Only redirect if explicitly from login button
+                if (!activeSessions?.active && fromLoginButton) {
                     console.error('Failed to get active sessions: No data returned');
                     TMBState.checkInProgress = false;
 
