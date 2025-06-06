@@ -5,7 +5,6 @@ import RootStore from '@/stores/root-store';
 import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { Analytics } from '@deriv-com/analytics';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
-import useTMB from '../useTMB';
 
 /**
  * Provides an object with properties: `oAuthLogout`, `retriggerOAuth2Login`, and `isSingleLoggingIn`.
@@ -30,8 +29,6 @@ export const useOauth2 = ({
     client?: RootStore['client'];
 } = {}) => {
     const [isSingleLoggingIn, setIsSingleLoggingIn] = useState(false);
-
-    const { is_tmb_enabled } = useTMB();
     const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const isSilentLoginExcluded =
@@ -61,22 +58,19 @@ export const useOauth2 = ({
     const logoutHandler = async () => {
         client?.setIsLoggingOut(true);
         try {
-            const isTMBEnabled = is_tmb_enabled || window.is_tmb_enabled === true;
-            if (isTMBEnabled) {
-                await client?.logout().catch(err => {
-                    // eslint-disable-next-line no-console
-                    console.error('Error during TMB logout:', err);
-                });
-            } else {
-                await OAuth2Logout({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                    WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
-                    postLogoutRedirectUri: window.location.origin,
-                }).catch(err => {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                });
-            }
+            await OAuth2Logout({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                WSLogoutAndRedirect: handleLogout ?? (() => Promise.resolve()),
+                postLogoutRedirectUri: window.location.origin,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+            await client?.logout().catch(err => {
+                // eslint-disable-next-line no-console
+                console.error('Error during TMB logout:', err);
+            });
+
             Analytics.reset();
         } catch (error) {
             // eslint-disable-next-line no-console
