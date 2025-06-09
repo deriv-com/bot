@@ -17,6 +17,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
+import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import {
     LabelPairedChartLineCaptionRegularIcon,
     LabelPairedObjectsColumnCaptionRegularIcon,
@@ -242,19 +243,20 @@ const AppWrapper = observer(() => {
                 if (tmbEnabled) {
                     await onRenderTMBCheck();
                 } else {
-                    await requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                        ...(query_param_currency
-                            ? {
-                                  state: {
-                                      account: query_param_currency,
-                                  },
-                              }
-                            : {}),
-                    }).catch(err => {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    });
+                    try {
+                        await requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                            ...(query_param_currency
+                                ? {
+                                      state: {
+                                          account: query_param_currency,
+                                      },
+                                  }
+                                : {}),
+                        });
+                    } catch (err) {
+                        handleOidcAuthFailure(err);
+                    }
                 }
             } catch (error) {
                 // eslint-disable-next-line no-console

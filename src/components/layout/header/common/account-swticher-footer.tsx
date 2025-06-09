@@ -4,19 +4,27 @@ import RectangleSkeleton from '@/components/loader/rectangle-skeleton';
 import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import Text from '@/components/shared_ui/text';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
 import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
-import { TAccountSwitcherFooter } from './types';
+
+type TAccountSwitcherFooter = {
+    oAuthLogout: () => void;
+    loginid?: string;
+    is_logging_out?: boolean;
+    residence?: string;
+};
 import { AccountSwitcherDivider } from './utils';
 
-const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccountSwitcherFooter) => {
+const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out, residence }: TAccountSwitcherFooter) => {
     const accountList = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
     const account_currency = loginid ? accountList[loginid]?.currency : '';
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     // Check if the account is a demo account from both loginid and URL parameter
     const urlParams = new URLSearchParams(window.location.search);
@@ -24,7 +32,14 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out }: TAccoun
     const is_virtual = loginid?.startsWith('VRTC') || account_param === 'demo' || false;
 
     // Get the redirect URL from handleTraderHubRedirect
-    const redirect_url_str = handleTraderHubRedirect('cfds', has_wallet, is_virtual) || standalone_routes.traders_hub;
+    const redirectParams = {
+        product_type: 'cfds' as const,
+        has_wallet,
+        is_virtual,
+        residence,
+        hubEnabledCountryList,
+    };
+    const redirect_url_str = handleTraderHubRedirect(redirectParams) || standalone_routes.traders_hub;
 
     // Add the account parameter to the URL
     let final_url_str = redirect_url_str;

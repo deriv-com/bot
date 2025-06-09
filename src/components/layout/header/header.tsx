@@ -1,13 +1,15 @@
+import { useCallback } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { standalone_routes } from '@/components/shared';
+import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
-import useGrowthbookGetFeatureValue from '@/hooks/growthbook/useGrowthbookGetFeatureValue';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
+import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -35,10 +37,11 @@ const AppHeader = observer(() => {
 
     const { isSingleLoggingIn } = useOauth2();
 
-    const { featureFlagValue } = useGrowthbookGetFeatureValue<any>({ featureFlag: 'hub_enabled_country_list' });
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
     const { onRenderTMBCheck, isTmbEnabled } = useTMB();
+    const is_tmb_enabled = isTmbEnabled() || window.is_tmb_enabled === true;
 
-    const renderAccountSection = () => {
+    const renderAccountSection = useCallback(() => {
         if (isAuthorizing || isSingleLoggingIn) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
@@ -48,9 +51,7 @@ const AppHeader = observer(() => {
                     {isDesktop &&
                         (() => {
                             let redirect_url = new URL(standalone_routes.personal_details);
-                            const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
-                                client?.residence
-                            );
+                            const is_hub_enabled_country = hubEnabledCountryList.includes(client?.residence || '');
 
                             if (has_wallet && is_hub_enabled_country) {
                                 redirect_url = new URL(standalone_routes.account_settings);
@@ -89,8 +90,8 @@ const AppHeader = observer(() => {
                                 text={localize('Manage funds')}
                                 onClick={() => {
                                     let redirect_url = new URL(standalone_routes.wallets_transfer);
-                                    const is_hub_enabled_country = featureFlagValue?.hub_enabled_country_list?.includes(
-                                        client?.residence
+                                    const is_hub_enabled_country = hubEnabledCountryList.includes(
+                                        client?.residence || ''
                                     );
                                     if (is_hub_enabled_country) {
                                         redirect_url = new URL(standalone_routes.recent_transactions);
@@ -135,25 +136,26 @@ const AppHeader = observer(() => {
                             try {
                                 // First, explicitly wait for TMB status to be determined
                                 const tmbEnabled = await isTmbEnabled();
-
                                 // Now use the result of the explicit check
                                 if (tmbEnabled) {
-                                    await onRenderTMBCheck();
+                                    await onRenderTMBCheck(true); // Pass true to indicate it's from login button
                                 } else {
                                     // Always use OIDC if TMB is not enabled
-                                    await requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        ...(query_param_currency
-                                            ? {
-                                                  state: {
-                                                      account: query_param_currency,
-                                                  },
-                                              }
-                                            : {}),
-                                    }).catch(err => {
-                                        // eslint-disable-next-line no-console
-                                        console.error(err);
-                                    });
+                                    try {
+                                        await requestOidcAuthentication({
+                                            redirectCallbackUri: `${window.location.origin}/callback`,
+                                            ...(query_param_currency
+                                                ? {
+                                                      state: {
+                                                          account: query_param_currency,
+                                                      },
+                                                  }
+                                                : {}),
+                                        });
+                                    } catch (err) {
+                                        handleOidcAuthFailure(err);
+                                        window.location.replace(generateOAuthURL());
+                                    }
                                 }
                             } catch (error) {
                                 // eslint-disable-next-line no-console
@@ -174,7 +176,21 @@ const AppHeader = observer(() => {
                 </div>
             );
         }
-    };
+    }, [
+        isAuthorizing,
+        isSingleLoggingIn,
+        isDesktop,
+        activeLoginid,
+        standalone_routes,
+        client,
+        has_wallet,
+        currency,
+        localize,
+        activeAccount,
+        is_virtual,
+        onRenderTMBCheck,
+        is_tmb_enabled,
+    ]);
 
     if (client?.should_hide_header) return null;
 
