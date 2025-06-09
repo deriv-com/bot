@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import RootStore from '@/stores/root-store';
+import { handleOidcAuthFailure } from '@/utils/auth-utils';
+import { Analytics } from '@deriv-com/analytics';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
 
 /**
@@ -27,7 +29,6 @@ export const useOauth2 = ({
     client?: RootStore['client'];
 } = {}) => {
     const [isSingleLoggingIn, setIsSingleLoggingIn] = useState(false);
-
     const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const isSilentLoginExcluded =
@@ -65,6 +66,12 @@ export const useOauth2 = ({
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
+            await client?.logout().catch(err => {
+                // eslint-disable-next-line no-console
+                console.error('Error during TMB logout:', err);
+            });
+
+            Analytics.reset();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);
@@ -76,12 +83,10 @@ export const useOauth2 = ({
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 postLogoutRedirectUri: window.location.origin,
             }).catch(err => {
-                // eslint-disable-next-line no-console
-                console.error('Error during OAuth2 login retrigger:', err);
+                handleOidcAuthFailure(err);
             });
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Error during OAuth2 login retrigger:', error);
+            handleOidcAuthFailure(error);
         }
     };
 
