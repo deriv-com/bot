@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
@@ -86,12 +87,20 @@ export const MenuItems = observer(() => {
 export const TradershubLink = observer(() => {
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const store = useStore();
+    const { hubEnabledCountryList } = useFirebaseCountriesConfig();
 
     const [redirect_url_str, setRedirectUrlStr] = useState<null | string>(null);
 
     useEffect(() => {
-        setRedirectUrlStr(handleTraderHubRedirect('tradershub', has_wallet, store?.client?.is_virtual));
-    }, [has_wallet, store?.client?.is_virtual]);
+        const redirectParams = {
+            product_type: 'tradershub' as const,
+            has_wallet,
+            is_virtual: store?.client?.is_virtual,
+            residence: store?.client?.residence,
+            hubEnabledCountryList,
+        };
+        setRedirectUrlStr(handleTraderHubRedirect(redirectParams));
+    }, [has_wallet, store?.client?.is_virtual, store?.client?.residence, hubEnabledCountryList]);
 
     if (!store) return null;
 
