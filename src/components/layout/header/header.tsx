@@ -42,7 +42,7 @@ const AppHeader = observer(() => {
     const is_tmb_enabled = isTmbEnabled() || window.is_tmb_enabled === true;
 
     const renderAccountSection = useCallback(() => {
-        if (isAuthorizing || isSingleLoggingIn) {
+        if (isAuthorizing || (isSingleLoggingIn && !is_tmb_enabled)) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
