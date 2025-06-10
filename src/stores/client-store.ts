@@ -372,5 +372,7 @@ export default class ClientStore {
             });
         }
         await api_base?.api?.logout();
+
+        window.location.href = '/';
     };
 }
