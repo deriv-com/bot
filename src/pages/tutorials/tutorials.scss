@@ -484,7 +484,7 @@
 
         @supports (-webkit-touch-callout: none) {
             @include mobile-or-tablet-screen {
-                height: calc(100vh - 28rem);
+                height: calc(100vh - 32rem);
             }
         }
     }
