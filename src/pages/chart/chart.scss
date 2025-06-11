@@ -70,7 +70,7 @@
 
                 /* Fix for iOS devices to respect safe area - positioned a bit higher for iOS */
                 @supports (-webkit-touch-callout: none) {
-                    bottom: calc(10rem + env(safe-area-inset-bottom, 0));
+                    bottom: calc(12rem + env(safe-area-inset-bottom, 0));
                 }
 
                 .sc-chart-mode,
