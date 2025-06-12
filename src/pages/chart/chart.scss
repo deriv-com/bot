@@ -160,7 +160,7 @@ body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__
 body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile {
-    display: none !important;
+    visibility: hidden !important;
 }
 
 /* Alternative approach using body class */
