@@ -106,7 +106,7 @@
 
     .smartcharts-mobile {
         .cq-context {
-            z-index: 99;
+            z-index: 1000;
 
             .sc-mcd__category:last-child {
                 margin-bottom: 3rem !important;
@@ -116,6 +116,7 @@
         & .cq-chart-title .cq-menu-dropdown {
             position: fixed;
             height: 100% !important;
+            z-index: 1000;
 
             .sc-dialog {
                 height: 100% !important;
