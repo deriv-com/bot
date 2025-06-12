@@ -371,8 +371,25 @@ export default class ClientStore {
                 token: null,
             });
         }
-        await api_base?.api?.logout();
-
-        window.location.href = '/';
+        return api_base?.api
+            ?.logout()
+            .then(() => {
+                console.log('test Logged out successfully');
+                if (window.history.length > 1) {
+                    history.back();
+                } else {
+                    window.location.replace('/');
+                }
+                return Promise.resolve();
+            })
+            .catch((error: Error) => {
+                console.error('test Logout failed:', error);
+                if (window.history.length > 1) {
+                    history.back();
+                } else {
+                    window.location.replace('/');
+                }
+                return Promise.reject(error);
+            });
     };
 }
