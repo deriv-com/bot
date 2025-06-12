@@ -106,23 +106,16 @@
 
     .smartcharts-mobile {
         .cq-context {
-            z-index: 9999 !important;
+            z-index: 99;
 
             .sc-mcd__category:last-child {
                 margin-bottom: 3rem !important;
-                padding-bottom: 100px;
             }
         }
 
         & .cq-chart-title .cq-menu-dropdown {
-            position: fixed !important;
+            position: fixed;
             height: 100% !important;
-            width: 100% !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            z-index: 9999 !important;
 
             .sc-dialog {
                 height: 100% !important;
@@ -151,12 +144,4 @@
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
-}
-
-/* Ensure tabs and main container have a lower z-index than the market selector */
-.dc-tabs,
-.main,
-.main__container {
-    position: relative;
-    z-index: 1 !important;
 }
