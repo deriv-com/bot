@@ -18,7 +18,7 @@ type UseTMBReturn = {
     handleLogout: () => void;
     isOAuth2Enabled: boolean;
     is_tmb_enabled: boolean;
-    onRenderTMBCheck: (fromLoginButton?: boolean) => Promise<void>;
+    onRenderTMBCheck: (fromLoginButton?: boolean, setIsAuthenticating?: (value: boolean) => void) => Promise<void>;
     isTmbEnabled: () => Promise<boolean>;
     isInitialized: boolean;
     isTmbCheckComplete: boolean;
@@ -285,7 +285,7 @@ const useTMB = (): UseTMBReturn => {
     }, []);
 
     const onRenderTMBCheck = useCallback(
-        async (fromLoginButton = false) => {
+        async (fromLoginButton = false, setIsAuthenticating?: (value: boolean) => void) => {
             if (isCallbackPage) return;
             if (TMBState.checkInProgress) return;
 
@@ -304,11 +304,16 @@ const useTMB = (): UseTMBReturn => {
                 if (!activeSessions?.active && fromLoginButton) {
                     console.error('Failed to get active sessions: No data returned');
                     TMBState.checkInProgress = false;
-
+                    if (setIsAuthenticating) {
+                        setIsAuthenticating(false);
+                    }
                     try {
                         window.location.replace(generateOAuthURL());
                     } catch (error) {
                         console.error('Failed to redirect to OAuth:', error);
+                        if (setIsAuthenticating) {
+                            setIsAuthenticating(false);
+                        }
                         return handleLogout();
                     }
                     return;
@@ -362,6 +367,9 @@ const useTMB = (): UseTMBReturn => {
                 }
             } finally {
                 TMBState.checkInProgress = false;
+                if (setIsAuthenticating) {
+                    setIsAuthenticating(false);
+                }
             }
         },
         [isCallbackPage, getActiveSessions, handleLogout, processTokens, domains, currentDomain]

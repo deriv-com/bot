@@ -35,6 +35,7 @@ const Layout = () => {
         currency === 'demo' ||
         currency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
+    const [isAuthenticating, setIsAuthenticating] = useState(true); // Start with true to prevent flashing
 
     // Expose setClientHasCurrency to window for global access
     useEffect(() => {
@@ -124,6 +125,7 @@ const Layout = () => {
     useEffect(() => {
         // Always set the currency in session storage, even if the user is not logged in
         // This ensures the currency is available on the callback page
+        setIsAuthenticating(true);
         if (currency) {
             sessionStorage.setItem('query_param_currency', currency);
         }
@@ -162,12 +164,16 @@ const Layout = () => {
                                 : {}),
                         });
                     } catch (err) {
+                        setIsAuthenticating(false);
                         handleOidcAuthFailure(err);
                     }
                 }
             } catch (err) {
                 // eslint-disable-next-line no-console
+                setIsAuthenticating(false);
                 console.error('Authentication error:', err);
+            } finally {
+                setIsAuthenticating(false);
             }
         })();
     }, [
@@ -182,9 +188,24 @@ const Layout = () => {
         is_tmb_enabled,
     ]);
 
+    // Add a state to track if initial authentication check is complete
+    const [isInitialAuthCheckComplete, setIsInitialAuthCheckComplete] = useState(false);
+
+    // Effect to mark initial auth check as complete after a short delay
+    useEffect(() => {
+        if (!isAuthenticating && !isInitialAuthCheckComplete) {
+            // Wait a bit to ensure all state updates have propagated
+            const timer = setTimeout(() => {
+                setIsInitialAuthCheckComplete(true);
+            }, 500); // Give it enough time to stabilize
+
+            return () => clearTimeout(timer);
+        }
+    }, [isAuthenticating, isInitialAuthCheckComplete]);
+
     return (
         <div className={clsx('layout', { responsive: isDesktop })}>
-            {!isCallbackPage && <AppHeader />}
+            {!isCallbackPage && <AppHeader isAuthenticating={isAuthenticating || !isInitialAuthCheckComplete} />}
             <Body>
                 <Outlet />
             </Body>
