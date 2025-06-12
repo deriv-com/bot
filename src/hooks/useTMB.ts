@@ -194,7 +194,7 @@ const useTMB = (): UseTMBReturn => {
         const initializeHook = async () => {
             try {
                 // Pre-fetch active sessions if needed
-                if (!isCallbackPage) {
+                if (!isCallbackPage && window.is_tmb_enabled) {
                     try {
                         // This is a critical step - we need to await this
                         const activeSessions = await getActiveSessions();
@@ -295,7 +295,7 @@ const useTMB = (): UseTMBReturn => {
                 // Use pre-fetched active sessions if available, otherwise fetch them
                 let activeSessions = activeSessionsRef.current;
 
-                if (!activeSessions) {
+                if (!activeSessions && window.is_tmb_enabled) {
                     activeSessions = await getActiveSessions();
                     activeSessionsRef.current = activeSessions;
                 }
