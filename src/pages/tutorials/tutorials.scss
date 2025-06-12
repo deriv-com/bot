@@ -400,7 +400,6 @@
     padding: 1.6rem;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding-bottom: 100px;
 
     @include tablet-screen {
         width: 100%;
@@ -475,11 +474,17 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 350px);
+            height: calc(100vh - 28rem);
             overflow: auto;
 
             .tutorials-wrap {
                 margin-bottom: 2rem;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            @include mobile-or-tablet-screen {
+                height: calc(100vh - 32rem);
             }
         }
     }

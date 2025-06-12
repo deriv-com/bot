@@ -64,7 +64,14 @@
             @include mobile-screen {
                 background: transparent;
                 border-width: 0;
-                bottom: 20.8vh;
+
+                /* Position the chart icon just above the drawer/controls section */
+                bottom: 4rem; /* Height of controls (6rem) + padding (0.8rem*2) + extra space (0.4rem) */
+
+                /* Fix for iOS devices to respect safe area - positioned a bit higher for iOS */
+                @supports (-webkit-touch-callout: none) {
+                    bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+                }
 
                 .sc-chart-mode,
                 .sc-studies {
@@ -107,8 +114,17 @@
         }
 
         & .cq-chart-title .cq-menu-dropdown {
-            position: fixed;
+            position: fixed !important;
             height: 100% !important;
+            width: 100% !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99999 !important;
+            transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
+            will-change: transform !important;
 
             .sc-dialog {
                 height: 100% !important;
@@ -137,4 +153,38 @@
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
+}
+
+/* Hide the tabs header and headers specifically when market selector is open */
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile {
+    visibility: hidden !important;
+}
+
+/* Alternative approach using body class */
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--top,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--border-bottom,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--main__tabs,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .run-panel {
+    visibility: hidden !important;
+}
+
+/* Additional selector using the specific class combination */
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive)
+    .dc-tabs__list--header--main__tabs,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--top,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--border-bottom,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--main__tabs,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .deriv-header,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .app-header,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .app-header--mobile,
+body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .run-panel {
+    visibility: hidden !important;
 }
