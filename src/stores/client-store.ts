@@ -371,24 +371,24 @@ export default class ClientStore {
                 token: null,
             });
         }
+
+        const resolveNavigation = () => {
+            if (window.history.length > 1) {
+                history.back();
+            } else {
+                window.location.replace('/');
+            }
+        };
         return api_base?.api
             ?.logout()
             .then(() => {
                 console.log('test Logged out successfully');
-                if (window.history.length > 1) {
-                    history.back();
-                } else {
-                    window.location.replace('/');
-                }
+                resolveNavigation();
                 return Promise.resolve();
             })
             .catch((error: Error) => {
                 console.error('test Logout failed:', error);
-                if (window.history.length > 1) {
-                    history.back();
-                } else {
-                    window.location.replace('/');
-                }
+                resolveNavigation();
                 return Promise.reject(error);
             });
     };
