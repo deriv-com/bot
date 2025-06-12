@@ -123,8 +123,6 @@
             bottom: 0 !important;
             z-index: 99999 !important;
             transform: translateZ(0) !important;
-            transform: translateZ(0) !important;
-            backface-visibility: hidden !important;
             backface-visibility: hidden !important;
             will-change: transform !important;
 
@@ -157,21 +155,15 @@
     top: 0;
 }
 
-/* When market selector dropdown is open, hide these elements */
-.bot .smartcharts-mobile .stxMenuActive ~ .dc-tabs__list--header--main__tabs,
-.bot .smartcharts-mobile .stxMenuActive ~ .dc-tabs__list,
-.bot .smartcharts-mobile .stxMenuActive ~ .dc-tabs__list--top,
-.bot .smartcharts-mobile .stxMenuActive ~ .dc-tabs__list--border-bottom,
-.bot .smartcharts-mobile .stxMenuActive ~ .dc-tabs__list--main__tabs,
-.bot .smartcharts-mobile .stxMenuActive ~ .deriv-header,
-.bot .smartcharts-mobile .stxMenuActive ~ .app-header,
-.bot .smartcharts-mobile .stxMenuActive ~ .app-header--mobile,
-.bot .smartcharts-mobile .stxMenuActive ~ .run-panel {
-    visibility: hidden !important;
+/* Hide the tabs header and headers specifically when market selector is open */
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile {
+    display: none !important;
 }
 
 /* Alternative approach using body class */
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--top,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--border-bottom,
