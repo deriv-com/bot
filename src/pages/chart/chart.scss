@@ -110,6 +110,7 @@
 
             .sc-mcd__category:last-child {
                 margin-bottom: 3rem !important;
+                padding-bottom: 100px;
             }
         }
 
@@ -150,4 +151,12 @@
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
+}
+
+/* Ensure tabs and main container have a lower z-index than the market selector */
+.dc-tabs,
+.main,
+.main__container {
+    position: relative;
+    z-index: 1 !important;
 }
