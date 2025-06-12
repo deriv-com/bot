@@ -23,7 +23,11 @@ import MobileMenu from './mobile-menu';
 import PlatformSwitcher from './platform-switcher';
 import './header.scss';
 
-const AppHeader = observer(() => {
+type TAppHeaderProps = {
+    isAuthenticating?: boolean;
+};
+
+const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
     const { isDesktop } = useDevice();
     const { isAuthorizing, activeLoginid } = useApiBase();
     const { client } = useStore() ?? {};
@@ -40,9 +44,11 @@ const AppHeader = observer(() => {
     const { hubEnabledCountryList } = useFirebaseCountriesConfig();
     const { onRenderTMBCheck, isTmbEnabled } = useTMB();
     const is_tmb_enabled = isTmbEnabled() || window.is_tmb_enabled === true;
+    // No need for additional state management here since we're handling it in the layout component
 
     const renderAccountSection = useCallback(() => {
-        if (isAuthorizing || (isSingleLoggingIn && !is_tmb_enabled)) {
+        // Show loader during authentication processes
+        if (isAuthenticating || isAuthorizing || (isSingleLoggingIn && !is_tmb_enabled)) {
             return <AccountsInfoLoader isLoggedIn isMobile={!isDesktop} speed={3} />;
         } else if (activeLoginid) {
             return (
@@ -177,6 +183,7 @@ const AppHeader = observer(() => {
             );
         }
     }, [
+        isAuthenticating,
         isAuthorizing,
         isSingleLoggingIn,
         isDesktop,
