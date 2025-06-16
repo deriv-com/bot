@@ -496,7 +496,6 @@
         @media screen {
             @include mobile-or-tablet-screen {
                 min-height: calc(100vh - 32rem);
-                padding-bottom: 5rem; /* Add extra padding at the bottom */
             }
         }
 
