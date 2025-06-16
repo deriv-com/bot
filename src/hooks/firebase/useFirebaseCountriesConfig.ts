@@ -1,4 +1,4 @@
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HUB_ENABLED_COUNTRY_LIST } from '@/components/layout/header/utils';
 
 const REMOTE_CONFIG_URL_STAGING =
