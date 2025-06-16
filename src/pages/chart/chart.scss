@@ -66,7 +66,9 @@
                 border-width: 0;
 
                 /* Position the chart icon just above the drawer/controls section */
-                bottom: 4rem; /* Height of controls (6rem) + padding (0.8rem*2) + extra space (0.4rem) */
+                bottom: 4rem;
+
+                /* Height of controls (6rem) + padding (0.8rem*2) + extra space (0.4rem) */
 
                 /* Fix for iOS devices to respect safe area - positioned a bit higher for iOS */
                 @supports (-webkit-touch-callout: none) {
@@ -156,10 +158,16 @@
 }
 
 /* Hide the tabs header and headers specifically when market selector is open */
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs {
+    visibility: hidden !important;
+    position: relative;
+    z-index: -1;
+}
+
 body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
 body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile {
+body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile,
+body:has(.bot .smartcharts-mobile .stxMenuActive) .bot-dashboard {
     visibility: hidden !important;
 }
 
