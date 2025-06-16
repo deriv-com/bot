@@ -476,7 +476,7 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 32rem);
+            height: calc(100vh - 28rem);
             min-height: 100%;
             overflow: auto;
             background-color: var(--general-main-1);
@@ -492,8 +492,8 @@
             }
         }
 
-        /* Chrome-specific fix */
-        @media screen and (min-device-pixel-ratio: 0) {
+        /* Fix for all browsers */
+        @media screen {
             @include mobile-or-tablet-screen {
                 height: auto;
                 min-height: calc(100vh - 32rem);
