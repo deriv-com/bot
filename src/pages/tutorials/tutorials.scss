@@ -474,7 +474,7 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 24rem);
+            height: calc(100vh - 32rem);
             overflow: auto;
 
             .tutorials-wrap {
