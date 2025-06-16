@@ -328,11 +328,20 @@ const useTMB = (): UseTMBReturn => {
 
                         let selectedToken = activeSessions.tokens[0];
                         if (accountParam) {
-                            const matchingToken = activeSessions.tokens.find(
-                                (token: TokenItem) => token.cur === accountParam
-                            );
-                            if (matchingToken) {
-                                selectedToken = matchingToken;
+                            if (accountParam === 'demo') {
+                                const demoToken = activeSessions.tokens.find(
+                                    (token: TokenItem) => token.loginid && token.loginid.includes('VR')
+                                );
+                                if (demoToken) {
+                                    selectedToken = demoToken;
+                                }
+                            } else {
+                                const matchingToken = activeSessions.tokens.find(
+                                    (token: TokenItem) => token.cur === accountParam
+                                );
+                                if (matchingToken) {
+                                    selectedToken = matchingToken;
+                                }
                             }
                         }
 
