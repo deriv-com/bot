@@ -12,6 +12,8 @@ jobs:
   sync_translations:
     runs-on: ubuntu-latest
     environment: staging
+    permissions:
+      contents: read
     steps:
       - name: Sync Bots translations
         uses: deriv-com/translations/.github/actions/extract_and_sync_translations@master
@@ -28,6 +30,8 @@ jobs:
   sync_translations_production:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: read
     steps:
       - name: Sync Bots translations
         uses: deriv-com/translations/.github/actions/extract_and_sync_translations@master
