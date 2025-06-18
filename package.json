@@ -56,10 +56,10 @@
         "mobx-react-lite": "^4.0.7",
         "moment": "^2.30.1",
         "pako": "^2.1.0",
-        "react": "^18.2.0",
+        "react": "^18.3.1",
         "react-content-loader": "^7.0.0",
         "react-div-100vh": "^0.3.8",
-        "react-dom": "^18.2.0",
+        "react-dom": "^18.3.1",
         "react-joyride": "^2.8.2",
         "react-loadable": "^5.5.0",
         "react-router-dom": "^6.25.1",
@@ -113,6 +113,7 @@
         "@types/uuid": "^10.0.0",
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "@typescript-eslint/parser": "^6.0.0",
+        "npm-force-resolutions": "^0.0.10",
         "babel-core": "^7.0.0-bridge.0",
         "babel-jest": "^29.7.0",
         "babel-loader": "^8.1.0",
@@ -187,7 +188,9 @@
         "braces": "^3.0.3",
         "micromatch": "^4.0.8",
         "brace-expansion": "^2.0.2",
-        "ajv-keywords": "^3.5.2"
+        "ajv-keywords": "^3.5.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     },
     "resolutions": {
         "cross-spawn": "7.0.6",
@@ -195,6 +198,8 @@
         "braces": "3.0.3",
         "micromatch": "4.0.8",
         "brace-expansion": "2.0.2",
-        "ajv-keywords": "3.5.2"
+        "ajv-keywords": "3.5.2",
+        "react": "18.3.1",
+        "react-dom": "18.3.1"
     }
 }
