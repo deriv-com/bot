@@ -13,12 +13,13 @@
         right: 0;
 
         &--mobile {
-            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
             z-index: var(--zindex-drawer);
+            height: calc(100% - env(safe-area-inset-bottom, 0));
+            padding-bottom: env(safe-area-inset-bottom, 0);
 
             &-closed {
                 position: unset;
@@ -26,12 +27,12 @@
         }
 
         /* Fix for iOS devices to prevent run panel overlap */
-        @supports (-webkit-touch-callout: none) {
-            &--mobile {
-                height: calc(100% - env(safe-area-inset-bottom, 0));
-                padding-bottom: env(safe-area-inset-bottom, 0);
-            }
-        }
+        // @supports (-webkit-touch-callout: none) {
+        //     &--mobile {
+        //         //height: calc(100% - env(safe-area-inset-bottom, 0));
+        //         //padding-bottom: env(safe-area-inset-bottom, 0);
+        //     }
+        // }
     }
 
     &__tile {
