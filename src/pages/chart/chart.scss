@@ -64,16 +64,7 @@
             @include mobile-screen {
                 background: transparent;
                 border-width: 0;
-
-                /* Position the chart icon just above the drawer/controls section */
-                bottom: 4rem;
-
-                /* Height of controls (6rem) + padding (0.8rem*2) + extra space (0.4rem) */
-
-                /* Fix for iOS devices to respect safe area - positioned a bit higher for iOS */
-                @supports (-webkit-touch-callout: none) {
-                    bottom: calc(12rem + env(safe-area-inset-bottom, 0));
-                }
+                bottom: calc(12rem + env(safe-area-inset-bottom, 0));
 
                 .sc-chart-mode,
                 .sc-studies {
