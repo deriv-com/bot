@@ -401,7 +401,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: var(--general-main-1);
-    min-height: 100vh;
+    padding-bottom: 5rem;
 
     @include tablet-screen {
         width: 100%;
@@ -491,12 +491,6 @@
                 flex: 1;
             }
         }
-
-        // @supports (-webkit-touch-callout: none) {
-        //     @include mobile-or-tablet-screen {
-        //         height: calc(100vh - 28rem);
-        //     }
-        // }
     }
 
     &__search {
