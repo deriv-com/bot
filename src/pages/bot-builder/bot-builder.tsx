@@ -17,7 +17,7 @@ const BotBuilder = observer(() => {
     const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store } = useStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
-    const { is_running } = run_panel;
+    const { is_running, is_drawer_open } = run_panel;
     const { is_loading } = blockly_store;
     const is_blockly_listener_registered = React.useRef(false);
     const is_blockly_delete_listener_registered = React.useRef(false);
@@ -113,7 +113,7 @@ const BotBuilder = observer(() => {
         <>
             <div
                 className={classNames('bot-builder', {
-                    'bot-builder--active': active_tab === 1 && !is_preview_on_popup,
+                    'bot-builder--active': active_tab === 1 && !is_preview_on_popup && !is_drawer_open,
                     'bot-builder--inactive': is_preview_on_popup,
                     'bot-builder--tour-active': active_tour,
                 })}
