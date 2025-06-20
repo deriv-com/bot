@@ -10,6 +10,7 @@ type TDrawer = {
     footer?: React.ReactElement;
     header?: React.ReactElement;
     width?: number;
+    zIndex?: number;
     is_open: boolean;
     toggleDrawer?: (prop: boolean) => void;
 };
@@ -22,6 +23,7 @@ const Drawer = ({
     footer,
     header,
     width = 250,
+    zIndex = 4,
     ...props
 }: React.PropsWithChildren<TDrawer>) => {
     const [is_open, setIsOpen] = React.useState(props.is_open);
@@ -46,6 +48,7 @@ const Drawer = ({
                 'dc-drawer--open': is_open,
             })}
             style={{
+                zIndex,
                 transform:
                     is_open && isDesktop
                         ? anchor === 'left'
