@@ -13,17 +13,26 @@
         right: 0;
 
         &--mobile {
-            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
             z-index: var(--zindex-drawer);
+            height: calc(100% - env(safe-area-inset-bottom, 0));
+            padding-bottom: env(safe-area-inset-bottom, 0);
 
             &-closed {
                 position: unset;
             }
         }
+
+        /* Fix for iOS devices to prevent run panel overlap */
+        // @supports (-webkit-touch-callout: none) {
+        //     &--mobile {
+        //         //height: calc(100% - env(safe-area-inset-bottom, 0));
+        //         //padding-bottom: env(safe-area-inset-bottom, 0);
+        //     }
+        // }
     }
 
     &__tile {
@@ -57,6 +66,11 @@
         @include mobile-or-tablet-screen {
             margin: 0;
             position: fixed;
+
+            /* Fix for iOS devices to prevent stats panel overlap */
+            @supports (-webkit-touch-callout: none) {
+                padding-bottom: env(safe-area-inset-bottom, 0);
+            }
         }
 
         &--info {
@@ -153,6 +167,11 @@
                 bottom: 15.7rem;
                 width: 100vw;
                 padding: 0.4rem 0;
+
+                /* Fix for iOS devices to prevent tab content overlap with bottom controls */
+                @supports (-webkit-touch-callout: none) {
+                    bottom: calc(15.7rem + env(safe-area-inset-bottom, 0));
+                }
             }
 
             &--summary-tab {
@@ -183,6 +202,18 @@
         background-color: var(--general-main-1);
         border-top: solid 2px var(--general-section-1);
         z-index: 8;
+
+        /* Fix for iOS devices to respect safe area */
+        @supports (-webkit-touch-callout: none) {
+            bottom: env(safe-area-inset-bottom, 0);
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+
+        /* Additional class for iOS detection via JS */
+        &.ios-device {
+            bottom: env(safe-area-inset-bottom, 0);
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
     }
 
     &__buttons {
@@ -194,6 +225,12 @@
         @include tablet-screen {
             max-width: 60rem;
             padding: 0.8rem 0;
+        }
+
+        /* Fix for iOS devices to ensure buttons are properly sized */
+        @supports (-webkit-touch-callout: none) {
+            height: auto;
+            min-height: 6rem;
         }
     }
 
@@ -268,11 +305,22 @@
         padding: 1.4rem;
         border-top: 2px solid var(--general-section-2);
 
+        /* Fix for iOS devices to respect safe area */
+        @supports (-webkit-touch-callout: none) {
+            bottom: env(safe-area-inset-bottom, 0);
+            padding-bottom: calc(1.4rem + env(safe-area-inset-bottom, 0));
+        }
+
         @include mobile-or-tablet-screen {
             position: absolute;
             width: 100%;
             bottom: 40px;
             left: 0;
+
+            /* Fix for iOS devices on mobile */
+            @supports (-webkit-touch-callout: none) {
+                bottom: calc(40px + env(safe-area-inset-bottom, 0));
+            }
 
             &--relative {
                 position: relative;
