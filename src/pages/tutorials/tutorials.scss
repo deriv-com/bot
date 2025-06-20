@@ -476,7 +476,7 @@
     &__qs-guide,
     &__search {
         @include mobile-or-tablet-screen {
-            height: calc(100vh - 28rem);
+            height: calc(100vh - 32rem);
             min-height: 100%;
             overflow: auto;
             background-color: var(--general-main-1);
@@ -489,13 +489,6 @@
                 min-height: 100%;
                 background-color: var(--general-main-1);
                 flex: 1;
-            }
-        }
-
-        /* Fix for all browsers */
-        @media screen {
-            @include mobile-or-tablet-screen {
-                min-height: calc(100vh - 32rem);
             }
         }
 
