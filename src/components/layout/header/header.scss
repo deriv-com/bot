@@ -179,6 +179,7 @@
         .deriv-accordion {
             &__content {
                 background: unset;
+                overflow: auto;
             }
 
             &__text {

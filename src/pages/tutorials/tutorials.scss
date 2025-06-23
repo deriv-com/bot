@@ -403,6 +403,12 @@
     background-color: var(--general-main-1);
     padding-bottom: 5rem;
 
+    &--safari {
+        @include tablet-screen {
+            padding-bottom: 15rem;
+        }
+    }
+
     @include tablet-screen {
         width: 100%;
         max-width: 60rem;

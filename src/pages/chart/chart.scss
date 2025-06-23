@@ -145,21 +145,19 @@
 
 // Safari-specific fixes
 .dashboard__chart-wrapper--safari {
-    .bot {
-        .smartcharts-mobile {
-            .cq-context {
-                .sc-mcd__category:last-child {
-                    padding-bottom: 200px !important;
-                }
+    .smartcharts-mobile {
+        .cq-context {
+            .sc-mcd__category:last-child {
+                padding-bottom: 200px !important;
             }
+        }
 
-            & .cq-chart-title .cq-menu-dropdown {
-                position: absolute !important;
-                height: 100vh !important;
-                width: 100vw !important;
-                left: -10px !important;
-                padding-bottom: 200px;
-            }
+        & .cq-chart-title .cq-menu-dropdown {
+            position: absolute !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            left: -10px !important;
+            padding-bottom: 200px;
         }
     }
 }
