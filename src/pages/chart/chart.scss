@@ -143,47 +143,28 @@
     }
 }
 
+// Safari-specific fixes
+.dashboard__chart-wrapper--safari {
+    .bot {
+        .smartcharts-mobile {
+            .cq-context {
+                .sc-mcd__category:last-child {
+                    padding-bottom: 200px !important;
+                }
+            }
+
+            & .cq-chart-title .cq-menu-dropdown {
+                position: absolute !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                left: -10px !important;
+                padding-bottom: 200px;
+            }
+        }
+    }
+}
+
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
-}
-
-/* Hide the tabs header and headers specifically when market selector is open */
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--header--main__tabs {
-    visibility: hidden !important;
-    position: relative;
-    z-index: -1;
-}
-
-body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .bot-dashboard {
-    visibility: hidden !important;
-}
-
-/* Alternative approach using body class */
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--top,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--border-bottom,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .dc-tabs__list--main__tabs,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .deriv-header,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .app-header--mobile,
-body:has(.bot .smartcharts-mobile .stxMenuActive) .run-panel {
-    visibility: hidden !important;
-}
-
-/* Additional selector using the specific class combination */
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive)
-    .dc-tabs__list--header--main__tabs,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--top,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--border-bottom,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .dc-tabs__list--main__tabs,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .deriv-header,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .app-header,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .app-header--mobile,
-body:has(.ciq-menu.ciq-enabled.cq-chart-title.stx-show.cq-symbols-display.stxMenuActive) .run-panel {
-    visibility: hidden !important;
 }
