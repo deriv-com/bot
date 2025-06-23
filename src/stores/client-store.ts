@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { ContentFlag, isEmptyObject } from '@/components/shared';
 import { isEuCountry, isMultipliersOnly, isOptionsBlocked } from '@/components/shared/common/utility';
+import { removeCookies } from '@/components/shared/utils/storage/storage';
 import { api_base } from '@/external/bot-skeleton';
 import {
     authData$,
@@ -351,7 +351,7 @@ export default class ClientStore {
         localStorage.removeItem('accountsList');
         localStorage.removeItem('authToken');
         localStorage.removeItem('clientAccounts');
-        Cookies.remove('client_information');
+        removeCookies('client_information');
 
         setIsAuthorized(false);
         setAccountList([]);
