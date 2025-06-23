@@ -24,6 +24,7 @@ type TClientInformation = {
     landing_company_shortcode?: string;
 };
 const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ children }) => {
+    const currentDomain = useMemo(() => '.' + window.location.hostname.split('.').slice(-2).join('.'), []);
     const { isAuthorizing, isAuthorized, connectionStatus, accountList, activeLoginid } = useApiBase();
 
     const appInitialization = useRef(false);
@@ -181,7 +182,9 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                     landing_company_shortcode: activeAccount?.landing_company_name,
                 };
 
-                Cookies.set('client_information', JSON.stringify(client_information));
+                Cookies.set('client_information', JSON.stringify(client_information), {
+                    domain: currentDomain,
+                });
 
                 api_base.api
                     .landingCompany({
