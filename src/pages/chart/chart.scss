@@ -66,9 +66,12 @@
                 border-width: 0;
                 bottom: calc(4rem + env(safe-area-inset-bottom, 0));
 
-                @supports (-webkit-touch-callout: none) {
-                    @include mobile-or-tablet-screen {
-                        bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+                @media not all and (resolution >= 0.001dpcm) {
+                    /* Target Safari 11+ on Desktop and iOS */
+                    @supports (-webkit-appearance: none) {
+                        @include mobile-or-tablet-screen {
+                            bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+                        }
                     }
                 }
 
