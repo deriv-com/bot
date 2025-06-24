@@ -167,6 +167,9 @@ const MARKET_ICONS = {
     BOOM600: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom600Icon }))
     ),
+    BOOM900: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom900Icon }))
+    ),
     BOOM1000: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom1000Icon }))
     ),
