@@ -171,6 +171,16 @@
     }
 }
 
+// iOS Safari specific fix with higher specificity
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari only */
+    .dashboard__chart-wrapper--safari .bot .ciq-chart .sc-toolbar-widget {
+        @include mobile-or-tablet-screen {
+            bottom: calc(12rem + env(safe-area-inset-bottom, 0)) !important;
+        }
+    }
+}
+
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
