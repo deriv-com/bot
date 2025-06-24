@@ -64,7 +64,7 @@
             @include mobile-screen {
                 background: transparent;
                 border-width: 0;
-                bottom: calc(10rem + env(safe-area-inset-bottom, 0));
+                bottom: calc(12rem + env(safe-area-inset-bottom, 0));
 
                 /* Default bottom position for all browsers */
 
