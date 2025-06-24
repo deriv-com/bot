@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import chart_api from '@/external/bot-skeleton/services/api/chart-api';
@@ -34,6 +34,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const barriers: [] = [];
     const { common, ui } = useStore();
     const { chart_store, run_panel, dashboard } = useStore();
+    const [isSafari, setIsSafari] = useState(false);
 
     const {
         chart_type,
@@ -62,6 +63,14 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     };
 
     useEffect(() => {
+        // Safari browser detection
+        const isSafariBrowser = () => {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.indexOf('safari') !== -1 && ua.indexOf('chrome') === -1 && ua.indexOf('android') === -1;
+        };
+
+        setIsSafari(isSafariBrowser());
+
         return () => {
             chart_api.api.forgetAll('ticks');
         };
@@ -109,6 +118,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
             className={classNames('dashboard__chart-wrapper', {
                 'dashboard__chart-wrapper--expanded': is_drawer_open && isDesktop,
                 'dashboard__chart-wrapper--modal': is_chart_modal_visible && isDesktop,
+                'dashboard__chart-wrapper--safari': isSafari,
             })}
             dir='ltr'
         >

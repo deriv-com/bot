@@ -6,7 +6,7 @@
     --translate-panel-reset: 0px;
 
     position: relative;
-    height: calc(100vh - 8.4rem);
+    height: calc(100vh - 4.4rem);
     overflow: hidden;
 
     .toolbar__section {
@@ -48,10 +48,6 @@
     .dc-drawer--open {
         @include desktop-screen {
             transform: translateX(var(--translate-panel-reset)) !important;
-        }
-
-        @include mobile-or-tablet-screen {
-            transform: translateY(calc(-100% + 3.6rem));
         }
 
         .dc-drawer__toggle-icon {

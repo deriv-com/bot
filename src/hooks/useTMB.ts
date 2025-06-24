@@ -293,6 +293,10 @@ const useTMB = (): UseTMBReturn => {
 
             try {
                 // Use pre-fetched active sessions if available, otherwise fetch them
+                if (!window.is_tmb_enabled) {
+                    console.warn('TMB is not enabled, skipping TMB check');
+                    return;
+                }
                 let activeSessions = activeSessionsRef.current;
 
                 if (!activeSessions && window.is_tmb_enabled) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { isDesktop } from '@/components/shared';
 import SelectNative from '@/components/shared_ui/select-native';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedArrowLeftSmRegularIcon, LabelPairedSearchSmRegularIcon } from '@deriv/quill-icons/LabelPaired';
@@ -77,12 +78,16 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         }
     }, []);
 
+    const is_desktop = isDesktop();
+    const is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
     return (
         <div className='tutorials-mobile' data-testid='test-tutorials-mobile'>
             <div
                 className={classNames('tutorials-mobile__select', {
                     'tutorials-mobile__select--show-search': showSearchBar,
                     'tutorials-mobile__select--hide-search': !showSearchBar,
+                    'tutorials-mobile--safari': is_safari && !is_desktop,
                 })}
                 data-testid={showSearchBar ? 'id-search-visible' : 'id-search-hidden'}
             >

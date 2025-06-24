@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LabelPairedChevronsRightCaptionRegularIcon,LegacyHandleLessIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronsRightCaptionRegularIcon, LegacyHandleLessIcon } from '@deriv/quill-icons';
 import { useDevice } from '@deriv-com/ui';
 
 type TDrawer = {

@@ -64,7 +64,9 @@
             @include mobile-screen {
                 background: transparent;
                 border-width: 0;
-                bottom: 20.8vh;
+                bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+
+                /* Default bottom position for all browsers */
 
                 .sc-chart-mode,
                 .sc-studies {
@@ -107,8 +109,17 @@
         }
 
         & .cq-chart-title .cq-menu-dropdown {
-            position: fixed;
+            position: fixed !important;
             height: 100% !important;
+            width: 100% !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99999 !important;
+            transform: translateZ(0) !important;
+            backface-visibility: hidden !important;
+            will-change: transform !important;
 
             .sc-dialog {
                 height: 100% !important;
@@ -120,6 +131,10 @@
                         height: inherit !important;
                         min-width: auto !important;
                     }
+
+                    .title-text {
+                        font-size: 1.6rem;
+                    }
                 }
             }
         }
@@ -130,6 +145,25 @@
 
         .sc-mcd__category__content .subcategory {
             padding-left: 10px !important;
+        }
+    }
+}
+
+// Safari-specific fixes
+.dashboard__chart-wrapper--safari {
+    .smartcharts-mobile {
+        .cq-context {
+            .sc-mcd__category:last-child {
+                padding-bottom: 200px !important;
+            }
+        }
+
+        & .cq-chart-title .cq-menu-dropdown {
+            position: absolute !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            left: -10px !important;
+            padding-bottom: 200px;
         }
     }
 }
