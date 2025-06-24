@@ -401,7 +401,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: var(--general-main-1);
-    padding-bottom: 10rem;
+    padding-bottom: 5rem;
 
     &--safari {
         @include tablet-screen {
