@@ -66,8 +66,10 @@
                 border-width: 0;
                 bottom: calc(4rem + env(safe-area-inset-bottom, 0));
 
-                @supports (-webkit-touch-callout: none) and (not (color: unset)) {
-                    /* Safari iOS only */
+                /* Default bottom position for all browsers */
+
+                /* Safari-specific bottom position using JS detection */
+                .safari-browser & {
                     @include mobile-or-tablet-screen {
                         bottom: calc(12rem + env(safe-area-inset-bottom, 0));
                     }
