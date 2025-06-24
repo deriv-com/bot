@@ -68,13 +68,6 @@
 
                 /* Default bottom position for all browsers */
 
-                /* Safari-specific bottom position using JS detection */
-                .safari-browser & {
-                    @include mobile-or-tablet-screen {
-                        bottom: calc(12rem + env(safe-area-inset-bottom, 0));
-                    }
-                }
-
                 .sc-chart-mode,
                 .sc-studies {
                     background: var(--general-section-1);
@@ -174,4 +167,11 @@
 .cq-modal-dropdown.stxMenuActive {
     left: 0;
     top: 0;
+}
+
+/* Safari-specific bottom position using JS detection */
+html.safari-browser .bot .ciq-chart .sc-toolbar-widget {
+    @include mobile-or-tablet-screen {
+        bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+    }
 }
