@@ -66,6 +66,12 @@
                 border-width: 0;
                 bottom: calc(4rem + env(safe-area-inset-bottom, 0));
 
+                @supports (-webkit-touch-callout: none) {
+                    @include mobile-or-tablet-screen {
+                        bottom: calc(12rem + env(safe-area-inset-bottom, 0));
+                    }
+                }
+
                 .sc-chart-mode,
                 .sc-studies {
                     background: var(--general-section-1);
