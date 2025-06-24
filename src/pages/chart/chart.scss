@@ -162,13 +162,6 @@
             padding-bottom: 200px;
         }
     }
-
-    // Safari-specific bottom positioning for toolbar widget
-    .bot .ciq-chart .sc-toolbar-widget {
-        @include mobile-or-tablet-screen {
-            bottom: calc(12rem + env(safe-area-inset-bottom, 0));
-        }
-    }
 }
 
 // iOS Safari specific fix with higher specificity
