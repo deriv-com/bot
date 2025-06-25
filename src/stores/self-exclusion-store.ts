@@ -65,12 +65,17 @@ export default class SelfExclusionStore {
 
     async checkRestriction() {
         if (api_base.api && api_base.is_authorized && V2GetActiveClientId()) {
-            api_base.api.getSelfExclusion().then(({ get_self_exclusion }) => {
-                const { max_losses: maxLosses } = get_self_exclusion;
-                if (maxLosses) {
-                    this.setApiMaxLosses(maxLosses);
-                }
-            });
+            api_base.api
+                .getSelfExclusion()
+                .then(({ get_self_exclusion }) => {
+                    const { max_losses: maxLosses } = get_self_exclusion;
+                    if (maxLosses) {
+                        this.setApiMaxLosses(maxLosses);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching self-exclusion data:', error);
+                });
         }
     }
 }
