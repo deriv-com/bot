@@ -306,7 +306,7 @@ const useTMB = (): UseTMBReturn => {
 
                 // Only redirect if explicitly from login button
                 if (!activeSessions?.active && fromLoginButton) {
-                    console.error('Failed to get active sessions: No data returned');
+                    console.log('[TMB]: Failed to get active sessions: No data returned');
                     TMBState.checkInProgress = false;
                     if (setIsAuthenticating) {
                         setIsAuthenticating(false);
