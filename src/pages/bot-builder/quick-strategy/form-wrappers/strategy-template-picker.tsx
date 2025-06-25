@@ -3,7 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
-import { Chip, SearchField } from '@deriv-com/quill-ui';
+import { Chip } from '@deriv-com/quill-ui';
+import { SearchField } from '@deriv-com/quill-ui-next';
 import { localize } from '@deriv-com/translations';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
@@ -37,17 +38,17 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
         <div className='strategy-template-picker'>
             <div className='strategy-template-picker__panel'>
                 <SearchField
-                    onChange={event => {
-                        setSearchValue(event.target.value);
+                    onChange={(value: string | number) => {
+                        setSearchValue(value as string);
                         setIsSearching(true);
-                        setFAQSearchValue(event.target.value);
-                        filterTuotrialTab(event.target.value);
+                        setFAQSearchValue(value as string);
+                        filterTuotrialTab(value as string);
                     }}
                     placeholder={localize('Search')}
-                    type='text'
                     value={search_value}
-                    inputSize='sm'
+                    size='sm'
                 />
+
                 <button
                     className='strategy-template-picker__icon'
                     onClick={() => {
