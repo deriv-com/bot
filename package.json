@@ -180,6 +180,7 @@
         "sass-embedded-win32-x64": "1.85.1"
     },
     "overrides": {
-        "cross-spawn": "^7.0.6"
+        "cross-spawn": "^7.0.6",
+        "braces": "^3.0.3"
     }
 }
