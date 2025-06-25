@@ -46,10 +46,12 @@
         "file-saver": "^2.0.5",
         "formik": "^2.4.6",
         "framer-motion": "^6.5.1",
+        "glob": "^10.4.5",
         "html-react-parser": "^5.1.18",
         "js-cookie": "^3.0.5",
         "localforage": "^1.10.0",
         "lz-string": "^1.5.0",
+        "minimatch": "^9.0.5",
         "mobx": "^6.12.3",
         "mobx-react-lite": "^4.0.7",
         "moment": "^2.30.1",
@@ -181,6 +183,7 @@
     },
     "overrides": {
         "cross-spawn": "^7.0.6",
-        "braces": "^3.0.3"
+        "braces": "^3.0.3",
+        "brace-expansion@2.0.1": "2.0.2"
     }
 }
