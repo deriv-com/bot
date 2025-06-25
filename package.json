@@ -28,7 +28,7 @@
         "@deriv-com/ui": "^1.37.1",
         "@deriv-com/utils": "latest",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^1.4.2",
+        "@deriv/deriv-charts": "^2.9.1",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv/quill-icons": "^2.2.0",
         "@svgr/core": "^8.1.0",
