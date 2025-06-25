@@ -43,7 +43,7 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
-        if (!client.loginid && !client.is_logged_in) return;
+        if (!client.loginid || !client.is_logged_in) return;
         performSelfExclusionCheck();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
