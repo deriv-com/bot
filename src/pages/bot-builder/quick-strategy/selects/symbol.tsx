@@ -33,7 +33,7 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
 const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useStore();
     const { isDesktop } = useDevice();
-    const { setValue, selected_strategy } = quick_strategy;
+    const { setValue, selected_strategy, setDropdownState } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
@@ -97,6 +97,7 @@ const SymbolSelect: React.FC = () => {
     };
 
     const handleHideDropdownList = () => {
+        setDropdownState(false);
         if (isDesktop) {
             const selectedSymbol = symbols.find(symbol => symbol.value === values.symbol);
             if (selectedSymbol && selectedSymbol.text !== input_value.text) {
@@ -119,7 +120,6 @@ const SymbolSelect: React.FC = () => {
                         <Autocomplete
                             {...rest_field}
                             readOnly={!isDesktop}
-                            inputMode='none'
                             data-testid='dt_qs_symbol'
                             autoComplete='off'
                             className='qs__autocomplete'
@@ -129,6 +129,15 @@ const SymbolSelect: React.FC = () => {
                             onChange={handleInputChange}
                             onFocus={handleFocus}
                             onHideDropdownList={handleHideDropdownList}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            data_testid='dt_qs_symbol'
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                             leading_icon={<MarketIcon type={input_value.value} size='sm' />}
                         />
                     </>
