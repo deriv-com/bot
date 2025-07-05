@@ -73,8 +73,11 @@ export default class SelfExclusionStore {
                         this.setApiMaxLosses(maxLosses);
                     }
                 })
-                .catch((error: { code?: string; message?: string }) => {
-                    if (error?.code === 'AuthorizationRequired') {
+                .catch((error: any) => {
+                    // Handle different error structures
+                    const error_code = error?.code || error?.error?.code;
+
+                    if (error_code === 'AuthorizationRequired') {
                         this.core.client.logout();
                         return;
                     }
