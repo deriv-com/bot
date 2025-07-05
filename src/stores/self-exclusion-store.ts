@@ -75,9 +75,9 @@ export default class SelfExclusionStore {
                 })
                 .catch((error: any) => {
                     // Handle different error structures
-                    const errorCode = error?.code || error?.error?.code;
+                    const error_code = error?.code || error?.error?.code;
 
-                    if (errorCode === 'AuthorizationRequired') {
+                    if (error_code === 'AuthorizationRequired') {
                         this.core.client.logout();
                         return;
                     }
