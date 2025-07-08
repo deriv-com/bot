@@ -142,11 +142,14 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         if (!token) return;
         localStorage.setItem('authToken', token);
         localStorage.setItem('active_loginid', loginId.toString());
-        Analytics.setAttributes({
-            account_type: loginId
+        const account_type =
+            loginId
                 .toString()
                 .match(/[a-zA-Z]+/g)
-                ?.join(''),
+                ?.join('') || '';
+
+        Analytics.setAttributes({
+            account_type,
         });
         await api_base?.init(true);
         const search_params = new URLSearchParams(window.location.search);
