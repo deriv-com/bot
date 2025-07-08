@@ -9,6 +9,7 @@ import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { waitForDomElement } from '@/utils/dom-observer';
+import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher, Loader, useDevice } from '@deriv-com/ui';
 import DemoAccounts from './common/demo-accounts';
@@ -141,6 +142,12 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         if (!token) return;
         localStorage.setItem('authToken', token);
         localStorage.setItem('active_loginid', loginId.toString());
+        Analytics.setAttributes({
+            account_type: loginId
+                .toString()
+                .match(/[a-zA-Z]+/g)
+                ?.join(''),
+        });
         await api_base?.init(true);
         const search_params = new URLSearchParams(window.location.search);
         const selected_account = modifiedAccountList.find(acc => acc.loginid === loginId.toString());
