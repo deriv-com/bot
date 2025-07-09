@@ -7,6 +7,7 @@ import Text from '@/components/shared_ui/text';
 import { api_base } from '@/external/bot-skeleton';
 import { useStore } from '@/hooks/useStore';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
+import { Analytics } from '@deriv-com/analytics';
 import { Localize } from '@deriv-com/translations';
 import WalletBadge from '../wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
@@ -59,6 +60,14 @@ export const AccountSwitcherWalletItem = observer(
 
             localStorage.setItem('authToken', token);
             localStorage.setItem('active_loginid', loginId.toString());
+            const account_type =
+                loginId
+                    .toString()
+                    .match(/[a-zA-Z]+/g)
+                    ?.join('') || '';
+            Analytics.setAttributes({
+                account_type,
+            });
             await api_base?.init(true);
             closeAccountsDialog();
 
