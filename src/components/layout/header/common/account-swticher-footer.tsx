@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import RectangleSkeleton from '@/components/loader/rectangle-skeleton';
 import { standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
-import Text from '@/components/shared_ui/text';
 import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import useStoreWalletAccountsList from '@/hooks/useStoreWalletAccountsList';
 import { getWalletUrl, handleTraderHubRedirect } from '@/utils/traders-hub-redirect';
-import { LegacyLogout1pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv-com/translations';
 import { AccountSwitcher as UIAccountSwitcher } from '@deriv-com/ui';
 
@@ -19,7 +16,7 @@ type TAccountSwitcherFooter = {
 };
 import { AccountSwitcherDivider } from './utils';
 
-const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out, residence }: TAccountSwitcherFooter) => {
+const AccountSwitcherFooter = ({ loginid, residence }: TAccountSwitcherFooter) => {
     const accountList = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
     const account_currency = loginid ? accountList[loginid]?.currency : '';
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
@@ -84,29 +81,7 @@ const AccountSwitcherFooter = ({ oAuthLogout, loginid, is_logging_out, residence
                         <Localize i18n_default_text='Manage accounts' />
                     </Button>
                 )}
-                <UIAccountSwitcher.Footer>
-                    {is_logging_out ? (
-                        <div className='deriv-account-switcher__logout--loader'>
-                            <RectangleSkeleton width='120px' height='12px' />
-                        </div>
-                    ) : (
-                        <div id='dt_logout_button' className='deriv-account-switcher__logout' onClick={oAuthLogout}>
-                            <Text
-                                color='prominent'
-                                size='xs'
-                                align='left'
-                                className='deriv-account-switcher__logout-text'
-                            >
-                                {localize('Logout')}
-                            </Text>
-                            <LegacyLogout1pxIcon
-                                iconSize='xs'
-                                fill='var(--text-general)'
-                                className='icon-general-fill-path'
-                            />
-                        </div>
-                    )}
-                </UIAccountSwitcher.Footer>
+                {/* Logout button removed from Desktop interface as per acceptance criteria */}
             </div>
         </div>
     );

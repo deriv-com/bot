@@ -2,7 +2,6 @@ import { ComponentProps, ReactNode, useMemo } from 'react';
 import Livechat from '@/components/chat/Livechat';
 import useIsLiveChatWidgetAvailable from '@/components/chat/useIsLiveChatWidgetAvailable';
 import { standalone_routes } from '@/components/shared';
-import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountriesConfig';
 import useRemoteConfig from '@/hooks/growthbook/useRemoteConfig';
 import { useIsIntercomAvailable } from '@/hooks/useIntercom';
@@ -15,7 +14,6 @@ import {
     LegacyChartsIcon,
     LegacyHelpCentreIcon,
     LegacyHomeOldIcon,
-    LegacyLogout1pxIcon,
     LegacyProfileSmIcon,
     LegacyReportsIcon,
     LegacyResponsibleTradingIcon,
@@ -46,8 +44,6 @@ type TMenuConfig = {
 const useMobileMenuConfig = (client?: RootStore['client']) => {
     const { localize } = useTranslations();
     const { is_dark_mode_on, toggleTheme } = useThemeSwitcher();
-
-    const { oAuthLogout } = useOauth2({ handleLogout: async () => client?.logout(), client });
 
     const { data } = useRemoteConfig(true);
     const { cs_chat_whatsapp } = data;
@@ -190,17 +186,8 @@ const useMobileMenuConfig = (client?: RootStore['client']) => {
                       }
                     : null,
             ].filter(Boolean) as TMenuConfig,
-            client?.is_logged_in
-                ? [
-                      {
-                          as: 'button',
-                          label: localize('Log out'),
-                          LeftComponent: LegacyLogout1pxIcon,
-                          onClick: oAuthLogout,
-                          removeBorderBottom: true,
-                      },
-                  ]
-                : [],
+            // Logout button removed from mobile interface as per acceptance criteria
+            [],
         ],
         [is_virtual, currency, is_logged_in, client_residence, is_tmb_enabled]
     );
