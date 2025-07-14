@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
+import PWAUpdateNotification from '@/components/pwa-update-notification';
 import { api_base } from '@/external/bot-skeleton';
 import useTMB from '@/hooks/useTMB';
 import { handleOidcAuthFailure } from '@/utils/auth-utils';
@@ -210,6 +211,7 @@ const Layout = () => {
                 <Outlet />
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}
+            <PWAUpdateNotification />
         </div>
     );
 };
