@@ -13,12 +13,14 @@ type TAccountSwitcherFooter = {
     loginid?: string;
     is_logging_out?: boolean;
     residence?: string;
+    type?: 'demo' | 'real';
 };
 import { AccountSwitcherDivider } from './utils';
 
-const AccountSwitcherFooter = ({ loginid, residence }: TAccountSwitcherFooter) => {
+const AccountSwitcherFooter = ({ loginid, residence, type }: TAccountSwitcherFooter) => {
     const accountList = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
     const account_currency = loginid ? accountList[loginid]?.currency : '';
+    // Hide manage button for demo accounts (virtual accounts)
     const show_manage_button = loginid?.includes('CR') || loginid?.includes('MF');
     const { has_wallet = false } = useStoreWalletAccountsList() || {};
     const { hubEnabledCountryList } = useFirebaseCountriesConfig();
@@ -54,18 +56,20 @@ const AccountSwitcherFooter = ({ loginid, residence }: TAccountSwitcherFooter) =
         console.error('Error parsing redirect URL:', error);
     }
 
+    const is_virtual_tab = type === 'demo';
+
     return (
         <div className=''>
             <UIAccountSwitcher.TradersHubLink href={final_url_str}>
                 {localize(`Looking for CFD accounts? Go to Trader's Hub`)}
             </UIAccountSwitcher.TradersHubLink>
             <AccountSwitcherDivider />
-            <div
-                className={classNames('account-switcher-footer__actions', {
-                    'account-switcher-footer__actions--hide-manage-button': !show_manage_button,
-                })}
-            >
-                {show_manage_button && (
+            {!is_virtual_tab && (
+                <div
+                    className={classNames('account-switcher-footer__actions', {
+                        'account-switcher-footer__actions--hide-manage-button': !show_manage_button,
+                    })}
+                >
                     <Button
                         id='manage-button'
                         className='manage-button'
@@ -80,9 +84,9 @@ const AccountSwitcherFooter = ({ loginid, residence }: TAccountSwitcherFooter) =
                     >
                         <Localize i18n_default_text='Manage accounts' />
                     </Button>
-                )}
-                {/* Logout button removed from Desktop interface as per acceptance criteria */}
-            </div>
+                    {/* Logout button removed from Desktop interface as per acceptance criteria */}
+                </div>
+            )}
         </div>
     );
 };
