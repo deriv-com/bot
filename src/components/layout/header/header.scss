@@ -54,10 +54,10 @@
 
         &__actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: right;
             align-items: center;
-            padding: 0 1rem;
             background-color: var(--du-general-main-2);
+            padding: 1.6rem 0.8rem;
 
             &--hide-manage-button {
                 justify-content: flex-end;
@@ -196,7 +196,7 @@
     &__title {
         height: 4rem;
         margin: 0 auto;
-        padding: 1.2rem 1.6rem;
+        padding: 1.2rem 0.6rem;
     }
 
     &__container--mobile {

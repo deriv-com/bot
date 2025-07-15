@@ -100,6 +100,7 @@ const RealAccounts = ({
                 loginid={loginid}
                 is_logging_out={is_logging_out}
                 residence={residence}
+                type='real'
             />
         </>
     );

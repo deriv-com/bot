@@ -52,7 +52,12 @@ const DemoAccounts = ({
                     ))}
             </UIAccountSwitcher.AccountsPanel>
             <AccountSwitcherDivider />
-            <AccountSwitcherFooter loginid={activeLoginId} oAuthLogout={oAuthLogout} is_logging_out={is_logging_out} />
+            <AccountSwitcherFooter
+                loginid={activeLoginId}
+                oAuthLogout={oAuthLogout}
+                is_logging_out={is_logging_out}
+                type='demo'
+            />
         </>
     );
 };

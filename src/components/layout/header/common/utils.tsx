@@ -17,4 +17,4 @@ export const convertCommaValue = (str: string) => {
     return Number(str.replace(/,/g, ''));
 };
 
-export const AccountSwitcherDivider = () => <Divider color='var(--general-section-2)' height='4px' />;
+export const AccountSwitcherDivider = () => <Divider color='var(--general-section-2)' height='2px' />;
