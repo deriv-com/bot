@@ -47,6 +47,12 @@
             &__wrapper__variant--outline {
                 background-color: unset;
                 border: none;
+                border: 1px solid var(--general-section-6);
+                padding-right: 0;
+            }
+
+            &__wrapper--has-value.quill-input__wrapper__variant--outline {
+                padding-right: 0.8rem !important;
             }
         }
     }
