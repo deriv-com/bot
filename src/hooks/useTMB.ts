@@ -5,7 +5,8 @@ import { removeCookies } from '@/components/shared/utils/storage/storage';
 import { api_base } from '@/external/bot-skeleton';
 import { setAuthData } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { TAuthData } from '@/types/api-types';
-import { requestSessionActive } from '@deriv-com/auth-client';
+// TODO: need to fix this on auth cliet side
+// import { requestSessionActive } from '@deriv-com/auth-client';
 
 // Extend Window interface to include is_tmb_enabled property
 declare global {
@@ -69,47 +70,34 @@ const useTMB = (): UseTMBReturn => {
     const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
         try {
             const hostname = window.location.hostname;
-            const existingServerUrl = localStorage.getItem('config.server_url');
-            let tempServerUrlSet = false;
+            let sessionsUrl = 'https://oauth.deriv.com/oauth2/sessions/active';
 
-            // Temporarily set OAuth server URL for .me and .be domains if needed
-            if (
-                (hostname.includes('.deriv.me') || hostname.includes('.deriv.be')) &&
-                (!existingServerUrl || existingServerUrl.includes('derivws.com'))
-            ) {
-                const oauthServerUrl = hostname.includes('.deriv.me') ? 'oauth.deriv.me' : 'oauth.deriv.be';
-                localStorage.setItem('config.server_url', oauthServerUrl);
-                tempServerUrlSet = true;
+            // Construct the correct OAuth URL for .me and .be domains
+            if (hostname.includes('.deriv.me')) {
+                sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
+            } else if (hostname.includes('.deriv.be')) {
+                sessionsUrl = 'https://oauth.deriv.be/oauth2/sessions/active';
             }
 
-            const result = (await requestSessionActive()) as TMBWebsocketTokens;
+            console.log(`[TMB] Making sessions/active request to: ${sessionsUrl}`);
 
-            // Restore original server URL if we temporarily changed it
-            if (tempServerUrlSet) {
-                if (existingServerUrl) {
-                    localStorage.setItem('config.server_url', existingServerUrl);
-                } else {
-                    localStorage.removeItem('config.server_url');
-                }
+            const response = await fetch(sessionsUrl, {
+                method: 'GET',
+                credentials: 'include', // Include cookies for authentication
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
-            return result;
+            const result = await response.json();
+            return result as TMBWebsocketTokens;
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Failed to get active sessions', error);
-
-            // Restore original server URL in case of error
-            const hostname = window.location.hostname;
-            const existingServerUrl = localStorage.getItem('config.server_url');
-            if (
-                (hostname.includes('.deriv.me') || hostname.includes('.deriv.be')) &&
-                existingServerUrl &&
-                existingServerUrl.includes('oauth.deriv')
-            ) {
-                // Restore to default WebSocket URL if we had set OAuth URL
-                localStorage.removeItem('config.server_url');
-            }
-
+            console.error('Failed to get active sessions:', error);
             return undefined;
         }
     }, []);
