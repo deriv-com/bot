@@ -151,7 +151,7 @@ export const generateOAuthURL = () => {
         original_url.hostname) as string;
 
     const current_domain = getCurrentProductionDomain();
-
+    console.log('test current domain:', current_domain);
     if (original_url.hostname.includes('oauth.deriv.')) {
         if (current_domain) {
             const domain_suffix = current_domain.replace(/^[^.]+\./, '');
@@ -167,5 +167,7 @@ export const generateOAuthURL = () => {
     ) {
         original_url.hostname = configured_server_url;
     }
+
+    console.log('test original_url', original_url.toString(), 'oauth_url', oauth_url);
     return original_url.toString() || oauth_url;
 };
