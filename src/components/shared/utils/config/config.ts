@@ -161,26 +161,20 @@ export const generateOAuthURL = () => {
             : !valid_server_urls.includes(JSON.stringify(configured_server_url)))
     ) {
         original_url.hostname = configured_server_url;
-        console.log('Set OAuth URL hostname from config to:', configured_server_url);
     } else if (original_url.hostname.includes('oauth.deriv.')) {
         // Second priority: Domain-based OAuth URL setting for .me and .be domains
         if (hostname.includes('.deriv.me')) {
             original_url.hostname = 'oauth.deriv.me';
-            console.log('Set OAuth URL hostname to: oauth.deriv.me');
         } else if (hostname.includes('.deriv.be')) {
             original_url.hostname = 'oauth.deriv.be';
-            console.log('Set OAuth URL hostname to: oauth.deriv.be');
         } else {
             // Fallback to original logic for other domains
             const current_domain = getCurrentProductionDomain();
             if (current_domain) {
                 const domain_suffix = current_domain.replace(/^[^.]+\./, '');
                 original_url.hostname = `oauth.${domain_suffix}`;
-                console.log('Set OAuth URL hostname to:', `oauth.${domain_suffix}`);
             }
         }
     }
-
-    console.log('Final OAuth URL:', original_url.toString());
     return original_url.toString() || oauth_url;
 };

@@ -384,7 +384,6 @@ export default class ClientStore {
         return api_base?.api
             ?.logout()
             .then(() => {
-                console.log('test Logged out successfully');
                 resolveNavigation();
                 return Promise.resolve();
             })

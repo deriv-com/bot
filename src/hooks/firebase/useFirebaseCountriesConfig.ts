@@ -23,7 +23,6 @@ export const useFirebaseCountriesConfig = () => {
 
                 const REMOTE_CONFIG_URL = process.env.APP_ENV === 'production' ? PRODUCTION_URL : STAGING_URL;
 
-                console.log(`Using Firebase config URL: ${REMOTE_CONFIG_URL}`);
                 const response = await fetch(REMOTE_CONFIG_URL);
 
                 if (!response.ok) {
