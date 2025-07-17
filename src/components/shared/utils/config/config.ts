@@ -146,28 +146,41 @@ export const generateOAuthURL = () => {
     const { getOauthURL } = URLUtils;
     const oauth_url = getOauthURL();
     const original_url = new URL(oauth_url);
-    const configured_server_url = (LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ||
-        localStorage.getItem('config.server_url') ||
-        original_url.hostname) as string;
+    const hostname = window.location.hostname;
 
-    const current_domain = getCurrentProductionDomain();
-    console.log('test current domain:', current_domain);
-    if (original_url.hostname.includes('oauth.deriv.')) {
-        if (current_domain) {
-            const domain_suffix = current_domain.replace(/^[^.]+\./, '');
-            original_url.hostname = `oauth.${domain_suffix}`;
+    // First priority: Check for configured server URLs (for QA/testing environments)
+    const configured_server_url = (LocalStorageUtils.getValue(LocalStorageConstants.configServerURL) ||
+        localStorage.getItem('config.server_url')) as string;
+
+    const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
+
+    if (
+        configured_server_url &&
+        (typeof configured_server_url === 'string'
+            ? !valid_server_urls.includes(configured_server_url)
+            : !valid_server_urls.includes(JSON.stringify(configured_server_url)))
+    ) {
+        original_url.hostname = configured_server_url;
+        console.log('Set OAuth URL hostname from config to:', configured_server_url);
+    } else if (original_url.hostname.includes('oauth.deriv.')) {
+        // Second priority: Domain-based OAuth URL setting for .me and .be domains
+        if (hostname.includes('.deriv.me')) {
+            original_url.hostname = 'oauth.deriv.me';
+            console.log('Set OAuth URL hostname to: oauth.deriv.me');
+        } else if (hostname.includes('.deriv.be')) {
+            original_url.hostname = 'oauth.deriv.be';
+            console.log('Set OAuth URL hostname to: oauth.deriv.be');
+        } else {
+            // Fallback to original logic for other domains
+            const current_domain = getCurrentProductionDomain();
+            if (current_domain) {
+                const domain_suffix = current_domain.replace(/^[^.]+\./, '');
+                original_url.hostname = `oauth.${domain_suffix}`;
+                console.log('Set OAuth URL hostname to:', `oauth.${domain_suffix}`);
+            }
         }
     }
 
-    const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
-    if (
-        typeof configured_server_url === 'string'
-            ? !valid_server_urls.includes(configured_server_url)
-            : !valid_server_urls.includes(JSON.stringify(configured_server_url))
-    ) {
-        original_url.hostname = configured_server_url;
-    }
-
-    console.log('test original_url', original_url.toString(), 'oauth_url', oauth_url);
+    console.log('Final OAuth URL:', original_url.toString());
     return original_url.toString() || oauth_url;
 };
