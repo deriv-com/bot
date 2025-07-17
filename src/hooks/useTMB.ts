@@ -221,7 +221,6 @@ const useTMB = (): UseTMBReturn => {
 
         // OAuth server URL handling is now done in getActiveSessions function
         // to avoid interfering with existing WebSocket configurations
-
         // Don't set states to true until all async operations are complete
         setIsInitialized(false);
         setIsTmbCheckComplete(false);
