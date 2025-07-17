@@ -1,5 +1,5 @@
 import { website_name } from '@/utils/site-config';
-import { domain_app_ids, getAppId } from '../config/config';
+import { domain_app_ids, getAppId, getCurrentProductionDomain } from '../config/config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 import { deriv_urls } from '../url/constants';
@@ -34,9 +34,9 @@ export const loginUrl = ({ language }: TLoginUrl) => {
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
     const getOAuthUrl = () => {
-        return `https://oauth.${
-            deriv_urls.DERIV_HOST_NAME
-        }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        const current_domain = getCurrentProductionDomain();
+        const oauth_domain = current_domain || deriv_urls.DERIV_HOST_NAME;
+        return `https://oauth.${oauth_domain}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
     if (server_url && /qa/.test(server_url)) {
