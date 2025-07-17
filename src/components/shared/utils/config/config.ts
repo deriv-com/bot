@@ -150,6 +150,15 @@ export const generateOAuthURL = () => {
         localStorage.getItem('config.server_url') ||
         original_url.hostname) as string;
 
+    const current_domain = getCurrentProductionDomain();
+
+    if (original_url.hostname.includes('oauth.deriv.')) {
+        if (current_domain) {
+            const domain_suffix = current_domain.replace(/^[^.]+\./, '');
+            original_url.hostname = `oauth.${domain_suffix}`;
+        }
+    }
+
     const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
     if (
         typeof configured_server_url === 'string'
