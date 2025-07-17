@@ -68,10 +68,48 @@ const useTMB = (): UseTMBReturn => {
 
     const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
         try {
-            return (await requestSessionActive()) as TMBWebsocketTokens;
+            const hostname = window.location.hostname;
+            const existingServerUrl = localStorage.getItem('config.server_url');
+            let tempServerUrlSet = false;
+
+            // Temporarily set OAuth server URL for .me and .be domains if needed
+            if (
+                (hostname.includes('.deriv.me') || hostname.includes('.deriv.be')) &&
+                (!existingServerUrl || existingServerUrl.includes('derivws.com'))
+            ) {
+                const oauthServerUrl = hostname.includes('.deriv.me') ? 'oauth.deriv.me' : 'oauth.deriv.be';
+                localStorage.setItem('config.server_url', oauthServerUrl);
+                tempServerUrlSet = true;
+            }
+
+            const result = (await requestSessionActive()) as TMBWebsocketTokens;
+
+            // Restore original server URL if we temporarily changed it
+            if (tempServerUrlSet) {
+                if (existingServerUrl) {
+                    localStorage.setItem('config.server_url', existingServerUrl);
+                } else {
+                    localStorage.removeItem('config.server_url');
+                }
+            }
+
+            return result;
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error('Failed to get active sessions', error);
+
+            // Restore original server URL in case of error
+            const hostname = window.location.hostname;
+            const existingServerUrl = localStorage.getItem('config.server_url');
+            if (
+                (hostname.includes('.deriv.me') || hostname.includes('.deriv.be')) &&
+                existingServerUrl &&
+                existingServerUrl.includes('oauth.deriv')
+            ) {
+                // Restore to default WebSocket URL if we had set OAuth URL
+                localStorage.removeItem('config.server_url');
+            }
+
             return undefined;
         }
     }, []);
@@ -180,6 +218,9 @@ const useTMB = (): UseTMBReturn => {
         }
 
         TMBState.isInitialized = true;
+
+        // OAuth server URL handling is now done in getActiveSessions function
+        // to avoid interfering with existing WebSocket configurations
 
         // Don't set states to true until all async operations are complete
         setIsInitialized(false);
