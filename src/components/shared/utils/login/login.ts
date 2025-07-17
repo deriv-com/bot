@@ -35,16 +35,32 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     }`;
     const getOAuthUrl = () => {
         const current_domain = getCurrentProductionDomain();
-        const oauth_domain = current_domain || deriv_urls.DERIV_HOST_NAME;
-        return `https://oauth.${oauth_domain}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        let oauth_domain = deriv_urls.DERIV_HOST_NAME;
+        console.log('test current domain: outside', current_domain);
+
+        if (current_domain) {
+            console.log('test current domain: inside', current_domain);
+            // Extract domain suffix (e.g., 'deriv.me' from 'dbot.deriv.me')
+            const domain_suffix = current_domain.replace(/^[^.]+\./, '');
+            oauth_domain = domain_suffix;
+        }
+
+        const url = `https://oauth.${oauth_domain}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+
+        console.log('test oauth domain final url:', url);
+
+        return url;
     };
 
+    console.log('test getAppId', server_url);
     if (server_url && /qa/.test(server_url)) {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
+    console.log('test getAppId', getAppId());
     if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
         return getOAuthUrl();
+        console.log('test urlForCurrentDomain', urlForCurrentDomain(getOAuthUrl()));
     }
     return urlForCurrentDomain(getOAuthUrl());
 };
