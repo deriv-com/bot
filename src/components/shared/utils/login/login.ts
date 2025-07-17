@@ -52,12 +52,15 @@ export const loginUrl = ({ language }: TLoginUrl) => {
         return url;
     };
 
+    console.log('test getAppId', server_url);
     if (server_url && /qa/.test(server_url)) {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
+    console.log('test getAppId', getAppId());
     if (getAppId() === domain_app_ids[window.location.hostname as keyof typeof domain_app_ids]) {
         return getOAuthUrl();
+        console.log('test urlForCurrentDomain', urlForCurrentDomain(getOAuthUrl()));
     }
     return urlForCurrentDomain(getOAuthUrl());
 };
