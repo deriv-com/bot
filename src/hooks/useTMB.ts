@@ -69,7 +69,6 @@ const useTMB = (): UseTMBReturn => {
 
     const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
         try {
-            const hostname = window.location.hostname;
             const configServerUrl = localStorage.getItem('config.server_url');
             if (configServerUrl) {
                 const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
@@ -108,18 +107,17 @@ const useTMB = (): UseTMBReturn => {
                 }
 
                 const result = await response.json();
+                console.log(`[TMB] Making sessions/active request to: ${sessionsUrl}`);
                 return result as TMBWebsocketTokens;
             }
 
-            // Determine domain-based fallback URL
-            let currentHostName = 'https://oauth.deriv.com';
-            if (hostname.includes('.deriv.be')) {
-                currentHostName = 'https://oauth.deriv.be';
-            } else if (hostname.includes('.deriv.me')) {
-                currentHostName = 'https://oauth.deriv.me';
+            const hostname = window.location.hostname;
+            let sessionsUrl = 'https://oauth2.deriv.com/oauth2/sessions/active';
+            if (hostname.includes('.deriv.me')) {
+                sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
+            } else if (hostname.includes('.deriv.be')) {
+                sessionsUrl = 'https://oauth.deriv.be/oauth2/sessions/active';
             }
-
-            const sessionsUrl = `${currentHostName}/oauth2/sessions/active`;
 
             const response = await fetch(sessionsUrl, {
                 method: 'GET',
