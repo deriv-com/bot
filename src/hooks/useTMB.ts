@@ -77,7 +77,7 @@ const useTMB = (): UseTMBReturn => {
                 // Special case: if config.server_url is one of the production WebSocket servers
                 if (valid_server_urls.includes(configServerUrl)) {
                     const hostname = window.location.hostname;
-                    sessionsUrl = 'https://oauth2.deriv.com/oauth2/sessions/active';
+                    sessionsUrl = 'https://oauth.deriv.com/oauth2/sessions/active';
                     console.log('Using production OAuth server for WebSocket config:', sessionsUrl);
                     if (hostname.includes('.deriv.me')) {
                         sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
@@ -112,7 +112,7 @@ const useTMB = (): UseTMBReturn => {
             }
 
             const hostname = window.location.hostname;
-            let sessionsUrl = 'https://oauth2.deriv.com/oauth2/sessions/active';
+            let sessionsUrl = 'https://oauth.deriv.com/oauth2/sessions/active';
             if (hostname.includes('.deriv.me')) {
                 sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
             } else if (hostname.includes('.deriv.be')) {
