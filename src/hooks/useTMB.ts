@@ -71,12 +71,28 @@ const useTMB = (): UseTMBReturn => {
         try {
             const hostname = window.location.hostname;
             const configServerUrl = localStorage.getItem('config.server_url');
-
-            let sessionsUrl: string;
-
             if (configServerUrl) {
-                sessionsUrl = `${configServerUrl}/oauth2/sessions/active`;
-                console.log('Using config.server_url:', sessionsUrl);
+                const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
+
+                let sessionsUrl: string;
+                // Special case: if config.server_url is one of the production WebSocket servers
+                if (valid_server_urls.includes(configServerUrl)) {
+                    const hostname = window.location.hostname;
+                    sessionsUrl = 'https://oauth2.deriv.com/oauth2/sessions/active';
+                    console.log('Using production OAuth server for WebSocket config:', sessionsUrl);
+                    if (hostname.includes('.deriv.me')) {
+                        sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
+                    } else if (hostname.includes('.deriv.be')) {
+                        sessionsUrl = 'https://oauth.deriv.be/oauth2/sessions/active';
+                    }
+                } else {
+                    // Ensure the config server URL has the proper protocol
+                    const serverUrl = configServerUrl.startsWith('http')
+                        ? configServerUrl
+                        : `https://${configServerUrl}`;
+                    sessionsUrl = `${serverUrl}/oauth2/sessions/active`;
+                    console.log('Using config.server_url:', sessionsUrl);
+                }
 
                 const response = await fetch(sessionsUrl, {
                     method: 'GET',
