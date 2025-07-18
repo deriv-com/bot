@@ -70,20 +70,44 @@ const useTMB = (): UseTMBReturn => {
     const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
         try {
             const hostname = window.location.hostname;
-            let sessionsUrl = 'https://oauth.deriv.com/oauth2/sessions/active';
+            const configServerUrl = localStorage.getItem('config.server_url');
 
-            // Construct the correct OAuth URL for .me and .be domains
-            if (hostname.includes('.deriv.me')) {
-                sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
-            } else if (hostname.includes('.deriv.be')) {
-                sessionsUrl = 'https://oauth.deriv.be/oauth2/sessions/active';
+            let sessionsUrl: string;
+
+            if (configServerUrl) {
+                sessionsUrl = `${configServerUrl}/oauth2/sessions/active`;
+                console.log('Using config.server_url:', sessionsUrl);
+
+                const response = await fetch(sessionsUrl, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                return result as TMBWebsocketTokens;
             }
 
-            console.log(`[TMB] Making sessions/active request to: ${sessionsUrl}`);
+            // Determine domain-based fallback URL
+            let currentHostName = 'https://oauth.deriv.com';
+            if (hostname.includes('.deriv.be')) {
+                currentHostName = 'https://oauth.deriv.be';
+            } else if (hostname.includes('.deriv.me')) {
+                currentHostName = 'https://oauth.deriv.me';
+            }
+
+            sessionsUrl = `${currentHostName}/oauth2/sessions/active`;
 
             const response = await fetch(sessionsUrl, {
                 method: 'GET',
-                credentials: 'include', // Include cookies for authentication
+                credentials: 'include',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
