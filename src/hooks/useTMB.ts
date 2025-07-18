@@ -69,13 +69,12 @@ const useTMB = (): UseTMBReturn => {
 
     const getActiveSessions = useCallback(async (): Promise<TMBWebsocketTokens | undefined> => {
         try {
-            const hostname = window.location.hostname;
             const configServerUrl = localStorage.getItem('config.server_url');
-
-            let sessionsUrl: string;
-
             if (configServerUrl) {
-                sessionsUrl = `${configServerUrl}/oauth2/sessions/active`;
+                const serverUrl = configServerUrl.startsWith('http') ? configServerUrl : `https://${configServerUrl}`;
+                const sessionsUrl = `${serverUrl}/oauth2/sessions/active`;
+
+                // Ensure the config server URL has the proper protocol
                 console.log('Using config.server_url:', sessionsUrl);
 
                 const response = await fetch(sessionsUrl, {
@@ -92,19 +91,17 @@ const useTMB = (): UseTMBReturn => {
                 }
 
                 const result = await response.json();
+                console.log(`[TMB] Making sessions/active request to: ${sessionsUrl}`);
                 return result as TMBWebsocketTokens;
             }
 
-            // Determine domain-based fallback URL
-            let currentHostName = 'https://oauth.deriv.com';
-            if (hostname.includes('.deriv.be')) {
-                currentHostName = 'https://oauth.deriv.be';
-            } else if (hostname.includes('.deriv.me')) {
-                currentHostName = 'https://oauth.deriv.me';
+            const hostname = window.location.hostname;
+            let sessionsUrl = 'https://oauth2.deriv.com/oauth2/sessions/active';
+            if (hostname.includes('.deriv.me')) {
+                sessionsUrl = 'https://oauth.deriv.me/oauth2/sessions/active';
+            } else if (hostname.includes('.deriv.be')) {
+                sessionsUrl = 'https://oauth.deriv.be/oauth2/sessions/active';
             }
-
-            sessionsUrl = `${currentHostName}/oauth2/sessions/active`;
-
             const response = await fetch(sessionsUrl, {
                 method: 'GET',
                 credentials: 'include',
