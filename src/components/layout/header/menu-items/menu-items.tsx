@@ -45,8 +45,8 @@ export const MenuItems = observer(() => {
 
     // Filter out the Cashier link when the account is a wallet account
     const filtered_items = items.filter((item, index) => {
-        // Index 1 is the Cashier link
-        if (index === 1 && has_wallet) {
+        // Index 0 is the Cashier link
+        if (index === 0 && has_wallet) {
             return false;
         }
         return true;
