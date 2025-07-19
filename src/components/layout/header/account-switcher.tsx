@@ -157,6 +157,7 @@ const AccountSwitcher = observer(({ activeAccount }: TAccountSwitcher) => {
         if (!selected_account) return;
         const account_param = selected_account.is_virtual ? 'demo' : selected_account.currency;
         search_params.set('account', account_param);
+        sessionStorage.setItem('query_param_currency', account_param);
         window.history.pushState({}, '', `${window.location.pathname}?${search_params.toString()}`);
     };
 
