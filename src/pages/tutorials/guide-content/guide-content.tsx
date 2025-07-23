@@ -49,7 +49,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                 if (dbotDashboardSection) {
                     dbotDashboardSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
-            }, 100);
+            }, 300);
         } else {
             setActiveTab(DBOT_TABS.BOT_BUILDER);
             if (!isDesktop) setActiveTour('bot_builder');
@@ -60,7 +60,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                 if (botBuilderSection) {
                     botBuilderSection.scrollIntoView({ behavior: 'smooth', inline: 'center' });
                 }
-            }, 100);
+            }, 300);
         }
     };
 
