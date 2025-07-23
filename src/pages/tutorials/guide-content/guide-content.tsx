@@ -49,7 +49,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                 if (dbotDashboardSection) {
                     dbotDashboardSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
-            }, 300);
+            }, 100);
         } else {
             setActiveTab(DBOT_TABS.BOT_BUILDER);
             if (!isDesktop) setActiveTour('bot_builder');
@@ -58,9 +58,9 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
             setTimeout(() => {
                 const botBuilderSection = document.getElementById('id-bot-builder');
                 if (botBuilderSection) {
-                    botBuilderSection.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                    botBuilderSection.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 }
-            }, 300);
+            }, 100);
         }
     };
 
