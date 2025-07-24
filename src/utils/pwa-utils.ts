@@ -12,7 +12,7 @@ export interface PWAInstallState {
     canInstall: boolean;
     isInstalled: boolean;
     isStandalone: boolean;
-    installPrompt: x | null;
+    installPrompt: BeforeInstallPromptEvent | null;
 }
 
 class PWAManager {
