@@ -71,7 +71,12 @@ const useTMB = (): UseTMBReturn => {
         try {
             const configServerUrl = localStorage.getItem('config.server_url');
             if (configServerUrl) {
-                const valid_server_urls = ['green.derivws.com', 'red.derivws.com', 'blue.derivws.com'];
+                const valid_server_urls = [
+                    'green.derivws.com',
+                    'red.derivws.com',
+                    'blue.derivws.com',
+                    'canary.derivws.com',
+                ];
 
                 let sessionsUrl: string;
                 // Special case: if config.server_url is one of the production WebSocket servers
