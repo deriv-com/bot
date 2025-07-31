@@ -201,7 +201,6 @@ const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
     ]);
 
     if (client?.should_hide_header) return null;
-
     return (
         <Header
             className={clsx('app-header', {
@@ -217,9 +216,10 @@ const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
                 {isDesktop && <MenuItems />}
             </Wrapper>
             <Wrapper variant='right'>
-                <PWAInstallButton variant='minimal' size='small' />
+                {!isDesktop && <PWAInstallButton variant='primary' size='medium' />}
                 {renderAccountSection()}
             </Wrapper>
+            {/* <PWAInstallModalTest /> */}
         </Header>
     );
 });

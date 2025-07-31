@@ -2,7 +2,7 @@
   "name": "Deriv Bot - Automated Trading Platform",
   "short_name": "Deriv Bot",
   "description": "Automated trading at your fingertips. No coding needed.",
-  "start_url": "/",
+  "start_url": "/?source=mobile",
   "display": "standalone",
   "background_color": "#0e0e0e",
   "theme_color": "#ff444f",

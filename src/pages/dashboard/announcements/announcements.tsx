@@ -87,9 +87,12 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                 is_not_read = data[item.id];
             }
             const notificationDate = new Date(item.date);
-            if (accountDate && notificationDate > accountDate) {
+            // Always show PWA announcement regardless of account creation date
+            const shouldShow = item.id === 'PWA_INSTALL_ANNOUNCE' || (accountDate && notificationDate > accountDate);
+
+            if (shouldShow) {
                 tmp_notifications.push({
-                    id: item.id,
+                    key: item.id,
                     icon: <item.icon announce={is_not_read} />,
                     title: <TitleAnnounce title={item.title} announce={is_not_read} />,
                     message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,

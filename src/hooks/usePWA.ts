@@ -1,5 +1,11 @@
-import { useCallback,useEffect, useState } from 'react';
-import { BeforeInstallPromptEvent,PWAInstallState, pwaManager, trackPWAEvent } from '@/utils/pwa-utils';
+import { useCallback, useEffect, useState } from 'react';
+import {
+    BeforeInstallPromptEvent,
+    getMobileSourceInfo,
+    PWAInstallState,
+    pwaManager,
+    trackPWAEvent,
+} from '@/utils/pwa-utils';
 
 export interface UsePWAReturn {
     // Install state
@@ -21,6 +27,11 @@ export interface UsePWAReturn {
 
     // Utilities
     getInstallInstructions: () => string;
+
+    // Mobile source detection
+    isMobileSource: boolean;
+    // isPWALaunch: boolean;
+    //mobileSourceInfo: ReturnType<typeof getMobileSourceInfo>;
 }
 
 /**
@@ -29,6 +40,7 @@ export interface UsePWAReturn {
 export const usePWA = (): UsePWAReturn => {
     const [installState, setInstallState] = useState<PWAInstallState>(() => pwaManager.getInstallState());
     const [updateAvailable, setUpdateAvailable] = useState(false);
+    const [mobileSourceInfo] = useState(() => getMobileSourceInfo());
 
     // Update install state when it changes
     useEffect(() => {
@@ -108,6 +120,11 @@ export const usePWA = (): UsePWAReturn => {
 
         // Utilities
         getInstallInstructions,
+
+        // Mobile source detection
+        isMobileSource: mobileSourceInfo.isMobileSource,
+        isPWALaunch: mobileSourceInfo.isPWALaunch,
+        mobileSourceInfo,
     };
 };
 

@@ -6,6 +6,7 @@ const DYNAMIC_CACHE_NAME = 'deriv-bot-dynamic-v1';
 // Files to cache immediately
 const STATIC_ASSETS = [
     '/',
+    '/?source=mobile',
     '/index.html',
     '/manifest.json',
     '/deriv-logo.svg',
@@ -25,17 +26,13 @@ const CACHE_STRATEGIES = {
 
 // Install event - cache static assets
 self.addEventListener('install', event => {
-    console.log('[SW] Installing service worker...');
-
     event.waitUntil(
         caches
             .open(STATIC_CACHE_NAME)
             .then(cache => {
-                console.log('[SW] Caching static assets');
                 return cache.addAll(STATIC_ASSETS);
             })
             .then(() => {
-                console.log('[SW] Static assets cached successfully');
                 // Force the waiting service worker to become the active service worker
                 return self.skipWaiting();
             })
@@ -47,8 +44,6 @@ self.addEventListener('install', event => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
-    console.log('[SW] Activating service worker...');
-
     event.waitUntil(
         caches
             .keys()
@@ -61,14 +56,12 @@ self.addEventListener('activate', event => {
                             cacheName !== DYNAMIC_CACHE_NAME &&
                             cacheName !== CACHE_NAME
                         ) {
-                            console.log('[SW] Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
                 );
             })
             .then(() => {
-                console.log('[SW] Service worker activated');
                 // Take control of all pages immediately
                 return self.clients.claim();
             })
@@ -177,7 +170,6 @@ async function networkFirst(request) {
 
         return networkResponse;
     } catch (error) {
-        console.log('[SW] Network failed, trying cache:', request.url);
         const cachedResponse = await caches.match(request);
 
         if (cachedResponse) {
@@ -216,6 +208,16 @@ async function staleWhileRevalidate(request) {
 async function handleOfflineFallback(request) {
     // For HTML pages, return cached index.html (SPA fallback)
     if (request.headers.get('accept')?.includes('text/html')) {
+        const url = new URL(request.url);
+
+        // Check if this is a mobile source request
+        if (url.searchParams.get('source') === 'mobile') {
+            const cachedMobile = await caches.match('/?source=mobile');
+            if (cachedMobile) {
+                return cachedMobile;
+            }
+        }
+
         const cachedIndex = (await caches.match('/index.html')) || (await caches.match('/'));
         if (cachedIndex) {
             return cachedIndex;
@@ -249,8 +251,6 @@ async function handleOfflineFallback(request) {
 
 // Handle background sync (for future implementation)
 self.addEventListener('sync', event => {
-    console.log('[SW] Background sync:', event.tag);
-
     if (event.tag === 'background-sync') {
         event.waitUntil(doBackgroundSync());
     }
@@ -263,8 +263,6 @@ async function doBackgroundSync() {
 
 // Handle push notifications (for future implementation)
 self.addEventListener('push', event => {
-    console.log('[SW] Push notification received:', event);
-
     const options = {
         body: event.data ? event.data.text() : 'New notification from Deriv Bot',
         icon: '/assets/icons/pwa/icon-192x192.png',
@@ -293,13 +291,9 @@ self.addEventListener('push', event => {
 
 // Handle notification clicks
 self.addEventListener('notificationclick', event => {
-    console.log('[SW] Notification clicked:', event);
-
     event.notification.close();
 
     if (event.action === 'explore') {
-        event.waitUntil(self.clients.openWindow('/'));
+        event.waitUntil(self.clients.openWindow('/?source=mobile'));
     }
 });
-
-console.log('[SW] Service worker loaded');

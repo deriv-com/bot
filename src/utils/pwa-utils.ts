@@ -27,7 +27,6 @@ class PWAManager {
     private init() {
         // Listen for beforeinstallprompt event
         window.addEventListener('beforeinstallprompt', e => {
-            console.log('[PWA] Install prompt available');
             e.preventDefault();
             this.installPrompt = e as BeforeInstallPromptEvent;
             this.notifyInstallCallbacks(true);
@@ -35,23 +34,23 @@ class PWAManager {
 
         // Listen for app installed event
         window.addEventListener('appinstalled', () => {
-            console.log('[PWA] App installed successfully');
             this.installPrompt = null;
             this.notifyInstallCallbacks(false);
         });
-
-        // Check if app is already installed
-        if (this.isStandalone()) {
-            console.log('[PWA] App is running in standalone mode');
-        }
     }
 
     /**
-     * Register service worker
+     * Register service worker (mobile only)
      */
     async registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
         if (!('serviceWorker' in navigator)) {
             console.warn('[PWA] Service workers not supported');
+            return null;
+        }
+
+        // Only register service worker on mobile devices
+        if (!this.isMobile()) {
+            console.log('[PWA] Service worker registration skipped - not on mobile device');
             return null;
         }
 
@@ -60,17 +59,13 @@ class PWAManager {
                 scope: '/',
             });
 
-            console.log('[PWA] Service worker registered:', registration.scope);
-
             // Listen for updates
             registration.addEventListener('updatefound', () => {
-                console.log('[PWA] Service worker update found');
                 const newWorker = registration.installing;
 
                 if (newWorker) {
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('[PWA] New service worker installed, update available');
                             this.notifyUpdateCallbacks();
                         }
                     });
@@ -79,7 +74,6 @@ class PWAManager {
 
             // Handle controller change (new service worker activated)
             navigator.serviceWorker.addEventListener('controllerchange', () => {
-                console.log('[PWA] Service worker controller changed');
                 window.location.reload();
             });
 
@@ -102,8 +96,6 @@ class PWAManager {
         try {
             await this.installPrompt.prompt();
             const choiceResult = await this.installPrompt.userChoice;
-
-            console.log('[PWA] Install prompt result:', choiceResult.outcome);
 
             if (choiceResult.outcome === 'accepted') {
                 this.installPrompt = null;
@@ -210,6 +202,13 @@ class PWAManager {
     }
 
     /**
+     * Check if device is mobile
+     */
+    isMobile(): boolean {
+        return this.isIOS() || this.isAndroid() || /Mobile|Tablet/.test(navigator.userAgent);
+    }
+
+    /**
      * Get install instructions for current platform
      */
     getInstallInstructions(): string {
@@ -258,16 +257,133 @@ export const onPWAInstallStateChange = (callback: (canInstall: boolean) => void)
 export const onPWAUpdateAvailable = (callback: () => void) => pwaManager.onUpdateAvailable(callback);
 export const updatePWA = () => pwaManager.updateApp();
 
+// Mobile source detection utilities
+export const isMobileSource = (): boolean => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('source') === 'mobile';
+};
+
+export const isPWALaunch = (): boolean => {
+    return pwaManager.isStandalone() && isMobileSource();
+};
+
+export const getMobileSourceInfo = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+        isMobileSource: urlParams.get('source') === 'mobile',
+        isStandalone: pwaManager.isStandalone(),
+        isPWALaunch: pwaManager.isStandalone() && urlParams.get('source') === 'mobile',
+        userAgent: navigator.userAgent,
+        isMobile: pwaManager.isMobile(),
+        isIOS: pwaManager.isIOS(),
+        isAndroid: pwaManager.isAndroid(),
+    };
+};
+
+// PWA Modal timing utilities
+export const PWA_MODAL_STORAGE_KEY = 'pwa-modal-timing';
+
+export interface PWAModalTiming {
+    lastShown?: string;
+    dismissCount: number;
+    firstVisit?: string;
+    hasBeenShown: boolean;
+}
+
+export const getPWAModalTiming = (): PWAModalTiming => {
+    try {
+        const stored = localStorage.getItem(PWA_MODAL_STORAGE_KEY);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+    } catch (error) {
+        console.warn('[PWA] Failed to parse modal timing data:', error);
+    }
+
+    return {
+        dismissCount: 0,
+        hasBeenShown: false,
+    };
+};
+
+export const setPWAModalTiming = (timing: PWAModalTiming): void => {
+    try {
+        localStorage.setItem(PWA_MODAL_STORAGE_KEY, JSON.stringify(timing));
+    } catch (error) {
+        console.warn('[PWA] Failed to save modal timing data:', error);
+    }
+};
+
+export const shouldShowPWAModal = (): boolean => {
+    const timing = getPWAModalTiming();
+    const now = new Date();
+
+    // Don't show if already installed
+    if (pwaManager.isStandalone()) {
+        return false;
+    }
+
+    // Don't show on mobile (only desktop)
+    if (pwaManager.isMobile()) {
+        return false;
+    }
+
+    // Show on first visit if never shown before
+    if (!timing.hasBeenShown && !timing.firstVisit) {
+        return true;
+    }
+
+    // Don't show if dismissed more than 3 times
+    if (timing.dismissCount >= 3) {
+        return false;
+    }
+
+    // Don't show if shown in the last 7 days
+    if (timing.lastShown) {
+        const lastShown = new Date(timing.lastShown);
+        const daysSinceLastShown = (now.getTime() - lastShown.getTime()) / (1000 * 60 * 60 * 24);
+        if (daysSinceLastShown < 7) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+export const markPWAModalShown = (): void => {
+    const timing = getPWAModalTiming();
+    const now = new Date().toISOString();
+
+    setPWAModalTiming({
+        ...timing,
+        lastShown: now,
+        firstVisit: timing.firstVisit || now,
+        hasBeenShown: true,
+    });
+};
+
+export const markPWAModalDismissed = (): void => {
+    const timing = getPWAModalTiming();
+
+    setPWAModalTiming({
+        ...timing,
+        dismissCount: timing.dismissCount + 1,
+        lastShown: new Date().toISOString(),
+    });
+};
+
 // Analytics helper
 export const trackPWAEvent = (event: string, data?: Record<string, any>) => {
-    console.log(`[PWA Analytics] ${event}`, data);
+    const mobileSourceInfo = getMobileSourceInfo();
 
-    // Integrate with your existing analytics
     if (typeof window !== 'undefined' && (window as any).dataLayer) {
         (window as any).dataLayer.push({
             event: 'pwa_event',
             pwa_event_name: event,
-            pwa_event_data: data,
+            pwa_event_data: {
+                ...data,
+                ...mobileSourceInfo,
+            },
         });
     }
 };
