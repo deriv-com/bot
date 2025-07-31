@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
+import PWAInstallButton from '@/components/pwa-install-button';
 import { generateOAuthURL, standalone_routes } from '@/components/shared';
 import Button from '@/components/shared_ui/button';
 import useActiveAccount from '@/hooks/api/account/useActiveAccount';
@@ -203,7 +204,6 @@ const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
     ]);
 
     if (client?.should_hide_header) return null;
-
     return (
         <Header
             className={clsx('app-header', {
@@ -218,7 +218,11 @@ const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
                 {isDesktop && <MenuItems />}
                 {isDesktop && <PlatformSwitcher />}
             </Wrapper>
-            <Wrapper variant='right'>{renderAccountSection()}</Wrapper>
+            <Wrapper variant='right'>
+                {!isDesktop && <PWAInstallButton variant='primary' size='medium' />}
+                {renderAccountSection()}
+            </Wrapper>
+            {/* <PWAInstallModalTest /> */}
         </Header>
     );
 });
