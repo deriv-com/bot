@@ -1,0 +1,19 @@
+{
+  "lastUpdated": "2025-08-06T12:54:02.335Z",
+  "totalMergedPRs": 1,
+  "analyses": [
+    {
+      "timestamp": "2025-08-06T12:54:02.278Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "533",
+      "branch": "add-ai-worflows",
+      "author": "prince-deriv",
+      "prTitle": "Prince/ added ai analysis workflows",
+      "hasAnalysis": false,
+      "percentage": 0,
+      "totalCharacters": 0,
+      "aiCharacters": 0,
+      "files": []
+    }
+  ]
+}
