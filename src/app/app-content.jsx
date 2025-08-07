@@ -5,6 +5,7 @@ import AuthLoadingWrapper from '@/components/auth-loading-wrapper';
 import useLiveChat from '@/components/chat/useLiveChat';
 import { BOT_RESTRICTED_COUNTRIES_LIST } from '@/components/layout/header/utils';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import PWAInstallModal from '@/components/pwa-install-modal';
 import { getUrlBase } from '@/components/shared';
 import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
@@ -212,11 +213,13 @@ const AppContent = observer(() => {
             <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
                 <BlocklyLoading />
                 <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
+                    {/* <PWAInstallModalTest /> */}
                     <Audio />
                     <Main />
                     <BotBuilder />
                     <BotStopped />
                     <TransactionDetailsModal />
+                    <PWAInstallModal />
                     <ToastContainer limit={3} draggable={false} />
                     <TncStatusUpdateModal />
                 </div>
