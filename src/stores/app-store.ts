@@ -100,6 +100,7 @@ export default class AppStore {
             return false;
         }
 
+        return false;
         if (!client?.is_logged_in && client?.is_eu_country) {
             this.throwErrorForExceptionCountries(client?.clients_country as string);
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
