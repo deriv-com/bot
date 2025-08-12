@@ -147,7 +147,18 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 requestSubscribe={requestSubscribe}
                 settings={settings}
                 symbol={symbol}
-                topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
+                topWidgets={() => (
+                    <div
+                        style={{
+                            position: 'relative',
+                            zIndex: 99,
+                            width: '100%',
+                            paddingTop: isMobile ? '4rem' : '0', // Add padding for mobile to account for header
+                        }}
+                    >
+                        <ChartTitle onChange={onSymbolChange} />
+                    </div>
+                )}
                 isConnectionOpened={is_connection_opened}
                 getMarketsOrder={getMarketsOrder}
                 isLive
