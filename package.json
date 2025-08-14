@@ -143,6 +143,7 @@
         "sass-embedded": "^1.85.1",
         "sass-loader": "^14.2.1",
         "sass-resources-loader": "^2.2.5",
+        "shiftai-cli": "file:../../prince-deriv/shiftai-cli/shiftai-cli-1.0.0.tgz",
         "stylelint": "^16.3.1",
         "stylelint-config-prettier": "^8.0.2",
         "stylelint-config-standard-scss": "^13.1.0",
