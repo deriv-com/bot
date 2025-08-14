@@ -176,6 +176,7 @@ class APIBase {
                 } else {
                     console.error('Authorization error:', error);
                 }
+                setIsAuthorizing(false);
                 return error;
             }
 
@@ -193,7 +194,7 @@ class APIBase {
                 this.active_symbols_promise = this.getActiveSymbols();
             }
             this.subscribe();
-            this.getSelfExclusion();
+            // this.getSelfExclusion(); commented this so we dont call it from two places
         } catch (e) {
             console.error('Authorization failed:', e);
             this.is_authorized = false;

@@ -65,24 +65,22 @@ export default class SelfExclusionStore {
 
     async checkRestriction() {
         if (api_base.api && api_base.is_authorized && V2GetActiveClientId()) {
-            api_base.api
-                .getSelfExclusion()
-                .then(({ get_self_exclusion }: { get_self_exclusion: { max_losses?: number } }) => {
-                    const { max_losses: maxLosses } = get_self_exclusion;
-                    if (maxLosses) {
-                        this.setApiMaxLosses(maxLosses);
-                    }
-                })
-                .catch((error: any) => {
-                    // Handle different error structures
-                    const error_code = error?.code || error?.error?.code;
+            try {
+                const response = await api_base.api.getSelfExclusion();
+                const { get_self_exclusion }: { get_self_exclusion: { max_losses?: number } } = response;
+                const { max_losses: maxLosses } = get_self_exclusion;
+                if (maxLosses) {
+                    this.setApiMaxLosses(maxLosses);
+                }
+            } catch (error: any) {
+                const error_code = error?.code || error?.error?.code;
 
-                    if (error_code === 'AuthorizationRequired') {
-                        this.core.client.logout();
-                        return;
-                    }
-                    console.error('Error fetching self-exclusion data:', error);
-                });
+                if (error_code === 'AuthorizationRequired') {
+                    this.core.client.logout();
+                    return;
+                }
+                console.error('Error fetching self-exclusion data:', error);
+            }
         }
     }
 }
