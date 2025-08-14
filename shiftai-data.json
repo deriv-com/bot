@@ -1,0 +1,60 @@
+{
+  "timestamp": "2025-08-14T07:46:52.098Z",
+  "repository": "deriv-com/bot",
+  "pullRequest": null,
+  "branch": "ai-test",
+  "author": "Prince <prince@deriv.com>",
+  "comparison": "origin/master...HEAD",
+  "files": [
+    {
+      "name": ".husky/post-commit",
+      "totalCharacters": 190,
+      "aiCharacters": 0,
+      "percentage": 0,
+      "status": "modified",
+      "hasAddedContent": true,
+      "addedContent": "#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\n# ShiftAI Post-commit Hook - Display AI analysis table\nnpx shiftai-cli hook post-commit\n\n# Preserve exit code (don't block if analysis fails)\nexit 0"
+    },
+    {
+      "name": ".husky/pre-commit",
+      "totalCharacters": 118,
+      "aiCharacters": 0,
+      "percentage": 0,
+      "status": "modified",
+      "hasAddedContent": true,
+      "addedContent": "\n# ShiftAI Pre-commit Hook - Detect and strip AI markers\nnpx shiftai-cli hook pre-commit\n\n# Preserve exit code\nexit $?"
+    },
+    {
+      "name": ".husky/pre-push",
+      "totalCharacters": 665,
+      "aiCharacters": 0,
+      "percentage": 0,
+      "status": "modified",
+      "hasAddedContent": true,
+      "addedContent": "#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\n# ShiftAI Pre-push Hook - Intercept push for AI analysis and PR management\n# Git pre-push hook passes: $1=remote_name, $2=remote_url\nexport GIT_PUSH_REMOTE_NAME=\"$1\"\nexport GIT_PUSH_REMOTE_URL=\"$2\"\n\n# Capture original git push command arguments from parent process  \n# Get current branch for more reliable fallback\nCURRENT_BRANCH=\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'HEAD')\"\nexport GIT_PUSH_ORIGINAL_COMMAND=\"$(ps -o args= -p $PPID 2>/dev/..."
+    },
+    {
+      "name": "package-lock.json",
+      "totalCharacters": 26227,
+      "aiCharacters": 0,
+      "percentage": 0,
+      "status": "modified",
+      "hasAddedContent": true,
+      "addedContent": "                \"shiftai-cli\": \"file:../../prince-deriv/shiftai-cli/shiftai-cli-1.0.0.tgz\",\n        \"node_modules/@inquirer/external-editor\": {\n            \"version\": \"1.0.1\",\n            \"resolved\": \"https://registry.npmjs.org/@inquirer/external-editor/-/external-editor-1.0.1.tgz\",\n            \"integrity\": \"sha512-Oau4yL24d2B5IL4ma4UpbQigkVhzPDXLoqy1ggK4gnHg/stmkffJE4oOXHXF3uz0UEpywG68KcyXsyYpA1Re/Q==\",\n            \"dev\": true,\n            \"license\": \"MIT\",\n            \"dependencies\": {\n       ..."
+    },
+    {
+      "name": "package.json",
+      "totalCharacters": 85,
+      "aiCharacters": 0,
+      "percentage": 0,
+      "status": "modified",
+      "hasAddedContent": true,
+      "addedContent": "        \"shiftai-cli\": \"file:../../prince-deriv/shiftai-cli/shiftai-cli-1.0.0.tgz\",\n}"
+    }
+  ],
+  "summary": {
+    "totalCharacters": 27285,
+    "aiCharacters": 0,
+    "percentage": 0
+  }
+}
