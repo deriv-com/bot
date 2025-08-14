@@ -2,3 +2,9 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged --allow-empty
+
+# ShiftAI Pre-commit Hook - Detect and strip AI markers
+npx shiftai-cli hook pre-commit
+
+# Preserve exit code
+exit $?

@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# ShiftAI Pre-push Hook - Intercept push for AI analysis and PR management
+# Git pre-push hook passes: $1=remote_name, $2=remote_url
+export GIT_PUSH_REMOTE_NAME="$1"
+export GIT_PUSH_REMOTE_URL="$2"
+
+# Capture original git push command arguments from parent process
+# Fallback to basic push command with actual remote name if ps fails
+export GIT_PUSH_ORIGINAL_COMMAND="$(ps -o args= -p $PPID 2>/dev/null | grep 'git push' || echo "git push $1")"
+
+npx shiftai-cli hook pre-push
+
+# Exit with the code from ShiftAI (it handles the actual push)
+exit $?
