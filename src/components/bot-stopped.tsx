@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
-//// [AI]
+
 import useNavigatorOnline from '@/hooks/useNavigatorOnline';
 import { useStore } from '@/hooks/useStore';
-// [/AI]
+
 import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import Dialog from './shared_ui/dialog';
@@ -47,9 +47,7 @@ const BotStopped = observer(() => {
 
     return (
         <Dialog
-
             is_visible={shouldShowPopup}
-
             is_mobile_full_width
             className={'dc-dialog bot-stopped-dialog'}
             cancel_button_text={localize('Go to Reports')}
@@ -58,7 +56,6 @@ const BotStopped = observer(() => {
             onConfirm={() => location.reload()}
             // [AI]
             login={() => {}}
-
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
