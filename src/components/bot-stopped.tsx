@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
 // [AI]
@@ -17,33 +17,12 @@ const BotStopped = observer(() => {
     const { is_running } = run_panel;
     const isOnline = useNavigatorOnline();
 
-    // Debug logging
-    useEffect(() => {
-        console.log('🔍 BotStopped Debug:', {
-            isOnline,
-            is_running,
-            is_web_socket_intialised,
-            navigator_onLine: navigator.onLine,
-            isInternetDisconnection: !isOnline && is_running,
-            isInternalIssue: !is_web_socket_intialised && isOnline,
-            shouldShowPopup: (!isOnline && is_running) || (!is_web_socket_intialised && isOnline),
-        });
-    }, [isOnline, is_running, is_web_socket_intialised]);
-
     // Determine the type of disconnection
     const isInternetDisconnection = !isOnline && is_running;
     const isInternalIssue = !is_web_socket_intialised && isOnline;
 
     // Show popup for either condition
     const shouldShowPopup = isInternetDisconnection || isInternalIssue;
-
-    useEffect(() => {
-        if (shouldShowPopup) {
-            const type = isInternetDisconnection ? 'INTERNET DISCONNECTION' : 'INTERNAL ISSUE';
-            console.log(`🚨 ${type} popup SHOULD BE VISIBLE`);
-        }
-    }, [shouldShowPopup, isInternetDisconnection]);
-    // [/AI]
 
     const onClickClose = () => {
         location.reload();
@@ -52,7 +31,7 @@ const BotStopped = observer(() => {
     // [AI]
     // Different text based on disconnection type
     const getTitle = () => {
-        if (!isInternetDisconnection) {
+        if (isInternetDisconnection) {
             return 'Internet connection lost';
         } else {
             return "You're back online";
