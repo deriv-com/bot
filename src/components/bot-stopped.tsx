@@ -39,13 +39,11 @@ const BotStopped = observer(() => {
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
-
                     {isInternetDisconnection ? (
                         <Localize i18n_default_text='Internet connection lost' />
                     ) : (
                         <Localize i18n_default_text="You're back online" />
                     )}
-
                 </Text>
                 <div
                     data-testid='data-close-button'
@@ -61,13 +59,11 @@ const BotStopped = observer(() => {
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>
-
                 {isInternetDisconnection ? (
                     <Localize i18n_default_text='Your bot will pause trading until the connection is restored. Please check your internet connection.' />
                 ) : (
                     <Localize i18n_default_text='The bot has stopped, but your trade may still be running. You can check it on the Reports page.' />
                 )}
-
             </Text>
         </Dialog>
     );
