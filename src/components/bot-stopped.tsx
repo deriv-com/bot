@@ -52,10 +52,10 @@ const BotStopped = observer(() => {
     // [AI]
     // Different text based on disconnection type
     const getTitle = () => {
-        if (isInternetDisconnection) {
+        if (!isInternetDisconnection) {
             return 'Internet connection lost';
         } else {
-            return 'Bot temporarily paused';
+            return "You're back online";
         }
     };
 
@@ -63,7 +63,7 @@ const BotStopped = observer(() => {
         if (isInternetDisconnection) {
             return 'Your bot will pause trading until the connection is restored. Please check your internet connection.';
         } else {
-            return 'Your bot was temporarily paused due to a system update. You can restart it or check your trades on the Reports page.';
+            return 'The bot has stopped, but your trade may still be running. You can check it on the Reports page.';
         }
     };
     // [/AI]
