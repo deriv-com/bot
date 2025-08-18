@@ -3,7 +3,7 @@
 <div align="center">
 
 **deriv-com/bot**
-📅 Last updated: 2025-08-06 12:54:02 UTC • 🔄 Tracking merged PRs to main/master
+📅 Last updated: 2025-08-17 06:04:52 UTC • 🔄 Tracking merged PRs to main/master
 
 </div>
 
@@ -13,18 +13,19 @@
 
 | Metric | Value | Metric | Value |
 |--------|-------|--------|-------|
-| **📁 Total Merged PRs** | 1 | **📈 Average AI Code** | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
-| **🤖 PRs with AI Analysis** | 0 | **🎯 Overall AI Percentage** | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
-| **📄 Files Analyzed** | 0 | **⚡ Total AI Characters** | 0 |
+| **📁 Total Merged PRs** | 2 | **📈 Average AI Code** | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| **🤖 PRs with AI Analysis** | 1 | **🎯 Overall AI Percentage** | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜ 0% |
+| **📄 Files Analyzed** | 2 | **⚡ Total AI Characters** | 0 |
 
 ---
 
 ## 🚀 Recent Merged Pull Requests
 
-> 📊 Showing the 10 most recent merged PRs (stats above include all 1 PRs)
+> 📊 Showing the 10 most recent merged PRs (stats above include all 2 PRs)
 
 | PR | Author | Date | Files | AI Content | Percentage |
 |----|--------|------|-------|------------|------------|
+| [#536](#) **Rupato/fix  self exclusion** | [@rupato-deriv](https://github.com/rupato-deriv) | 8/14/2025 | 2 | 0 / 850 chars | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜   0% |
 | [#533](#) **Prince/ added ai analysis workflows** | [@prince-deriv](https://github.com/prince-deriv) | 8/6/2025 | N/A | No data | ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜   0% |
 
 ---

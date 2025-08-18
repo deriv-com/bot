@@ -1,7 +1,35 @@
 {
-  "lastUpdated": "2025-08-06T12:54:02.335Z",
-  "totalMergedPRs": 1,
+  "lastUpdated": "2025-08-14T04:06:21.896Z",
+  "totalMergedPRs": 2,
   "analyses": [
+    {
+      "percentage": 0,
+      "totalCharacters": 850,
+      "aiCharacters": 0,
+      "files": [
+        {
+          "name": "src/external/bot-skeleton/services/api/api-base.ts",
+          "totalCharacters": 130,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "addedContent": "                setIsAuthorizing(false);\n            // this.getSelfExclusion(); commented this so we dont call it from two places"
+        },
+        {
+          "name": "src/stores/self-exclusion-store.ts",
+          "totalCharacters": 720,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "addedContent": "            try {\n                const response = await api_base.api.getSelfExclusion();\n                const { get_self_exclusion }: { get_self_exclusion: { max_losses?: number } } = response;\n    ..."
+        }
+      ],
+      "timestamp": "2025-08-14T04:06:21.848Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "536",
+      "branch": "Rupato/Fix--self-exclusion",
+      "author": "rupato-deriv",
+      "prTitle": "Rupato/fix  self exclusion",
+      "hasAnalysis": true
+    },
     {
       "timestamp": "2025-08-06T12:54:02.278Z",
       "repository": "deriv-com/bot",
