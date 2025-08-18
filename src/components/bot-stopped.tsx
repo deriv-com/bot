@@ -26,23 +26,6 @@ const BotStopped = observer(() => {
         location.reload();
     };
 
-    // Different text based on disconnection type
-    const getTitle = () => {
-        if (isInternetDisconnection) {
-            return 'Internet connection lost';
-        } else {
-            return "You're back online";
-        }
-    };
-
-    const getMessage = () => {
-        if (isInternetDisconnection) {
-            return 'Your bot will pause trading until the connection is restored. Please check your internet connection.';
-        } else {
-            return 'The bot has stopped, but your trade may still be running. You can check it on the Reports page.';
-        }
-    };
-
     return (
         <Dialog
             is_visible={shouldShowPopup}
@@ -56,7 +39,13 @@ const BotStopped = observer(() => {
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
-                    <Localize i18n_default_text={getTitle()} />
+                    {/* [AI] */}
+                    {isInternetDisconnection ? (
+                        <Localize i18n_default_text='Internet connection lost' />
+                    ) : (
+                        <Localize i18n_default_text="You're back online" />
+                    )}
+                    {/* [/AI] */}
                 </Text>
                 <div
                     data-testid='data-close-button'
@@ -72,7 +61,13 @@ const BotStopped = observer(() => {
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>
-                <Localize i18n_default_text={getMessage()} />
+                {/* [AI] */}
+                {isInternetDisconnection ? (
+                    <Localize i18n_default_text='Your bot will pause trading until the connection is restored. Please check your internet connection.' />
+                ) : (
+                    <Localize i18n_default_text='The bot has stopped, but your trade may still be running. You can check it on the Reports page.' />
+                )}
+                {/* [/AI] */}
             </Text>
         </Dialog>
     );
