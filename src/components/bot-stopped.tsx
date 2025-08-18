@@ -1,10 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
-
 import useNavigatorOnline from '@/hooks/useNavigatorOnline';
 import { useStore } from '@/hooks/useStore';
-
 import { LegacyClose1pxIcon } from '@deriv/quill-icons/Legacy';
 import { Localize, localize } from '@deriv-com/translations';
 import Dialog from './shared_ui/dialog';
@@ -54,7 +52,6 @@ const BotStopped = observer(() => {
             confirm_button_text={localize('Back to Bot')}
             onCancel={() => (window.location.href = standalone_routes.positions)}
             onConfirm={() => location.reload()}
-            // [AI]
             login={() => {}}
         >
             <div className='dc-dialog__content__header'>
