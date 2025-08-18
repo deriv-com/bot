@@ -1,7 +1,39 @@
 {
-  "lastUpdated": "2025-08-18T08:05:35.258Z",
-  "totalMergedPRs": 3,
+  "lastUpdated": "2025-08-18T10:52:04.612Z",
+  "totalMergedPRs": 4,
   "analyses": [
+    {
+      "percentage": 0,
+      "totalCharacters": 413,
+      "aiCharacters": 0,
+      "files": [
+        {
+          "name": "package-lock.json",
+          "totalCharacters": 343,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "                \"@deriv-com/shiftai-cli\": \"^0.0.3\",\n                \"husky\": \"^7.0.4\",\n            \"version\": \"0.0.3\",\n            \"resolved\": \"https://registry.npmjs.org/@deriv-com/shiftai-cli/-/shiftai-cli-0.0.3.tgz\",\n            \"integrity\": \"sha512-Pxnxw4TIdWdRL320lif2MYyhGfXe/1NH+fDOXkptfLY31yXM7CU8Eup9bgIa3pRqHriID5KHHdaJmUbQGRihVg==\","
+        },
+        {
+          "name": "package.json",
+          "totalCharacters": 70,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "        \"@deriv-com/shiftai-cli\": \"^0.0.3\",\n        \"husky\": \"^7.0.4\","
+        }
+      ],
+      "timestamp": "2025-08-18T10:52:04.562Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "545",
+      "branch": "shiftai-version-update",
+      "author": "prince-deriv",
+      "prTitle": "chore: update shiftai-cli version",
+      "hasAnalysis": true
+    },
     {
       "percentage": 0,
       "totalCharacters": 27276,
