@@ -56,9 +56,7 @@ const BotStopped = observer(() => {
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
-                    {/* [AI] */}
                     <Localize i18n_default_text={getTitle()} />
-                    {/* [/AI] */}
                 </Text>
                 <div
                     data-testid='data-close-button'
@@ -74,9 +72,7 @@ const BotStopped = observer(() => {
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>
-                {/* [AI] */}
                 <Localize i18n_default_text={getMessage()} />
-                {/* [/AI] */}
             </Text>
         </Dialog>
     );
