@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
-// [AI]
+//// [AI]
 import useNavigatorOnline from '@/hooks/useNavigatorOnline';
 import { useStore } from '@/hooks/useStore';
 // [/AI]
@@ -13,7 +13,7 @@ import { standalone_routes } from './shared';
 const BotStopped = observer(() => {
     const { dashboard, run_panel } = useStore();
     const { is_web_socket_intialised } = dashboard;
-    // [AI]
+
     const { is_running } = run_panel;
     const isOnline = useNavigatorOnline();
 
@@ -28,7 +28,6 @@ const BotStopped = observer(() => {
         location.reload();
     };
 
-    // [AI]
     // Different text based on disconnection type
     const getTitle = () => {
         if (isInternetDisconnection) {
@@ -45,13 +44,12 @@ const BotStopped = observer(() => {
             return 'The bot has stopped, but your trade may still be running. You can check it on the Reports page.';
         }
     };
-    // [/AI]
 
     return (
         <Dialog
-            // [AI]
+
             is_visible={shouldShowPopup}
-            // [/AI]
+
             is_mobile_full_width
             className={'dc-dialog bot-stopped-dialog'}
             cancel_button_text={localize('Go to Reports')}
@@ -60,7 +58,7 @@ const BotStopped = observer(() => {
             onConfirm={() => location.reload()}
             // [AI]
             login={() => {}}
-            // [/AI]
+
         >
             <div className='dc-dialog__content__header'>
                 <Text data-testid='data-title' weight='bold' as='p' align='left' size='s' color='prominent'>
