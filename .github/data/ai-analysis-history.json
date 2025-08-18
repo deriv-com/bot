@@ -1,7 +1,66 @@
 {
-  "lastUpdated": "2025-08-14T04:06:21.896Z",
-  "totalMergedPRs": 2,
+  "lastUpdated": "2025-08-18T08:05:35.258Z",
+  "totalMergedPRs": 3,
   "analyses": [
+    {
+      "percentage": 0,
+      "totalCharacters": 27276,
+      "aiCharacters": 0,
+      "files": [
+        {
+          "name": ".husky/post-commit",
+          "totalCharacters": 201,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\n# ShiftAI Post-commit Hook - Display AI analysis table\nnpx @deriv-com/shiftai-cli hook post-commit\n\n# Preserve exit code (don't block if analysis fails)\nexit 0"
+        },
+        {
+          "name": ".husky/pre-commit",
+          "totalCharacters": 129,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "\n# ShiftAI Pre-commit Hook - Detect and strip AI markers\nnpx @deriv-com/shiftai-cli hook pre-commit\n\n# Preserve exit code\nexit $?"
+        },
+        {
+          "name": ".husky/pre-push",
+          "totalCharacters": 676,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "#!/bin/sh\n. \"$(dirname \"$0\")/_/husky.sh\"\n\n# ShiftAI Pre-push Hook - Intercept push for AI analysis and PR management\n# Git pre-push hook passes: $1=remote_name, $2=remote_url\nexport GIT_PUSH_REMOTE_NAME=\"$1\"\nexport GIT_PUSH_REMOTE_URL=\"$2\"\n\n# Capture original git push command arguments from parent process  \n# Get current branch for more reliable fallback\nCURRENT_BRANCH=\"$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'HEAD')\"\nexport GIT_PUSH_ORIGINAL_COMMAND=\"$(ps -o args= -p $PPID 2>/dev/..."
+        },
+        {
+          "name": "package-lock.json",
+          "totalCharacters": 26225,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "                \"@deriv-com/shiftai-cli\": \"^0.0.2\",\n        \"node_modules/@deriv-com/shiftai-cli\": {\n            \"version\": \"0.0.2\",\n            \"resolved\": \"https://registry.npmjs.org/@deriv-com/shiftai-cli/-/shiftai-cli-0.0.2.tgz\",\n            \"integrity\": \"sha512-0700l/+mABSk8BfyXli9udcJMTzcbqr+6cUZxM+I1vo7CljzThQi2padF9Nq1puAiZTKMDj7UhcXvt5oMpT9FQ==\",\n            \"dev\": true,\n            \"license\": \"MIT\",\n            \"dependencies\": {\n                \"boxen\": \"^5.1.2\",\n                \"chalk..."
+        },
+        {
+          "name": "package.json",
+          "totalCharacters": 45,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "        \"@deriv-com/shiftai-cli\": \"^0.0.2\",\n}"
+        }
+      ],
+      "timestamp": "2025-08-18T08:05:35.208Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "543",
+      "branch": "add-shiftai-p2",
+      "author": "prince-deriv",
+      "prTitle": "Prince/ added githooks shiftai",
+      "hasAnalysis": true
+    },
     {
       "percentage": 0,
       "totalCharacters": 850,
