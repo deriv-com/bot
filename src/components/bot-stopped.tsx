@@ -61,13 +61,11 @@ const BotStopped = observer(() => {
                 </div>
             </div>
             <Text as='p' align='left' size='xs' color='prominent'>
-
                 {isInternetDisconnection ? (
                     <Localize i18n_default_text='Your bot will pause trading until the connection is restored. Please check your internet connection.' />
                 ) : (
                     <Localize i18n_default_text='The bot has stopped, but your trade may still be running. You can check it on the Reports page.' />
                 )}
-
             </Text>
         </Dialog>
     );
