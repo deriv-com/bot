@@ -1,7 +1,57 @@
 {
-  "lastUpdated": "2025-08-18T10:52:04.612Z",
-  "totalMergedPRs": 4,
+  "lastUpdated": "2025-08-18T14:15:54.988Z",
+  "totalMergedPRs": 5,
   "analyses": [
+    {
+      "percentage": 0,
+      "totalCharacters": 689,
+      "aiCharacters": 0,
+      "files": [
+        {
+          "name": ".husky/pre-commit",
+          "totalCharacters": 0,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "only-deletions",
+          "hasAddedContent": false,
+          "addedContent": ""
+        },
+        {
+          "name": ".husky/pre-push",
+          "totalCharacters": 263,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "\n\n# 🗑️ EARLY EXIT: Check for delete operations at shell level\nif ps aux | grep -v grep | grep -q \"git.*push.*--delete\"; then\n  exit 0\nfi\n\n# Check command line arguments in current process tree\nif pgrep -f \"git.*push.*--delete\" > /dev/null 2>&1; then\n  exit 0\nfi\n"
+        },
+        {
+          "name": "package-lock.json",
+          "totalCharacters": 383,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "                \"@deriv-com/shiftai-cli\": \"^0.0.4\",\n            \"version\": \"0.0.4\",\n            \"resolved\": \"https://registry.npmjs.org/@deriv-com/shiftai-cli/-/shiftai-cli-0.0.4.tgz\",\n            \"integrity\": \"sha512-xR9z3//S+ngntBjZRVlvZhUXZdHFFkMCr50bW0e/lZ17wcQo19B02ouJnS4cEf3MrOx7Tx4chvGDaniyQnjGXQ==\",\n                \"shai\": \"bin/shai\",\n                \"shai-dev\": \"bin/shai\""
+        },
+        {
+          "name": "package.json",
+          "totalCharacters": 43,
+          "aiCharacters": 0,
+          "percentage": 0,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "        \"@deriv-com/shiftai-cli\": \"^0.0.4\","
+        }
+      ],
+      "timestamp": "2025-08-18T14:15:54.938Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "551",
+      "branch": "update-shiftai-version",
+      "author": "prince-deriv",
+      "prTitle": "chore: update shiftai-cli version",
+      "hasAnalysis": true
+    },
     {
       "percentage": 0,
       "totalCharacters": 413,
