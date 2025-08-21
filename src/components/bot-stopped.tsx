@@ -1,3 +1,4 @@
+//[AI]
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import Text from '@/components/shared_ui/text';
@@ -70,3 +71,5 @@ const BotStopped = observer(() => {
 });
 
 export default BotStopped;
+
+//[AI]
