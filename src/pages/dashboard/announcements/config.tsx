@@ -213,6 +213,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'PWA_INSTALL_ANNOUNCE',
             main_title: localize('Install Deriv Bot as an App'),
             confirm_button_text: localize('Install Now'),
+            cancel_button_text: localize('Maybe Later'),
             base_classname: 'announcement-dialog',
             title: (
                 <Localize i18n_default_text='<0>Get the full app experience</0>' components={[<strong key={0} />]} />
