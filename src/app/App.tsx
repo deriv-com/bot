@@ -5,6 +5,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import ChunkLoader from '@/components/loader/chunk-loader';
 import RoutePromptDialog from '@/components/route-prompt-dialog';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
+import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { StoreProvider } from '@/hooks/useStore';
 import CallbackPage from '@/pages/callback';
 import Endpoint from '@/pages/endpoint';
@@ -21,14 +22,24 @@ const i18nInstance = initializeI18n({
     cdnUrl: `${TRANSLATIONS_CDN_URL}/${R2_PROJECT_NAME}/${CROWDIN_BRANCH_NAME}`,
 });
 
+// Simple Suspense wrapper without timeout that causes dark landing page
+const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => {
+    const { isOnline } = useOfflineDetection();
+
+    const getLoadingMessage = () => {
+        if (!isOnline) return localize('Loading offline dashboard...');
+        return localize('Please wait while we connect to the server...');
+    };
+
+    return <Suspense fallback={<ChunkLoader message={getLoadingMessage()} />}>{children}</Suspense>;
+};
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route
             path='/'
             element={
-                <Suspense
-                    fallback={<ChunkLoader message={localize('Please wait while we connect to the server...')} />}
-                >
+                <SuspenseWrapper>
                     <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                         <StoreProvider>
                             <RoutePromptDialog />
@@ -37,7 +48,7 @@ const router = createBrowserRouter(
                             </CoreStoreProvider>
                         </StoreProvider>
                     </TranslationProvider>
-                </Suspense>
+                </SuspenseWrapper>
             }
         >
             {/* All child routes will be passed as children to Layout */}

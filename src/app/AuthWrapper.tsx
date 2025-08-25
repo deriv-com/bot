@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
+import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { clearAuthData } from '@/utils/auth-utils';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
@@ -83,19 +84,50 @@ const setLocalStorageToken = async (
 export const AuthWrapper = () => {
     const [isAuthComplete, setIsAuthComplete] = React.useState(false);
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
+    const { isOnline } = useOfflineDetection();
+
+    // Skip auth entirely when offline - show app directly
+    if (!isOnline) {
+        console.log('[Auth] Offline detected, bypassing authentication');
+        return <App />;
+    }
 
     React.useEffect(() => {
         const initializeAuth = async () => {
-            await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
-            URLUtils.filterSearchParams(['lang']);
-            setIsAuthComplete(true);
+            try {
+                await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
+                URLUtils.filterSearchParams(['lang']);
+                setIsAuthComplete(true);
+            } catch (error) {
+                console.error('[Auth] Authentication initialization failed:', error);
+                // Don't block the app if auth fails, especially when offline
+                setIsAuthComplete(true);
+            }
         };
 
         initializeAuth();
     }, [loginInfo, paramsToDelete]);
 
+    // Add timeout for offline scenarios to prevent infinite loading
+    React.useEffect(() => {
+        if (!isOnline && !isAuthComplete) {
+            console.log('[Auth] Offline detected, setting auth timeout');
+            const timeout = setTimeout(() => {
+                console.log('[Auth] Offline timeout reached, proceeding without full auth');
+                setIsAuthComplete(true);
+            }, 2000); // 2 second timeout for offline
+
+            return () => clearTimeout(timeout);
+        }
+    }, [isOnline, isAuthComplete]);
+
+    const getLoadingMessage = () => {
+        if (!isOnline) return localize('Loading offline mode...');
+        return localize('Initializing...');
+    };
+
     if (!isAuthComplete) {
-        return <ChunkLoader message={localize('Initializing...')} />;
+        return <ChunkLoader message={getLoadingMessage()} />;
     }
 
     return <App />;

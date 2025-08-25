@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Offline Test - Deriv Bot</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background: #f5f5f5;
+            }
+            .container {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                color: #ff444f;
+                margin-bottom: 20px;
+            }
+            .status {
+                padding: 15px;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-weight: 600;
+            }
+            .online {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .offline {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            button {
+                background: #ff444f;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 6px;
+                cursor: pointer;
+                margin: 10px 5px;
+                font-size: 14px;
+            }
+            button:hover {
+                background: #e63946;
+            }
+            .log {
+                background: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 6px;
+                padding: 15px;
+                margin: 15px 0;
+                max-height: 300px;
+                overflow-y: auto;
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+            }
+            .cache-info {
+                background: #e7f3ff;
+                border: 1px solid #b8daff;
+                border-radius: 6px;
+                padding: 15px;
+                margin: 15px 0;
+            }
+            .test-result {
+                padding: 10px;
+                margin: 10px 0;
+                border-radius: 6px;
+            }
+            .success {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .error {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🧪 Deriv Bot Offline Test</h1>
+
+            <div id="connection-status" class="status">Checking connection...</div>
+
+            <div id="sw-status" class="status">Checking service worker...</div>
+
+            <div class="cache-info">
+                <h3>Cache Information</h3>
+                <div id="cache-info">Loading...</div>
+            </div>
+
+            <div>
+                <h3>Test Actions</h3>
+                <button onclick="testMainApp()">Test Main App</button>
+                <button onclick="testOfflinePage()">Test Offline Page</button>
+                <button onclick="refreshCache()">Refresh Cache</button>
+                <button onclick="clearCache()">Clear Cache</button>
+                <button onclick="clearLog()">Clear Log</button>
+            </div>
+
+            <div id="test-results"></div>
+
+            <div>
+                <h3>Debug Log</h3>
+                <div id="log" class="log"></div>
+            </div>
+
+            <div>
+                <h3>Instructions</h3>
+                <ol>
+                    <li>Make sure you're online and click "Refresh Cache" to cache the app</li>
+                    <li>Open browser DevTools → Network tab</li>
+                    <li>Check "Offline" to simulate offline mode</li>
+                    <li>Click "Test Main App" to see if it loads offline</li>
+                    <li>Uncheck "Offline" to go back online</li>
+                </ol>
+            </div>
+        </div>
+
+        <script>
+            let logContainer = document.getElementById('log');
+            let testResults = document.getElementById('test-results');
+
+            function log(message) {
+                const timestamp = new Date().toLocaleTimeString();
+                logContainer.innerHTML += `[${timestamp}] ${message}\n`;
+                logContainer.scrollTop = logContainer.scrollHeight;
+                console.log(message);
+            }
+
+            function addTestResult(message, isSuccess) {
+                const div = document.createElement('div');
+                div.className = `test-result ${isSuccess ? 'success' : 'error'}`;
+                div.textContent = message;
+                testResults.appendChild(div);
+            }
+
+            function clearLog() {
+                logContainer.innerHTML = '';
+                testResults.innerHTML = '';
+            }
+
+            function updateConnectionStatus() {
+                const statusEl = document.getElementById('connection-status');
+                if (navigator.onLine) {
+                    statusEl.className = 'status online';
+                    statusEl.textContent = '🟢 Online';
+                } else {
+                    statusEl.className = 'status offline';
+                    statusEl.textContent = '🔴 Offline';
+                }
+            }
+
+            async function updateServiceWorkerStatus() {
+                const statusEl = document.getElementById('sw-status');
+
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registration = await navigator.serviceWorker.getRegistration();
+                        if (registration) {
+                            if (registration.active) {
+                                statusEl.className = 'status online';
+                                statusEl.textContent = '🟢 Service Worker Active';
+                                log('Service worker is active and ready');
+                            } else {
+                                statusEl.className = 'status offline';
+                                statusEl.textContent = '🟡 Service Worker Installing';
+                                log('Service worker is installing...');
+                            }
+                        } else {
+                            statusEl.className = 'status offline';
+                            statusEl.textContent = '🔴 Service Worker Not Registered';
+                            log('Service worker not registered');
+                        }
+                    } catch (error) {
+                        statusEl.className = 'status offline';
+                        statusEl.textContent = '🔴 Service Worker Error';
+                        log('Service worker error: ' + error.message);
+                    }
+                } else {
+                    statusEl.className = 'status offline';
+                    statusEl.textContent = '🔴 Service Workers Not Supported';
+                    log('Service workers not supported in this browser');
+                }
+            }
+
+            async function updateCacheInfo() {
+                const cacheInfoEl = document.getElementById('cache-info');
+
+                try {
+                    if ('caches' in window) {
+                        const cacheNames = await caches.keys();
+                        let info = `<strong>Available Caches:</strong> ${cacheNames.length}<br>`;
+
+                        for (const cacheName of cacheNames) {
+                            const cache = await caches.open(cacheName);
+                            const keys = await cache.keys();
+                            info += `<br><strong>${cacheName}:</strong> ${keys.length} items<br>`;
+                            keys.slice(0, 5).forEach(request => {
+                                info += `&nbsp;&nbsp;• ${request.url}<br>`;
+                            });
+                            if (keys.length > 5) {
+                                info += `&nbsp;&nbsp;• ... and ${keys.length - 5} more<br>`;
+                            }
+                        }
+
+                        cacheInfoEl.innerHTML = info;
+                    } else {
+                        cacheInfoEl.innerHTML = 'Cache API not supported';
+                    }
+                } catch (error) {
+                    cacheInfoEl.innerHTML = 'Error loading cache info: ' + error.message;
+                    log('Cache info error: ' + error.message);
+                }
+            }
+
+            async function testMainApp() {
+                log('Testing main app...');
+                try {
+                    const response = await fetch('/');
+                    if (response.ok) {
+                        addTestResult('✅ Main app loads successfully', true);
+                        log('Main app test: SUCCESS');
+                    } else {
+                        addTestResult(`❌ Main app failed: ${response.status}`, false);
+                        log(`Main app test: FAILED (${response.status})`);
+                    }
+                } catch (error) {
+                    addTestResult(`❌ Main app error: ${error.message}`, false);
+                    log(`Main app test: ERROR (${error.message})`);
+                }
+            }
+
+            async function testOfflinePage() {
+                log('Testing offline page...');
+                try {
+                    const response = await fetch('/offline.html');
+                    if (response.ok) {
+                        addTestResult('✅ Offline page loads successfully', true);
+                        log('Offline page test: SUCCESS');
+                    } else {
+                        addTestResult(`❌ Offline page failed: ${response.status}`, false);
+                        log(`Offline page test: FAILED (${response.status})`);
+                    }
+                } catch (error) {
+                    addTestResult(`❌ Offline page error: ${error.message}`, false);
+                    log(`Offline page test: ERROR (${error.message})`);
+                }
+            }
+
+            async function refreshCache() {
+                log('Refreshing cache...');
+                try {
+                    if ('serviceWorker' in navigator) {
+                        const registration = await navigator.serviceWorker.getRegistration();
+                        if (registration) {
+                            await registration.update();
+                            addTestResult('✅ Cache refreshed', true);
+                            log('Cache refresh: SUCCESS');
+                            setTimeout(updateCacheInfo, 1000);
+                        } else {
+                            addTestResult('❌ No service worker to refresh', false);
+                            log('Cache refresh: FAILED (no service worker)');
+                        }
+                    } else {
+                        addTestResult('❌ Service workers not supported', false);
+                        log('Cache refresh: FAILED (not supported)');
+                    }
+                } catch (error) {
+                    addTestResult(`❌ Cache refresh error: ${error.message}`, false);
+                    log(`Cache refresh: ERROR (${error.message})`);
+                }
+            }
+
+            async function clearCache() {
+                log('Clearing cache...');
+                try {
+                    if ('caches' in window) {
+                        const cacheNames = await caches.keys();
+                        await Promise.all(cacheNames.map(name => caches.delete(name)));
+                        addTestResult('✅ Cache cleared', true);
+                        log('Cache clear: SUCCESS');
+                        updateCacheInfo();
+                    } else {
+                        addTestResult('❌ Cache API not supported', false);
+                        log('Cache clear: FAILED (not supported)');
+                    }
+                } catch (error) {
+                    addTestResult(`❌ Cache clear error: ${error.message}`, false);
+                    log(`Cache clear: ERROR (${error.message})`);
+                }
+            }
+
+            // Initialize
+            window.addEventListener('load', () => {
+                log('Offline test page loaded');
+                updateConnectionStatus();
+                updateServiceWorkerStatus();
+                updateCacheInfo();
+            });
+
+            // Listen for connection changes
+            window.addEventListener('online', () => {
+                log('Connection: ONLINE');
+                updateConnectionStatus();
+            });
+
+            window.addEventListener('offline', () => {
+                log('Connection: OFFLINE');
+                updateConnectionStatus();
+            });
+
+            // Listen for service worker updates
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.addEventListener('message', event => {
+                    log(`SW Message: ${JSON.stringify(event.data)}`);
+                });
+
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    log('Service worker controller changed');
+                    updateServiceWorkerStatus();
+                });
+            }
+
+            // Refresh status every 5 seconds
+            setInterval(() => {
+                updateServiceWorkerStatus();
+            }, 5000);
+        </script>
+    </body>
+</html>

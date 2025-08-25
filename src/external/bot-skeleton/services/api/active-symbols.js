@@ -50,6 +50,7 @@ export default class ActiveSymbols {
 
         this.init_promise.resolve();
 
+        console.log(this.active_symbols);
         return this.active_symbols;
     }
 
