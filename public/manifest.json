@@ -10,6 +10,7 @@
   "scope": "/",
   "lang": "en",
   "categories": ["finance", "productivity", "business"],
+  "offline_enabled": true,
   "icons": [
     {
       "src": "/assets/icons/pwa/icon-72x72.svg",
@@ -103,5 +104,12 @@
     }
   ],
   "related_applications": [],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "cache_resources": [
+    "/",
+    "/offline.html",
+    "/manifest.json",
+    "/deriv-logo.svg"
+  ],
+  "offline_fallback": "/offline.html"
 }

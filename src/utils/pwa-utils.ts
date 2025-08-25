@@ -40,7 +40,7 @@ class PWAManager {
     }
 
     /**
-     * Register service worker (mobile only)
+     * Register service worker (for all devices to enable offline functionality)
      */
     async registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
         if (!('serviceWorker' in navigator)) {
@@ -48,11 +48,8 @@ class PWAManager {
             return null;
         }
 
-        // Only register service worker on mobile devices
-        if (!this.isMobile()) {
-            console.log('[PWA] Service worker registration skipped - not on mobile device');
-            return null;
-        }
+        // Register service worker for all devices to enable offline functionality
+        console.log('[PWA] Registering service worker for offline capabilities');
 
         try {
             const registration = await navigator.serviceWorker.register('/sw.js', {

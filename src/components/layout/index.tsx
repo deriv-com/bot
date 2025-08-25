@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { Outlet } from 'react-router-dom';
 import PWAUpdateNotification from '@/components/pwa-update-notification';
 import { api_base } from '@/external/bot-skeleton';
+import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import useTMB from '@/hooks/useTMB';
 import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
@@ -16,6 +17,7 @@ import './layout.scss';
 
 const Layout = () => {
     const { isDesktop } = useDevice();
+    const { isOnline } = useOfflineDetection();
 
     const isCallbackPage = window.location.pathname === '/callback';
     const { onRenderTMBCheck, is_tmb_enabled: tmb_enabled_from_hook, isTmbEnabled } = useTMB();
@@ -136,6 +138,14 @@ const Layout = () => {
             (isLoggedInCookie && !isClientAccountsPopulated && !isEndpointPage && !isCallbackPage) ||
             checkOIDCEnabledWithMissingAccount;
 
+        // Skip authentication when offline
+        if (!isOnline) {
+            console.log('[Layout] Offline detected, skipping authentication');
+            setIsAuthenticating(false);
+            setClientHasCurrency(true); // Allow access in offline mode
+            return;
+        }
+
         // Create an async IIFE to handle authentication
         (async () => {
             try {
@@ -187,7 +197,22 @@ const Layout = () => {
         onRenderTMBCheck,
         currency,
         is_tmb_enabled,
+        isOnline, // Add isOnline to dependencies
     ]);
+
+    // Add offline timeout to prevent infinite authentication
+    useEffect(() => {
+        if (!isOnline && isAuthenticating) {
+            console.log('[Layout] Setting offline timeout for authentication');
+            const timeout = setTimeout(() => {
+                console.log('[Layout] Offline timeout reached, stopping authentication');
+                setIsAuthenticating(false);
+                setClientHasCurrency(true);
+            }, 2000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [isOnline, isAuthenticating]);
 
     // Add a state to track if initial authentication check is complete
     const [isInitialAuthCheckComplete, setIsInitialAuthCheckComplete] = useState(false);
