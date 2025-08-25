@@ -140,13 +140,8 @@
 
         &--secondary {
             background-color: transparent;
-            color: var(--text-general);
+            color: var(--text-prominent);
             border: 1px solid var(--border-normal);
-
-            // Ensure text is visible
-            .dc-text {
-                color: var(--text-general) !important;
-            }
 
             &:hover {
                 background-color: var(--fill-hover);

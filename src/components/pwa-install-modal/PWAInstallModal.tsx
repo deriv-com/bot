@@ -4,7 +4,7 @@ import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal/m
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
 import { usePWA } from '@/hooks/usePWA';
-import { markPWAModalDismissed,markPWAModalShown, shouldShowPWAModal, trackPWAEvent } from '@/utils/pwa-utils';
+import { markPWAModalDismissed, markPWAModalShown, shouldShowPWAModal, trackPWAEvent } from '@/utils/pwa-utils';
 import { useDevice } from '@deriv-com/ui';
 import './PWAInstallModal.scss';
 
@@ -163,7 +163,7 @@ const PWAInstallModal: React.FC = () => {
                 onClick={handleClose}
                 type='button'
             >
-                <Text size='xs' weight='bold' color='prominent'>
+                <Text size='xs' weight='bold' color='general'>
                     Maybe Later
                 </Text>
             </button>
