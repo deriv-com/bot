@@ -4,30 +4,32 @@ import MobileFullPageModal from '@/components/shared_ui/mobile-full-page-modal/m
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
 import { usePWA } from '@/hooks/usePWA';
-import { markPWAModalDismissed, markPWAModalShown, shouldShowPWAModal, trackPWAEvent } from '@/utils/pwa-utils';
+//shouldShowPWAModal
+import { markPWAModalDismissed, markPWAModalShown, trackPWAEvent } from '@/utils/pwa-utils';
 import { useDevice } from '@deriv-com/ui';
 import './PWAInstallModal.scss';
 
 const PWAInstallModal: React.FC = () => {
-    const { install, isIOS, isAndroid, isMobileSource, isPWALaunch, canInstall } = usePWA();
+    //canInstall
+    const { install, isIOS, isAndroid, isMobileSource, isPWALaunch } = usePWA();
     const { isMobile, isDesktop } = useDevice();
     const [isOpen, setIsOpen] = React.useState(false);
 
-    // Check if modal should be shown on first desktop visit
-    React.useEffect(() => {
-        if (isDesktop && canInstall && shouldShowPWAModal()) {
-            // Show modal after a short delay to ensure page is loaded
-            const timer = setTimeout(() => {
-                setIsOpen(true);
-                markPWAModalShown();
-                trackPWAEvent('modal_auto_shown', {
-                    trigger: 'first_desktop_visit',
-                });
-            }, 2000);
+    // Disabled auto-show functionality - modal only shows via announcements
+    // React.useEffect(() => {
+    //     if (isDesktop && canInstall && shouldShowPWAModal()) {
+    //         // Show modal after a short delay to ensure page is loaded
+    //         const timer = setTimeout(() => {
+    //             setIsOpen(true);
+    //             markPWAModalShown();
+    //             trackPWAEvent('modal_auto_shown', {
+    //                 trigger: 'first_desktop_visit',
+    //             });
+    //         }, 2000);
 
-            return () => clearTimeout(timer);
-        }
-    }, [isDesktop, canInstall]);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [isDesktop, canInstall]);
 
     // Listen for PWA install modal trigger events (for announcements)
     React.useEffect(() => {
