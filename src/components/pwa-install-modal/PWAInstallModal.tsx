@@ -183,11 +183,7 @@ const PWAInstallModal: React.FC = () => {
             renderPageFooterChildren={() => renderFooterButton()}
             className='pwa-install-modal'
         >
-            <div className='pwa-install-modal__placeholder'>
-                <Text size='xs' color='less-prominent'>
-                    [ placeholder ]
-                </Text>
-            </div>
+            <div className='pwa-install-modal__placeholder'></div>
             {renderModalContent()}
         </MobileFullPageModal>
     ) : (
