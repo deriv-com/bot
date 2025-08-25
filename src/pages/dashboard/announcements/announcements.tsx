@@ -113,6 +113,22 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Listen for close announcements panel event
+    React.useEffect(() => {
+        const handleCloseAnnouncementsPanel = () => {
+            setIsOpenAnnounceList(false);
+            // Refresh notifications after closing to update read status
+            const temp_notifications = updateNotifications();
+            setReadAnnouncementsMap(temp_notifications);
+        };
+
+        window.addEventListener('closeAnnouncementsPanel', handleCloseAnnouncementsPanel);
+        return () => {
+            window.removeEventListener('closeAnnouncementsPanel', handleCloseAnnouncementsPanel);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     React.useEffect(() => {
         const number_ammount_active_announce = Object.values(read_announcements_map).filter(value => value).length;
         setAmountActiveAnnounce(number_ammount_active_announce);
