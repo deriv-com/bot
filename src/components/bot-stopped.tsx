@@ -31,9 +31,9 @@ const BotStopped = observer(() => {
             is_visible={shouldShowPopup}
             is_mobile_full_width
             className={'dc-dialog bot-stopped-dialog'}
-            cancel_button_text={localize('Go to Reports')}
-            confirm_button_text={localize('Back to Bot')}
-            onCancel={() => (window.location.href = standalone_routes.positions)}
+            cancel_button_text={!isInternetDisconnection ? localize('Go to Reports') : undefined}
+            confirm_button_text={!isInternetDisconnection ? localize('Back to Bot') : undefined}
+            onCancel={!isInternetDisconnection ? () => (window.location.href = standalone_routes.positions) : undefined}
             onConfirm={() => location.reload()}
             login={() => {}}
         >
@@ -62,7 +62,7 @@ const BotStopped = observer(() => {
                 {isInternetDisconnection ? (
                     <Localize i18n_default_text='Your bot is paused while you’re offline. Reconnect to continue trading.' />
                 ) : (
-                    <Localize i18n_default_text='The platform connection was terminated, so your bot has stopped. your trade may still be running Please check the Reports page to monitor your trade.' />
+                    <Localize i18n_default_text='The platform connection was terminated, so your bot has stopped. Your trade may still be running. Please check the Reports page to monitor your trade.' />
                 )}
             </Text>
         </Dialog>
