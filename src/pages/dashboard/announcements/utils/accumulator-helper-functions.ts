@@ -49,6 +49,15 @@ export const performButtonAction = (
             }
             return false;
         }
+        case BUTTON_ACTION_TYPE.NO_ACTION: {
+            // Special handling for PWA announcement - show PWA modal directly
+            if (item.id === 'PWA_INSTALL_ANNOUNCE') {
+                return () => {
+                    window.dispatchEvent(new CustomEvent('showPWAInstallModal'));
+                };
+            }
+            return false;
+        }
         default:
             return false;
     }

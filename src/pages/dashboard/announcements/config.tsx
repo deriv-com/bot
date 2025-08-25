@@ -213,7 +213,6 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'PWA_INSTALL_ANNOUNCE',
             main_title: localize('Install Deriv Bot as an App'),
             confirm_button_text: localize('Install Now'),
-            cancel_button_text: localize('Maybe Later'),
             base_classname: 'announcement-dialog',
             title: (
                 <Localize i18n_default_text='<0>Get the full app experience</0>' components={[<strong key={0} />]} />
@@ -237,7 +236,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
         },
         should_not_be_cancel: false,
         onConfirm: () => {
-            // Trigger PWA install modal
+            // Trigger PWA install modal directly
             window.dispatchEvent(new CustomEvent('showPWAInstallModal'));
         },
     },
@@ -275,7 +274,7 @@ export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
         title: localize('Install Deriv Bot as an App'),
         message: localize('Get faster access and better performance by installing Deriv Bot on your device.'),
         date: '29 January 2025 00:00 UTC',
-        buttonAction: BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION,
+        buttonAction: BUTTON_ACTION_TYPE.NO_ACTION,
         actionText: '',
     },
     {
