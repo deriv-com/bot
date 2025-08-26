@@ -1,7 +1,30 @@
 {
-  "lastUpdated": "2025-08-18T14:15:54.988Z",
-  "totalMergedPRs": 5,
+  "lastUpdated": "2025-08-26T08:22:04.935Z",
+  "totalMergedPRs": 6,
   "analyses": [
+    {
+      "percentage": 77,
+      "totalCharacters": 1221,
+      "aiCharacters": 940,
+      "files": [
+        {
+          "name": "src/components/bot-stopped.tsx",
+          "totalCharacters": 1221,
+          "aiCharacters": 940,
+          "percentage": 77,
+          "status": "modified",
+          "hasAddedContent": true,
+          "addedContent": "import useNavigatorOnline from '@/hooks/useNavigatorOnline';\n    const { dashboard, run_panel } = useStore();\n\n    const { is_running } = run_panel;\n    const isOnline = useNavigatorOnline();\n\n    // Determine the type of disconnection\n    const isInternetDisconnection = !isOnline && is_running;\n    const isInternalIssue = !is_web_socket_intialised && isOnline;\n\n    // Show popup for either condition\n    const shouldShowPopup = isInternetDisconnection || isInternalIssue;\n\n\n            is_visible..."
+        }
+      ],
+      "timestamp": "2025-08-26T08:22:04.885Z",
+      "repository": "deriv-com/bot",
+      "pullRequest": "532",
+      "branch": "disrupted-internet-error",
+      "author": "prince-deriv",
+      "prTitle": "Prince/ GRWT-6889 Separate message popup for internet disconnection",
+      "hasAnalysis": true
+    },
     {
       "percentage": 0,
       "totalCharacters": 689,
