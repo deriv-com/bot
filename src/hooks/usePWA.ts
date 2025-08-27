@@ -30,8 +30,8 @@ export interface UsePWAReturn {
 
     // Mobile source detection
     isMobileSource: boolean;
-    // isPWALaunch: boolean;
-    //mobileSourceInfo: ReturnType<typeof getMobileSourceInfo>;
+    isPWALaunch: boolean;
+    mobileSourceInfo: ReturnType<typeof getMobileSourceInfo>;
 }
 
 /**

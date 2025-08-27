@@ -1,4 +1,5 @@
-import { isFirefox,isSafari } from '@/components/shared/utils/browser/browser_detect';
+import { isFirefox, isSafari } from '@/components/shared/utils/browser/browser_detect';
+import { localize } from '@deriv-com/translations';
 
 // PWA Utilities for Deriv Bot
 export interface BeforeInstallPromptEvent extends Event {
@@ -220,11 +221,11 @@ class PWAManager {
      */
     getInstallInstructions(): string {
         if (this.isIOS()) {
-            return 'Tap the Share button and then "Add to Home Screen"';
+            return localize('Tap the Share button and then "Add to Home Screen"');
         } else if (this.isAndroid()) {
-            return 'Tap the menu button and then "Add to Home Screen" or "Install App"';
+            return localize('Tap the menu button and then "Add to Home Screen" or "Install App"');
         } else {
-            return "Look for the install button in your browser's address bar";
+            return localize("Look for the install button in your browser's address bar");
         }
     }
 
