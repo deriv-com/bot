@@ -61,6 +61,19 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     };
+    console.log({
+        chart_type,
+        getMarketsOrder,
+        granularity,
+        onSymbolChange,
+        setChartStatus,
+        symbol,
+        updateChartType,
+        updateGranularity,
+        updateSymbol,
+        setChartSubscriptionId,
+        chart_subscription_id,
+    });
 
     useEffect(() => {
         // Safari browser detection

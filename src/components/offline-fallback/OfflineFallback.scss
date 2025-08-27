@@ -1,0 +1,136 @@
+.offline-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--general-main-1, #0e0e0e);
+    color: var(--text-general, #fff);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', "Roboto", sans-serif;
+
+    &__container {
+        text-align: center;
+        max-width: 500px;
+        padding: 40px 20px;
+    }
+
+    &__icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.8;
+    }
+
+    &__title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-red, #ff444f);
+    }
+
+    &__message {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    &__status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        padding: 12px 20px;
+        background: rgb(255 68 79 / 10%);
+        border-radius: 8px;
+        border-left: 4px solid var(--text-red, #ff444f);
+        font-weight: 500;
+    }
+
+    &__status-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        &.offline {
+            background: var(--text-red, #ff444f);
+            animation: pulse 2s infinite;
+        }
+
+        &.online {
+            background: var(--text-green, #4bb4b3);
+        }
+    }
+
+    &__retry {
+        background: var(--text-red, #ff444f);
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #e63946;
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+// Dark theme adjustments
+.theme--dark {
+    .offline-fallback {
+        background: var(--general-main-1, #0e0e0e);
+        color: var(--text-general, #fff);
+    }
+}
+
+// Light theme adjustments
+.theme--light {
+    .offline-fallback {
+        background: var(--general-main-1, #fff);
+        color: var(--text-general, #333);
+    }
+}
+
+// Mobile responsive
+@media (width <= 768px) {
+    .offline-fallback {
+        &__container {
+            padding: 20px 15px;
+        }
+
+        &__title {
+            font-size: 2rem;
+        }
+
+        &__message {
+            font-size: 1rem;
+        }
+
+        &__retry {
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+    }
+}

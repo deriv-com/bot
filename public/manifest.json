@@ -1,0 +1,115 @@
+{
+  "name": "Deriv Bot - Automated Trading Platform",
+  "short_name": "Deriv Bot",
+  "description": "Automated trading at your fingertips. No coding needed.",
+  "start_url": "/?source=mobile",
+  "display": "standalone",
+  "background_color": "#0e0e0e",
+  "theme_color": "#ff444f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["finance", "productivity", "business"],
+  "offline_enabled": true,
+  "icons": [
+    {
+      "src": "/assets/icons/pwa/icon-72x72.svg",
+      "sizes": "72x72",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-96x96.svg",
+      "sizes": "96x96",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-128x128.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-144x144.svg",
+      "sizes": "144x144",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-152x152.svg",
+      "sizes": "152x152",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-384x384.svg",
+      "sizes": "384x384",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icons/pwa/icon-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/desktop-screenshot.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Deriv Bot Dashboard"
+    },
+    {
+      "src": "/assets/screenshots/mobile-screenshot.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Deriv Bot Mobile View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Bot Builder",
+      "short_name": "Builder",
+      "description": "Create new trading bot",
+      "url": "/?shortcut=builder",
+      "icons": [
+        {
+          "src": "/assets/icons/IcBotBuilder.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View bot performance",
+      "url": "/?shortcut=dashboard",
+      "icons": [
+        {
+          "src": "/assets/icons/IcDashboard.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "cache_resources": [
+    "/",
+    "/offline.html",
+    "/manifest.json",
+    "/deriv-logo.svg"
+  ],
+  "offline_fallback": "/offline.html"
+}

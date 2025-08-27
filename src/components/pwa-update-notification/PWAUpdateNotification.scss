@@ -1,0 +1,283 @@
+.pwa-update-notification {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    max-width: 28rem;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 15%);
+    border: 1px solid rgb(0 0 0 / 10%);
+    animation: slideIn 0.3s ease-out;
+
+    &--top {
+        top: 1rem;
+        animation-name: slide-in-from-top;
+    }
+
+    &--bottom {
+        bottom: 1rem;
+        animation-name: slide-in-from-bottom;
+    }
+
+    &__content {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+        padding-right: 2.5rem; // Space for close button
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        background: var(--brand-red-coral, #ff444f);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.125rem;
+    }
+
+    &__message {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__title {
+        margin: 0 0 0.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-general, #333);
+        line-height: 1.25;
+    }
+
+    &__description {
+        margin: 0 0 0.75rem;
+        font-size: 0.81rem;
+        color: var(--text-less-prominent, #666);
+        line-height: 1.4;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    &__button {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.81rem;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        &--primary {
+            background: var(--brand-red-coral, #ff444f);
+            color: fff;
+
+            &:hover:not(:disabled) {
+                background: var(--brand-red-dark, #e63946);
+                transform: translateY(-1px);
+            }
+
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+        }
+
+        &--secondary {
+            background: transparent;
+            color: var(--text-less-prominent, #666);
+
+            &:hover:not(:disabled) {
+                background: var(--general-hover, #f5f5f5);
+                color: var(--text-general, #333);
+            }
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: none;
+        background: transparent;
+        color: var(--text-less-prominent, #666);
+        cursor: pointer;
+        border-radius: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease-in-out;
+
+        &:hover:not(:disabled) {
+            background: var(--general-hover, #f5f5f5);
+            color: var(--text-general, #333);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    &__spinner {
+        width: 0.875rem;
+        height: 0.875rem;
+        border: 2px solid transparent;
+        border-top: 2px solid currentcolor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    // Responsive design
+    @media (width <= 640px) {
+        left: 0.75rem;
+        right: 0.75rem;
+        max-width: none;
+
+        &__content {
+            padding: 0.875rem;
+            padding-right: 2.25rem;
+        }
+
+        &__actions {
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        &__button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    // Dark mode support
+    @media (prefers-color-scheme: dark) {
+        background: var(--background-dark, #1a1a1a);
+        border-color: rgb(255 255 255 / 10%);
+        box-shadow: 0 10px 25px rgb(0 0 0 / 30%);
+
+        .pwa-update-notification__title {
+            color: var(--text-general-dark, #e0e0e0);
+        }
+
+        .pwa-update-notification__description {
+            color: var(--text-less-prominent-dark, #a0a0a0);
+        }
+
+        .pwa-update-notification__button--secondary {
+            color: var(--text-less-prominent-dark, #a0a0a0);
+
+            &:hover:not(:disabled) {
+                background: var(--general-hover-dark, #2a2a2a);
+                color: var(--text-general-dark, #e0e0e0);
+            }
+        }
+
+        .pwa-update-notification__close {
+            color: var(--text-less-prominent-dark, #a0a0a0);
+
+            &:hover:not(:disabled) {
+                background: var(--general-hover-dark, #2a2a2a);
+                color: var(--text-general-dark, #e0e0e0);
+            }
+        }
+    }
+
+    // High contrast mode
+    @media (prefers-contrast: high) {
+        border-width: 2px;
+
+        .pwa-update-notification__button--primary {
+            border: 2px solid currentcolor;
+        }
+    }
+
+    // Reduced motion
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+
+        .pwa-update-notification__button {
+            transition: none;
+
+            &:hover {
+                transform: none;
+            }
+        }
+
+        .pwa-update-notification__spinner {
+            animation: none;
+            border: 2px solid currentcolor;
+            border-radius: 0;
+        }
+    }
+}
+
+// Animations
+@keyframes slide-in-from-top {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-from-bottom {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Exit animation
+.pwa-update-notification--exiting {
+    animation: slide-out 0.2s ease-in forwards;
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}

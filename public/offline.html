@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Deriv Bot - Offline</title>
+        <link rel="icon" type="image/svg+xml" href="/deriv-logo.svg" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
+                color: #ffffff;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .offline-container {
+                text-align: center;
+                max-width: 600px;
+                width: 100%;
+            }
+
+            .offline-icon {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 30px;
+                background: #ff444f;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+            }
+
+            .offline-title {
+                font-size: 2.5rem;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: #ffffff;
+            }
+
+            .offline-subtitle {
+                font-size: 1.2rem;
+                color: #b3b3b3;
+                margin-bottom: 30px;
+                line-height: 1.5;
+            }
+
+            .offline-features {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+                padding: 30px;
+                margin: 30px 0;
+                text-align: left;
+            }
+
+            .offline-features h3 {
+                color: #ff444f;
+                margin-bottom: 20px;
+                font-size: 1.3rem;
+            }
+
+            .offline-features ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .offline-features li {
+                padding: 8px 0;
+                padding-left: 25px;
+                position: relative;
+                color: #e0e0e0;
+            }
+
+            .offline-features li:before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: #ff444f;
+                font-weight: bold;
+            }
+
+            .retry-button {
+                background: #ff444f;
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin: 20px 10px;
+            }
+
+            .retry-button:hover {
+                background: #e63946;
+                transform: translateY(-2px);
+            }
+
+            .secondary-button {
+                background: transparent;
+                color: #ff444f;
+                border: 2px solid #ff444f;
+            }
+
+            .secondary-button:hover {
+                background: #ff444f;
+                color: white;
+            }
+
+            .connection-status {
+                margin-top: 30px;
+                padding: 15px;
+                border-radius: 8px;
+                background: rgba(255, 68, 79, 0.1);
+                border: 1px solid #ff444f;
+            }
+
+            .status-indicator {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-weight: 500;
+            }
+
+            .status-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: #ff444f;
+                animation: pulse 2s infinite;
+            }
+
+            .status-dot.online {
+                background: #4caf50;
+            }
+
+            @keyframes pulse {
+                0% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            .xml-section {
+                margin-top: 30px;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.03);
+                border-radius: 8px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .xml-list {
+                display: grid;
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .xml-item {
+                padding: 12px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                text-align: left;
+            }
+
+            .xml-item:hover {
+                background: rgba(255, 68, 79, 0.1);
+                border-color: #ff444f;
+            }
+
+            .xml-name {
+                font-weight: 500;
+                color: #ffffff;
+            }
+
+            .xml-desc {
+                font-size: 0.9rem;
+                color: #b3b3b3;
+                margin-top: 4px;
+            }
+
+            @media (max-width: 768px) {
+                .offline-title {
+                    font-size: 2rem;
+                }
+
+                .offline-features {
+                    padding: 20px;
+                }
+
+                .retry-button {
+                    display: block;
+                    width: 100%;
+                    margin: 10px 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="offline-container">
+            <div class="offline-icon">📱</div>
+
+            <h1 class="offline-title">You're Offline</h1>
+            <p class="offline-subtitle">
+                No internet connection detected, but you can still use Deriv Bot with cached content.
+            </p>
+
+            <div class="offline-features">
+                <h3>Available Offline Features:</h3>
+                <ul>
+                    <li>Access saved bot configurations</li>
+                    <li>Load cached XML templates</li>
+                    <li>Build and edit bots using offline tools</li>
+                    <li>Save new configurations locally</li>
+                </ul>
+            </div>
+
+            <div class="xml-section">
+                <h3>Cached XML Templates</h3>
+                <div class="xml-list" id="xmlList">
+                    <div class="xml-item">
+                        <div class="xml-name">Moving Average Example</div>
+                        <div class="xml-desc">Basic moving average trading strategy</div>
+                    </div>
+                    <div class="xml-item">
+                        <div class="xml-name">Martingale Strategy</div>
+                        <div class="xml-desc">Risk management with martingale approach</div>
+                    </div>
+                    <div class="xml-item">
+                        <div class="xml-name">RSI Call/Put</div>
+                        <div class="xml-desc">RSI-based trading decisions</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="retry-button" onclick="checkConnection()">Check Connection</button>
+
+            <button class="retry-button secondary-button" onclick="goToApp()">Try to Load App</button>
+
+            <div class="connection-status">
+                <div class="status-indicator">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Checking connection...</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let isOnline = navigator.onLine;
+
+            function updateConnectionStatus() {
+                const statusDot = document.getElementById('statusDot');
+                const statusText = document.getElementById('statusText');
+
+                if (navigator.onLine) {
+                    statusDot.classList.add('online');
+                    statusText.textContent = 'Connection restored!';
+                } else {
+                    statusDot.classList.remove('online');
+                    statusText.textContent = 'No internet connection';
+                }
+            }
+
+            function checkConnection() {
+                updateConnectionStatus();
+
+                if (navigator.onLine) {
+                    // Try to fetch a small resource to verify connection
+                    fetch('/manifest.json', { cache: 'no-cache' })
+                        .then(() => {
+                            window.location.href = '/';
+                        })
+                        .catch(() => {
+                            alert('Connection test failed. Please check your internet connection.');
+                        });
+                } else {
+                    alert('No internet connection detected. Please check your network settings.');
+                }
+            }
+
+            function goToApp() {
+                window.location.href = '/';
+            }
+
+            function loadXMLTemplate(filename) {
+                // This would integrate with the main app to load XML templates
+                console.log('Loading XML template:', filename);
+                // For now, just show an alert
+                alert('XML template loading will be available in the main app.');
+            }
+
+            // Listen for online/offline events
+            window.addEventListener('online', () => {
+                updateConnectionStatus();
+                setTimeout(() => {
+                    if (confirm('Connection restored! Would you like to reload the app?')) {
+                        window.location.href = '/';
+                    }
+                }, 1000);
+            });
+
+            window.addEventListener('offline', updateConnectionStatus);
+
+            // Initial status check
+            updateConnectionStatus();
+
+            // Add click handlers to XML items
+            document.addEventListener('DOMContentLoaded', () => {
+                const xmlItems = document.querySelectorAll('.xml-item');
+                xmlItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const filename = item.querySelector('.xml-name').textContent;
+                        loadXMLTemplate(filename);
+                    });
+                });
+            });
+
+            // Periodic connection check
+            setInterval(updateConnectionStatus, 5000);
+        </script>
+    </body>
+</html>

@@ -4,6 +4,23 @@
         <meta charset="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/deriv-logo.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+        <!-- PWA Manifest -->
+        <link rel="manifest" href="/manifest.json" />
+
+        <!-- PWA Meta Tags -->
+        <meta name="theme-color" content="#ff444f" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Deriv Bot" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-TileColor" content="#ff444f" />
+        <meta name="msapplication-tap-highlight" content="no" />
+
+        <!-- Apple Touch Icons -->
+        <link rel="apple-touch-icon" href="/assets/icons/pwa/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/pwa/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/pwa/icon-192x192.png" />
         <meta name="title" content="Build a trading bot without coding | Deriv Bot." />
         <meta
             name="description"
@@ -58,16 +75,61 @@
                     init: function () {
                         setTimeout(() => {
                             var n = t.createElement('script');
-                            (n.async = !0),
+                            ((n.async = !0),
                                 (n.type = 'text/javascript'),
                                 (n.src = 'https://cdn.livechatinc.com/tracking.js'),
-                                t.head.appendChild(n);
+                                t.head.appendChild(n));
                         }, 3000);
                     },
                 };
-                !n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e);
+                (!n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e));
             })(window, document, [].slice);
         </script>
         <!-- End LiveChat script -->
+
+        <!-- Service Worker Registration with Debug -->
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    console.log('[HTML] Registering service worker...');
+                    navigator.serviceWorker
+                        .register('/sw.js')
+                        .then(registration => {
+                            console.log('[HTML] Service worker registered:', registration);
+
+                            // Check if service worker is ready
+                            if (registration.active) {
+                                console.log('[HTML] Service worker is active');
+                            } else {
+                                console.log('[HTML] Service worker is installing...');
+                            }
+
+                            // Listen for updates
+                            registration.addEventListener('updatefound', () => {
+                                console.log('[HTML] Service worker update found');
+                            });
+                        })
+                        .catch(error => {
+                            console.error('[HTML] Service worker registration failed:', error);
+                        });
+
+                    // Listen for service worker messages
+                    navigator.serviceWorker.addEventListener('message', event => {
+                        console.log('[HTML] Message from service worker:', event.data);
+                    });
+
+                    // Check online/offline status
+                    console.log('[HTML] Online status:', navigator.onLine);
+                    window.addEventListener('online', () => {
+                        console.log('[HTML] Back online');
+                    });
+                    window.addEventListener('offline', () => {
+                        console.log('[HTML] Gone offline');
+                    });
+                });
+            } else {
+                console.warn('[HTML] Service workers not supported');
+            }
+        </script>
     </body>
 </html>

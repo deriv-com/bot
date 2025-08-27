@@ -49,6 +49,24 @@ export const performButtonAction = (
             }
             return false;
         }
+        case BUTTON_ACTION_TYPE.NO_ACTION: {
+            // Special handling for PWA announcement - show PWA modal directly and close announcement panel
+            if (item.id === 'PWA_INSTALL_ANNOUNCE') {
+                return () => {
+                    // Mark as read
+                    let data: Record<string, boolean> | null = null;
+                    data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+                    localStorage?.setItem('bot-announcements', JSON.stringify({ ...data, [item.id]: false }));
+
+                    // Trigger PWA modal
+                    window.dispatchEvent(new CustomEvent('showPWAInstallModal'));
+
+                    // Close announcements panel by triggering a custom event
+                    window.dispatchEvent(new CustomEvent('closeAnnouncementsPanel'));
+                };
+            }
+            return false;
+        }
         default:
             return false;
     }

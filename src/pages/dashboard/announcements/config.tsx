@@ -132,9 +132,8 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
         onConfirm: () => {
             rudderStackSendOpenEvent({
                 subpage_name: 'bot_builder',
-                subform_source: 'announcements',
-                subform_name: 'load_strategy',
-                load_strategy_tab: 'recent',
+                subform_source: 'dashboard',
+                subform_name: 'quick_strategy',
             });
         },
     },
@@ -208,11 +207,44 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
         switch_tab_on_confirm: DBOT_TABS.BOT_BUILDER,
         onConfirm: () => handleOnConfirmAccumulator(),
     },
+
+    PWA_INSTALL_ANNOUNCE: {
+        announcement: {
+            id: 'PWA_INSTALL_ANNOUNCE',
+            main_title: localize('Install Deriv Bot as an App'),
+            confirm_button_text: localize('Install Now'),
+            base_classname: 'announcement-dialog',
+            title: (
+                <Localize i18n_default_text='<0>Get the full app experience</0>' components={[<strong key={0} />]} />
+            ),
+            content: [
+                {
+                    id: 0,
+                    text: localize(
+                        'Install Deriv Bot directly on your device for faster access and better performance.'
+                    ),
+                },
+                {
+                    id: 1,
+                    text: localize('Work offline and get instant access from your desktop or home screen.'),
+                },
+                {
+                    id: 2,
+                    text: localize('Enjoy a native app-like experience with all the features you love.'),
+                },
+            ],
+        },
+        should_not_be_cancel: false,
+        onConfirm: () => {
+            // Trigger PWA install modal directly
+            window.dispatchEvent(new CustomEvent('showPWAInstallModal'));
+        },
+    },
 };
 
 export type TAnnouncementItem = {
     id: string;
-    icon: React.ReactElement;
+    icon: React.ComponentType<{ announce: boolean }>;
     title: string;
     message: string;
     date: string;
@@ -236,6 +268,15 @@ export const BUTTON_ACTION_TYPE = {
 };
 
 export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
+    {
+        id: 'PWA_INSTALL_ANNOUNCE',
+        icon: IconAnnounce,
+        title: localize('Install Deriv Bot as an App'),
+        message: localize('Get faster access and better performance by installing Deriv Bot on your device.'),
+        date: '29 January 2025 00:00 UTC',
+        buttonAction: BUTTON_ACTION_TYPE.NO_ACTION,
+        actionText: '',
+    },
     {
         id: 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE',
         icon: IconAnnounce,

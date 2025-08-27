@@ -5,6 +5,7 @@ import AuthLoadingWrapper from '@/components/auth-loading-wrapper';
 import useLiveChat from '@/components/chat/useLiveChat';
 import { BOT_RESTRICTED_COUNTRIES_LIST } from '@/components/layout/header/utils';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import PWAInstallModal from '@/components/pwa-install-modal';
 import { getUrlBase } from '@/components/shared';
 import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
 import TransactionDetailsModal from '@/components/transaction-details';
@@ -13,6 +14,7 @@ import { V2GetActiveToken } from '@/external/bot-skeleton/services/api/appId';
 import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { useApiBase } from '@/hooks/useApiBase';
 import useIntercom from '@/hooks/useIntercom';
+import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { useStore } from '@/hooks/useStore';
 import useThemeSwitcher from '@/hooks/useThemeSwitcher';
 import useTrackjs from '@/hooks/useTrackjs';
@@ -34,10 +36,12 @@ const AppContent = observer(() => {
     const [is_api_initialized, setIsApiInitialized] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_eu_error_loading, setIsEuErrorLoading] = React.useState(true);
+    const [offline_timeout, setOfflineTimeout] = React.useState(null);
     const store = useStore();
     const { app, transactions, common, client } = store;
     const { showDigitalOptionsMaltainvestError } = app;
     const { is_dark_mode_on } = useThemeSwitcher();
+    const { isOnline } = useOfflineDetection();
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
@@ -68,10 +72,43 @@ const AppContent = observer(() => {
         if (connectionStatus === CONNECTION_STATUS.OPENED) {
             setIsApiInitialized(true);
             common.setSocketOpened(true);
+            // Clear offline timeout if connection is restored
+            if (offline_timeout) {
+                clearTimeout(offline_timeout);
+                setOfflineTimeout(null);
+            }
         } else if (connectionStatus !== CONNECTION_STATUS.OPENED) {
             common.setSocketOpened(false);
         }
-    }, [common, connectionStatus]);
+    }, [common, connectionStatus, offline_timeout]);
+
+    // Handle offline scenarios - don't wait indefinitely for API
+    useEffect(() => {
+        if (!isOnline && is_loading) {
+            console.log('[Offline] Detected offline state, setting timeout to show dashboard');
+            const timeout = setTimeout(() => {
+                console.log('[Offline] Timeout reached, showing dashboard in offline mode');
+                setIsLoading(false);
+                setIsApiInitialized(true);
+                // Initialize basic stores for offline mode
+                if (!app.dbot_store) {
+                    init();
+                }
+            }, 3000); // Wait 3 seconds for potential connection, then show dashboard
+
+            setOfflineTimeout(timeout);
+        } else if (isOnline && offline_timeout) {
+            // Clear timeout if we come back online
+            clearTimeout(offline_timeout);
+            setOfflineTimeout(null);
+        }
+
+        return () => {
+            if (offline_timeout) {
+                clearTimeout(offline_timeout);
+            }
+        };
+    }, [isOnline, is_loading, offline_timeout, app.dbot_store]);
 
     const { current_language } = common;
     const html = document.documentElement;
@@ -158,9 +195,24 @@ const AppContent = observer(() => {
 
         const retrieveActiveSymbols = () => {
             const { active_symbols } = ApiHelpers.instance;
-            active_symbols.retrieveActiveSymbols(true).then(() => {
+
+            // Handle offline scenario
+            if (!isOnline) {
+                console.log('[Offline] Skipping active symbols retrieval, showing dashboard');
                 setIsLoading(false);
-            });
+                return;
+            }
+
+            active_symbols
+                .retrieveActiveSymbols(true)
+                .then(() => {
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error('[API] Failed to retrieve active symbols:', error);
+                    // Don't stay in loading state if API fails
+                    setIsLoading(false);
+                });
         };
 
         if (ApiHelpers?.instance?.active_symbols) {
@@ -172,8 +224,22 @@ const AppContent = observer(() => {
                 if (ApiHelpers?.instance?.active_symbols) {
                     clearInterval(intervalId);
                     retrieveActiveSymbols();
+                } else if (!isOnline) {
+                    // If offline, don't wait indefinitely
+                    clearInterval(intervalId);
+                    console.log('[Offline] Stopping active symbols wait, showing dashboard');
+                    setIsLoading(false);
                 }
             }, 1000);
+
+            // Set a maximum timeout to prevent infinite loading
+            setTimeout(() => {
+                clearInterval(intervalId);
+                if (is_loading) {
+                    console.log('[Timeout] Active symbols loading timeout, showing dashboard');
+                    setIsLoading(false);
+                }
+            }, 10000); // 10 second timeout
         }
     };
 
@@ -205,18 +271,50 @@ const AppContent = observer(() => {
 
     if (common?.error) return null;
 
+    // Show loading message based on online/offline state
+    const getLoadingMessage = () => {
+        if (is_eu_error_loading) return '';
+        if (!isOnline) return localize('Loading offline dashboard...');
+        return localize('Initializing Deriv Bot account...');
+    };
+
+    // Skip loading entirely when offline - show dashboard directly
+    if (!isOnline) {
+        console.log('[Offline] Bypassing loader, showing dashboard directly');
+        return (
+            <AuthLoadingWrapper>
+                <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
+                    <BlocklyLoading />
+                    <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
+                        {/* <PWAInstallModalTest /> */}
+                        <Audio />
+                        <Main />
+                        <BotBuilder />
+                        <BotStopped />
+                        <TransactionDetailsModal />
+                        <PWAInstallModal />
+                        <ToastContainer limit={3} draggable={false} />
+                        <TncStatusUpdateModal />
+                    </div>
+                </ThemeProvider>
+            </AuthLoadingWrapper>
+        );
+    }
+
     return is_loading ? (
-        <ChunkLoader message={is_eu_error_loading ? '' : localize('Initializing Deriv Bot account...')} />
+        <ChunkLoader message={getLoadingMessage()} />
     ) : (
         <AuthLoadingWrapper>
             <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
                 <BlocklyLoading />
                 <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
+                    {/* <PWAInstallModalTest /> */}
                     <Audio />
                     <Main />
                     <BotBuilder />
                     <BotStopped />
                     <TransactionDetailsModal />
+                    <PWAInstallModal />
                     <ToastContainer limit={3} draggable={false} />
                     <TncStatusUpdateModal />
                 </div>
