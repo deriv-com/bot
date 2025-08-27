@@ -31,3 +31,7 @@ const getUserBrowser = () => {
 };
 
 export const isSafariBrowser = () => getUserBrowser() === 'Safari';
+
+export const isFirefox = () => {
+    return navigator.userAgent.indexOf('Firefox') !== -1;
+};

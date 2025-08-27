@@ -1,3 +1,5 @@
+import { isFirefox,isSafari } from '@/components/shared/utils/browser/browser_detect';
+
 // PWA Utilities for Deriv Bot
 export interface BeforeInstallPromptEvent extends Event {
     readonly platforms: string[];
@@ -206,6 +208,14 @@ class PWAManager {
     }
 
     /**
+     * Check if browser is Safari Desktop (Safari with desktop screen width)
+     */
+    isSafariDesktop(): boolean {
+        // Check if Safari and desktop width (typically > 768px for desktop)
+        return isSafari() && window.innerWidth > 768;
+    }
+
+    /**
      * Get install instructions for current platform
      */
     getInstallInstructions(): string {
@@ -253,6 +263,8 @@ export const onPWAInstallStateChange = (callback: (canInstall: boolean) => void)
     pwaManager.onInstallStateChange(callback);
 export const onPWAUpdateAvailable = (callback: () => void) => pwaManager.onUpdateAvailable(callback);
 export const updatePWA = () => pwaManager.updateApp();
+export const isSafariDesktopBrowser = () => isSafari() && window.innerWidth > 768;
+export const isUnsupportedPWABrowser = () => (isSafari() && window.innerWidth > 768) || isFirefox();
 
 // Mobile source detection utilities
 export const isMobileSource = (): boolean => {
@@ -322,6 +334,16 @@ export const shouldShowPWAModal = (): boolean => {
 
     // Don't show on mobile (only desktop)
     if (pwaManager.isMobile()) {
+        return false;
+    }
+
+    // Don't show on Safari Desktop (Safari doesn't support PWA installation)
+    if (isSafari() && window.innerWidth > 768) {
+        return false;
+    }
+
+    // Don't show on Firefox (Firefox has limited PWA support)
+    if (isFirefox()) {
         return false;
     }
 
