@@ -2,8 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { isFirefox,isSafari } from '@/components/shared/utils/browser/browser_detect';
+import { isFirefox, isSafari } from '@/components/shared/utils/browser/browser_detect';
 import Text from '@/components/shared_ui/text';
+import { usePWA } from '@/hooks/usePWA';
 import { useStore } from '@/hooks/useStore';
 import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
@@ -17,7 +18,7 @@ import { guide_content } from '../../tutorials/constants';
 import { performButtonAction } from './utils/accumulator-helper-functions';
 import { MessageAnnounce, TitleAnnounce } from './announcement-components';
 import AnnouncementDialog from './announcement-dialog';
-import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
+import { getFilteredAnnouncements, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
 
 type TAnnouncements = {
@@ -32,6 +33,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         dashboard: { showVideoDialog },
         quick_strategy: { setFormVisibility },
     } = useStore();
+    const { isStandalone, isInstalled } = usePWA();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
@@ -39,6 +41,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
     const [amount_active_announce, setAmountActiveAnnounce] = React.useState(0);
     const navigate = useNavigate();
     const [notifications, setNotifications] = React.useState([] as TNotifications[]);
+    const [pwaStateInitialized, setPwaStateInitialized] = React.useState(false);
 
     const action_button_class_name = 'announcements__label';
 
@@ -51,7 +54,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
         storeDataInLocalStorage({ ...data, [announce_id]: false });
         const temp_notifications = updateNotifications();
-        setReadAnnouncementsMap(temp_notifications);
+        setReadAnnouncementsMap(temp_notifications || {});
     };
 
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
@@ -82,10 +85,31 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             accountDate = new Date(currentAccount.created_at * 1000);
         }
 
-        BOT_ANNOUNCEMENTS_LIST.map(item => {
-            // Skip PWA announcement entirely if Safari Desktop or Firefox
-            if (item.id === 'PWA_INSTALL_ANNOUNCE' && ((isSafari() && window.innerWidth > 768) || isFirefox())) {
-                return;
+        // Only show announcements after PWA state is properly initialized
+        if (!pwaStateInitialized) {
+            return;
+        }
+
+        const filteredAnnouncements = getFilteredAnnouncements(isStandalone);
+        filteredAnnouncements.map(item => {
+            // Skip PWA announcement entirely if Safari Desktop, Firefox, or already in PWA mode
+            if (item.id === 'PWA_INSTALL_ANNOUNCE') {
+                const isSafariDesktop = isSafari() && window.innerWidth > 768;
+                const isFirefoxBrowser = isFirefox();
+
+                console.log('PWA Detection Debug:', {
+                    isStandalone,
+                    isSafariDesktop,
+                    isFirefoxBrowser,
+                    displayMode: window.matchMedia('(display-mode: standalone)').matches,
+                    navigatorStandalone: (window.navigator as any).standalone,
+                    referrer: document.referrer,
+                    pwaStateInitialized,
+                });
+
+                if (isSafariDesktop || isFirefoxBrowser || isStandalone) {
+                    return;
+                }
             }
 
             let is_not_read = true;
@@ -93,8 +117,10 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                 is_not_read = data[item.id];
             }
             const notificationDate = new Date(item.date);
-            // Always show PWA announcement regardless of account creation date
-            const shouldShow = item.id === 'PWA_INSTALL_ANNOUNCE' || (accountDate && notificationDate > accountDate);
+            // Always show PWA announcement regardless of account creation date (unless already in PWA mode)
+            const shouldShow =
+                (item.id === 'PWA_INSTALL_ANNOUNCE' && !isStandalone) ||
+                (item.id !== 'PWA_INSTALL_ANNOUNCE' && accountDate && notificationDate > accountDate);
 
             if (shouldShow) {
                 tmp_notifications.push({
@@ -109,15 +135,26 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             }
         });
         setNotifications(tmp_notifications);
-        return temp_localstorage_data;
+        return temp_localstorage_data || {};
     };
 
+    // Initialize PWA state detection with a small delay to ensure proper detection
     React.useEffect(() => {
-        const temp_localstorage_data = updateNotifications();
-        storeDataInLocalStorage(temp_localstorage_data);
-        setReadAnnouncementsMap(temp_localstorage_data);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const timer = setTimeout(() => {
+            setPwaStateInitialized(true);
+        }, 100); // Small delay to ensure PWA state is properly initialized
+
+        return () => clearTimeout(timer);
     }, []);
+
+    React.useEffect(() => {
+        if (!pwaStateInitialized) return;
+
+        const temp_localstorage_data = updateNotifications();
+        storeDataInLocalStorage(temp_localstorage_data || {});
+        setReadAnnouncementsMap(temp_localstorage_data || {});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isStandalone, isInstalled, pwaStateInitialized]); // Re-run when PWA state changes or is initialized
 
     // Listen for close announcements panel event
     React.useEffect(() => {
@@ -125,7 +162,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             setIsOpenAnnounceList(false);
             // Refresh notifications after closing to update read status
             const temp_notifications = updateNotifications();
-            setReadAnnouncementsMap(temp_notifications);
+            setReadAnnouncementsMap(temp_notifications || {});
         };
 
         window.addEventListener('closeAnnouncementsPanel', handleCloseAnnouncementsPanel);
@@ -187,7 +224,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         );
         storeDataInLocalStorage(temp_read_announcements_map);
         const temp_notifications = updateNotifications();
-        setReadAnnouncementsMap(temp_notifications);
+        setReadAnnouncementsMap(temp_notifications || {});
     };
 
     return (
