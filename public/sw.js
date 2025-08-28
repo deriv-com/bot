@@ -73,6 +73,7 @@ self.addEventListener('activate', event => {
 // Fetch event - handle all network requests
 self.addEventListener('fetch', event => {
     const { request } = event;
+    const url = new URL(request.url);
 
     // Skip non-GET requests
     if (request.method !== 'GET') {
@@ -84,8 +85,38 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // Skip JavaScript chunks and CSS to prevent chunk loading errors
+    if (
+        url.pathname.includes('.js') ||
+        url.pathname.includes('.css') ||
+        url.pathname.includes('/static/js/') ||
+        url.pathname.includes('/static/css/') ||
+        url.pathname.includes('chunk') ||
+        url.pathname.includes('.mjs')
+    ) {
+        console.log('[SW] Skipping JS/CSS chunk:', url.pathname);
+        return;
+    }
+
+    // Skip authentication requests
+    if (isAuthRequest(url)) {
+        console.log('[SW] Skipping auth request:', url.pathname);
+        return;
+    }
+
+    // Skip API requests to prevent interference
+    if (isApiRequest(url)) {
+        console.log('[SW] Skipping API request:', url.pathname);
+        return;
+    }
+
     // Skip requests with no-cache headers
     if (request.headers.get('cache-control') === 'no-cache') {
+        return;
+    }
+
+    // Skip requests with authentication headers
+    if (request.headers.get('authorization') || request.headers.get('x-auth-token')) {
         return;
     }
 
@@ -402,12 +433,56 @@ function isStaticAsset(pathname) {
     );
 }
 
+function isAuthRequest(url) {
+    // Skip all authentication-related requests
+    return (
+        // OAuth/OIDC endpoints
+        url.pathname.includes('/oauth') ||
+        url.pathname.includes('/auth') ||
+        url.pathname.includes('/login') ||
+        url.pathname.includes('/logout') ||
+        url.pathname.includes('/token') ||
+        url.pathname.includes('/authorize') ||
+        url.pathname.includes('/callback') ||
+        // Deriv-specific auth endpoints
+        url.hostname.includes('oauth.deriv.com') ||
+        url.hostname.includes('auth.deriv.com') ||
+        url.hostname.includes('accounts.deriv.com') ||
+        // Third-party auth providers
+        url.hostname.includes('google.com') ||
+        url.hostname.includes('googleapis.com') ||
+        url.hostname.includes('facebook.com') ||
+        url.hostname.includes('apple.com') ||
+        url.hostname.includes('microsoft.com') ||
+        url.hostname.includes('live.com') ||
+        // Auth-related query parameters
+        url.search.includes('code=') ||
+        url.search.includes('state=') ||
+        url.search.includes('token=') ||
+        url.search.includes('access_token=') ||
+        url.search.includes('id_token=')
+    );
+}
+
 function isApiRequest(url) {
     return (
         url.pathname.startsWith('/api/') ||
+        url.pathname.startsWith('/v1/') ||
+        url.pathname.startsWith('/v2/') ||
         url.hostname.includes('deriv.com') ||
         url.hostname.includes('deriv.me') ||
-        url.hostname.includes('binary.com')
+        url.hostname.includes('binary.com') ||
+        url.hostname.includes('api.') ||
+        // WebSocket connections
+        url.protocol === 'ws:' ||
+        url.protocol === 'wss:' ||
+        // Real-time data endpoints
+        url.hostname.includes('ws.') ||
+        url.hostname.includes('websocket') ||
+        // Analytics and tracking (let them fail naturally rather than cache)
+        url.hostname.includes('analytics') ||
+        url.hostname.includes('tracking') ||
+        url.hostname.includes('metrics')
     );
 }
 
