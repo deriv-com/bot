@@ -51,13 +51,14 @@ class PWAManager {
             return null;
         }
 
-        // Don't register service worker on Firefox due to login issues
-        if (isFirefox()) {
-            console.log('[PWA] Service worker disabled on Firefox to prevent login issues');
+        // Don't register service worker on Firefox or Safari due to chunk loading issues
+        if (isFirefox() || isSafari()) {
+            const browser = isFirefox() ? 'Firefox' : 'Safari';
+            console.log(`[PWA] Service worker disabled on ${browser} to prevent chunk loading and login issues`);
             return null;
         }
 
-        // Register service worker for all other browsers
+        // Register service worker for Chrome and other compatible browsers
         console.log('[PWA] Registering service worker for offline capabilities');
 
         try {
