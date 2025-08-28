@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { AuthWrapper } from './app/AuthWrapper';
 import { AnalyticsInitializer } from './utils/analytics';
-import { getMobileSourceInfo,registerPWA, trackPWAEvent } from './utils/pwa-utils';
+import { getMobileSourceInfo, registerPWA, trackPWAEvent } from './utils/pwa-utils';
 import './styles/index.scss';
 
 AnalyticsInitializer();
@@ -20,7 +20,7 @@ if (mobileSourceInfo.isPWALaunch) {
     });
 }
 
-// Register PWA service worker
+// Register PWA service worker (automatically skips Firefox)
 registerPWA()
     .then(registration => {
         if (registration) {
@@ -29,7 +29,7 @@ registerPWA()
                 source: mobileSourceInfo.isMobileSource ? 'mobile' : 'web',
             });
         } else {
-            trackPWAEvent('service_worker_not_supported', {
+            trackPWAEvent('service_worker_not_supported_or_firefox', {
                 source: mobileSourceInfo.isMobileSource ? 'mobile' : 'web',
             });
         }
