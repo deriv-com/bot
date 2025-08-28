@@ -87,48 +87,44 @@
         </script>
         <!-- End LiveChat script -->
 
-        <!-- Service Worker Registration with Debug -->
+        <!-- Firefox Service Worker Prevention -->
         <script>
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    console.log('[HTML] Registering service worker...');
+            // Check if Firefox and prevent/cleanup service workers
+            const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+
+            if (isFirefox) {
+                console.log('[HTML] Firefox detected - preventing service worker registration');
+
+                // Cleanup any existing service workers
+                if ('serviceWorker' in navigator) {
                     navigator.serviceWorker
-                        .register('/sw.js')
-                        .then(registration => {
-                            console.log('[HTML] Service worker registered:', registration);
-
-                            // Check if service worker is ready
-                            if (registration.active) {
-                                console.log('[HTML] Service worker is active');
-                            } else {
-                                console.log('[HTML] Service worker is installing...');
-                            }
-
-                            // Listen for updates
-                            registration.addEventListener('updatefound', () => {
-                                console.log('[HTML] Service worker update found');
+                        .getRegistrations()
+                        .then(registrations => {
+                            registrations.forEach(registration => {
+                                console.log('[HTML] Unregistering existing SW for Firefox:', registration.scope);
+                                registration.unregister();
                             });
                         })
                         .catch(error => {
-                            console.error('[HTML] Service worker registration failed:', error);
+                            console.error('[HTML] Failed to cleanup service workers:', error);
                         });
+                }
+            }
 
-                    // Listen for service worker messages
-                    navigator.serviceWorker.addEventListener('message', event => {
-                        console.log('[HTML] Message from service worker:', event.data);
-                    });
+            // Check online/offline status
+            console.log('[HTML] Online status:', navigator.onLine);
+            window.addEventListener('online', () => {
+                console.log('[HTML] Back online');
+            });
+            window.addEventListener('offline', () => {
+                console.log('[HTML] Gone offline');
+            });
 
-                    // Check online/offline status
-                    console.log('[HTML] Online status:', navigator.onLine);
-                    window.addEventListener('online', () => {
-                        console.log('[HTML] Back online');
-                    });
-                    window.addEventListener('offline', () => {
-                        console.log('[HTML] Gone offline');
-                    });
+            // Listen for service worker messages if registered by PWA utils (non-Firefox)
+            if ('serviceWorker' in navigator && !isFirefox) {
+                navigator.serviceWorker.addEventListener('message', event => {
+                    console.log('[HTML] Message from service worker:', event.data);
                 });
-            } else {
-                console.warn('[HTML] Service workers not supported');
             }
         </script>
     </body>
