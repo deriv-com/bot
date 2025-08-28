@@ -1,4 +1,4 @@
-import { isFirefox,isSafari } from '@/components/shared/utils/browser/browser_detect';
+import { isFirefox, isSafari } from '@/components/shared/utils/browser/browser_detect';
 
 // PWA Utilities for Deriv Bot
 export interface BeforeInstallPromptEvent extends Event {
@@ -50,7 +50,13 @@ class PWAManager {
             return null;
         }
 
-        // Register service worker for all devices to enable offline functionality
+        // Don't register service worker on Firefox due to login issues
+        if (isFirefox()) {
+            console.log('[PWA] Service worker disabled on Firefox to prevent login issues');
+            return null;
+        }
+
+        // Register service worker for all other browsers
         console.log('[PWA] Registering service worker for offline capabilities');
 
         try {
