@@ -6,6 +6,7 @@ import Text from '@/components/shared_ui/text';
 import { usePWA } from '@/hooks/usePWA';
 //shouldShowPWAModal
 import { markPWAModalDismissed, markPWAModalShown, trackPWAEvent } from '@/utils/pwa-utils';
+import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import './PWAInstallModal.scss';
 
@@ -84,27 +85,27 @@ const PWAInstallModal: React.FC = () => {
     const getInstallSteps = () => {
         if (isDesktop) {
             return [
-                "Look for the install icon in your browser's address bar.",
-                'Click the install button or use the browser menu.',
-                'Follow the prompts to install Deriv Bot.',
+                localize("Look for the install icon in your browser's address bar."),
+                localize('Click the install button or use the browser menu.'),
+                localize('Follow the prompts to install Deriv Bot.'),
             ];
         } else if (isIOS) {
             return [
-                'Open Deriv Bot in your browser.',
-                'Tap the share icon (for iOS Safari)',
-                'Select "Add to Home screen".',
+                localize('Open Deriv Bot in your browser.'),
+                localize('Tap the share icon (for iOS Safari)'),
+                localize('Select "Add to Home screen".'),
             ];
         } else if (isAndroid) {
             return [
-                'Open Deriv Bot in your browser.',
-                'Tap the menu (on Chrome) or share icon (for iOS Safari)',
-                'Select "Add to Home screen".',
+                localize('Open Deriv Bot in your browser.'),
+                localize('Tap the menu (on Chrome) or share icon (for iOS Safari)'),
+                localize('Select "Add to Home screen".'),
             ];
         } else {
             return [
-                'Open Deriv Bot in your browser.',
-                'Tap the menu (on Chrome) or share icon (for iOS Safari)',
-                'Select "Add to Home screen".',
+                localize('Open Deriv Bot in your browser.'),
+                localize('Tap the menu (on Chrome) or share icon (for iOS Safari)'),
+                localize('Select "Add to Home screen".'),
             ];
         }
     };
@@ -114,16 +115,18 @@ const PWAInstallModal: React.FC = () => {
             <div className='pwa-install-modal__description'>
                 <Text size='xs' color='prominent'>
                     {isPWALaunch
-                        ? "Welcome to Deriv Bot! You're using the mobile app version."
+                        ? localize("Welcome to Deriv Bot! You're using the mobile app version.")
                         : isDesktop
-                          ? 'Install Deriv Bot as a desktop app for faster access and a native experience!'
-                          : "We're excited to announce that Deriv Bot platform is now a Progressive Web App (PWA)!"}
+                          ? localize('Install Deriv Bot as a desktop app for faster access and a native experience!')
+                          : localize(
+                                "We're excited to announce that Deriv Bot platform is now a Progressive Web App (PWA)!"
+                            )}
                 </Text>
             </div>
 
             <div className='pwa-install-modal__instructions'>
                 <Text size='xs' color='prominent'>
-                    How to install:
+                    {localize('How to install:')}
                 </Text>
 
                 <ul className='pwa-install-modal__steps'>
@@ -140,10 +143,12 @@ const PWAInstallModal: React.FC = () => {
             <div className='pwa-install-modal__footer-text'>
                 <Text size='xs' color='prominent'>
                     {isPWALaunch
-                        ? 'Enjoy the full mobile app experience with offline capabilities and quick access.'
+                        ? localize('Enjoy the full mobile app experience with offline capabilities and quick access.')
                         : isDesktop
-                          ? 'Get instant access from your desktop, work offline, and enjoy a faster, app-like experience.'
-                          : 'Try it now for a quick and seamless experience, just like a native app.'}
+                          ? localize(
+                                'Get instant access from your desktop, work offline, and enjoy a faster, app-like experience.'
+                            )
+                          : localize('Try it now for a quick and seamless experience, just like a native app.')}
                 </Text>
             </div>
         </div>
@@ -157,7 +162,7 @@ const PWAInstallModal: React.FC = () => {
                 type='button'
             >
                 <Text size='xs' weight='bold' color='colored-background'>
-                    {isDesktop ? 'Install Now' : 'Got it'}
+                    {isDesktop ? localize('Install Now') : localize('Got it')}
                 </Text>
             </button>
             <button
@@ -166,7 +171,7 @@ const PWAInstallModal: React.FC = () => {
                 type='button'
             >
                 <Text size='xs' weight='bold' color='general'>
-                    Maybe Later
+                    {localize('Maybe Later')}
                 </Text>
             </button>
         </div>
@@ -180,7 +185,7 @@ const PWAInstallModal: React.FC = () => {
     const modalContent = isMobile ? (
         <MobileFullPageModal
             is_modal_open={isOpen}
-            page_header_text='Install Deriv Bot'
+            page_header_text={localize('Install Deriv Bot')}
             pageHeaderReturnFn={handleClose}
             renderPageFooterChildren={() => renderFooterButton()}
             className='pwa-install-modal'
@@ -192,7 +197,7 @@ const PWAInstallModal: React.FC = () => {
         <Modal
             is_open={isOpen}
             toggleModal={handleClose}
-            title={isDesktop ? 'Install Deriv Bot' : 'Introducing our installable app'}
+            title={isDesktop ? localize('Install Deriv Bot') : localize('Introducing our installable app')}
             has_close_icon={true}
             is_title_centered={false}
             className='pwa-install-modal'
