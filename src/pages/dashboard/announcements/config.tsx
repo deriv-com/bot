@@ -267,7 +267,7 @@ export const BUTTON_ACTION_TYPE = {
     NO_ACTION: 'no_action',
 };
 
-export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
+const ALL_ANNOUNCEMENTS: TAnnouncementItem[] = [
     {
         id: 'PWA_INSTALL_ANNOUNCE',
         icon: IconAnnounce,
@@ -314,3 +314,16 @@ export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
         actionText: '',
     },
 ];
+
+// Export all announcements without filtering - filtering will be done at runtime
+export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = ALL_ANNOUNCEMENTS;
+
+// Helper function to get filtered announcements based on current PWA state
+export const getFilteredAnnouncements = (isInPWAMode: boolean = false): TAnnouncementItem[] => {
+    return ALL_ANNOUNCEMENTS.filter(announcement => {
+        if (announcement.id === 'PWA_INSTALL_ANNOUNCE' && isInPWAMode) {
+            return false; // Hide PWA install announcement when app is already in PWA mode
+        }
+        return true;
+    });
+};
