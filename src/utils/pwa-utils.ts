@@ -51,15 +51,18 @@ class PWAManager {
             return null;
         }
 
-        // Don't register service worker on Firefox or Safari due to chunk loading issues
-        if (isFirefox() || isSafari()) {
-            const browser = isFirefox() ? 'Firefox' : 'Safari';
-            console.log(`[PWA] Service worker disabled on ${browser} to prevent chunk loading and login issues`);
+        // Only enable PWA service workers on Chrome browsers
+        const isChrome = /Chrome/.test(navigator.userAgent) && !isFirefox() && !isSafari();
+        if (!isChrome) {
+            const browser = isFirefox() ? 'Firefox' : isSafari() ? 'Safari' : 'Unknown';
+            console.log(
+                `[PWA] Service worker disabled on ${browser} - PWA only supported on Chrome to prevent chunk loading and login issues`
+            );
             return null;
         }
 
-        // Register service worker for Chrome and other compatible browsers
-        console.log('[PWA] Registering service worker for offline capabilities');
+        // Register service worker for Chrome only
+        console.log('[PWA] Registering service worker for Chrome browser offline capabilities');
 
         try {
             const registration = await navigator.serviceWorker.register('/sw.js', {
@@ -272,7 +275,8 @@ export const onPWAInstallStateChange = (callback: (canInstall: boolean) => void)
 export const onPWAUpdateAvailable = (callback: () => void) => pwaManager.onUpdateAvailable(callback);
 export const updatePWA = () => pwaManager.updateApp();
 export const isSafariDesktopBrowser = () => isSafari() && window.innerWidth > 768;
-export const isUnsupportedPWABrowser = () => (isSafari() && window.innerWidth > 768) || isFirefox();
+export const isUnsupportedPWABrowser = () => !(/Chrome/.test(navigator.userAgent) && !isFirefox() && !isSafari());
+export const isChromeOnlyPWA = () => /Chrome/.test(navigator.userAgent) && !isFirefox() && !isSafari();
 
 // Mobile source detection utilities
 export const isMobileSource = (): boolean => {
@@ -340,18 +344,14 @@ export const shouldShowPWAModal = (): boolean => {
         return false;
     }
 
+    // Only show PWA modal on Chrome browsers
+    const isChrome = /Chrome/.test(navigator.userAgent) && !isFirefox() && !isSafari();
+    if (!isChrome) {
+        return false;
+    }
+
     // Don't show on mobile (only desktop)
     if (pwaManager.isMobile()) {
-        return false;
-    }
-
-    // Don't show on Safari Desktop (Safari doesn't support PWA installation)
-    if (isSafari() && window.innerWidth > 768) {
-        return false;
-    }
-
-    // Don't show on Firefox (Firefox has limited PWA support)
-    if (isFirefox()) {
         return false;
     }
 
