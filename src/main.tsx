@@ -20,17 +20,19 @@ if (mobileSourceInfo.isPWALaunch) {
     });
 }
 
-// Register PWA service worker (automatically skips Firefox)
+// Register PWA service worker (Chrome only - skips Safari and Firefox)
 registerPWA()
     .then(registration => {
         if (registration) {
             trackPWAEvent('service_worker_registered', {
                 scope: registration.scope,
                 source: mobileSourceInfo.isMobileSource ? 'mobile' : 'web',
+                browser: 'chrome',
             });
         } else {
-            trackPWAEvent('service_worker_not_supported_or_firefox', {
+            trackPWAEvent('service_worker_disabled_non_chrome', {
                 source: mobileSourceInfo.isMobileSource ? 'mobile' : 'web',
+                userAgent: navigator.userAgent,
             });
         }
     })
