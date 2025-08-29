@@ -399,20 +399,4 @@ export const markPWAModalDismissed = (): void => {
     });
 };
 
-// Analytics helper
-export const trackPWAEvent = (event: string, data?: Record<string, any>) => {
-    const mobileSourceInfo = getMobileSourceInfo();
-
-    if (typeof window !== 'undefined' && (window as any).dataLayer) {
-        (window as any).dataLayer.push({
-            event: 'pwa_event',
-            pwa_event_name: event,
-            pwa_event_data: {
-                ...data,
-                ...mobileSourceInfo,
-            },
-        });
-    }
-};
-
 export default pwaManager;

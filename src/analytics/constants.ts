@@ -20,6 +20,7 @@ export enum ACTION {
     SWITCH_LOAD_STRATEGY_TAB = 'switch_load_strategy_tab',
     ANNOUNCEMENT_CLICK = 'announcement_click',
     ANNOUNCEMENT_ACTION = 'announcement_action',
+    PWA_INSTALL = 'pwa_install',
 }
 
 export type TFormStrategy = {

@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-    BeforeInstallPromptEvent,
-    getMobileSourceInfo,
-    PWAInstallState,
-    pwaManager,
-    trackPWAEvent,
-} from '@/utils/pwa-utils';
+import { BeforeInstallPromptEvent, getMobileSourceInfo, PWAInstallState, pwaManager } from '@/utils/pwa-utils';
 
 export interface UsePWAReturn {
     // Install state
@@ -44,9 +38,8 @@ export const usePWA = (): UsePWAReturn => {
 
     // Update install state when it changes
     useEffect(() => {
-        const unsubscribe = pwaManager.onInstallStateChange(canInstall => {
+        const unsubscribe = pwaManager.onInstallStateChange(() => {
             setInstallState(pwaManager.getInstallState());
-            trackPWAEvent('install_state_changed', { canInstall });
         });
 
         return unsubscribe;
@@ -56,7 +49,6 @@ export const usePWA = (): UsePWAReturn => {
     useEffect(() => {
         const unsubscribe = pwaManager.onUpdateAvailable(() => {
             setUpdateAvailable(true);
-            trackPWAEvent('update_available');
         });
 
         return unsubscribe;
@@ -64,35 +56,17 @@ export const usePWA = (): UsePWAReturn => {
 
     // Install the PWA
     const install = useCallback(async (): Promise<boolean> => {
-        trackPWAEvent('install_attempted');
-
         try {
             const result = await pwaManager.showInstallPrompt();
-
-            if (result) {
-                trackPWAEvent('install_accepted');
-            } else {
-                trackPWAEvent('install_dismissed');
-            }
-
             return result;
         } catch (error) {
-            trackPWAEvent('install_error', { error: error instanceof Error ? error.message : String(error) });
             return false;
         }
     }, []);
 
     // Update the app
     const updateApp = useCallback(async (): Promise<void> => {
-        trackPWAEvent('update_initiated');
-
-        try {
-            await pwaManager.updateApp();
-            trackPWAEvent('update_completed');
-        } catch (error) {
-            trackPWAEvent('update_error', { error: error instanceof Error ? error.message : String(error) });
-            throw error;
-        }
+        await pwaManager.updateApp();
     }, []);
 
     // Get install instructions
@@ -162,10 +136,6 @@ export const usePWAInstallPrompt = (options?: {
             if (engagementTime >= minEngagement) {
                 promptTimer = setTimeout(() => {
                     setShowPrompt(true);
-                    trackPWAEvent('auto_prompt_shown', {
-                        engagementTime,
-                        promptCount: promptCount + 1,
-                    });
                 }, delay);
             }
         };
@@ -189,7 +159,6 @@ export const usePWAInstallPrompt = (options?: {
     const dismissPrompt = useCallback(() => {
         setShowPrompt(false);
         setPromptCount(prev => prev + 1);
-        trackPWAEvent('auto_prompt_dismissed', { promptCount: promptCount + 1 });
     }, [promptCount]);
 
     return {
@@ -229,7 +198,6 @@ export const usePWAUpdate = () => {
 
     const dismissUpdate = useCallback(() => {
         setShowUpdatePrompt(false);
-        trackPWAEvent('update_prompt_dismissed');
     }, []);
 
     return {

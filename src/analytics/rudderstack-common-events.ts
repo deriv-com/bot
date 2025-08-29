@@ -106,3 +106,11 @@ export const rudderStackSendGoogleDriveDisconnectEvent = () => {
         subpage_name: 'bot_builder',
     });
 };
+
+export const rudderStackSendPWAInstallEvent = () => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.PWA_INSTALL,
+        form_name,
+        subpage_name: 'dashboard',
+    });
+};
