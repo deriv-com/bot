@@ -5,6 +5,7 @@ import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { Localize, localize } from '@deriv-com/translations';
 import { rudderStackSendOpenEvent, rudderStackSendPWAInstallEvent } from '../../../analytics/rudderstack-common-events';
+import { showInstallPrompt } from '../../../utils/pwa-utils';
 import { handleOnConfirmAccumulator } from './utils/accumulator-helper-functions';
 import { IconAnnounce } from './announcement-components';
 
@@ -213,7 +214,8 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'PWA_INSTALL_ANNOUNCE',
             main_title: localize('Install Deriv Bot as an App'),
             confirm_button_text: localize('Install Now'),
-            base_classname: 'announcement-dialog',
+            cancel_button_text: localize('Maybe later'),
+            base_classname: 'announcement-dialog announcement-dialog--pwa',
             title: (
                 <Localize i18n_default_text='<0>Get the full app experience</0>' components={[<strong key={0} />]} />
             ),
@@ -237,8 +239,8 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
         should_not_be_cancel: false,
         onConfirm: () => {
             rudderStackSendPWAInstallEvent();
-            // Trigger PWA install modal directly
-            window.dispatchEvent(new CustomEvent('showPWAInstallModal'));
+            // Trigger actual PWA install prompt
+            showInstallPrompt();
         },
     },
 };
