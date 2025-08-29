@@ -275,7 +275,7 @@ export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
         title: localize('Install Deriv Bot as an App'),
         message: localize('Get faster access and better performance by installing Deriv Bot on your device.'),
         date: '29 August 2025 00:00 UTC',
-        buttonAction: BUTTON_ACTION_TYPE.NO_ACTION,
+        buttonAction: BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION,
         actionText: '',
     },
     {
