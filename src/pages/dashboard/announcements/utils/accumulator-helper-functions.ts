@@ -1,4 +1,6 @@
 import { load, save_types } from '@/external/bot-skeleton';
+import { rudderStackSendPWAInstallEvent } from '../../../analytics/rudderstack-common-events';
+import { rudderStackSendAnnouncementClickEvent } from '../../../analytics/rudderstack-dashboard';
 import { ANNOUNCEMENTS, BUTTON_ACTION_TYPE, TAnnouncement, TAnnouncementItem } from '../config';
 
 export const handleOnConfirmAccumulator = () => {
@@ -53,6 +55,14 @@ export const performButtonAction = (
             // Special handling for PWA announcement - show PWA modal directly and close announcement panel
             if (item.id === 'PWA_INSTALL_ANNOUNCE') {
                 return () => {
+                    // Send announcement click tracking event
+                    rudderStackSendAnnouncementClickEvent({
+                        announcement_name: ANNOUNCEMENTS[item.id].announcement.main_title,
+                    });
+
+                    // Send PWA install event
+                    rudderStackSendPWAInstallEvent();
+
                     // Mark as read
                     let data: Record<string, boolean> | null = null;
                     data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
