@@ -111,6 +111,7 @@ export const rudderStackSendPWAInstallEvent = () => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.PWA_INSTALL,
         form_name,
-        subpage_name: 'dashboard',
+        subform_name: 'announcements',
+        subform_source: 'dashboard',
     });
 };
