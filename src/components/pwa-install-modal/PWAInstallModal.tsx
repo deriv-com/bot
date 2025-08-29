@@ -5,14 +5,14 @@ import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
 import { usePWA } from '@/hooks/usePWA';
 //shouldShowPWAModal
-import { markPWAModalDismissed, markPWAModalShown, trackPWAEvent } from '@/utils/pwa-utils';
+import { markPWAModalDismissed, markPWAModalShown } from '@/utils/pwa-utils';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import './PWAInstallModal.scss';
 
 const PWAInstallModal: React.FC = () => {
     //canInstall
-    const { install, isIOS, isAndroid, isMobileSource, isPWALaunch } = usePWA();
+    const { install, isIOS, isAndroid, isPWALaunch } = usePWA();
     const { isMobile, isDesktop } = useDevice();
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -37,9 +37,6 @@ const PWAInstallModal: React.FC = () => {
         const handleShowPWAModal = () => {
             setIsOpen(true);
             markPWAModalShown();
-            trackPWAEvent('modal_triggered', {
-                trigger: 'announcement_click',
-            });
         };
 
         window.addEventListener('showPWAInstallModal', handleShowPWAModal);
@@ -49,36 +46,18 @@ const PWAInstallModal: React.FC = () => {
     }, []);
 
     const handleInstall = async () => {
-        trackPWAEvent('modal_install_clicked', {
-            source: isMobileSource ? 'mobile' : 'web',
-            isPWALaunch,
-        });
-
         try {
             const success = await install();
             if (success) {
-                trackPWAEvent('modal_install_success', {
-                    source: isMobileSource ? 'mobile' : 'web',
-                    isPWALaunch,
-                });
                 setIsOpen(false);
             }
         } catch (error) {
             console.error('Install failed:', error);
-            trackPWAEvent('modal_install_failed', {
-                error: error instanceof Error ? error.message : String(error),
-                source: isMobileSource ? 'mobile' : 'web',
-                isPWALaunch,
-            });
         }
     };
 
     const handleClose = () => {
         markPWAModalDismissed();
-        trackPWAEvent('modal_dismissed', {
-            source: isMobileSource ? 'mobile' : 'web',
-            isPWALaunch,
-        });
         setIsOpen(false);
     };
 

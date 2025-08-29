@@ -1,6 +1,5 @@
 import React from 'react';
 import { usePWAUpdate } from '@/hooks/usePWA';
-import { trackPWAEvent } from '@/utils/pwa-utils';
 import './PWAUpdateNotification.scss';
 
 export interface PWAUpdateNotificationProps {
@@ -24,7 +23,6 @@ export const PWAUpdateNotification: React.FC<PWAUpdateNotificationProps> = ({
         if (showUpdatePrompt && autoHide) {
             const timer = setTimeout(() => {
                 dismissUpdate();
-                trackPWAEvent('update_notification_auto_dismissed');
             }, autoHideDelay);
 
             return () => clearTimeout(timer);
@@ -33,22 +31,17 @@ export const PWAUpdateNotification: React.FC<PWAUpdateNotificationProps> = ({
 
     const handleUpdateClick = async () => {
         setIsUpdating(true);
-        trackPWAEvent('update_notification_accepted');
 
         try {
             await handleUpdate();
         } catch (error) {
             console.error('Update failed:', error);
             setIsUpdating(false);
-            trackPWAEvent('update_notification_failed', {
-                error: error instanceof Error ? error.message : String(error),
-            });
         }
     };
 
     const handleDismissClick = () => {
         dismissUpdate();
-        trackPWAEvent('update_notification_dismissed');
     };
 
     if (!showUpdatePrompt) {
