@@ -433,7 +433,13 @@ function isStaticAsset(pathname) {
     );
 }
 
+// [AI]
 function isAuthRequest(url) {
+    // Helper function to check if hostname is allowed domain or subdomain
+    function isAllowedDomain(hostname, allowedDomain) {
+        return hostname === allowedDomain || hostname.endsWith('.' + allowedDomain);
+    }
+
     // Skip all authentication-related requests
     return (
         // OAuth/OIDC endpoints
@@ -444,17 +450,17 @@ function isAuthRequest(url) {
         url.pathname.includes('/token') ||
         url.pathname.includes('/authorize') ||
         url.pathname.includes('/callback') ||
-        // Deriv-specific auth endpoints
-        url.hostname.includes('oauth.deriv.com') ||
-        url.hostname.includes('auth.deriv.com') ||
-        url.hostname.includes('accounts.deriv.com') ||
-        // Third-party auth providers
-        url.hostname.includes('google.com') ||
-        url.hostname.includes('googleapis.com') ||
-        url.hostname.includes('facebook.com') ||
-        url.hostname.includes('apple.com') ||
-        url.hostname.includes('microsoft.com') ||
-        url.hostname.includes('live.com') ||
+        // Deriv-specific auth endpoints (using secure domain validation)
+        isAllowedDomain(url.hostname, 'oauth.deriv.com') ||
+        isAllowedDomain(url.hostname, 'auth.deriv.com') ||
+        isAllowedDomain(url.hostname, 'accounts.deriv.com') ||
+        // Third-party auth providers (using secure domain validation)
+        isAllowedDomain(url.hostname, 'google.com') ||
+        isAllowedDomain(url.hostname, 'googleapis.com') ||
+        isAllowedDomain(url.hostname, 'facebook.com') ||
+        isAllowedDomain(url.hostname, 'apple.com') ||
+        isAllowedDomain(url.hostname, 'microsoft.com') ||
+        isAllowedDomain(url.hostname, 'live.com') ||
         // Auth-related query parameters
         url.search.includes('code=') ||
         url.search.includes('state=') ||
@@ -463,21 +469,28 @@ function isAuthRequest(url) {
         url.search.includes('id_token=')
     );
 }
+// [/AI]
 
+// [AI]
 function isApiRequest(url) {
+    // Helper function to check if hostname is allowed domain or subdomain
+    function isAllowedDomain(hostname, allowedDomain) {
+        return hostname === allowedDomain || hostname.endsWith('.' + allowedDomain);
+    }
+
     return (
         url.pathname.startsWith('/api/') ||
         url.pathname.startsWith('/v1/') ||
         url.pathname.startsWith('/v2/') ||
-        url.hostname.includes('deriv.com') ||
-        url.hostname.includes('deriv.me') ||
-        url.hostname.includes('binary.com') ||
-        url.hostname.includes('api.') ||
+        isAllowedDomain(url.hostname, 'deriv.com') ||
+        isAllowedDomain(url.hostname, 'deriv.me') ||
+        isAllowedDomain(url.hostname, 'binary.com') ||
+        url.hostname.startsWith('api.') ||
         // WebSocket connections
         url.protocol === 'ws:' ||
         url.protocol === 'wss:' ||
         // Real-time data endpoints
-        url.hostname.includes('ws.') ||
+        url.hostname.startsWith('ws.') ||
         url.hostname.includes('websocket') ||
         // Analytics and tracking (let them fail naturally rather than cache)
         url.hostname.includes('analytics') ||
@@ -485,6 +498,7 @@ function isApiRequest(url) {
         url.hostname.includes('metrics')
     );
 }
+// [/AI]
 
 // Handle messages from main thread
 self.addEventListener('message', event => {
