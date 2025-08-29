@@ -116,7 +116,8 @@
     &__body-icon {
         &--accumulator_announce,
         &--moving_strategies_announce,
-        &--blockly_announce {
+        &--blockly_announce,
+        &--pwa_install_announce {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -131,6 +132,22 @@
         &--accumulator_announce {
             border-radius: 0.8rem;
             background-color: var(--general-section-1);
+        }
+
+        &--pwa_install_announce {
+            border-radius: 0.8rem;
+            background-color: var(--general-section-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 2rem;
+
+            // Add PWA icon styling if needed
+            svg {
+                width: 6rem;
+                height: 6rem;
+            }
         }
     }
 
@@ -180,6 +197,26 @@
 
         &--accumulator_announce {
             text-align: center;
+        }
+
+        &--pwa_install_announce {
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-prominent);
+        }
+    }
+
+    // PWA announcement specific styling
+    &--pwa {
+        .dc-dialog__footer {
+            .dc-btn--primary {
+                background-color: var(--status-danger) !important;
+                border-color: var(--status-danger) !important;
+
+                .dc-btn__text {
+                    color: var(--text-colored-background) !important;
+                }
+            }
         }
     }
 }
