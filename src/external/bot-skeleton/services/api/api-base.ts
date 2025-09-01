@@ -89,12 +89,7 @@ class APIBase {
             this.unsubscribeAllSubscriptions();
         }
 
-        if (
-            !this.api ||
-            this.api?.connection.readyState !== 1 ||
-            force_create_connection ||
-            this.api?.connection.readyState !== 0
-        ) {
+        if (!this.api || this.api?.connection.readyState !== 1 || force_create_connection) {
             if (this.api?.connection) {
                 ApiHelpers.disposeInstance();
                 setConnectionStatus(CONNECTION_STATUS.CLOSED);
