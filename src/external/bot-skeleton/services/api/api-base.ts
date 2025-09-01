@@ -89,7 +89,12 @@ class APIBase {
             this.unsubscribeAllSubscriptions();
         }
 
-        if (!this.api || this.api?.connection.readyState !== 1 || force_create_connection) {
+        if (
+            !this.api ||
+            this.api?.connection.readyState !== 1 ||
+            force_create_connection ||
+            this.api?.connection.readyState !== 0
+        ) {
             if (this.api?.connection) {
                 ApiHelpers.disposeInstance();
                 setConnectionStatus(CONNECTION_STATUS.CLOSED);
@@ -97,7 +102,7 @@ class APIBase {
                 this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
                 this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
             }
-            console.log('generateDerivApiInstance');
+
             this.api = generateDerivApiInstance();
             this.api?.connection.addEventListener('open', this.onsocketopen.bind(this));
             this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));

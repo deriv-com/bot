@@ -61,7 +61,6 @@ const CallbackPage = () => {
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 let is_token_set = false;
-                console.log('generateDerivApiInstance');
 
                 const api = await generateDerivApiInstance();
                 if (api) {
