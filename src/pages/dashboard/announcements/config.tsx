@@ -4,7 +4,7 @@ import OpenLiveChatLink from '@/components/shared_ui/open-livechat-link';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { Localize, localize } from '@deriv-com/translations';
-import { rudderStackSendOpenEvent, rudderStackSendPWAInstallEvent } from '../../../analytics/rudderstack-common-events';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import { showInstallPrompt } from '../../../utils/pwa-utils';
 import { handleOnConfirmAccumulator } from './utils/accumulator-helper-functions';
 import { IconAnnounce } from './announcement-components';
@@ -238,7 +238,6 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
         },
         should_not_be_cancel: false,
         onConfirm: () => {
-            rudderStackSendPWAInstallEvent();
             // Trigger actual PWA install prompt
             showInstallPrompt();
         },
