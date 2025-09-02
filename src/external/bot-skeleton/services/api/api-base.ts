@@ -159,10 +159,12 @@ class APIBase {
     async authorizeAndSubscribe() {
         const token = V2GetActiveToken();
         if (!token || !this.api) return;
-
+        // [AI]
         this.token = token;
         this.account_id = V2GetActiveClientId() ?? '';
         setIsAuthorizing(true);
+        setIsAuthorized(false);
+        // [AI]
 
         try {
             const { authorize, error } = await this.api.authorize(this.token);
