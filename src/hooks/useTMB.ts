@@ -419,23 +419,43 @@ const useTMB = (): UseTMBReturn => {
                             }
                         }
 
-                        if (selectedToken.loginid && selectedToken.token) {
-                            localStorage.setItem('authToken', selectedToken.token);
-                            localStorage.setItem('active_loginid', selectedToken.loginid);
+                        // Function to handle token authentication
+                        const authenticateToken = (token: TokenItem) => {
+                            if (!token.loginid || !token.token) return;
 
-                            authTokenRef.current = selectedToken.token;
+                            localStorage.setItem('authToken', token.token);
+                            localStorage.setItem('active_loginid', token.loginid);
+
+                            authTokenRef.current = token.token;
 
                             if (api_base) {
                                 api_base.init(true).then(() => {
-                                    if (selectedToken.loginid) {
-                                        setAuthData({
-                                            loginid: selectedToken.loginid,
-                                            currency: selectedToken.cur || '',
-                                            token: selectedToken.token,
-                                        } as TAuthData & { token: string });
-                                    }
+                                    setAuthData({
+                                        loginid: token.loginid,
+                                        currency: token.cur || '',
+                                        token: token.token,
+                                    } as TAuthData & { token: string });
                                 });
                             }
+                        };
+
+                        // Check if we need to authenticate the token
+                        const client_accounts = localStorage.getItem('clientAccounts');
+
+                        if (client_accounts && selectedToken.loginid) {
+                            try {
+                                const parsed_client_accounts = JSON.parse(client_accounts);
+
+                                // Only authenticate if the loginid is not already in client accounts
+                                if (!(selectedToken.loginid in parsed_client_accounts) && selectedToken.token) {
+                                    authenticateToken(selectedToken);
+                                }
+                            } catch (e) {
+                                console.error('Failed to parse clientAccounts:', e);
+                            }
+                        } else if (selectedToken.loginid && selectedToken.token) {
+                            // No client accounts or invalid JSON, proceed with authentication
+                            authenticateToken(selectedToken);
                         }
                     }
 
