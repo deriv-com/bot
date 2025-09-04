@@ -430,11 +430,13 @@ const useTMB = (): UseTMBReturn => {
 
                             if (api_base) {
                                 api_base.init(true).then(() => {
-                                    setAuthData({
-                                        loginid: token.loginid,
-                                        currency: token.cur || '',
-                                        token: token.token,
-                                    } as TAuthData & { token: string });
+                                    if (token.loginid) {
+                                        setAuthData({
+                                            loginid: selectedToken.loginid,
+                                            currency: selectedToken.cur || '',
+                                            token: selectedToken.token,
+                                        } as TAuthData & { token: string });
+                                    }
                                 });
                             }
                         };
