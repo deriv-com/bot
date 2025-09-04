@@ -419,45 +419,31 @@ const useTMB = (): UseTMBReturn => {
                             }
                         }
 
-                        // Function to handle token authentication
-                        const authenticateToken = (token: TokenItem) => {
-                            if (!token.loginid || !token.token) return;
+                        const currentActiveLoginid = localStorage.getItem('active_loginid');
+                        const currentActiveToken = localStorage.getItem('authToken');
 
-                            localStorage.setItem('authToken', token.token);
-                            localStorage.setItem('active_loginid', token.loginid);
+                        if (
+                            currentActiveLoginid !== selectedToken?.loginid ||
+                            currentActiveToken !== selectedToken?.token
+                        ) {
+                            if (selectedToken.loginid && selectedToken.token) {
+                                localStorage.setItem('authToken', selectedToken.token);
+                                localStorage.setItem('active_loginid', selectedToken.loginid);
 
-                            authTokenRef.current = token.token;
+                                authTokenRef.current = selectedToken.token;
 
-                            if (api_base) {
-                                api_base.init(true).then(() => {
-                                    if (token.loginid) {
-                                        setAuthData({
-                                            loginid: selectedToken.loginid,
-                                            currency: selectedToken.cur || '',
-                                            token: selectedToken.token,
-                                        } as TAuthData & { token: string });
-                                    }
-                                });
-                            }
-                        };
-
-                        // Check if we need to authenticate the token
-                        const client_accounts = localStorage.getItem('clientAccounts');
-
-                        if (client_accounts && selectedToken.loginid) {
-                            try {
-                                const parsed_client_accounts = JSON.parse(client_accounts);
-
-                                // Only authenticate if the loginid is not already in client accounts
-                                if (!(selectedToken.loginid in parsed_client_accounts) && selectedToken.token) {
-                                    authenticateToken(selectedToken);
+                                if (api_base) {
+                                    api_base.init(true).then(() => {
+                                        if (selectedToken.loginid) {
+                                            setAuthData({
+                                                loginid: selectedToken.loginid,
+                                                currency: selectedToken.cur || '',
+                                                token: selectedToken.token,
+                                            } as TAuthData & { token: string });
+                                        }
+                                    });
                                 }
-                            } catch (e) {
-                                console.error('Failed to parse clientAccounts:', e);
                             }
-                        } else if (selectedToken.loginid && selectedToken.token) {
-                            // No client accounts or invalid JSON, proceed with authentication
-                            authenticateToken(selectedToken);
                         }
                     }
 
