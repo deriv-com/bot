@@ -419,12 +419,7 @@ const useTMB = (): UseTMBReturn => {
                             }
                         }
 
-                        if (
-                            selectedToken.loginid &&
-                            selectedToken.token &&
-                            !localStorage.getItem('authToken') &&
-                            !localStorage.getItem('active_loginid')
-                        ) {
+                        if (selectedToken.loginid && selectedToken.token) {
                             localStorage.setItem('authToken', selectedToken.token);
                             localStorage.setItem('active_loginid', selectedToken.loginid);
 
