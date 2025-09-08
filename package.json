@@ -92,7 +92,7 @@
         "@babel/preset-typescript": "^7.24.1",
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
-        "@deriv-com/shiftai-cli": "^1.0.7",
+        "@deriv-com/shiftai-cli": "^1.0.2",
         "@deriv/api-types": "^1.0.2463",
         "@jest/globals": "^29.7.0",
         "@rsbuild/core": "^1.0.1-beta.1",
