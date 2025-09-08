@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import ContractResultOverlay from '@/components/contract-result-overlay';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { contract_stages } from '@/constants/contract-stage';
+import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import { LabelPairedPlayLgFillIcon, LabelPairedSquareLgFillIcon } from '@deriv/quill-icons/LabelPaired';
 import { Localize, localize } from '@deriv-com/translations';
@@ -40,13 +41,14 @@ const TradeAnimation = observer(({ className, should_show_overlay }: TTradeAnima
     const cashier_validation = account_status?.cashier_validation;
     const [shouldDisable, setShouldDisable] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
+    const { isAuthorizing, isAuthorized } = useApiBase();
 
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
-        if (!client.loginid || !client.is_logged_in) return;
+        if (!client.loginid || !client.is_logged_in || isAuthorizing || !isAuthorized) return;
         performSelfExclusionCheck();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [isAuthorizing, isAuthorized]);
 
     // Get the load_modal store to monitor strategy deletions
     const { load_modal } = useStore();

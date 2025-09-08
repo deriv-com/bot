@@ -97,6 +97,7 @@ class APIBase {
                 this.api.connection.removeEventListener('open', this.onsocketopen.bind(this));
                 this.api.connection.removeEventListener('close', this.onsocketclose.bind(this));
             }
+
             this.api = generateDerivApiInstance();
             this.api?.connection.addEventListener('open', this.onsocketopen.bind(this));
             this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
@@ -158,10 +159,10 @@ class APIBase {
     async authorizeAndSubscribe() {
         const token = V2GetActiveToken();
         if (!token || !this.api) return;
-
         this.token = token;
         this.account_id = V2GetActiveClientId() ?? '';
         setIsAuthorizing(true);
+        setIsAuthorized(false);
 
         try {
             const { authorize, error } = await this.api.authorize(this.token);
