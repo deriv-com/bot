@@ -401,6 +401,8 @@ const useTMB = (): UseTMBReturn => {
                         const accountParam = getAccountFromURL();
 
                         let selectedToken = activeSessions.tokens[0];
+                        const sessionStorageCurrency = sessionStorage.getItem('query_param_currency');
+
                         if (accountParam) {
                             if (accountParam === 'demo') {
                                 const demoToken = activeSessions.tokens.find(
@@ -416,6 +418,13 @@ const useTMB = (): UseTMBReturn => {
                                 if (matchingToken) {
                                     selectedToken = matchingToken;
                                 }
+                            }
+                        } else if (sessionStorageCurrency) {
+                            const matchingToken = activeSessions.tokens.find(
+                                (token: TokenItem) => token.cur === sessionStorageCurrency
+                            );
+                            if (matchingToken) {
+                                selectedToken = matchingToken;
                             }
                         }
 
