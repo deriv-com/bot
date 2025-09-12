@@ -18,6 +18,7 @@ import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import ThemedScrollbars from '../shared_ui/themed-scrollbars';
+import usePWA from '@/hooks/usePWA';
 
 type TStatisticsTile = {
     content: React.ElementType | string;
@@ -180,9 +181,10 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
     </div>
 );
 
-const MobileDrawerFooter = () => {
+const MobileDrawerFooter = ({ isPWALaunch, isIOS }: { isPWALaunch: boolean; isIOS: boolean }) => {
+    console.log('isPWALaunch', isPWALaunch);
     return (
-        <div className='controls__section'>
+        <div className={classNames('controls__section', { 'controls__section--ios-pwa': isIOS && isPWALaunch })}>
             <div className='controls__buttons'>
                 <TradeAnimation className='controls__animation' should_show_overlay />
             </div>
@@ -314,6 +316,8 @@ const RunPanel = observer(() => {
     const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || active_tour;
     if ((!show_run_panel && isDesktop) || active_tour === 'bot_builder') return null;
 
+    const { isPWALaunch, isIOS } = usePWA();
+
     return (
         <>
             <div className={!isDesktop && is_drawer_open ? 'run-panel__container--mobile' : 'run-panel'}>
@@ -333,7 +337,7 @@ const RunPanel = observer(() => {
                 >
                     {content}
                 </Drawer>
-                {!isDesktop && <MobileDrawerFooter />}
+                {!isDesktop && <MobileDrawerFooter isPWALaunch={isPWALaunch} isIOS={isIOS} />}
             </div>
             <SelfExclusion onRunButtonClick={onRunButtonClick} />
             <StatisticsInfoModal
