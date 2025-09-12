@@ -205,7 +205,7 @@
 
         /* Fix for iOS devices to respect safe area */
         @supports (-webkit-touch-callout: none) {
-            bottom: calc(env(safe-area-inset-bottom, 0) - 60px);
+            bottom: env(safe-area-inset-bottom, 0);
             padding-bottom: env(safe-area-inset-bottom, 0);
         }
 
