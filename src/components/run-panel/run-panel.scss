@@ -170,7 +170,7 @@
 
                 /* Fix for iOS devices to prevent tab content overlap with bottom controls */
                 @supports (-webkit-touch-callout: none) {
-                    bottom: calc(15.7rem + env(safe-area-inset-bottom, -20px));
+                    bottom: calc(15.7rem + env(safe-area-inset-bottom, 0));
                 }
             }
 
@@ -197,16 +197,16 @@
 
         flex-direction: column;
         position: fixed;
-        bottom: -100px;
+        bottom: 0;
         width: 100%;
-        background-color: red;
+        background-color: var(--general-main-1);
         border-top: solid 2px var(--general-section-1);
         z-index: 8;
 
         /* Fix for iOS devices to respect safe area */
         @supports (-webkit-touch-callout: none) {
-            bottom: calc(env(safe-area-inset-bottom, 0) + 20px);
-            padding-bottom: calc(env(safe-area-inset-bottom, 0) + 0px);
+            bottom: calc(env(safe-area-inset-bottom, 0) - 20px);
+            padding-bottom: env(safe-area-inset-bottom, 0);
         }
 
         /* Additional class for iOS detection via JS */
