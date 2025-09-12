@@ -14,6 +14,7 @@ import TradeAnimation from '@/components/trade-animation';
 import Transactions from '@/components/transactions';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { popover_zindex } from '@/constants/z-indexes';
+import usePWA from '@/hooks/usePWA';
 import { useStore } from '@/hooks/useStore';
 import { Localize, localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -180,9 +181,9 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
     </div>
 );
 
-const MobileDrawerFooter = () => {
+const MobileDrawerFooter = ({ isPWALaunch, isIOS }: { isPWALaunch: boolean; isIOS: boolean }) => {
     return (
-        <div className='controls__section'>
+        <div className={classNames('controls__section', { 'controls__section--ios-pwa': isIOS && isPWALaunch })}>
             <div className='controls__buttons'>
                 <TradeAnimation className='controls__animation' should_show_overlay />
             </div>
@@ -313,6 +314,7 @@ const RunPanel = observer(() => {
 
     const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || active_tour;
     if ((!show_run_panel && isDesktop) || active_tour === 'bot_builder') return null;
+    const { isPWALaunch, isIOS } = usePWA();
 
     return (
         <>
@@ -333,7 +335,7 @@ const RunPanel = observer(() => {
                 >
                     {content}
                 </Drawer>
-                {!isDesktop && <MobileDrawerFooter />}
+                {!isDesktop && <MobileDrawerFooter isPWALaunch={isPWALaunch} isIOS={isIOS} />}
             </div>
             <SelfExclusion onRunButtonClick={onRunButtonClick} />
             <StatisticsInfoModal
