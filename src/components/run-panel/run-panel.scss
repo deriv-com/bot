@@ -170,7 +170,7 @@
 
                 /* Fix for iOS devices to prevent tab content overlap with bottom controls */
                 @supports (-webkit-touch-callout: none) {
-                    bottom: calc(15.7rem + env(safe-area-inset-bottom, 0));
+                    bottom: calc(15.7rem + env(safe-area-inset-bottom, -20px));
                 }
             }
 
