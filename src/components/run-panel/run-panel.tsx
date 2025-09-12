@@ -181,7 +181,8 @@ const DrawerFooter = ({ is_clear_stat_disabled, onClearStatClick }: TDrawerFoote
     </div>
 );
 
-const MobileDrawerFooter = ({ isPWALaunch, isIOS }: { isPWALaunch: boolean; isIOS: boolean }) => {
+const MobileDrawerFooter = () => {
+    const { isPWALaunch, isIOS } = usePWA();
     return (
         <div className={classNames('controls__section', { 'controls__section--ios-pwa': isIOS && isPWALaunch })}>
             <div className='controls__buttons'>
@@ -314,7 +315,7 @@ const RunPanel = observer(() => {
 
     const show_run_panel = [BOT_BUILDER, CHART].includes(active_tab) || active_tour;
     if ((!show_run_panel && isDesktop) || active_tour === 'bot_builder') return null;
-    const { isPWALaunch, isIOS } = usePWA();
+    // const { isPWALaunch, isIOS } = usePWA();
 
     return (
         <>
@@ -335,7 +336,7 @@ const RunPanel = observer(() => {
                 >
                     {content}
                 </Drawer>
-                {!isDesktop && <MobileDrawerFooter isPWALaunch={isPWALaunch} isIOS={isIOS} />}
+                {!isDesktop && <MobileDrawerFooter />}
             </div>
             <SelfExclusion onRunButtonClick={onRunButtonClick} />
             <StatisticsInfoModal
