@@ -57,7 +57,7 @@ const AccountSwitcherFooter = ({ loginid, residence, type }: TAccountSwitcherFoo
     }
 
     const is_virtual_tab = type === 'demo';
-
+    //cjecl
     return (
         <div className=''>
             <UIAccountSwitcher.TradersHubLink href={final_url_str}>
