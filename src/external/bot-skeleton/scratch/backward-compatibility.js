@@ -623,14 +623,14 @@ export default class BlockConversion {
                     if (field) {
                         if (field instanceof window.Blockly.FieldVariable) {
                             const variable_id = el_block_child.getAttribute('id');
-                            const variable_name = el_block_child.innerText.trim();
+                            const variable_name = el_block_child?.innerText?.trim();
                             const variable = window.Blockly.Variables.getOrCreateVariablePackage(
                                 this.workspace,
                                 variable_id,
                                 variable_name,
                                 ''
                             );
-                            this.workspace_variables[variable.id_] = variable_name;
+                            this.workspace_variables[variable.id_] = variable_name || variable.name;
                             field.setValue(variable.id_);
                         } else {
                             field.setValue(el_block_child.innerText);
