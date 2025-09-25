@@ -14,6 +14,7 @@ export const clearAuthData = (is_reload: boolean = true): void => {
     localStorage.removeItem('active_loginid');
     localStorage.removeItem('client.accounts');
     localStorage.removeItem('client.country');
+    sessionStorage.removeItem('query_param_currency');
     if (is_reload) {
         location.reload();
     }
