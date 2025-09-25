@@ -10,7 +10,7 @@ import { useFirebaseCountriesConfig } from '@/hooks/firebase/useFirebaseCountrie
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
-import { handleOidcAuthFailure } from '@/utils/auth-utils';
+import { clearAuthData, handleOidcAuthFailure } from '@/utils/auth-utils';
 import { StandaloneCircleUserRegularIcon } from '@deriv/quill-icons/Standalone';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -138,6 +138,7 @@ const AppHeader = observer(({ isAuthenticating }: TAppHeaderProps) => {
                     <Button
                         tertiary
                         onClick={async () => {
+                            clearAuthData(false);
                             const getQueryParams = new URLSearchParams(window.location.search);
                             const currency = getQueryParams.get('account') ?? '';
                             const query_param_currency =

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 /**
  * Clears authentication data from local storage and reloads the page
  */
-export const clearAuthData = (): void => {
+export const clearAuthData = (is_reload: boolean = true): void => {
     localStorage.removeItem('accountsList');
     localStorage.removeItem('clientAccounts');
     localStorage.removeItem('callback_token');
@@ -14,7 +14,9 @@ export const clearAuthData = (): void => {
     localStorage.removeItem('active_loginid');
     localStorage.removeItem('client.accounts');
     localStorage.removeItem('client.country');
-    location.reload();
+    if (is_reload) {
+        location.reload();
+    }
 };
 
 /**
