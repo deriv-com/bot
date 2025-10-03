@@ -19,7 +19,8 @@ declare global {
 const setLocalStorageToken = async (
     loginInfo: URLUtils.LoginInfo[],
     paramsToDelete: string[],
-    setIsAuthComplete: React.Dispatch<React.SetStateAction<boolean>>
+    setIsAuthComplete: React.Dispatch<React.SetStateAction<boolean>>,
+    isOnline: boolean
 ) => {
     if (loginInfo.length) {
         try {
@@ -38,39 +39,55 @@ const setLocalStorageToken = async (
             localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
             URLUtils.filterSearchParams(paramsToDelete);
-            const api = await generateDerivApiInstance();
 
-            if (api) {
-                const { authorize, error } = await api.authorize(loginInfo[0].token);
-                api.disconnect();
-                if (error) {
-                    // Check if the error is due to an invalid token
-                    if (error.code === 'InvalidToken') {
-                        // Set isAuthComplete to true to prevent the app from getting stuck in loading state
-                        setIsAuthComplete(true);
+            // Skip API connection when offline
+            if (!isOnline) {
+                console.log('[Auth] Offline mode - skipping API connection');
+                localStorage.setItem('authToken', loginInfo[0].token);
+                localStorage.setItem('active_loginid', loginInfo[0].loginid);
+                return;
+            }
 
-                        const is_tmb_enabled = window.is_tmb_enabled === true;
-                        // Only emit the InvalidToken event if logged_state is true
-                        if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
-                            // Emit an event that can be caught by the application to retrigger OIDC authentication
-                            globalObserver.emit('InvalidToken', { error });
+            try {
+                const api = await generateDerivApiInstance();
+
+                if (api) {
+                    const { authorize, error } = await api.authorize(loginInfo[0].token);
+                    api.disconnect();
+                    if (error) {
+                        // Check if the error is due to an invalid token
+                        if (error.code === 'InvalidToken') {
+                            // Set isAuthComplete to true to prevent the app from getting stuck in loading state
+                            setIsAuthComplete(true);
+
+                            const is_tmb_enabled = window.is_tmb_enabled === true;
+                            // Only emit the InvalidToken event if logged_state is true
+                            if (Cookies.get('logged_state') === 'true' && !is_tmb_enabled) {
+                                // Emit an event that can be caught by the application to retrigger OIDC authentication
+                                globalObserver.emit('InvalidToken', { error });
+                            }
+
+                            if (Cookies.get('logged_state') === 'false') {
+                                // If the user is not logged out, we need to clear the local storage
+                                clearAuthData();
+                            }
                         }
-
-                        if (Cookies.get('logged_state') === 'false') {
-                            // If the user is not logged out, we need to clear the local storage
-                            clearAuthData();
+                    } else {
+                        localStorage.setItem('client.country', authorize.country);
+                        const firstId = authorize?.account_list[0]?.loginid;
+                        const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
+                        if (filteredTokens.length) {
+                            localStorage.setItem('authToken', filteredTokens[0].token);
+                            localStorage.setItem('active_loginid', filteredTokens[0].loginid);
+                            return;
                         }
-                    }
-                } else {
-                    localStorage.setItem('client.country', authorize.country);
-                    const firstId = authorize?.account_list[0]?.loginid;
-                    const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
-                    if (filteredTokens.length) {
-                        localStorage.setItem('authToken', filteredTokens[0].token);
-                        localStorage.setItem('active_loginid', filteredTokens[0].loginid);
-                        return;
                     }
                 }
+            } catch (apiError) {
+                console.error('[Auth] API connection error:', apiError);
+                // Still set token in offline mode
+                localStorage.setItem('authToken', loginInfo[0].token);
+                localStorage.setItem('active_loginid', loginInfo[0].loginid);
             }
 
             localStorage.setItem('authToken', loginInfo[0].token);
@@ -86,16 +103,11 @@ export const AuthWrapper = () => {
     const { loginInfo, paramsToDelete } = URLUtils.getLoginInfoFromURL();
     const { isOnline } = useOfflineDetection();
 
-    // Skip auth entirely when offline - show app directly
-    if (!isOnline) {
-        console.log('[Auth] Offline detected, bypassing authentication');
-        return <App />;
-    }
-
     React.useEffect(() => {
         const initializeAuth = async () => {
             try {
-                await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete);
+                // Pass isOnline to setLocalStorageToken to handle offline mode properly
+                await setLocalStorageToken(loginInfo, paramsToDelete, setIsAuthComplete, isOnline);
                 URLUtils.filterSearchParams(['lang']);
                 setIsAuthComplete(true);
             } catch (error) {
@@ -105,8 +117,15 @@ export const AuthWrapper = () => {
             }
         };
 
+        // If offline, set auth complete immediately but still run initializeAuth
+        // to save login info to localStorage for offline use
+        if (!isOnline) {
+            console.log('[Auth] Offline detected, proceeding with minimal auth');
+            setIsAuthComplete(true);
+        }
+
         initializeAuth();
-    }, [loginInfo, paramsToDelete]);
+    }, [loginInfo, paramsToDelete, isOnline]);
 
     // Add timeout for offline scenarios to prevent infinite loading
     React.useEffect(() => {
