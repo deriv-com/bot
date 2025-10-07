@@ -241,7 +241,14 @@ const QSInput: React.FC<TQSInput> = observer(
             }
 
             // For all number fields, prevent decimal values less than 1
-            if (is_number && typeof value === 'number' && value < 1 && !Number.isInteger(value)) {
+            if (
+                is_number &&
+                typeof value === 'number' &&
+                value < 1 &&
+                !Number.isInteger(value) &&
+                name !== 'stake' &&
+                name !== 'max_stake'
+            ) {
                 value = 1;
             }
 
@@ -441,12 +448,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     // For non-empty values, validate and show appropriate message
                                                     const numValue = Number(value);
 
-                                                    // Prevent decimal values less than 1
-                                                    if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                        setFieldValue(name, 1);
-                                                        return;
-                                                    }
-
                                                     if (numValue < min_stake) {
                                                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                     } else if (numValue > max_stake) {
@@ -559,12 +560,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 }
 
                                                 const numValue = Number(value);
-
-                                                // Prevent decimal values less than 1
-                                                if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                    setFieldValue(name, 1);
-                                                    return;
-                                                }
 
                                                 // Clear error message if value is valid
                                                 if (numValue >= min_stake && numValue <= max_stake) {
