@@ -43,3 +43,14 @@
 strong {
     font-weight: bold;
 }
+
+.sc-dialog .cq-menu-dropdown.cq-menu-dropdown-enter-done {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    height: 100vh !important;
+    width: 100vw !important;
+    background-color: 'green';
+    background-color: 'beige';
+}
