@@ -33,7 +33,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy } = useStore();
-    const { setValue, setAdditionalData } = quick_strategy;
+    const { setValue, setAdditionalData, setDropdownState } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
     const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
@@ -46,6 +46,24 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         take_profit: null,
     });
 
+    // Define currency-specific configurations
+    const currencyConfig = React.useMemo(
+        () => ({
+            USD: { min_stake: 1, increment_step: 1 },
+            BTC: { min_stake: 0.000013, increment_step: 0.00000001 },
+            ETH: { min_stake: 0.001, increment_step: 0.0001 },
+            tUSDT: { min_stake: 1, increment_step: 1 },
+            eUSDT: { min_stake: 1, increment_step: 1 },
+            LTC: { min_stake: 0.01, increment_step: 0.001 },
+            // Add default for any other currency
+            default: { min_stake: 1, increment_step: 1 },
+        }),
+        []
+    );
+
+    // Track if initial values have been set
+    const initialValuesSet = React.useRef(false);
+
     React.useEffect(() => {
         setList([
             { text: '1%', value: '0.01' },
@@ -56,7 +74,66 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         ]);
         setFieldValue?.('tradetype', 'accumulator');
         setValue('tradetype', 'accumulator');
-    }, []);
+
+        // Set the min_stake value in the additional_data object based on the currency
+        const currency = client?.currency as keyof typeof currencyConfig;
+        const config = currencyConfig[currency] || currencyConfig.default;
+
+        setAdditionalData({
+            ...quick_strategy.additional_data,
+            min_stake: config.min_stake,
+            increment_step: config.increment_step,
+        });
+
+        // Only set default values if they haven't been set before or if the currency changes
+        // This prevents resetting values when other form fields change
+        if (setFieldValue && !initialValuesSet.current) {
+            // Set default value for stake field only if it hasn't been set before
+            setFieldValue('stake', config.min_stake);
+
+            // Set default value for max_stake field if it exists
+            if (values.max_stake !== undefined) {
+                // Set max_stake to a reasonable default based on min_stake and currency
+                let defaultMaxStake;
+
+                switch (currency) {
+                    case 'BTC':
+                        // For BTC, set a lower max stake (e.g., 0.001 BTC)
+                        defaultMaxStake = 0.001;
+                        break;
+                    case 'ETH':
+                        // For ETH, set a reasonable max stake (e.g., 0.1 ETH)
+                        defaultMaxStake = 0.1;
+                        break;
+                    case 'LTC':
+                        // For LTC, set a reasonable max stake (e.g., 1 LTC)
+                        defaultMaxStake = 1;
+                        break;
+                    default:
+                        // For other currencies (USD, tUSDT, eUSDT), use the original calculation
+                        defaultMaxStake = Math.max(config.min_stake * 10, 10);
+                }
+
+                setFieldValue('max_stake', defaultMaxStake);
+            }
+
+            // Set default values for other currency-dependent fields
+            if (values.profit !== undefined) {
+                setFieldValue('profit', config.min_stake * 10);
+            }
+
+            if (values.loss !== undefined) {
+                setFieldValue('loss', config.min_stake * 10);
+            }
+
+            if (values.take_profit !== undefined) {
+                setFieldValue('take_profit', config.min_stake * 5);
+            }
+
+            // Mark that initial values have been set
+            initialValuesSet.current = true;
+        }
+    }, [client?.currency, currencyConfig, setFieldValue]);
 
     React.useEffect(() => {
         if (values.boolean_tick_count) {
@@ -83,6 +160,9 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 ...(!values.boolean_tick_count && { take_profit }),
             },
         };
+
+        // Clear any existing errors for stake field when validating
+        setFieldError('stake', undefined);
 
         prev_proposal_payload.current = { ...request_proposal, boolean_tick_count: values.boolean_tick_count };
         try {
@@ -126,6 +206,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 if (error_message.includes("Please enter a stake amount that's at least")) {
                     error_message = localize('Minimum tick count allowed is 1');
                 } else if (error_message.includes('Maximum stake allowed is')) {
+                    console.log('test max_stake', error_message);
                     error_message = localize('Maximum tick count allowed is 1000');
                 }
                 setFieldError('tick_count', error_message);
@@ -151,22 +232,114 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                     }
                 }
 
+                // Check if the error message is about minimum stake but the field is not 'stake'
+                // The backend sometimes returns field as "amount" instead of "stake"
+                if (
+                    error_message.includes("Please enter a stake amount that's at least") &&
+                    (error_response?.error?.details?.field === 'amount' ||
+                        error_response?.error?.details?.field !== 'stake')
+                ) {
+                    // Extract the minimum stake value
+                    const error_parts = error_message.split("Please enter a stake amount that's at least");
+                    if (error_parts.length > 1) {
+                        const min_stake_str = error_parts[1].trim().replace(/[^0-9.]/g, '');
+                        if (min_stake_str && !isNaN(Number(min_stake_str))) {
+                            const min_stake = min_stake_str;
+
+                            // Update the additional_data with the extracted min_stake value
+                            setAdditionalData({
+                                ...quick_strategy.additional_data,
+                                min_stake: Number(min_stake),
+                            });
+
+                            // Set the error on the stake field instead of take_profit
+                            setFieldError('stake', localize(`Minimum stake allowed is ${min_stake}`));
+
+                            // Only update the stake value if it's less than the minimum
+                            if (Number(values.stake) < Number(min_stake)) {
+                                // Force update the min_stake value in the UI
+                                setFieldValue('stake', min_stake);
+                                // Update the user's manually entered stake value
+                                userStakeValue.current = min_stake;
+                            }
+
+                            // Clear the error on the take_profit field
+                            setFieldError('take_profit', undefined);
+                            prev_error.current.take_profit = null;
+
+                            // Return early to avoid setting the error on the take_profit field
+                            return;
+                        }
+                    }
+                }
+
                 if (error_response?.error?.details?.field === 'stake') {
                     // Get the min stake and max payout values from the error message
-                    const min_stake_match = error_response?.error?.message.match(/minimum stake of (\d+\.\d+)/i);
+                    const min_stake_match =
+                        error_response?.error?.message.match(/minimum stake of (\d+\.\d+)/i) ||
+                        error_response?.error?.message.match(/at least (\d+\.\d+)/i) ||
+                        error_response?.error?.message.match(/that's at least (\d+\.\d+)/i);
                     const max_payout_match = error_response?.error?.message.match(/maximum payout of (\d+\.\d+)/i);
 
-                    if (min_stake_match && max_payout_match) {
+                    if (min_stake_match) {
                         const min_stake = min_stake_match[1];
-                        const max_payout = max_payout_match[1];
-                        const current_payout = Number(values.take_profit) + Number(values.stake);
 
-                        error_message = localize(
-                            `Minimum stake of ${min_stake} and maximum payout of ${max_payout}. Current payout is ${current_payout.toFixed(2)}.`
-                        );
+                        // Update the additional_data with the extracted min_stake value
+                        setAdditionalData({
+                            ...quick_strategy.additional_data,
+                            min_stake: Number(min_stake),
+                        });
+
+                        // Only update the stake value if it's less than the minimum
+                        if (Number(values.stake) < Number(min_stake)) {
+                            // Force update the min_stake value in the UI
+                            setFieldValue('stake', min_stake);
+                            // Update the user's manually entered stake value
+                            userStakeValue.current = min_stake;
+                        }
+
+                        if (max_payout_match) {
+                            const max_payout = max_payout_match[1];
+                            const current_payout = Number(values.take_profit) + Number(values.stake);
+
+                            error_message = localize(
+                                `Minimum stake of ${min_stake} and maximum payout of ${max_payout}. Current payout is ${current_payout.toFixed(2)}.`
+                            );
+                        } else {
+                            error_message = localize(`Minimum stake allowed is ${min_stake}`);
+                        }
+                    } else if (error_message.includes("Please enter a stake amount that's at least")) {
+                        // If we couldn't extract the min_stake with regex but the error message contains this phrase,
+                        // try to extract the number directly from the error message
+                        const error_parts = error_message.split("Please enter a stake amount that's at least");
+                        if (error_parts.length > 1) {
+                            const min_stake_str = error_parts[1].trim().replace(/[^0-9.]/g, '');
+                            if (min_stake_str && !isNaN(Number(min_stake_str))) {
+                                const min_stake = min_stake_str;
+
+                                // Update the additional_data with the extracted min_stake value
+                                setAdditionalData({
+                                    ...quick_strategy.additional_data,
+                                    min_stake: Number(min_stake),
+                                });
+
+                                // Only update the stake value if it's less than the minimum
+                                if (Number(values.stake) < Number(min_stake)) {
+                                    // Force update the min_stake value in the UI
+                                    setFieldValue('stake', min_stake);
+                                    // Update the user's manually entered stake value
+                                    userStakeValue.current = min_stake;
+                                }
+
+                                error_message = localize(`Minimum stake allowed is ${min_stake}`);
+                            }
+                        }
                     } else if (error_message.includes('Maximum stake allowed is')) {
+                        console.log('test max_stake', error_message);
                         const max_stake = quick_strategy?.additional_data?.max_stake || '1000';
-                        error_message = localize(`Maximum stake allowed is ${max_stake}`);
+                        if (!error_message) {
+                            error_message = localize(`Maximum stake allowed is ${max_stake}`);
+                        }
                     } else {
                         error_message = `${error_response?.error?.message}`;
                     }
@@ -189,16 +362,65 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         []
     );
 
+    // Track the user's manually entered stake value
+    const userStakeValue = React.useRef<string | number | null>(null);
+
     React.useEffect(() => {
+        // If the user has manually entered a stake value, store it
+        if (values.stake && userStakeValue.current === null) {
+            userStakeValue.current = values.stake;
+        }
+
+        // Check if the current stake value is valid based on min/max constraints
+        const min_stake = quick_strategy?.additional_data?.min_stake || 1;
+        const max_stake = quick_strategy?.additional_data?.max_stake || 1000;
+        const current_stake = Number(values.stake);
+
+        // If the stake value is valid, clear any error messages
+        if (current_stake >= min_stake && current_stake <= max_stake) {
+            setFieldError('stake', undefined);
+
+            // Force update the UI to clear the error message
+            setTimeout(() => {
+                const input = document.querySelector('input[name="stake"]');
+                if (input) {
+                    const inputElement = input.closest('.qs__input');
+                    if (inputElement) {
+                        inputElement.classList.remove('error');
+                    }
+
+                    // Also clear any visible popover error messages
+                    const popover = input.closest('.qs__form__field__input')?.querySelector('.qs__warning-bubble');
+                    if (popover) {
+                        popover.removeAttribute('data-show');
+                    }
+                }
+            }, 0);
+        }
+
+        // Only call debounceChange if specific values have changed
+        // and avoid unnecessary API calls when stake value changes
         if (
             prev_proposal_payload.current?.symbol !== values.symbol ||
-            prev_proposal_payload.current?.amount !== values.stake ||
+            // Only include stake in the condition if it's significantly different
+            // This prevents minor formatting changes from triggering API calls
+            (prev_proposal_payload.current?.amount !== values.stake &&
+                Math.abs(Number(prev_proposal_payload.current?.amount) - Number(values.stake)) > 0.001) ||
             prev_proposal_payload.current?.limit_order?.take_profit !== values.take_profit ||
             prev_proposal_payload.current?.currency !== client?.currency ||
             prev_proposal_payload.current?.growth_rate !== values.growth_rate ||
             prev_proposal_payload.current?.boolean_tick_count !== values.boolean_tick_count
         ) {
-            debounceChange(values);
+            // Create a copy of values to avoid modifying the original
+            const valuesToValidate = { ...values };
+
+            // If the user has manually entered a stake value, use that instead
+            // This prevents the API from resetting the stake value
+            if (userStakeValue.current !== null) {
+                valuesToValidate.stake = userStakeValue.current;
+            }
+
+            debounceChange(valuesToValidate);
         }
     }, [
         values.take_profit,
@@ -212,6 +434,26 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     ]);
 
     const handleChange = async (value: string) => {
+        // Clear any existing errors when growth rate changes
+        setFieldError('stake', undefined);
+
+        // Force update the UI to clear the error message
+        setTimeout(() => {
+            const input = document.querySelector('input[name="stake"]');
+            if (input) {
+                const inputElement = input.closest('.qs__input');
+                if (inputElement) {
+                    inputElement.classList.remove('error');
+                }
+
+                // Also clear any visible popover error messages
+                const popover = input.closest('.qs__form__field__input')?.querySelector('.qs__warning-bubble');
+                if (popover) {
+                    popover.removeAttribute('data-show');
+                }
+            }
+        }, 0);
+
         setFieldValue?.(name, value);
         setValue(name, value);
     };
@@ -254,7 +496,6 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                         <Autocomplete
                             {...field}
                             readOnly
-                            inputMode='none'
                             data-testid='dt_qs_contract_type'
                             autoComplete='off'
                             className='qs__select contract-type'
@@ -266,6 +507,16 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                                     handleChange(value);
                                 }
                             }}
+                            onShowDropdownList={() => setDropdownState(true)}
+                            onHideDropdownList={() => setDropdownState(false)}
+                            data_testid='dt_qs_contract_type'
+                            dropdown_offset=''
+                            historyValue=''
+                            input_id=''
+                            is_alignment_top={false}
+                            list_portal_id=''
+                            not_found_text='No results found'
+                            should_filter_by_char={false}
                         />
                     );
                 }}
