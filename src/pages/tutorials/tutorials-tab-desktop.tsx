@@ -72,6 +72,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     setFAQSearchValue('');
                     resetTutorialTabContent();
                 }}
+                top
             >
                 {tutorial_tabs?.map(
                     ({ label, content }) =>
