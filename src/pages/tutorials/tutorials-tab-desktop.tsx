@@ -67,8 +67,11 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     'tutorials-search': active_tab_tutorials === 3,
                 })}
                 active_index={active_tab_tutorials}
-                onTabItemClick={setActiveTabTutorial}
-                top
+                onTabItemClick={index => {
+                    setActiveTabTutorial(index);
+                    setFAQSearchValue('');
+                    resetTutorialTabContent();
+                }}
             >
                 {tutorial_tabs?.map(
                     ({ label, content }) =>
