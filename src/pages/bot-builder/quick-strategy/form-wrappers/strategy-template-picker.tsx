@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { DBOT_TABS } from '@/constants/bot-contents';
 import { useStore } from '@/hooks/useStore';
@@ -6,6 +7,7 @@ import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
 import { Chip } from '@deriv-com/quill-ui';
 import { SearchField } from '@deriv-com/quill-ui-next';
 import { localize } from '@deriv-com/translations';
+import { TFormData } from '../types';
 import StrategyList from './strategy-list';
 import { QsSteps, TRADE_TYPES } from './trade-constants';
 import './strategy-template-picker.scss';
@@ -19,6 +21,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
     const { dashboard, quick_strategy } = useStore();
     const { setActiveTabTutorial, setActiveTab, setFAQSearchValue, filterTuotrialTab } = dashboard;
     const { setFormVisibility, setSelectedStrategy } = quick_strategy;
+    const { setFieldValue } = useFormikContext<TFormData>();
 
     const [selector_chip_value, setSelectorChipValue] = React.useState(0);
     const [is_searching, setIsSearching] = React.useState(false);
@@ -31,6 +34,18 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
     const onSelectStrategy = (strategy: string, trade_type: string) => {
         setSelectedStrategy(strategy);
         setSelectedTradeType(trade_type);
+
+        // Set additional data with initial values when strategy changes
+        quick_strategy.setAdditionalData({
+            max_payout: null,
+            max_ticks: null,
+            max_stake: null,
+            min_stake: null,
+        });
+
+        // Update the Formik form value directly
+        setFieldValue('stake', '2', true);
+
         setCurrentStep(QsSteps.StrategyVerified);
     };
 

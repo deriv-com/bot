@@ -176,13 +176,16 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 } else {
                     setFieldError('take_profit', error_message);
                     prev_error.current.take_profit = error_message;
+                    if (error_message.includes(`Please enter a stake amount that's at least`)) {
+                        setFieldError('stake', error_message);
+                    }
                 }
             }
         }
     };
 
     const debounceChange = React.useCallback(
-        debounce(validateMinMaxForAccumulators, 500, {
+        debounce(validateMinMaxForAccumulators, 1000, {
             trailing: true,
             leading: false,
         }),
