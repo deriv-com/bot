@@ -251,6 +251,12 @@ const MARKET_ICONS = {
     '1HZ300V': lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedVolatility3001sIcon }))
     ),
+    '1HZ15V': lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedVolatility151sIcon }))
+    ),
+    '1HZ30V': lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedVolatility301sIcon }))
+    ),
     JD10: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedJump10Icon }))
     ),
@@ -322,6 +328,15 @@ const MARKET_ICONS = {
     ),
     CRYLTCUSD: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketCryptocurrencyLtcusdIcon }))
+    ),
+    '1HZ90V': lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedVolatility901sIcon }))
+    ),
+    RB100: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedRangeBreak100Icon }))
+    ),
+    RB200: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedRangeBreak200Icon }))
     ),
     unknown: lazy(() =>
         import('@deriv/quill-icons/Illustrative').then(module => ({ default: module.IllustrativeMarketsIcon }))
