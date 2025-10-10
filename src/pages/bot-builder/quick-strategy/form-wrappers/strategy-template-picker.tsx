@@ -44,7 +44,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
         });
 
         // Update the Formik form value directly
-        setFieldValue('stake', '2', true);
+        setFieldValue('stake', '1', true);
 
         setCurrentStep(QsSteps.StrategyVerified);
     };
