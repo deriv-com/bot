@@ -177,7 +177,10 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                     setFieldError('take_profit', error_message);
                     prev_error.current.take_profit = error_message;
                     if (error_message.includes(`Please enter a stake amount that's at least`)) {
-                        setFieldError('stake', error_message);
+                        // Only show the error if stake value is not empty
+                        if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
+                            setFieldError('stake', error_message);
+                        }
                     }
                 }
             }
