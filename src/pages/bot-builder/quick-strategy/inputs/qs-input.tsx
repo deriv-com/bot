@@ -213,10 +213,10 @@ const QSInput: React.FC<TQSInput> = observer(
             setErrorMessage(null);
 
             // Allow empty string or partial input to support backspace
-            if (input_value === '' || input_value === '0' || input_value === '0.') {
+            if (input_value === '' || input_value === '0' || input_value === '0.' || input_value === '0.0') {
                 onChange(name, input_value);
 
-                // Show error message for empty values in fields
+                // // Show error message for empty values in fields
                 if (name === 'stake' || name === 'max_stake') {
                     const min_stake = (quick_strategy?.additional_data as any)?.min_stake || 0.35;
                     setErrorMessage(`Minimum stake allowed is ${min_stake}`);
@@ -241,7 +241,15 @@ const QSInput: React.FC<TQSInput> = observer(
             }
 
             // For all number fields, prevent decimal values less than 1
-            if (is_number && typeof value === 'number' && value < 1 && !Number.isInteger(value)) {
+            if (
+                is_number &&
+                typeof value === 'number' &&
+                value < 1 &&
+                !Number.isInteger(value) &&
+                name !== 'stake' &&
+                name !== 'max_stake' &&
+                name !== 'take_profit'
+            ) {
                 value = 1;
             }
 
@@ -297,7 +305,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
             onChange(name, value);
         };
-
+        const is_stake_accumulator = name === 'stake' && quick_strategy.selected_strategy.includes('ACCUMULATORS_');
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
@@ -318,16 +326,21 @@ const QSInput: React.FC<TQSInput> = observer(
                             >
                                 <Popover
                                     alignment='bottom'
-                                    message={error || error_message} // Prioritize backend error over client-side error
+                                    message={
+                                        // For stake field in accumulator strategy, only show error (not error_message)
+                                        is_stake_accumulator ? error : error || error_message
+                                    }
                                     is_open={
-                                        !!(error || error_message) &&
-                                        (name === 'stake' ||
-                                            name === 'max_stake' ||
-                                            name === 'loss' ||
-                                            name === 'profit' ||
-                                            name === 'take_profit' ||
-                                            name === 'tick_count' ||
-                                            name === 'size')
+                                        is_stake_accumulator
+                                            ? !!error
+                                            : !!(error || error_message) &&
+                                              (name === 'stake' ||
+                                                  name === 'max_stake' ||
+                                                  name === 'loss' ||
+                                                  name === 'profit' ||
+                                                  name === 'take_profit' ||
+                                                  name === 'tick_count' ||
+                                                  name === 'size')
                                     } // Show error message for all input fields that need validation
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
@@ -441,12 +454,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     // For non-empty values, validate and show appropriate message
                                                     const numValue = Number(value);
 
-                                                    // Prevent decimal values less than 1
-                                                    if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                        setFieldValue(name, 1);
-                                                        return;
-                                                    }
-
                                                     if (numValue < min_stake) {
                                                         setErrorMessage(`Minimum stake allowed is ${min_stake}`);
                                                     } else if (numValue > max_stake) {
@@ -559,12 +566,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 }
 
                                                 const numValue = Number(value);
-
-                                                // Prevent decimal values less than 1
-                                                if (numValue < 1 && !Number.isInteger(numValue)) {
-                                                    setFieldValue(name, 1);
-                                                    return;
-                                                }
 
                                                 // Clear error message if value is valid
                                                 if (numValue >= min_stake && numValue <= max_stake) {
