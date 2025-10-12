@@ -305,7 +305,6 @@ const QSInput: React.FC<TQSInput> = observer(
 
             onChange(name, value);
         };
-        const is_stake_accumulator = name === 'stake' && quick_strategy.selected_strategy.includes('ACCUMULATORS_');
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
@@ -328,10 +327,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                     alignment='bottom'
                                     message={
                                         // For stake field in accumulator strategy, only show error (not error_message)
-                                        is_stake_accumulator ? error : error || error_message
+                                        name === 'stake' ? error : error || error_message
                                     }
                                     is_open={
-                                        is_stake_accumulator
+                                        name === 'stake'
                                             ? !!error
                                             : !!(error || error_message) &&
                                               (name === 'stake' ||

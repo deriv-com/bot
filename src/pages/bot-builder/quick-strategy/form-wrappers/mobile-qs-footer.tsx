@@ -50,7 +50,7 @@ export const MobileQSFooter = observer(({ current_step, setCurrentStep }: TMobil
                             e.preventDefault();
                             onRun();
                         }}
-                        disabled={!isValid}
+                        disabled={!isValid || quick_strategy.is_options_loading}
                     >
                         {localize('Run')}
                     </Button>

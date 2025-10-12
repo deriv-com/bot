@@ -35,6 +35,7 @@ interface IQuickStrategyStore {
     };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    is_options_loading: boolean;
     setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
@@ -42,6 +43,7 @@ interface IQuickStrategyStore {
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
     setCurrentDurationMinMax: (min: number, max: number) => void;
+    setOptionsLoading: (is_loading: boolean) => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -56,6 +58,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
+    is_options_loading = false;
     current_duration_min_max = {
         min: 0,
         max: 10,
@@ -73,6 +76,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             is_contract_dialog_open: observable,
             is_open: observable,
             is_stop_bot_dialog_open: observable,
+            is_options_loading: observable,
             initializeLossThresholdWarningData: action,
             selected_strategy: observable,
             loss_threshold_warning_data: observable,
@@ -84,6 +88,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
+            setOptionsLoading: action,
         });
         this.root_store = root_store;
         reaction(
@@ -222,5 +227,9 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
         this.setFormVisibility(false);
+    };
+
+    setOptionsLoading = (is_loading: boolean): void => {
+        this.is_options_loading = is_loading;
     };
 }
