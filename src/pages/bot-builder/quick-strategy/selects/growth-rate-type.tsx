@@ -177,9 +177,11 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                     setFieldError('take_profit', error_message);
                     prev_error.current.take_profit = error_message;
 
-                    // Only show the error if stake value is not empty
-                    if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
-                        setFieldError('stake', error_message);
+                    if (error_response?.error?.details?.field === 'amount') {
+                        // Only show the error if stake value is not empty
+                        if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
+                            setFieldError('stake', error_message);
+                        }
                     }
                 }
             }
