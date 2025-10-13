@@ -86,11 +86,9 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
             const error_message = error_response?.message ?? error_response?.error?.message;
 
             if (error_response?.error?.details?.field === 'amount') {
-                if (error_message.includes(`Please enter a stake amount that's at least`)) {
-                    // Only show the error if stake value is not empty
-                    if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
-                        setFieldError('stake', error_message);
-                    }
+                // Only show the error if stake value is not empty
+                if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
+                    setFieldError('stake', error_message);
                 }
             }
         } finally {
