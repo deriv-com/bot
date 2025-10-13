@@ -204,7 +204,7 @@ const FormWrapper = observer(
                                             e.preventDefault();
                                             onRun();
                                         }}
-                                        disabled={!isValid}
+                                        disabled={!isValid || quick_strategy.is_options_loading}
                                     >
                                         {localize('Run')}
                                     </Button>

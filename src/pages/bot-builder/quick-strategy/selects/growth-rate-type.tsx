@@ -176,13 +176,20 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 } else {
                     setFieldError('take_profit', error_message);
                     prev_error.current.take_profit = error_message;
+
+                    if (error_response?.error?.details?.field === 'amount') {
+                        // Only show the error if stake value is not empty
+                        if (values.stake !== '' && values.stake !== undefined && values.stake !== null) {
+                            setFieldError('stake', error_message);
+                        }
+                    }
                 }
             }
         }
     };
 
     const debounceChange = React.useCallback(
-        debounce(validateMinMaxForAccumulators, 500, {
+        debounce(validateMinMaxForAccumulators, 1000, {
             trailing: true,
             leading: false,
         }),

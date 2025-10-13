@@ -154,12 +154,7 @@ const STAKE = (): TConfigItem => ({
         'number',
         'required',
         'ceil',
-        {
-            type: 'min',
-            value: 0.35,
-            getMessage: (min: string | number) => localize('Minimum stake allowed is {{ min }}', { min }),
-            getDynamicValue: (store: any) => store.quick_strategy?.additional_data?.min_stake || 0.35,
-        },
+
         {
             type: 'max',
             value: 1000,
