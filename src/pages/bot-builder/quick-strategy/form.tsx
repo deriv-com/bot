@@ -196,7 +196,20 @@ const QuickStrategyForm = observer(() => {
                                     <QSInputLabel
                                         key={key}
                                         label={field.label}
-                                        description={field.description ? String(field.description) : ''}
+                                        description={
+                                            field.description
+                                                ? typeof field.description === 'function'
+                                                    ? () => {
+                                                          // Create a wrapper function that doesn't expect parameters
+                                                          // but internally calls the original function
+                                                          const descriptionFn = field.description as (
+                                                              additional_data?: Record<string, unknown>
+                                                          ) => React.ReactNode;
+                                                          return descriptionFn(additional_data);
+                                                      }
+                                                    : String(field.description || '')
+                                                : ''
+                                        }
                                         additional_data={additional_data}
                                     />
                                 );
