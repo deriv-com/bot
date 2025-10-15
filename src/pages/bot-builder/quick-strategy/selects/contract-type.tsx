@@ -63,7 +63,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
         const amount = Number(values.stake) || 0;
         const contract_type = values.type;
         const duration_unit = values.durationtype;
-        const duration = Number(values.duration) || 1;
+        const duration = Number(values.duration) || 0;
 
         const request_proposal: TProposalRequest = {
             amount,

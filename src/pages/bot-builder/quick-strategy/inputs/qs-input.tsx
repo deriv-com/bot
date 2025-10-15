@@ -182,7 +182,7 @@ const QSInput: React.FC<TQSInput> = observer(
             e?.preventDefault();
 
             // For tick_count field or duration field with ticks, ensure we only allow integer values
-            if (name === 'tick_count' || (name === 'duration' && quick_strategy.form_data?.durationtype === 't')) {
+            if (name === 'tick_count' || name === 'duration') {
                 const intValue = Math.floor(Number(value));
                 value = String(intValue);
             }
@@ -232,11 +232,7 @@ const QSInput: React.FC<TQSInput> = observer(
             }
 
             // For tick_count field or duration field with ticks, ensure we only allow integer values
-            if (
-                is_number &&
-                (name === 'tick_count' || (name === 'duration' && quick_strategy.form_data?.durationtype === 't')) &&
-                !Number.isInteger(value)
-            ) {
+            if (is_number && (name === 'tick_count' || name === 'duration') && !Number.isInteger(value)) {
                 value = Math.floor(Number(value));
             }
 
@@ -339,7 +335,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                   name === 'profit' ||
                                                   name === 'take_profit' ||
                                                   name === 'tick_count' ||
-                                                  name === 'size')
+                                                  name === 'size' ||
+                                                  name === 'duration')
                                     } // Show error message for all input fields that need validation
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
@@ -359,7 +356,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         name === 'loss' ||
                                                         name === 'profit' ||
                                                         name === 'take_profit' ||
-                                                        name === 'tick_count'),
+                                                        name === 'tick_count' ||
+                                                        name === 'duration'),
                                             },
                                             { highlight: loss_threshold_warning_data?.highlight_field?.includes(name) }
                                         )}
@@ -527,21 +525,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                         bottom_label={is_exclusive_field ? currency : ''}
                                         max_characters={2}
                                         maxLength={2}
-                                        inputMode={
-                                            name === 'tick_count' ||
-                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
-                                                ? 'numeric'
-                                                : undefined
-                                        }
-                                        pattern={
-                                            name === 'tick_count' ||
-                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
-                                                ? '[0-9]*'
-                                                : undefined
-                                        }
+                                        inputMode={name === 'tick_count' || name === 'duration' ? 'numeric' : undefined}
+                                        pattern={name === 'tick_count' || name === 'duration' ? '[0-9]*' : undefined}
                                         onKeyPress={
-                                            name === 'tick_count' ||
-                                            (name === 'duration' && quick_strategy.form_data?.durationtype === 't')
+                                            name === 'tick_count' || name === 'duration'
                                                 ? e => {
                                                       if (e.key === '.') {
                                                           e.preventDefault();
