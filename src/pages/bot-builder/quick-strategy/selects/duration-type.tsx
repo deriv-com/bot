@@ -53,7 +53,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
 
     useEffect(() => {
         validateForm();
-    }, [current_duration_min_max, validateForm]);
+    }, [current_duration_min_max, validateForm, values?.duration]);
 
     return (
         <div
