@@ -293,7 +293,7 @@ export default class LoadModalStore {
         }
     };
 
-    loadStrategyToBuilder = async (strategy: TStrategy) => {
+    loadStrategyToBuilder = async (strategy: TStrategy, is_show_notification: boolean = true) => {
         if (strategy?.id) {
             await load({
                 block_string: strategy.xml,
@@ -303,6 +303,7 @@ export default class LoadModalStore {
                 from: strategy.save_type,
                 drop_event: {},
                 showIncompatibleStrategyDialog: false,
+                show_snackbar: is_show_notification,
             });
             window.Blockly.derivWorkspace.strategy_to_load = strategy.xml;
         }
@@ -320,6 +321,7 @@ export default class LoadModalStore {
             strategy_id: this.selected_strategy?.id,
             from: this.selected_strategy?.save_type,
             showIncompatibleStrategyDialog: false,
+            show_snackbar: false,
         });
     };
 
