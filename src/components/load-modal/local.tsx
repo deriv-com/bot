@@ -76,7 +76,7 @@ const LocalComponent = observer(() => {
                 <input
                     type='file'
                     ref={file_input_ref}
-                    accept='application/xml, text/xml'
+                    accept='.xml, text/*, application/*'
                     style={{ display: 'none' }}
                     onChange={e => {
                         const is_supported = handleFileChange(e, false);
@@ -128,7 +128,12 @@ const LocalComponent = observer(() => {
                                 : localize('Please upload an XML file')
                         }
                         data-testid='dt_load-strategy__local-upload'
-                        onClick={() => file_input_ref?.current?.click()}
+                        onClick={() => {
+                            if (file_input_ref.current) {
+                                file_input_ref.current.setAttribute('accept', '.xml');
+                                file_input_ref.current.click();
+                            }
+                        }}
                         has_effect
                         primary
                         large
