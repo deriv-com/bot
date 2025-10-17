@@ -122,12 +122,6 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             let error_message = error_response?.message ?? error_response?.error?.message;
 
             if (values.boolean_tick_count) {
-                // For tick count, replace the generic stake error message with a more appropriate one
-                if (error_message.includes("Please enter a stake amount that's at least")) {
-                    error_message = localize('Minimum tick count allowed is 1');
-                } else if (error_message.includes('Maximum stake allowed is')) {
-                    error_message = localize('Maximum tick count allowed is 1000');
-                }
                 setFieldError('tick_count', error_message);
                 prev_error.current.tick_count = error_message;
 
