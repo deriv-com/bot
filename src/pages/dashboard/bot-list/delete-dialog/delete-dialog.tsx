@@ -27,7 +27,7 @@ const DeleteDialog = observer(() => {
     const resetStrategiesAfterDelete = async (deleted_strategy_id: string, updated_workspaces: Array<TStrategy>) => {
         if (updated_workspaces.length) {
             if (selected_strategy_id === deleted_strategy_id) {
-                await loadStrategyToBuilder(updated_workspaces?.[0]);
+                await loadStrategyToBuilder(updated_workspaces?.[0], false);
             }
             // Change preview strategy to the one that was previously previewed
             await refreshStrategiesTheme();
