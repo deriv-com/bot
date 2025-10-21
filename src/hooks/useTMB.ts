@@ -428,22 +428,30 @@ const useTMB = (): UseTMBReturn => {
                             }
                         }
 
-                        if (selectedToken.loginid && selectedToken.token) {
-                            localStorage.setItem('authToken', selectedToken.token);
-                            localStorage.setItem('active_loginid', selectedToken.loginid);
+                        const currentActiveLoginid = localStorage.getItem('active_loginid');
+                        const currentActiveToken = localStorage.getItem('authToken');
 
-                            authTokenRef.current = selectedToken.token;
+                        if (
+                            currentActiveLoginid !== selectedToken?.loginid ||
+                            currentActiveToken !== selectedToken?.token
+                        ) {
+                            if (selectedToken.loginid && selectedToken.token) {
+                                localStorage.setItem('authToken', selectedToken.token);
+                                localStorage.setItem('active_loginid', selectedToken.loginid);
 
-                            if (api_base) {
-                                api_base.init(true).then(() => {
-                                    if (selectedToken.loginid) {
-                                        setAuthData({
-                                            loginid: selectedToken.loginid,
-                                            currency: selectedToken.cur || '',
-                                            token: selectedToken.token,
-                                        } as TAuthData & { token: string });
-                                    }
-                                });
+                                authTokenRef.current = selectedToken.token;
+
+                                if (api_base) {
+                                    api_base.init(true).then(() => {
+                                        if (selectedToken.loginid) {
+                                            setAuthData({
+                                                loginid: selectedToken.loginid,
+                                                currency: selectedToken.cur || '',
+                                                token: selectedToken.token,
+                                            } as TAuthData & { token: string });
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
