@@ -15,6 +15,7 @@ type TSymbol = {
     text: string;
     value: string;
     group?: string;
+    submarket?: string;
 };
 
 type TMarketOption = {
@@ -48,7 +49,7 @@ const SymbolSelect: React.FC = () => {
                     component: <MarketOption key={symbol.text} symbol={symbol} />,
                     ...symbol,
                 }))
-                .filter(symbol => !is_strategy_accumulator || symbol?.group?.startsWith('Continuous Indices')),
+                .filter(symbol => !is_strategy_accumulator || symbol?.submarket === 'random_index'),
         [active_symbols, is_strategy_accumulator]
     );
 
