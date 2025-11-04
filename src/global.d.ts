@@ -24,7 +24,40 @@ declare global {
             initialize: (config: IntercomConfig) => void;
         };
         Intercom: any;
+        gapi: {
+            load: (apis: string, callback: () => void) => void;
+            client: {
+                load: (discoveryDocs: string) => Promise<void>;
+                setToken: (token: { access_token: string }) => void;
+                drive: {
+                    files: {
+                        list: (params: any) => Promise<any>;
+                        get: (params: any) => Promise<any>;
+                        create: (params: any) => Promise<any>;
+                    };
+                };
+            };
+        };
+        google: {
+            accounts: {
+                oauth2: {
+                    initTokenClient: (config: any) => any;
+                    revoke: (token: string) => Promise<void>;
+                };
+            };
+            picker: {
+                Action: {
+                    PICKED: string;
+                    CANCEL: string;
+                };
+                DocsView: new () => any;
+                PickerBuilder: new () => any;
+            };
+        };
     }
+
+    const gapi: Window['gapi'];
+    const google: Window['google'];
 }
 
 export {};
