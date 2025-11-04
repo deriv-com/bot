@@ -115,7 +115,6 @@ export default class GoogleDriveStore {
     setIsAuthorized(is_authorized: boolean) {
         this.is_authorised = is_authorized;
     }
-
     private cleanupInvalidToken() {
         this.signOut();
         this.setGoogleDriveTokenValid(false);
@@ -237,7 +236,7 @@ export default class GoogleDriveStore {
 
     createSaveFilePicker(mime_type: string, title: string, options: TFileOptions) {
         const { setButtonStatus } = this.root_store.save_modal;
-        return new Promise<void>(resolve => {
+        return new Promise<void>((resolve, reject) => {
             const savePickerCallback = (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const folder_id = data.docs[0].id;
@@ -258,17 +257,48 @@ export default class GoogleDriveStore {
                     xhr.setRequestHeader('Authorization', `Bearer ${this.access_token}`);
                     xhr.setRequestHeader('Accept', 'application/json');
                     xhr.setRequestHeader('X-Goog-Upload-Protocol', 'multipart');
-                    xhr.onload = () => {
-                        if (xhr.status === 401) {
-                            this.signOut();
-                        }
 
-                        setButtonStatus(button_status.NORMAL);
-                        resolve();
+                    // Add comprehensive error handling for XHR request
+                    xhr.timeout = 30000; // 30 seconds timeout
+
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            botNotification(localize('File saved successfully'), undefined, { closeButton: true });
+                            setButtonStatus(button_status.NORMAL);
+                            resolve();
+                        } else if (xhr.status === 401) {
+                            this.signOut();
+                            botNotification(notification_message().google_drive_error, undefined, {
+                                closeButton: false,
+                            });
+                            setButtonStatus(button_status.NORMAL);
+                            reject(new Error('Authentication failed'));
+                        } else {
+                            const errorMsg = localize('Failed to save file. Please try again.');
+                            botNotification(errorMsg, undefined, { closeButton: true });
+                            setButtonStatus(button_status.NORMAL);
+                            reject(new Error(errorMsg));
+                        }
                     };
+
+                    xhr.onerror = () => {
+                        const errorMsg = localize('Network error occurred while saving file');
+                        botNotification(errorMsg, undefined, { closeButton: true });
+                        setButtonStatus(button_status.NORMAL);
+                        reject(new Error(errorMsg));
+                    };
+
+                    xhr.ontimeout = () => {
+                        const errorMsg = localize('Request timed out. Please try again.');
+                        botNotification(errorMsg, undefined, { closeButton: true });
+                        setButtonStatus(button_status.NORMAL);
+                        reject(new Error(errorMsg));
+                    };
+
                     xhr.send(form_data);
                 } else if (data.action === google.picker.Action.CANCEL) {
                     setButtonStatus(button_status.NORMAL);
+                    resolve(); // Resolve on cancel, not an error
                 }
             };
 
@@ -325,9 +355,15 @@ export default class GoogleDriveStore {
                             throw new Error('Invalid file content received');
                         }
 
-                        // Basic XML validation
-                        const trimmedContent = response.body.trim();
-                        if (!trimmedContent.startsWith('<?xml') && !trimmedContent.startsWith('<')) {
+                        // Improved XML validation with proper DOM parsing
+                        try {
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(response.body, 'text/xml');
+                            const parserError = xmlDoc.getElementsByTagName('parsererror');
+                            if (parserError.length > 0) {
+                                throw new Error('Invalid XML structure');
+                            }
+                        } catch (e) {
                             throw new Error('File does not appear to be valid XML');
                         }
 
@@ -357,6 +393,9 @@ export default class GoogleDriveStore {
                             // Force sign out on 401 errors
                             this.signOut();
                         }
+
+                        // Add user notification for file load errors
+                        botNotification(errorMessage, undefined, { closeButton: true });
 
                         rudderStackSendUploadStrategyFailedEvent({
                             upload_provider: 'google_drive' as any,
