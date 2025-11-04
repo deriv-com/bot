@@ -100,12 +100,12 @@ export default class GoogleDriveStore {
         this.client = google.accounts.oauth2.initTokenClient({
             client_id: this.client_id,
             scope: this.scope,
-            callback: (response: { expires_in: number; access_token: string; error?: TErrorWithStatus }) => {
-                if (response?.access_token && !response?.error) {
+            callback: (response: { expires_in?: number; access_token?: string; error?: any }) => {
+                if (response?.access_token && !response?.error && response?.expires_in) {
                     this.access_token = response.access_token;
                     this.setIsAuthorized(true);
                     localStorage.setItem('google_access_token', response.access_token);
-                    this.setGoogleDriveTokenExpiry(response?.expires_in);
+                    this.setGoogleDriveTokenExpiry(response.expires_in);
                     this.setGoogleDriveTokenValid(true);
                 }
             },
@@ -116,39 +116,37 @@ export default class GoogleDriveStore {
         this.is_authorised = is_authorized;
     }
 
+    private cleanupInvalidToken() {
+        this.signOut();
+        this.setGoogleDriveTokenValid(false);
+        localStorage.removeItem('google_access_token_expiry');
+        localStorage.removeItem('google_access_token');
+        botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
+    }
+
     verifyGoogleDriveAccessToken = async () => {
-        const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        if (!expiry_time || !this.access_token) return 'not_verified';
+        if (!this.access_token) return 'not_verified';
 
-        const current_epoch_time = Math.floor(Date.now() / 1000);
-        if (current_epoch_time > Number(expiry_time)) {
-            this.signOut();
-            this.setGoogleDriveTokenValid(false);
-            localStorage.removeItem('google_access_token_expiry');
-            localStorage.removeItem('google_access_token');
-            botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
-            return 'not_verified';
-        }
-
-        // Verify token with Google's tokeninfo endpoint
+        // Use Google API as single source of truth (eliminates race conditions)
         try {
-            const response = await fetch(
-                `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${this.access_token}`
-            );
+            const response = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo', {
+                headers: {
+                    Authorization: `Bearer ${this.access_token}`,
+                },
+            });
+
             if (!response.ok) {
                 throw new Error('Token validation failed');
             }
+
             const tokenInfo = await response.json();
             if (tokenInfo.error) {
                 throw new Error(tokenInfo.error_description || 'Invalid token');
             }
+
             return 'verified';
         } catch (error) {
-            this.signOut();
-            this.setGoogleDriveTokenValid(false);
-            localStorage.removeItem('google_access_token_expiry');
-            localStorage.removeItem('google_access_token');
-            botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
+            this.cleanupInvalidToken();
             return 'not_verified';
         }
     };
@@ -192,7 +190,14 @@ export default class GoogleDriveStore {
         } catch (err) {
             if ((err as TErrorWithStatus).status === 401) {
                 this.signOut();
+                botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
+            } else {
+                // Notify user of other errors
+                botNotification(localize('Failed to save file to Google Drive. Please try again.'), undefined, {
+                    closeButton: true,
+                });
             }
+            throw err; // Re-throw so caller knows it failed
         }
     }
 
@@ -201,39 +206,7 @@ export default class GoogleDriveStore {
         await this.signIn();
 
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
-        try {
-            await gapi.client.drive.files.list({
-                pageSize: 10,
-                fields: 'files(id, name)',
-            });
-        } catch (err) {
-            if ((err as TErrorWithStatus)?.status === 401) {
-                await this.signOut();
-                const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
-                const parent_element = picker?.parentNode;
-                const child_element = picker;
-                if (child_element && parent_element && parent_element?.contains(child_element)) {
-                    parent_element?.removeChild(child_element);
-                }
-                picker?.parentNode?.removeChild(picker);
-                const pickerBackground = document.getElementsByClassName(
-                    'picker-dialog-bg'
-                ) as HTMLCollectionOf<HTMLElement>;
-
-                if (pickerBackground.length) {
-                    for (let i = 0; i < pickerBackground.length; i++) {
-                        pickerBackground[i].style.display = 'none';
-                    }
-                }
-            }
-            rudderStackSendUploadStrategyFailedEvent({
-                upload_provider: 'google_drive' as any,
-                upload_id: this.upload_id,
-                upload_type: 'not_found',
-                error_message: (err as TErrorWithStatus)?.result?.error?.message,
-                error_code: (err as TErrorWithStatus)?.status?.toString(),
-            });
-        }
+        // Token validation is now handled in verifyGoogleDriveAccessToken() - no need for redundant API call
 
         const xml_doc = await this.createLoadFilePicker(
             'text/xml,application/xml',
@@ -312,7 +285,7 @@ export default class GoogleDriveStore {
     };
 
     createLoadFilePicker(mime_type: string, title: string) {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const loadPickerCallback = async (data: TPickerCallbackResponse) => {
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
@@ -393,7 +366,9 @@ export default class GoogleDriveStore {
                             error_code: errorCode,
                         });
 
-                        throw new Error(errorMessage);
+                        // Use reject instead of throw to properly reject the Promise
+                        reject(new Error(errorMessage));
+                        return; // Exit early to prevent further execution
                     }
                 }
             };
@@ -419,7 +394,6 @@ export default class GoogleDriveStore {
         if (is_save) {
             docs_view.setSelectFolderEnabled(true);
         }
-
         const picker = new google.picker.PickerBuilder();
         picker
             .setOrigin(`${window.location.protocol}//${window.location.host}`)
@@ -435,4 +409,3 @@ export default class GoogleDriveStore {
             .setVisible(true);
     }
 }
-

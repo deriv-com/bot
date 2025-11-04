@@ -1,3 +1,78 @@
+// Google Drive API Type Definitions
+interface DriveFileListParams {
+    pageSize?: number;
+    fields?: string;
+    q?: string;
+}
+
+interface DriveFileGetParams {
+    fileId: string;
+    alt?: string;
+}
+
+interface DriveFileCreateParams {
+    resource?: {
+        name?: string;
+        mimeType?: string;
+        parents?: string[];
+    };
+    fields?: string;
+}
+
+interface DriveFileListResponse {
+    result: {
+        files?: Array<{
+            id: string;
+            name: string;
+            mimeType?: string;
+        }>;
+    };
+}
+
+interface DriveFileGetResponse {
+    body: string;
+    status?: number;
+    headers?: any;
+}
+
+interface DriveFileCreateResponse {
+    result: {
+        id: string;
+        name: string;
+    };
+}
+
+interface TokenClientConfig {
+    client_id: string | undefined;
+    scope: string | undefined;
+    callback: (response: { access_token?: string; expires_in?: number; error?: any }) => void;
+}
+
+interface TokenClient {
+    requestAccessToken: () => Promise<void>;
+}
+
+interface DocsView {
+    setIncludeFolders: (include: boolean) => void;
+    setMimeTypes: (types: string) => void;
+    setOwnedByMe: (owned: boolean) => void;
+    setSelectFolderEnabled: (enabled: boolean) => void;
+    setQuery: (query: string) => void;
+}
+
+interface PickerBuilder {
+    setOrigin: (origin: string) => PickerBuilder;
+    setTitle: (title: string) => PickerBuilder;
+    setLocale: (locale: string) => PickerBuilder;
+    setAppId: (appId: string | undefined) => PickerBuilder;
+    setOAuthToken: (token: string) => PickerBuilder;
+    addView: (view: DocsView) => PickerBuilder;
+    setDeveloperKey: (key: string | undefined) => PickerBuilder;
+    setSize: (width: number, height: number) => PickerBuilder;
+    setCallback: (callback: (data: any) => void) => PickerBuilder;
+    build: () => { setVisible: (visible: boolean) => void };
+}
+
 declare global {
     interface Window {
         __webpack_public_path__: string;
@@ -31,9 +106,9 @@ declare global {
                 setToken: (token: { access_token: string }) => void;
                 drive: {
                     files: {
-                        list: (params: any) => Promise<any>;
-                        get: (params: any) => Promise<any>;
-                        create: (params: any) => Promise<any>;
+                        list: (params: DriveFileListParams) => Promise<DriveFileListResponse>;
+                        get: (params: DriveFileGetParams) => Promise<DriveFileGetResponse>;
+                        create: (params: DriveFileCreateParams) => Promise<DriveFileCreateResponse>;
                     };
                 };
             };
@@ -41,7 +116,7 @@ declare global {
         google: {
             accounts: {
                 oauth2: {
-                    initTokenClient: (config: any) => any;
+                    initTokenClient: (config: TokenClientConfig) => TokenClient;
                     revoke: (token: string) => Promise<void>;
                 };
             };
@@ -50,8 +125,8 @@ declare global {
                     PICKED: string;
                     CANCEL: string;
                 };
-                DocsView: new () => any;
-                PickerBuilder: new () => any;
+                DocsView: new () => DocsView;
+                PickerBuilder: new () => PickerBuilder;
             };
         };
     }
@@ -61,4 +136,3 @@ declare global {
 }
 
 export {};
-
