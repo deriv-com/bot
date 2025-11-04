@@ -275,7 +275,7 @@ export const config = () => ({
         [localize('Signal'), '2'],
     ],
     GOOGLE_DRIVE: {
-        SCOPE: 'https://www.googleapis.com/auth/drive.file',
+        SCOPE: 'https://www.googleapis.com/auth/drive',
         DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
     },
     workspaces: {
