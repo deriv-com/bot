@@ -439,11 +439,11 @@ export default class GoogleDriveStore {
         docs_view.setIncludeFolders(true);
         docs_view.setMimeTypes(mime_type);
         
-        // Filter to only show files owned by the current user (not shared files)
-        // This prevents showing files that might not be accessible for download
-        docs_view.setQuery('owner:me');
+        // Set to show only owned files without displaying the query in search box
+        // Use setOwnedByMe() instead of setQuery() to apply filter in background
+        docs_view.setOwnedByMe(true);
         
-        console.log('🔍 [GoogleDrive] Picker configured to show only owned files (owner:me)');
+        console.log('🔍 [GoogleDrive] Picker configured to show only owned files (background filter)');
 
         if (is_save) {
             docs_view.setSelectFolderEnabled(true);
