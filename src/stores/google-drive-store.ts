@@ -117,11 +117,21 @@ export default class GoogleDriveStore {
     }
 
     verifyGoogleDriveAccessToken = async () => {
+        console.log('🔍 [GoogleDrive] Verifying access token...');
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        if (!expiry_time || !this.access_token) return 'not_verified';
+        console.log('🔍 [GoogleDrive] Token expiry time:', expiry_time);
+        console.log('🔍 [GoogleDrive] Has access token:', !!this.access_token);
+
+        if (!expiry_time || !this.access_token) {
+            console.log('❌ [GoogleDrive] No expiry time or access token found');
+            return 'not_verified';
+        }
 
         const current_epoch_time = Math.floor(Date.now() / 1000);
+        console.log('🔍 [GoogleDrive] Current time:', current_epoch_time, 'Expiry:', Number(expiry_time));
+
         if (current_epoch_time > Number(expiry_time)) {
+            console.log('❌ [GoogleDrive] Token expired, signing out');
             this.signOut();
             this.setGoogleDriveTokenValid(false);
             localStorage.removeItem('google_access_token_expiry');
@@ -132,18 +142,25 @@ export default class GoogleDriveStore {
 
         // Verify token with Google's tokeninfo endpoint
         try {
+            console.log('🔍 [GoogleDrive] Validating token with Google servers...');
             const response = await fetch(
                 `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${this.access_token}`
             );
+            console.log('🔍 [GoogleDrive] Token validation response status:', response.status);
+
             if (!response.ok) {
                 throw new Error('Token validation failed');
             }
             const tokenInfo = await response.json();
+            console.log('🔍 [GoogleDrive] Token info:', tokenInfo);
+
             if (tokenInfo.error) {
                 throw new Error(tokenInfo.error_description || 'Invalid token');
             }
+            console.log('✅ [GoogleDrive] Token verified successfully');
             return 'verified';
         } catch (error) {
+            console.error('❌ [GoogleDrive] Token validation failed:', error);
             this.signOut();
             this.setGoogleDriveTokenValid(false);
             localStorage.removeItem('google_access_token_expiry');
@@ -197,17 +214,33 @@ export default class GoogleDriveStore {
     }
 
     async loadFile() {
-        if (!this.is_google_drive_token_valid) return;
+        console.log('📁 [GoogleDrive] Starting file load process...');
+        console.log('📁 [GoogleDrive] Token valid:', this.is_google_drive_token_valid);
+
+        if (!this.is_google_drive_token_valid) {
+            console.log('❌ [GoogleDrive] Token not valid, aborting load');
+            return;
+        }
+
+        console.log('📁 [GoogleDrive] Signing in...');
         await this.signIn();
 
-        if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
+        if (this.access_token) {
+            console.log('📁 [GoogleDrive] Setting gapi token...');
+            gapi.client.setToken({ access_token: this.access_token });
+        }
+
         try {
+            console.log('📁 [GoogleDrive] Testing API access with files.list...');
             await gapi.client.drive.files.list({
                 pageSize: 10,
                 fields: 'files(id, name)',
             });
+            console.log('✅ [GoogleDrive] API access test successful');
         } catch (err) {
+            console.error('❌ [GoogleDrive] API access test failed:', err);
             if ((err as TErrorWithStatus)?.status === 401) {
+                console.log('📁 [GoogleDrive] 401 error, signing out and cleaning up picker...');
                 await this.signOut();
                 const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
                 const parent_element = picker?.parentNode;
@@ -235,6 +268,7 @@ export default class GoogleDriveStore {
             });
         }
 
+        console.log('📁 [GoogleDrive] Creating file picker...');
         const xml_doc = await this.createLoadFilePicker(
             'text/xml,application/xml',
             localize('Select a Deriv Bot Strategy')
@@ -312,11 +346,22 @@ export default class GoogleDriveStore {
     };
 
     createLoadFilePicker(mime_type: string, title: string) {
+        console.log('🎯 [GoogleDrive] Creating load file picker...');
+        console.log('🎯 [GoogleDrive] MIME type:', mime_type);
+        console.log('🎯 [GoogleDrive] Title:', title);
+
         return new Promise(resolve => {
             const loadPickerCallback = async (data: TPickerCallbackResponse) => {
+                console.log('🎯 [GoogleDrive] Picker callback triggered');
+                console.log('🎯 [GoogleDrive] Action:', data.action);
+                console.log('🎯 [GoogleDrive] Data:', data);
+
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
+                    console.log('📄 [GoogleDrive] File selected:', file);
+
                     if (file?.driveError === 'NETWORK') {
+                        console.error('❌ [GoogleDrive] Network error detected');
                         rudderStackSendUploadStrategyFailedEvent({
                             upload_provider: 'google_drive' as any,
                             upload_id: this.upload_id,
@@ -328,32 +373,69 @@ export default class GoogleDriveStore {
 
                     const file_name = file.name;
                     const fileId = file.id;
-                    const { files } = gapi.client.drive;
+                    console.log('📄 [GoogleDrive] File name:', file_name);
+                    console.log('📄 [GoogleDrive] File ID:', fileId);
 
                     try {
-                        const response = await files.get({
-                            fileId,
-                            alt: 'media',
+                        // Use fetch instead of gapi.client for better error handling
+                        const downloadUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
+                        console.log('⬇️ [GoogleDrive] Download URL:', downloadUrl);
+                        console.log(
+                            '⬇️ [GoogleDrive] Access token (first 20 chars):',
+                            this.access_token?.substring(0, 20) + '...'
+                        );
+
+                        const response = await fetch(downloadUrl, {
+                            method: 'GET',
+                            headers: {
+                                Authorization: `Bearer ${this.access_token}`,
+                                Accept: 'application/octet-stream, text/xml, application/xml, */*',
+                            },
                         });
 
+                        console.log('⬇️ [GoogleDrive] Download response status:', response.status);
+                        console.log(
+                            '⬇️ [GoogleDrive] Download response headers:',
+                            Object.fromEntries(response.headers.entries())
+                        );
+
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error('❌ [GoogleDrive] Download failed:', errorText);
+                            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+                        }
+
+                        const fileContent = await response.text();
+                        console.log('📄 [GoogleDrive] File content length:', fileContent.length);
+                        console.log(
+                            '📄 [GoogleDrive] File content preview (first 200 chars):',
+                            fileContent.substring(0, 200)
+                        );
+
                         // Ensure we have valid XML content
-                        if (!response.body || typeof response.body !== 'string') {
+                        if (!fileContent || typeof fileContent !== 'string') {
+                            console.error('❌ [GoogleDrive] Invalid file content received');
                             throw new Error('Invalid file content received');
                         }
 
                         // Basic XML validation
-                        if (!response.body.trim().startsWith('<?xml') && !response.body.trim().startsWith('<')) {
+                        const trimmedContent = fileContent.trim();
+                        if (!trimmedContent.startsWith('<?xml') && !trimmedContent.startsWith('<')) {
+                            console.error('❌ [GoogleDrive] File does not appear to be valid XML');
+                            console.error('❌ [GoogleDrive] Content starts with:', trimmedContent.substring(0, 50));
                             throw new Error('File does not appear to be valid XML');
                         }
 
-                        resolve({ xml_doc: response.body, file_name });
-                        const upload_type = getStrategyType(response.body);
+                        console.log('✅ [GoogleDrive] File downloaded and validated successfully');
+                        resolve({ xml_doc: fileContent, file_name });
+                        const upload_type = getStrategyType(fileContent);
                         rudderStackSendUploadStrategyCompletedEvent({
-                            upload_provider: 'google_drive',
+                            upload_provider: 'google_drive' as any,
                             upload_type,
                             upload_id: this.upload_id,
                         });
                     } catch (downloadError) {
+                        console.error('❌ [GoogleDrive] Download error:', downloadError);
                         rudderStackSendUploadStrategyFailedEvent({
                             upload_provider: 'google_drive' as any,
                             upload_id: this.upload_id,
@@ -363,9 +445,12 @@ export default class GoogleDriveStore {
                         });
                         throw downloadError;
                     }
+                } else {
+                    console.log('🎯 [GoogleDrive] Picker action was not PICKED:', data.action);
                 }
             };
 
+            console.log('🎯 [GoogleDrive] Showing Google Drive file picker...');
             this.showGoogleDriveFilePicker(false, mime_type, title, loadPickerCallback);
         });
     }
