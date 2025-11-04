@@ -118,7 +118,8 @@ export default class GoogleDriveStore {
 
     verifyGoogleDriveAccessToken = async () => {
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        if (!expiry_time) return 'not_verified';
+        if (!expiry_time || !this.access_token) return 'not_verified';
+
         const current_epoch_time = Math.floor(Date.now() / 1000);
         if (current_epoch_time > Number(expiry_time)) {
             this.signOut();
@@ -128,7 +129,28 @@ export default class GoogleDriveStore {
             botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
             return 'not_verified';
         }
-        return 'verified';
+
+        // Verify token with Google's tokeninfo endpoint
+        try {
+            const response = await fetch(
+                `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${this.access_token}`
+            );
+            if (!response.ok) {
+                throw new Error('Token validation failed');
+            }
+            const tokenInfo = await response.json();
+            if (tokenInfo.error) {
+                throw new Error(tokenInfo.error_description || 'Invalid token');
+            }
+            return 'verified';
+        } catch (error) {
+            this.signOut();
+            this.setGoogleDriveTokenValid(false);
+            localStorage.removeItem('google_access_token_expiry');
+            localStorage.removeItem('google_access_token');
+            botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
+            return 'not_verified';
+        }
     };
 
     async signIn() {
@@ -205,7 +227,7 @@ export default class GoogleDriveStore {
                 }
             }
             rudderStackSendUploadStrategyFailedEvent({
-                upload_provider: 'google_drive',
+                upload_provider: 'google_drive' as any,
                 upload_id: this.upload_id,
                 upload_type: 'not_found',
                 error_message: (err as TErrorWithStatus)?.result?.error?.message,
@@ -261,6 +283,8 @@ export default class GoogleDriveStore {
                     xhr.responseType = 'json';
                     xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart');
                     xhr.setRequestHeader('Authorization', `Bearer ${this.access_token}`);
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.setRequestHeader('X-Goog-Upload-Protocol', 'multipart');
                     xhr.onload = () => {
                         if (xhr.status === 401) {
                             this.signOut();
@@ -294,7 +318,7 @@ export default class GoogleDriveStore {
                     const file = data.docs[0];
                     if (file?.driveError === 'NETWORK') {
                         rudderStackSendUploadStrategyFailedEvent({
-                            upload_provider: 'google_drive',
+                            upload_provider: 'google_drive' as any,
                             upload_id: this.upload_id,
                             upload_type: 'not_found',
                             error_message: 'File not found',
@@ -306,18 +330,39 @@ export default class GoogleDriveStore {
                     const fileId = file.id;
                     const { files } = gapi.client.drive;
 
-                    const response = await files.get({
-                        alt: 'media',
-                        fileId,
-                    });
+                    try {
+                        const response = await files.get({
+                            fileId,
+                            alt: 'media',
+                        });
 
-                    resolve({ xml_doc: response.body, file_name });
-                    const upload_type = getStrategyType(response.body);
-                    rudderStackSendUploadStrategyCompletedEvent({
-                        upload_provider: 'google_drive',
-                        upload_type,
-                        upload_id: this.upload_id,
-                    });
+                        // Ensure we have valid XML content
+                        if (!response.body || typeof response.body !== 'string') {
+                            throw new Error('Invalid file content received');
+                        }
+
+                        // Basic XML validation
+                        if (!response.body.trim().startsWith('<?xml') && !response.body.trim().startsWith('<')) {
+                            throw new Error('File does not appear to be valid XML');
+                        }
+
+                        resolve({ xml_doc: response.body, file_name });
+                        const upload_type = getStrategyType(response.body);
+                        rudderStackSendUploadStrategyCompletedEvent({
+                            upload_provider: 'google_drive',
+                            upload_type,
+                            upload_id: this.upload_id,
+                        });
+                    } catch (downloadError) {
+                        rudderStackSendUploadStrategyFailedEvent({
+                            upload_provider: 'google_drive' as any,
+                            upload_id: this.upload_id,
+                            upload_type: 'download_failed',
+                            error_message: (downloadError as Error).message,
+                            error_code: '500',
+                        });
+                        throw downloadError;
+                    }
                 }
             };
 
