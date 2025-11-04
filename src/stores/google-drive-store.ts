@@ -84,6 +84,7 @@ export default class GoogleDriveStore {
         this.api_key = process.env.GD_API_KEY;
         this.scope = SCOPE;
         this.discovery_docs = DISCOVERY_DOCS;
+        console.log('🔧 [GoogleDrive] Using scope:', this.scope);
     };
 
     initialise = () => {
