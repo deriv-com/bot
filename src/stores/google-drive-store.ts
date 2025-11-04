@@ -84,10 +84,6 @@ export default class GoogleDriveStore {
         this.api_key = process.env.GD_API_KEY;
         this.scope = SCOPE;
         this.discovery_docs = DISCOVERY_DOCS;
-        console.log('🔧 [GoogleDrive] Configuration loaded:');
-        console.log('🔧 [GoogleDrive] Scope:', this.scope);
-        console.log('🔧 [GoogleDrive] Discovery docs:', this.discovery_docs);
-        console.log('🔧 [GoogleDrive] Client ID (first 10 chars):', this.client_id?.substring(0, 10) + '...');
     };
 
     initialise = () => {
@@ -335,21 +331,15 @@ export default class GoogleDriveStore {
                     const { files } = gapi.client.drive;
 
                     try {
-                        console.log('🔍 [GoogleDrive] Attempting to download file:', fileId);
-                        console.log('🔍 [GoogleDrive] Current access token (first 20 chars):', this.access_token?.substring(0, 20) + '...');
-                        console.log('🔍 [GoogleDrive] Current scope:', this.scope);
-                        
                         // Verify token is still valid before attempting download
                         const tokenStatus = await this.verifyGoogleDriveAccessToken();
                         if (tokenStatus !== 'verified') {
-                            console.error('❌ [GoogleDrive] Token verification failed, status:', tokenStatus);
                             throw new Error('Access token is invalid or expired. Please re-authenticate.');
                         }
 
                         // Ensure gapi client has the current token
                         if (this.access_token) {
                             gapi.client.setToken({ access_token: this.access_token });
-                            console.log('✅ [GoogleDrive] Token set in gapi client');
                         }
 
                         const response = await files.get({
@@ -357,28 +347,17 @@ export default class GoogleDriveStore {
                             alt: 'media',
                         });
 
-                        console.log('📥 [GoogleDrive] Download response received');
-                        console.log('📥 [GoogleDrive] Response status:', response.status);
-                        console.log('📥 [GoogleDrive] Response headers:', response.headers);
-
                         // Ensure we have valid XML content
                         if (!response.body || typeof response.body !== 'string') {
-                            console.error('❌ [GoogleDrive] Invalid response body:', typeof response.body);
                             throw new Error('Invalid file content received');
                         }
-
-                        console.log('📄 [GoogleDrive] File content length:', response.body.length);
-                        console.log('📄 [GoogleDrive] File content preview (first 200 chars):', response.body.substring(0, 200));
 
                         // Basic XML validation
                         const trimmedContent = response.body.trim();
                         if (!trimmedContent.startsWith('<?xml') && !trimmedContent.startsWith('<')) {
-                            console.error('❌ [GoogleDrive] File does not appear to be valid XML');
-                            console.error('❌ [GoogleDrive] Content starts with:', trimmedContent.substring(0, 50));
                             throw new Error('File does not appear to be valid XML');
                         }
 
-                        console.log('✅ [GoogleDrive] File downloaded and validated successfully');
                         resolve({ xml_doc: response.body, file_name });
                         const upload_type = getStrategyType(response.body);
                         rudderStackSendUploadStrategyCompletedEvent({
@@ -387,23 +366,17 @@ export default class GoogleDriveStore {
                             upload_id: this.upload_id,
                         });
                     } catch (downloadError: any) {
-                        console.error('❌ [GoogleDrive] Download error:', downloadError);
-                        console.error('❌ [GoogleDrive] Error details:', {
-                            message: downloadError.message,
-                            status: downloadError.status,
-                            result: downloadError.result,
-                            stack: downloadError.stack
-                        });
-
                         // Handle specific error cases
                         let errorMessage = downloadError.message || 'Unknown error occurred';
                         let errorCode = '500';
 
                         if (downloadError.status === 403) {
-                            errorMessage = 'Access denied. The file may not be accessible with current permissions. Please check file sharing settings or re-authenticate with broader permissions.';
+                            errorMessage =
+                                'Access denied. The file may not be accessible with current permissions. Please check file sharing settings or re-authenticate with broader permissions.';
                             errorCode = '403';
                         } else if (downloadError.status === 404) {
-                            errorMessage = 'File not found. The file may have been deleted or you may not have permission to access it.';
+                            errorMessage =
+                                'File not found. The file may have been deleted or you may not have permission to access it.';
                             errorCode = '404';
                         } else if (downloadError.status === 401) {
                             errorMessage = 'Authentication failed. Please sign out and sign in again.';
@@ -419,7 +392,7 @@ export default class GoogleDriveStore {
                             error_message: errorMessage,
                             error_code: errorCode,
                         });
-                        
+
                         throw new Error(errorMessage);
                     }
                 }
@@ -438,16 +411,15 @@ export default class GoogleDriveStore {
         const docs_view = new google.picker.DocsView();
         docs_view.setIncludeFolders(true);
         docs_view.setMimeTypes(mime_type);
-        
-        // Filter to only show files owned by the current user (not shared files)
-        // This prevents showing files that might not be accessible for download
-        docs_view.setQuery('owner:me');
-        
-        console.log('🔍 [GoogleDrive] Picker configured to show only owned files (owner:me)');
+
+        // Set to show only owned files without displaying the query in search box
+        // Use setOwnedByMe() instead of setQuery() to apply filter in background
+        docs_view.setOwnedByMe(true);
 
         if (is_save) {
             docs_view.setSelectFolderEnabled(true);
         }
+
         const picker = new google.picker.PickerBuilder();
         picker
             .setOrigin(`${window.location.protocol}//${window.location.host}`)
@@ -463,3 +435,4 @@ export default class GoogleDriveStore {
             .setVisible(true);
     }
 }
+
