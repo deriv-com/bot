@@ -32,7 +32,7 @@ interface DriveFileListResponse {
 interface DriveFileGetResponse {
     body: string;
     status?: number;
-    headers?: any;
+    headers?: Record<string, string>;
 }
 
 interface DriveFileCreateResponse {
@@ -45,7 +45,11 @@ interface DriveFileCreateResponse {
 interface TokenClientConfig {
     client_id: string | undefined;
     scope: string | undefined;
-    callback: (response: { access_token?: string; expires_in?: number; error?: any }) => void;
+    callback: (response: {
+        access_token?: string;
+        expires_in?: number;
+        error?: { error: string; error_description?: string };
+    }) => void;
 }
 
 interface TokenClient {
@@ -60,6 +64,17 @@ interface DocsView {
     setQuery: (query: string) => void;
 }
 
+// Improved type safety for picker callback data
+interface PickerData {
+    action: string;
+    docs: Array<{
+        id: string;
+        name: string;
+        driveError?: string;
+        mimeType?: string;
+    }>;
+}
+
 interface PickerBuilder {
     setOrigin: (origin: string) => PickerBuilder;
     setTitle: (title: string) => PickerBuilder;
@@ -69,7 +84,7 @@ interface PickerBuilder {
     addView: (view: DocsView) => PickerBuilder;
     setDeveloperKey: (key: string | undefined) => PickerBuilder;
     setSize: (width: number, height: number) => PickerBuilder;
-    setCallback: (callback: (data: any) => void) => PickerBuilder;
+    setCallback: (callback: (data: PickerData) => void) => PickerBuilder;
     build: () => { setVisible: (visible: boolean) => void };
 }
 
