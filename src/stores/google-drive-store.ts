@@ -84,7 +84,10 @@ export default class GoogleDriveStore {
         this.api_key = process.env.GD_API_KEY;
         this.scope = SCOPE;
         this.discovery_docs = DISCOVERY_DOCS;
-        console.log('🔧 [GoogleDrive] Using scope:', this.scope);
+        console.log('🔧 [GoogleDrive] Configuration loaded:');
+        console.log('🔧 [GoogleDrive] Scope:', this.scope);
+        console.log('🔧 [GoogleDrive] Discovery docs:', this.discovery_docs);
+        console.log('🔧 [GoogleDrive] Client ID (first 10 chars):', this.client_id?.substring(0, 10) + '...');
     };
 
     initialise = () => {
@@ -118,21 +121,11 @@ export default class GoogleDriveStore {
     }
 
     verifyGoogleDriveAccessToken = async () => {
-        console.log('🔍 [GoogleDrive] Verifying access token...');
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        console.log('🔍 [GoogleDrive] Token expiry time:', expiry_time);
-        console.log('🔍 [GoogleDrive] Has access token:', !!this.access_token);
-
-        if (!expiry_time || !this.access_token) {
-            console.log('❌ [GoogleDrive] No expiry time or access token found');
-            return 'not_verified';
-        }
+        if (!expiry_time || !this.access_token) return 'not_verified';
 
         const current_epoch_time = Math.floor(Date.now() / 1000);
-        console.log('🔍 [GoogleDrive] Current time:', current_epoch_time, 'Expiry:', Number(expiry_time));
-
         if (current_epoch_time > Number(expiry_time)) {
-            console.log('❌ [GoogleDrive] Token expired, signing out');
             this.signOut();
             this.setGoogleDriveTokenValid(false);
             localStorage.removeItem('google_access_token_expiry');
@@ -143,25 +136,18 @@ export default class GoogleDriveStore {
 
         // Verify token with Google's tokeninfo endpoint
         try {
-            console.log('🔍 [GoogleDrive] Validating token with Google servers...');
             const response = await fetch(
                 `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${this.access_token}`
             );
-            console.log('🔍 [GoogleDrive] Token validation response status:', response.status);
-
             if (!response.ok) {
                 throw new Error('Token validation failed');
             }
             const tokenInfo = await response.json();
-            console.log('🔍 [GoogleDrive] Token info:', tokenInfo);
-
             if (tokenInfo.error) {
                 throw new Error(tokenInfo.error_description || 'Invalid token');
             }
-            console.log('✅ [GoogleDrive] Token verified successfully');
             return 'verified';
         } catch (error) {
-            console.error('❌ [GoogleDrive] Token validation failed:', error);
             this.signOut();
             this.setGoogleDriveTokenValid(false);
             localStorage.removeItem('google_access_token_expiry');
@@ -215,33 +201,17 @@ export default class GoogleDriveStore {
     }
 
     async loadFile() {
-        console.log('📁 [GoogleDrive] Starting file load process...');
-        console.log('📁 [GoogleDrive] Token valid:', this.is_google_drive_token_valid);
-
-        if (!this.is_google_drive_token_valid) {
-            console.log('❌ [GoogleDrive] Token not valid, aborting load');
-            return;
-        }
-
-        console.log('📁 [GoogleDrive] Signing in...');
+        if (!this.is_google_drive_token_valid) return;
         await this.signIn();
 
-        if (this.access_token) {
-            console.log('📁 [GoogleDrive] Setting gapi token...');
-            gapi.client.setToken({ access_token: this.access_token });
-        }
-
+        if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
         try {
-            console.log('📁 [GoogleDrive] Testing API access with files.list...');
             await gapi.client.drive.files.list({
                 pageSize: 10,
                 fields: 'files(id, name)',
             });
-            console.log('✅ [GoogleDrive] API access test successful');
         } catch (err) {
-            console.error('❌ [GoogleDrive] API access test failed:', err);
             if ((err as TErrorWithStatus)?.status === 401) {
-                console.log('📁 [GoogleDrive] 401 error, signing out and cleaning up picker...');
                 await this.signOut();
                 const picker = document.getElementsByClassName('picker-dialog-content')[0] as HTMLElement;
                 const parent_element = picker?.parentNode;
@@ -269,7 +239,6 @@ export default class GoogleDriveStore {
             });
         }
 
-        console.log('📁 [GoogleDrive] Creating file picker...');
         const xml_doc = await this.createLoadFilePicker(
             'text/xml,application/xml',
             localize('Select a Deriv Bot Strategy')
@@ -347,22 +316,11 @@ export default class GoogleDriveStore {
     };
 
     createLoadFilePicker(mime_type: string, title: string) {
-        console.log('🎯 [GoogleDrive] Creating load file picker...');
-        console.log('🎯 [GoogleDrive] MIME type:', mime_type);
-        console.log('🎯 [GoogleDrive] Title:', title);
-
         return new Promise(resolve => {
             const loadPickerCallback = async (data: TPickerCallbackResponse) => {
-                console.log('🎯 [GoogleDrive] Picker callback triggered');
-                console.log('🎯 [GoogleDrive] Action:', data.action);
-                console.log('🎯 [GoogleDrive] Data:', data);
-
                 if (data.action === google.picker.Action.PICKED) {
                     const file = data.docs[0];
-                    console.log('📄 [GoogleDrive] File selected:', file);
-
                     if (file?.driveError === 'NETWORK') {
-                        console.error('❌ [GoogleDrive] Network error detected');
                         rudderStackSendUploadStrategyFailedEvent({
                             upload_provider: 'google_drive' as any,
                             upload_id: this.upload_id,
@@ -374,53 +332,46 @@ export default class GoogleDriveStore {
 
                     const file_name = file.name;
                     const fileId = file.id;
-                    console.log('📄 [GoogleDrive] File name:', file_name);
-                    console.log('📄 [GoogleDrive] File ID:', fileId);
+                    const { files } = gapi.client.drive;
 
                     try {
-                        // Use fetch instead of gapi.client for better error handling
-                        const downloadUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`;
-                        console.log('⬇️ [GoogleDrive] Download URL:', downloadUrl);
-                        console.log(
-                            '⬇️ [GoogleDrive] Access token (first 20 chars):',
-                            this.access_token?.substring(0, 20) + '...'
-                        );
-
-                        const response = await fetch(downloadUrl, {
-                            method: 'GET',
-                            headers: {
-                                Authorization: `Bearer ${this.access_token}`,
-                                Accept: 'application/octet-stream, text/xml, application/xml, */*',
-                            },
-                        });
-
-                        console.log('⬇️ [GoogleDrive] Download response status:', response.status);
-                        console.log(
-                            '⬇️ [GoogleDrive] Download response headers:',
-                            Object.fromEntries(response.headers.entries())
-                        );
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error('❌ [GoogleDrive] Download failed:', errorText);
-                            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+                        console.log('🔍 [GoogleDrive] Attempting to download file:', fileId);
+                        console.log('🔍 [GoogleDrive] Current access token (first 20 chars):', this.access_token?.substring(0, 20) + '...');
+                        console.log('🔍 [GoogleDrive] Current scope:', this.scope);
+                        
+                        // Verify token is still valid before attempting download
+                        const tokenStatus = await this.verifyGoogleDriveAccessToken();
+                        if (tokenStatus !== 'verified') {
+                            console.error('❌ [GoogleDrive] Token verification failed, status:', tokenStatus);
+                            throw new Error('Access token is invalid or expired. Please re-authenticate.');
                         }
 
-                        const fileContent = await response.text();
-                        console.log('📄 [GoogleDrive] File content length:', fileContent.length);
-                        console.log(
-                            '📄 [GoogleDrive] File content preview (first 200 chars):',
-                            fileContent.substring(0, 200)
-                        );
+                        // Ensure gapi client has the current token
+                        if (this.access_token) {
+                            gapi.client.setToken({ access_token: this.access_token });
+                            console.log('✅ [GoogleDrive] Token set in gapi client');
+                        }
+
+                        const response = await files.get({
+                            fileId,
+                            alt: 'media',
+                        });
+
+                        console.log('📥 [GoogleDrive] Download response received');
+                        console.log('📥 [GoogleDrive] Response status:', response.status);
+                        console.log('📥 [GoogleDrive] Response headers:', response.headers);
 
                         // Ensure we have valid XML content
-                        if (!fileContent || typeof fileContent !== 'string') {
-                            console.error('❌ [GoogleDrive] Invalid file content received');
+                        if (!response.body || typeof response.body !== 'string') {
+                            console.error('❌ [GoogleDrive] Invalid response body:', typeof response.body);
                             throw new Error('Invalid file content received');
                         }
 
+                        console.log('📄 [GoogleDrive] File content length:', response.body.length);
+                        console.log('📄 [GoogleDrive] File content preview (first 200 chars):', response.body.substring(0, 200));
+
                         // Basic XML validation
-                        const trimmedContent = fileContent.trim();
+                        const trimmedContent = response.body.trim();
                         if (!trimmedContent.startsWith('<?xml') && !trimmedContent.startsWith('<')) {
                             console.error('❌ [GoogleDrive] File does not appear to be valid XML');
                             console.error('❌ [GoogleDrive] Content starts with:', trimmedContent.substring(0, 50));
@@ -428,30 +379,52 @@ export default class GoogleDriveStore {
                         }
 
                         console.log('✅ [GoogleDrive] File downloaded and validated successfully');
-                        resolve({ xml_doc: fileContent, file_name });
-                        const upload_type = getStrategyType(fileContent);
+                        resolve({ xml_doc: response.body, file_name });
+                        const upload_type = getStrategyType(response.body);
                         rudderStackSendUploadStrategyCompletedEvent({
-                            upload_provider: 'google_drive' as any,
+                            upload_provider: 'google_drive',
                             upload_type,
                             upload_id: this.upload_id,
                         });
-                    } catch (downloadError) {
+                    } catch (downloadError: any) {
                         console.error('❌ [GoogleDrive] Download error:', downloadError);
+                        console.error('❌ [GoogleDrive] Error details:', {
+                            message: downloadError.message,
+                            status: downloadError.status,
+                            result: downloadError.result,
+                            stack: downloadError.stack
+                        });
+
+                        // Handle specific error cases
+                        let errorMessage = downloadError.message || 'Unknown error occurred';
+                        let errorCode = '500';
+
+                        if (downloadError.status === 403) {
+                            errorMessage = 'Access denied. The file may not be accessible with current permissions. Please check file sharing settings or re-authenticate with broader permissions.';
+                            errorCode = '403';
+                        } else if (downloadError.status === 404) {
+                            errorMessage = 'File not found. The file may have been deleted or you may not have permission to access it.';
+                            errorCode = '404';
+                        } else if (downloadError.status === 401) {
+                            errorMessage = 'Authentication failed. Please sign out and sign in again.';
+                            errorCode = '401';
+                            // Force sign out on 401 errors
+                            this.signOut();
+                        }
+
                         rudderStackSendUploadStrategyFailedEvent({
                             upload_provider: 'google_drive' as any,
                             upload_id: this.upload_id,
                             upload_type: 'download_failed',
-                            error_message: (downloadError as Error).message,
-                            error_code: '500',
+                            error_message: errorMessage,
+                            error_code: errorCode,
                         });
-                        throw downloadError;
+                        
+                        throw new Error(errorMessage);
                     }
-                } else {
-                    console.log('🎯 [GoogleDrive] Picker action was not PICKED:', data.action);
                 }
             };
 
-            console.log('🎯 [GoogleDrive] Showing Google Drive file picker...');
             this.showGoogleDriveFilePicker(false, mime_type, title, loadPickerCallback);
         });
     }
@@ -465,6 +438,12 @@ export default class GoogleDriveStore {
         const docs_view = new google.picker.DocsView();
         docs_view.setIncludeFolders(true);
         docs_view.setMimeTypes(mime_type);
+        
+        // Filter to only show files owned by the current user (not shared files)
+        // This prevents showing files that might not be accessible for download
+        docs_view.setQuery('owner:me');
+        
+        console.log('🔍 [GoogleDrive] Picker configured to show only owned files (owner:me)');
 
         if (is_save) {
             docs_view.setSelectFolderEnabled(true);
