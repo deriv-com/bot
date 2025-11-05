@@ -189,7 +189,7 @@ export default class SaveModalStore implements ISaveModalStore {
             console.log('Blockly.Xml exists:', !!Blockly?.Xml);
             console.log('XML to convert:', xml);
 
-            const xmlContent = Blockly?.Xml?.domToPrettyText(xml);
+            const xmlContent = window.Blockly?.Xml?.domToPrettyText(xml);
             console.log('Generated XML content:', xmlContent);
             console.log('XML content type:', typeof xmlContent);
             console.log('XML content length:', xmlContent?.length);
