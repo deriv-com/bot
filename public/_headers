@@ -1,0 +1,5 @@
+# Cloudflare Pages headers configuration
+# This file sets HTTP headers for all routes
+
+/*
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
