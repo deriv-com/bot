@@ -188,14 +188,7 @@ export default class GoogleDriveStore {
             await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
         } catch (err) {
             if ((err as TErrorWithStatus).status === 401) {
-                // Don't call signOut() to avoid 400 error on token revocation
-                // Just clean up the local authentication state
-                this.access_token = '';
-                this.setIsAuthorized(false);
-                localStorage.removeItem('google_access_token');
-                localStorage.removeItem('google_access_token_expiry');
-                this.setGoogleDriveTokenValid(false);
-
+                this.signOut();
                 botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
             } else {
                 // Notify user of other errors
@@ -274,14 +267,7 @@ export default class GoogleDriveStore {
                             setButtonStatus(button_status.NORMAL);
                             resolve();
                         } else if (xhr.status === 401) {
-                            // Don't call signOut() to avoid 400 error on token revocation
-                            // Just clean up the local authentication state
-                            this.access_token = '';
-                            this.setIsAuthorized(false);
-                            localStorage.removeItem('google_access_token');
-                            localStorage.removeItem('google_access_token_expiry');
-                            this.setGoogleDriveTokenValid(false);
-
+                            this.signOut();
                             botNotification(notification_message().google_drive_error, undefined, {
                                 closeButton: false,
                             });
