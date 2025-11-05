@@ -87,6 +87,9 @@ export default defineConfig({
     server: {
         port: 8443,
         compress: true,
+        headers: {
+            'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+        },
     },
     dev: {
         hmr: true,
