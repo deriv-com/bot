@@ -131,72 +131,31 @@ export default class SaveModalStore implements ISaveModalStore {
     };
 
     onConfirmSave = async ({ is_local, save_as_collection, bot_name }: IOnConfirmProps) => {
-        console.log('onConfirmSave called with:', { is_local, save_as_collection, bot_name });
-
         const { load_modal, dashboard, google_drive } = this.root_store;
         const { loadStrategyToBuilder, selected_strategy } = load_modal;
         const { active_tab } = dashboard;
-
-        console.log('Active tab:', active_tab);
-        console.log('Selected strategy:', selected_strategy);
-
         this.setButtonStatus(button_status.LOADING);
         const { saveFile } = google_drive;
         let xml;
         let main_strategy = null;
-
         if (active_tab === 1) {
-            console.log('Getting XML from workspace (active_tab === 1)');
-            console.log('window.Blockly exists:', !!window.Blockly);
-            console.log('window.Blockly.Xml exists:', !!window.Blockly?.Xml);
-            console.log('window.Blockly.derivWorkspace exists:', !!window.Blockly?.derivWorkspace);
-
             xml = window.Blockly?.Xml?.workspaceToDom(window.Blockly?.derivWorkspace);
-            console.log('XML from workspace:', xml);
         } else {
-            console.log('Getting XML from saved strategy (active_tab !== 1)');
             const recent_files = await getSavedWorkspaces();
-            console.log('Recent files:', recent_files);
-
             main_strategy = recent_files.filter((strategy: TStrategy) => strategy.id === selected_strategy.id)?.[0];
-            console.log('Main strategy found:', main_strategy);
-
-            if (main_strategy) {
-                main_strategy.name = bot_name;
-                main_strategy.save_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
-                console.log('Main strategy XML string:', main_strategy.xml);
-
-                xml = window.Blockly.utils.xml.textToDom(main_strategy.xml);
-                console.log('XML from textToDom:', xml);
-            }
+            main_strategy.name = bot_name;
+            main_strategy.save_type = is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+            xml = window.Blockly.utils.xml.textToDom(main_strategy.xml);
         }
-
-        console.log('XML before setAttribute:', xml);
-
-        if (xml) {
-            xml.setAttribute('is_dbot', 'true');
-            xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
-            console.log('XML after setAttribute:', xml);
-        } else {
-            console.error('XML is null/undefined - cannot set attributes');
-        }
+        xml.setAttribute('is_dbot', 'true');
+        xml.setAttribute('collection', save_as_collection ? 'true' : 'false');
 
         if (is_local) {
-            console.log('Saving locally');
             save(bot_name, save_as_collection, xml);
         } else {
-            console.log('Saving to Google Drive');
-            console.log('Blockly.Xml exists:', !!Blockly?.Xml);
-            console.log('XML to convert:', xml);
-
-            const xmlContent = window.Blockly?.Xml?.domToPrettyText(xml);
-            console.log('Generated XML content:', xmlContent);
-            console.log('XML content type:', typeof xmlContent);
-            console.log('XML content length:', xmlContent?.length);
-
             await saveFile({
                 name: bot_name,
-                content: xmlContent,
+                content: Blockly?.Xml?.domToPrettyText(xml),
                 mimeType: 'application/xml',
             });
             this.setButtonStatus(button_status.COMPLETED);
