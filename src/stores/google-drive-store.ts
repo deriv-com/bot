@@ -181,22 +181,12 @@ export default class GoogleDriveStore {
     }
 
     async saveFile(options: TFileOptions) {
-        console.log('saveFile called with options:', options);
-        console.log('saveFile - XML content type:', typeof options.content);
-        console.log('saveFile - XML content length:', options.content?.length);
-        console.log('saveFile - XML content is undefined?', options.content === undefined);
-        console.log('saveFile - XML content preview:', options.content?.substring(0, 100));
-
         try {
-            console.log('saveFile - Starting sign in process');
             await this.signIn();
             if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
-            console.log('saveFile - Checking folder exists');
             await this.checkFolderExists();
-            console.log('saveFile - About to call createSaveFilePicker with options:', options);
             await this.createSaveFilePicker('application/vnd.google-apps.folder', localize('Select a folder'), options);
         } catch (err) {
-            console.log('saveFile - Error occurred:', err);
             if ((err as TErrorWithStatus).status === 401) {
                 this.signOut();
                 botNotification(notification_message().google_drive_error, undefined, { closeButton: false });
@@ -245,39 +235,21 @@ export default class GoogleDriveStore {
     }
 
     createSaveFilePicker(mime_type: string, title: string, options: TFileOptions) {
-        console.log('createSaveFilePicker called with:', { mime_type, title, options });
-        console.log('XML content type:', typeof options.content);
-        console.log('XML content length:', options.content?.length);
-        console.log('XML content preview (first 200 chars):', options.content?.substring(0, 200));
-
         const { setButtonStatus } = this.root_store.save_modal;
         return new Promise<void>((resolve, reject) => {
             const savePickerCallback = (data: TPickerCallbackResponse) => {
-                console.log('savePickerCallback triggered with action:', data.action);
-                console.log('Picker callback data:', data);
-
                 if (data.action === google.picker.Action.PICKED) {
                     const folder_id = data.docs[0].id;
-                    console.log('Selected folder ID:', folder_id);
-                    console.log(
-                        'Creating blob with content:',
-                        options.content ? 'Content exists' : 'Content is undefined/empty'
-                    );
-
                     const strategy_file = new Blob([options.content], { type: options.mimeType });
-                    console.log('Created blob size:', strategy_file.size);
-
                     const strategy_file_metadata = JSON.stringify({
                         name: options.name,
                         mimeType: options.mimeType,
                         parents: [folder_id],
                     });
-                    console.log('File metadata:', strategy_file_metadata);
 
                     const form_data = new FormData();
                     form_data.append('metadata', new Blob([strategy_file_metadata], { type: 'application/json' }));
                     form_data.append('file', strategy_file);
-                    console.log('FormData created with metadata and file blob');
 
                     const xhr = new XMLHttpRequest();
                     xhr.responseType = 'json';
@@ -285,14 +257,11 @@ export default class GoogleDriveStore {
                     xhr.setRequestHeader('Authorization', `Bearer ${this.access_token}`);
                     xhr.setRequestHeader('Accept', 'application/json');
                     xhr.setRequestHeader('X-Goog-Upload-Protocol', 'multipart');
-                    console.log('XHR request configured for Google Drive upload');
 
                     // Add comprehensive error handling for XHR request
                     xhr.timeout = 30000; // 30 seconds timeout
 
                     xhr.onload = () => {
-                        console.log('XHR onload triggered with status:', xhr.status);
-                        console.log('XHR response:', xhr.response);
                         if (xhr.status >= 200 && xhr.status < 300) {
                             botNotification(localize('File saved successfully'), undefined, { closeButton: true });
                             setButtonStatus(button_status.NORMAL);
@@ -326,11 +295,6 @@ export default class GoogleDriveStore {
                         reject(new Error(errorMsg));
                     };
 
-                    console.log('About to send XHR request');
-                    console.log('Final check - options.content before send:', options.content);
-                    console.log('Final check - is options.content undefined?', options.content === undefined);
-                    console.log('Final check - is options.content null?', options.content === null);
-                    console.log('Final check - options.content string length:', options.content?.length || 'N/A');
                     xhr.send(form_data);
                 } else if (data.action === google.picker.Action.CANCEL) {
                     setButtonStatus(button_status.NORMAL);
