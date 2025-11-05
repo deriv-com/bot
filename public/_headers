@@ -2,4 +2,5 @@
 # This file sets HTTP headers for all routes
 
 /*
-  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Opener-Policy: unsafe-none
+  Cross-Origin-Embedder-Policy: unsafe-none
