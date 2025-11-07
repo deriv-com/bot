@@ -771,20 +771,37 @@ export const setCurrency = block_instance => {
     currency_field?.setValue(getCurrencyDisplayCode(currency));
 };
 
-export const isClientFromIndia = () => {
-    // Check from DBotStore client first (similar to how setCurrency works)
-    if (DBotStore?.instance?.client) {
-        const client_info = DBotStore.instance.client;
-        if (client_info.country) {
-            return client_info.country.toLowerCase() === 'in';
+/**
+ * Check if multipliers are available for the current client
+ * @returns {boolean} true if multipliers are available, false if restricted
+ */
+export const isMultipliersAvailable = () => {
+    try {
+        let clientCountry = null;
+
+        // Check from DBotStore client first (similar to how setCurrency works)
+        if (DBotStore?.instance?.client) {
+            const client_info = DBotStore.instance.client;
+            if (client_info.country) {
+                clientCountry = client_info.country.toLowerCase();
+            }
         }
-    }
 
-    // Fallback to localStorage
-    const stored_country = localStorage.getItem('client.country');
-    if (stored_country) {
-        return stored_country.toLowerCase() === 'in';
-    }
+        // Fallback to localStorage
+        if (!clientCountry) {
+            const stored_country = localStorage.getItem('client.country');
+            if (stored_country) {
+                clientCountry = stored_country.toLowerCase();
+            }
+        }
 
-    return false;
+        // List of countries where multipliers are restricted
+        const restrictedCountries = ['in']; // India
+
+        // Return false if client is from a restricted country
+        return !restrictedCountries.includes(clientCountry);
+    } catch (error) {
+        console.warn('Error checking multiplier availability:', error);
+        return true; // Default to available on error
+    }
 };

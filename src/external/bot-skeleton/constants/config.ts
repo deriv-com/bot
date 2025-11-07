@@ -2,26 +2,36 @@ import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
-// Helper function to check if client is from India
-const isClientFromIndia = () => {
+// Helper function to check if multipliers are available for the current client
+const isMultipliersAvailable = () => {
     try {
         // Check if we're in a browser environment
-        if (typeof window === 'undefined') return false;
+        if (typeof window === 'undefined') return true; // Default to available in non-browser environments
+
+        let clientCountry = null;
 
         // Try to get from localStorage first (most reliable)
         const storedCountry = localStorage.getItem('client_country');
-        if (storedCountry?.toLowerCase() === 'in') return true;
-
-        // Try to get from DBotStore if available
-        const dbotCountry = (window as any).DBotStore?.instance?.client?.account_info?.country;
-        if (dbotCountry?.toLowerCase() === 'in') {
-            return true;
+        if (storedCountry) {
+            clientCountry = storedCountry.toLowerCase();
         }
 
-        return false;
+        // Try to get from DBotStore if available
+        if (!clientCountry) {
+            const dbotCountry = (window as any).DBotStore?.instance?.client?.account_info?.country;
+            if (dbotCountry) {
+                clientCountry = dbotCountry.toLowerCase();
+            }
+        }
+
+        // List of countries where multipliers are restricted
+        const restrictedCountries = ['in']; // India
+
+        // Return false if client is from a restricted country
+        return !restrictedCountries.includes(clientCountry);
     } catch (error) {
-        console.warn('Error checking client country:', error);
-        return false;
+        console.warn('Error checking multiplier availability:', error);
+        return true; // Default to available on error
     }
 };
 
@@ -80,14 +90,18 @@ export const config = () => ({
                 ACCU: localize('Buy'),
             },
         ],
-        MULTIPLIER: [
-            {
-                MULTUP: localize('Up'),
-            },
-            {
-                MULTDOWN: localize('Down'),
-            },
-        ],
+        ...(isMultipliersAvailable()
+            ? {
+                  MULTIPLIER: [
+                      {
+                          MULTUP: localize('Up'),
+                      },
+                      {
+                          MULTDOWN: localize('Down'),
+                      },
+                  ],
+              }
+            : {}),
         CALLPUT: [
             {
                 CALL: localize('Rise'),
@@ -237,7 +251,7 @@ export const config = () => ({
         digits: ['matchesdiffers', 'evenodd', 'overunder'],
     },
     TRADE_TYPE_CATEGORIES: {
-        multiplier: ['multiplier'],
+        ...(isMultipliersAvailable() ? { multiplier: ['multiplier'] } : {}),
         callput: ['callput', 'callputequal', 'higherlower'],
         touchnotouch: ['touchnotouch'],
         inout: ['endsinout', 'staysinout'],
@@ -259,13 +273,19 @@ export const config = () => ({
         callputspread: localize('Call Spread/Put Spread'),
         highlowticks: localize('High/Low Ticks'),
         runs: localize('Only Ups/Only Downs'),
-        multiplier: localize('Multipliers'),
+        ...(isMultipliersAvailable() ? { multiplier: localize('Multipliers') } : {}),
         accumulator: localize('Accumulators'),
     },
     BARRIER_CATEGORIES: {
         euro_atm: ['callput', 'callputequal'],
         euro_non_atm: ['endsinout', 'higherlower', 'callputspread'],
-        american: ['staysinout', 'touchnotouch', 'highlowticks', 'runs', 'multiplier'],
+        american: [
+            'staysinout',
+            'touchnotouch',
+            'highlowticks',
+            'runs',
+            ...(isMultipliersAvailable() ? ['multiplier'] : []),
+        ],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
         asian: ['asians'],
         reset: ['reset'],
@@ -344,7 +364,7 @@ export const config = () => ({
                 'staysinout',
                 'callputspread',
                 'accumulator',
-                ...(isClientFromIndia() ? ['multiplier'] : []),
+                ...(isMultipliersAvailable() ? [] : ['multiplier']),
             ],
             PREDICTION_TRADE_TYPES: ['highlowticks'],
         },
