@@ -485,6 +485,7 @@ export default class ContractsFor {
             const is_muliplier = ['multiplier'].includes(trade_type.value);
 
             // TODO: Render extra inputs for barrier + prediction and multiplier types.
+            // For now, exclude all multipliers from Quick Strategy (they were already excluded)
             if (!has_barrier && !has_prediction && !is_muliplier) {
                 trade_type_options.push({
                     text: trade_type.name,

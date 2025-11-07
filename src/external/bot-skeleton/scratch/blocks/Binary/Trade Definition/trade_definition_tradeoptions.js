@@ -6,6 +6,7 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 import {
     excludeOptionFromContextMenu,
+    isMultipliersAvailable,
     modifyContextMenu,
     runGroupedEvents,
     runIrreversibleEvents,
@@ -319,6 +320,10 @@ window.Blockly.Blocks.trade_definition_tradeoptions = {
                 });
             });
         } else if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
+            // Prevent multiplier blocks for restricted clients
+            if (!isMultipliersAvailable()) {
+                return;
+            }
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');
