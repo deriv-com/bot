@@ -770,3 +770,21 @@ export const setCurrency = block_instance => {
     const { currency } = DBotStore.instance.client;
     currency_field?.setValue(getCurrencyDisplayCode(currency));
 };
+
+export const isClientFromIndia = () => {
+    // Check from DBotStore client first (similar to how setCurrency works)
+    if (DBotStore?.instance?.client) {
+        const client_info = DBotStore.instance.client;
+        if (client_info.country) {
+            return client_info.country.toLowerCase() === 'in';
+        }
+    }
+
+    // Fallback to localStorage
+    const stored_country = localStorage.getItem('client.country');
+    if (stored_country) {
+        return stored_country.toLowerCase() === 'in';
+    }
+
+    return false;
+};

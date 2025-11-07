@@ -2,6 +2,29 @@ import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
+// Helper function to check if client is from India
+const isClientFromIndia = () => {
+    try {
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined') return false;
+
+        // Try to get from localStorage first (most reliable)
+        const storedCountry = localStorage.getItem('client_country');
+        if (storedCountry?.toLowerCase() === 'in') return true;
+
+        // Try to get from DBotStore if available
+        const dbotCountry = (window as any).DBotStore?.instance?.client?.account_info?.country;
+        if (dbotCountry?.toLowerCase() === 'in') {
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.warn('Error checking client country:', error);
+        return false;
+    }
+};
+
 export const config = () => ({
     lists: {
         PAYOUTTYPE: [
@@ -321,6 +344,7 @@ export const config = () => ({
                 'staysinout',
                 'callputspread',
                 'accumulator',
+                ...(isClientFromIndia() ? ['multiplier'] : []),
             ],
             PREDICTION_TRADE_TYPES: ['highlowticks'],
         },
