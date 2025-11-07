@@ -2,38 +2,8 @@ import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
-// Helper function to check if multipliers are available for the current client
-const isMultipliersAvailable = () => {
-    try {
-        // Check if we're in a browser environment
-        if (typeof window === 'undefined') return true; // Default to available in non-browser environments
-
-        let clientCountry = null;
-
-        // Try to get from localStorage first (most reliable)
-        const storedCountry = localStorage.getItem('client_country');
-        if (storedCountry) {
-            clientCountry = storedCountry.toLowerCase();
-        }
-
-        // Try to get from DBotStore if available
-        if (!clientCountry) {
-            const dbotCountry = (window as any).DBotStore?.instance?.client?.account_info?.country;
-            if (dbotCountry) {
-                clientCountry = dbotCountry.toLowerCase();
-            }
-        }
-
-        // List of countries where multipliers are restricted
-        const restrictedCountries = ['in']; // India
-
-        // Return false if client is from a restricted country
-        return !restrictedCountries.includes(clientCountry);
-    } catch (error) {
-        console.warn('Error checking multiplier availability:', error);
-        return true; // Default to available on error
-    }
-};
+// Import the centralized function from utils
+import { isMultipliersAvailable } from '../scratch/utils';
 
 export const config = () => ({
     lists: {

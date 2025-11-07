@@ -777,21 +777,42 @@ export const setCurrency = block_instance => {
  */
 export const isMultipliersAvailable = () => {
     try {
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined') return true; // Default to available in non-browser environments
+
         let clientCountry = null;
 
-        // Check from DBotStore client first (similar to how setCurrency works)
+        // Try multiple sources for client country (in order of reliability)
+
+        // 1. Check from DBotStore client first (most reliable when available)
         if (DBotStore?.instance?.client) {
             const client_info = DBotStore.instance.client;
-            if (client_info.country) {
-                clientCountry = client_info.country.toLowerCase();
+            // Try different possible paths for country
+            clientCountry = client_info.country || client_info.account_info?.country;
+            if (clientCountry) {
+                clientCountry = clientCountry.toLowerCase();
             }
         }
 
-        // Fallback to localStorage
-        if (!clientCountry) {
-            const stored_country = localStorage.getItem('client.country');
-            if (stored_country) {
-                clientCountry = stored_country.toLowerCase();
+        // 2. Fallback to localStorage with multiple possible keys
+        if (!clientCountry && typeof localStorage !== 'undefined') {
+            const possibleKeys = ['client.country', 'client_country', 'country'];
+            for (const key of possibleKeys) {
+                const stored_country = localStorage.getItem(key);
+                if (stored_country) {
+                    clientCountry = stored_country.toLowerCase();
+                    break;
+                }
+            }
+        }
+
+        // 3. Try window.DBotStore as fallback (for cases where import might not work)
+        if (!clientCountry && typeof window !== 'undefined') {
+            const dbotCountry =
+                window.DBotStore?.instance?.client?.country ||
+                window.DBotStore?.instance?.client?.account_info?.country;
+            if (dbotCountry) {
+                clientCountry = dbotCountry.toLowerCase();
             }
         }
 
