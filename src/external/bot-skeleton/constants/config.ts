@@ -2,6 +2,9 @@ import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
+// Import the centralized function from utils
+import { isMultipliersAvailable } from '../scratch/utils';
+
 export const config = () => ({
     lists: {
         PAYOUTTYPE: [
@@ -57,14 +60,18 @@ export const config = () => ({
                 ACCU: localize('Buy'),
             },
         ],
-        MULTIPLIER: [
-            {
-                MULTUP: localize('Up'),
-            },
-            {
-                MULTDOWN: localize('Down'),
-            },
-        ],
+        ...(isMultipliersAvailable()
+            ? {
+                  MULTIPLIER: [
+                      {
+                          MULTUP: localize('Up'),
+                      },
+                      {
+                          MULTDOWN: localize('Down'),
+                      },
+                  ],
+              }
+            : {}),
         CALLPUT: [
             {
                 CALL: localize('Rise'),
@@ -214,7 +221,7 @@ export const config = () => ({
         digits: ['matchesdiffers', 'evenodd', 'overunder'],
     },
     TRADE_TYPE_CATEGORIES: {
-        multiplier: ['multiplier'],
+        ...(isMultipliersAvailable() ? { multiplier: ['multiplier'] } : {}),
         callput: ['callput', 'callputequal', 'higherlower'],
         touchnotouch: ['touchnotouch'],
         inout: ['endsinout', 'staysinout'],
@@ -236,13 +243,19 @@ export const config = () => ({
         callputspread: localize('Call Spread/Put Spread'),
         highlowticks: localize('High/Low Ticks'),
         runs: localize('Only Ups/Only Downs'),
-        multiplier: localize('Multipliers'),
+        ...(isMultipliersAvailable() ? { multiplier: localize('Multipliers') } : {}),
         accumulator: localize('Accumulators'),
     },
     BARRIER_CATEGORIES: {
         euro_atm: ['callput', 'callputequal'],
         euro_non_atm: ['endsinout', 'higherlower', 'callputspread'],
-        american: ['staysinout', 'touchnotouch', 'highlowticks', 'runs', 'multiplier'],
+        american: [
+            'staysinout',
+            'touchnotouch',
+            'highlowticks',
+            'runs',
+            ...(isMultipliersAvailable() ? ['multiplier'] : []),
+        ],
         non_financial: ['digits', 'overunder', 'evenodd', 'matchesdiffers'],
         asian: ['asians'],
         reset: ['reset'],
@@ -321,6 +334,7 @@ export const config = () => ({
                 'staysinout',
                 'callputspread',
                 'accumulator',
+                ...(!isMultipliersAvailable() ? ['multiplier'] : []),
             ],
             PREDICTION_TRADE_TYPES: ['highlowticks'],
         },

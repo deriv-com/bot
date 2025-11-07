@@ -2,7 +2,6 @@ import { botNotification } from '@/components/bot-notification/bot-notification'
 import { notification_message } from '@/components/bot-notification/bot-notification-utils';
 import { getCurrencyDisplayCode } from '@/components/shared';
 import { localize } from '@deriv-com/translations';
-import { config } from '../../constants/config';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 import { saveWorkspaceToRecent } from '../../utils/local-storage';
@@ -16,7 +15,7 @@ export const inject_workspace_options = {
     media: 'assets/images/',
     zoom: {
         wheel: true,
-        startScale: config().workspaces.previewWorkspaceStartScale,
+        startScale: 1,
     },
     readOnly: true,
     scrollbars: true,
@@ -93,7 +92,7 @@ export const validateErrorOnBlockDelete = () => {
 export const updateWorkspaceName = () => {
     if (!DBotStore?.instance) return;
     const { load_modal } = DBotStore.instance;
-    const file_name = load_modal?.dashboard_strategies?.[0]?.name ?? config().default_file_name;
+    const file_name = load_modal?.dashboard_strategies?.[0]?.name ?? '@deriv/bot';
     if (document.title.indexOf('-') > -1) {
         const string_to_replace = document.title.substr(document.title.indexOf('-'));
         const new_document_title = document.title.replace(string_to_replace, `- ${file_name}`);
@@ -104,7 +103,11 @@ export const updateWorkspaceName = () => {
     }
 };
 
-export const isMainBlock = block_type => config().mainBlocks.indexOf(block_type) >= 0;
+export const isMainBlock = block_type => {
+    // Import config locally to avoid circular dependency
+    const { config } = require('../../constants/config');
+    return config().mainBlocks.indexOf(block_type) >= 0;
+};
 
 export const oppositesToDropdownOptions = opposite_name => {
     return opposite_name.map(contract_type => {
@@ -408,6 +411,8 @@ const getMissingBlocks = (workspace, required_block_types) => {
 
 const getDisabledBlocks = required_blocks_check => {
     const workspace = window.Blockly.derivWorkspace;
+    // Import config locally to avoid circular dependency
+    const { config } = require('../../constants/config');
     const required_block_types = [getSelectedTradeType(workspace), ...config().mandatoryMainBlocks];
     const disabled_blocks = Object.fromEntries(
         workspace
@@ -448,6 +453,8 @@ export const isAllRequiredBlocksEnabled = workspace => {
     if (!workspace) return false;
 
     const mandatory_trade_option_block = getSelectedTradeType(workspace);
+    // Import config locally to avoid circular dependency
+    const { config } = require('../../constants/config');
     const { mandatoryMainBlocks } = config();
     const required_block_types = [mandatory_trade_option_block, ...mandatoryMainBlocks];
 
@@ -769,4 +776,60 @@ export const setCurrency = block_instance => {
     const currency_field = block_instance.getField('CURRENCY_LIST');
     const { currency } = DBotStore.instance.client;
     currency_field?.setValue(getCurrencyDisplayCode(currency));
+};
+
+/**
+ * Check if multipliers are available for the current client
+ * @returns {boolean} true if multipliers are available, false if restricted
+ */
+export const isMultipliersAvailable = () => {
+    try {
+        // Check if we're in a browser environment
+        if (typeof window === 'undefined') return true; // Default to available in non-browser environments
+
+        let clientCountry = null;
+
+        // Try multiple sources for client country (in order of reliability)
+
+        // 1. Check from DBotStore client first (most reliable when available)
+        if (DBotStore?.instance?.client) {
+            const client_info = DBotStore.instance.client;
+            // Try different possible paths for country
+            clientCountry = client_info.country || client_info.account_info?.country;
+            if (clientCountry) {
+                clientCountry = clientCountry.toLowerCase();
+            }
+        }
+
+        // 2. Fallback to localStorage with multiple possible keys
+        if (!clientCountry && typeof localStorage !== 'undefined') {
+            const possibleKeys = ['client.country', 'client_country', 'country'];
+            for (const key of possibleKeys) {
+                const stored_country = localStorage.getItem(key);
+                if (stored_country) {
+                    clientCountry = stored_country.toLowerCase();
+                    break;
+                }
+            }
+        }
+
+        // 3. Try window.DBotStore as fallback (for cases where import might not work)
+        if (!clientCountry && typeof window !== 'undefined') {
+            const dbotCountry =
+                window.DBotStore?.instance?.client?.country ||
+                window.DBotStore?.instance?.client?.account_info?.country;
+            if (dbotCountry) {
+                clientCountry = dbotCountry.toLowerCase();
+            }
+        }
+
+        // List of countries where multipliers are restricted
+        const restrictedCountries = ['in']; // India
+
+        // Return false if client is from a restricted country
+        return !restrictedCountries.includes(clientCountry);
+    } catch (error) {
+        console.warn('Error checking multiplier availability:', error);
+        return true; // Default to available on error
+    }
 };
