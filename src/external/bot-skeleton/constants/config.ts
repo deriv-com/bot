@@ -364,7 +364,7 @@ export const config = () => ({
                 'staysinout',
                 'callputspread',
                 'accumulator',
-                ...(isMultipliersAvailable() ? [] : ['multiplier']),
+                ...(!isMultipliersAvailable() ? ['multiplier'] : []),
             ],
             PREDICTION_TRADE_TYPES: ['highlowticks'],
         },
