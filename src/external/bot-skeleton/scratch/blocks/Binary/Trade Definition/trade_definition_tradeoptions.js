@@ -6,12 +6,12 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
 import {
     excludeOptionFromContextMenu,
-    isMultipliersAvailable,
     modifyContextMenu,
     runGroupedEvents,
     runIrreversibleEvents,
     setCurrency,
 } from '../../../utils';
+import { isMultipliersAvailable } from '../../../utils/multiplier-utils';
 
 window.Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
