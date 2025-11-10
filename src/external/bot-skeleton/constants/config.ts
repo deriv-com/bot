@@ -2,8 +2,8 @@ import { localize } from '@deriv-com/translations';
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 
-// Import the centralized function from utils
-import { isMultipliersAvailable } from '../scratch/utils';
+// Import the centralized function from multiplier-utils to avoid circular dependency
+import { isMultipliersAvailable } from '../scratch/utils/multiplier-utils';
 
 export const config = () => ({
     lists: {

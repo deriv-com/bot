@@ -1,4 +1,4 @@
-import { isMultipliersAvailable } from '../../../utils';
+import { isMultipliersAvailable } from '../../../utils/multiplier-utils';
 import './trade_definition';
 import './trade_definition_market';
 import './trade_definition_tradetype';

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDomServer from 'react-dom/server';
 import { localize } from '@deriv-com/translations';
-import { isMultipliersAvailable } from '../../../external/bot-skeleton/scratch/utils';
+import { isMultipliersAvailable } from '../../../external/bot-skeleton/scratch/utils/multiplier-utils';
 
 const Arg = ({ ...props }) => {
     return React.createElement('arg', props);
