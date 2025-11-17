@@ -83,9 +83,11 @@
 
             .sc-dialog {
                 height: 100% !important;
+                background-color: 'aqua';
 
                 &__body {
                     height: inherit !important;
+                    z-index: 100000; /* Ensure it's higher than any other element in the system */
 
                     .sc-mcd {
                         height: inherit !important;
