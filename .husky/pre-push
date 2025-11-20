@@ -1,6 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-  fi
-# Check command line arguments in current process tree
-  fi
-exit $?
