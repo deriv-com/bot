@@ -36,3 +36,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+
+# AI Tool Configuration Files
+.cursorrules
+.clinerules
+.roo-config.json
+.chatgpt-instructions.md
+.claude-instructions.md
+.ai-rules.md
