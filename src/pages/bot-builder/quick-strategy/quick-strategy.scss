@@ -28,6 +28,10 @@
     }
 
     &__head {
+        background-color: var(--general-main-1);
+        z-index: 10000;
+        position: relative;
+
         @include flex-center(space-between);
 
         border-bottom: 1px solid var(--border-divider);
@@ -206,10 +210,6 @@
                     border-radius: 0.8rem;
                     padding: 0.8rem var(--group-outer-padding) 1.6rem;
                     margin-bottom: 1.6rem;
-
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
                 }
             }
 

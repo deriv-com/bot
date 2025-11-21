@@ -164,7 +164,7 @@ const Popover = ({
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                 arrowSize={5}
                                 arrowStyle={
-                                    relative_render
+                                    relative_render && !arrow_styles
                                         ? {
                                               borderTop: '10px solid transparent',
                                               borderLeft: '10px solid transparent',
