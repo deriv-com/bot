@@ -106,6 +106,9 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
         if (client && !appInitialization.current) {
             if (!api_base?.api) return;
             appInitialization.current = true;
+            api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
+                client.setWebsiteStatus(res.website_status);
+            });
 
             // Initial time update
             updateServerTime();
