@@ -92,27 +92,28 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
     }, [currentLang, common]);
 
     useEffect(() => {
-        if (client && !isAuthorizing && !appInitialization.current) {
+        const updateServerTime = () => {
+            api_base.api
+                .time()
+                .then((res: TSocketResponseData<'time'>) => {
+                    common.setServerTime(toMoment(res.time), false);
+                })
+                .catch(() => {
+                    common.setServerTime(toMoment(Date.now()), true);
+                });
+        };
+
+        if (client && !appInitialization.current) {
             if (!api_base?.api) return;
             appInitialization.current = true;
 
-            api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
-                client.setWebsiteStatus(res.website_status);
-            });
+            // Initial time update
+            updateServerTime();
 
-            // Update server time every 10 seconds
-            timeInterval.current = setInterval(() => {
-                api_base.api
-                    ?.time()
-                    .then((res: TSocketResponseData<'time'>) => {
-                        common.setServerTime(toMoment(res.time), false);
-                    })
-                    .catch(() => {
-                        common.setServerTime(toMoment(Date.now()), true);
-                    });
-            }, 10000);
+            // Schedule updates every 10 seconds
+            timeInterval.current = setInterval(updateServerTime, 10000);
         }
-    }, [client, common, isAuthorizing, is_tmb_enabled]);
+    }, [client, common, isAuthorizing]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
