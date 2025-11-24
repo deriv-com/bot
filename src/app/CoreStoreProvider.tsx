@@ -113,7 +113,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
             // Schedule updates every 10 seconds
             timeInterval.current = setInterval(updateServerTime, 10000);
         }
-    }, [client, common, isAuthorizing]);
+    }, [client, common, api_base?.api]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
