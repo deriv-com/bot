@@ -103,6 +103,12 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 });
         };
 
+        // Clear any existing interval before setting up a new one
+        if (timeInterval.current) {
+            clearInterval(timeInterval.current);
+            timeInterval.current = null;
+        }
+
         if (client && !appInitialization.current) {
             if (!api_base?.api) return;
             appInitialization.current = true;
@@ -116,7 +122,15 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
             // Schedule updates every 10 seconds
             timeInterval.current = setInterval(updateServerTime, 10000);
         }
-    }, [client, common, api_base?.api, is_tmb_enabled]);
+
+        // Cleanup on unmount or dependency change
+        return () => {
+            if (timeInterval.current) {
+                clearInterval(timeInterval.current);
+                timeInterval.current = null;
+            }
+        };
+    }, [client, common, is_tmb_enabled]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
