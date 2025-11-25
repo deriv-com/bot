@@ -210,6 +210,10 @@
                     border-radius: 0.8rem;
                     padding: 0.8rem var(--group-outer-padding) 1.6rem;
                     margin-bottom: 1.6rem;
+
+                    &:last-child {
+                        margin-bottom: 2rem;
+                    }
                 }
             }
 
