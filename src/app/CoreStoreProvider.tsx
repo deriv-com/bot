@@ -5,6 +5,7 @@ import { getDecimalPlaces, toMoment } from '@/components/shared';
 import { FORM_ERROR_MESSAGES } from '@/components/shared/constants/form-error-messages';
 import { initFormErrorMessages } from '@/components/shared/utils/validation/declarative-validation-rules';
 import { api_base } from '@/external/bot-skeleton';
+import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
@@ -109,12 +110,14 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
             timeInterval.current = null;
         }
 
-        if (client && !appInitialization.current) {
-            if (!api_base?.api) return;
-            appInitialization.current = true;
-            api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
-                client.setWebsiteStatus(res.website_status);
-            });
+        // Only setup the interval if the connection is open and we have access to the API
+        if (client && connectionStatus === CONNECTION_STATUS.OPENED && api_base?.api) {
+            if (!appInitialization.current) {
+                appInitialization.current = true;
+                api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
+                    client.setWebsiteStatus(res.website_status);
+                });
+            }
 
             // Initial time update
             updateServerTime();
@@ -130,7 +133,7 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
                 timeInterval.current = null;
             }
         };
-    }, [client, common, is_tmb_enabled]);
+    }, [client, common, is_tmb_enabled, connectionStatus]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
