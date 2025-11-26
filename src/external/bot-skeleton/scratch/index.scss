@@ -1248,3 +1248,7 @@ drag a block and selected text moves instead.
     y: 7;
     x: 2;
 }
+
+g.editing .blocklyEditableText {
+    display: none !important;
+}
