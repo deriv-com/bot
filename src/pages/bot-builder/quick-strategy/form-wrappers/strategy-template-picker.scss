@@ -114,6 +114,8 @@
             }
 
             &__footer {
+                z-index: 10000;
+
                 &--back {
                     color: var(--brand-red-coral);
                 }

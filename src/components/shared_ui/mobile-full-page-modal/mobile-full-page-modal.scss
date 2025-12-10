@@ -88,6 +88,7 @@
 
             &__header {
                 position: fixed;
+                z-index: 10000;
                 top: #{$MOBILE_HEADER_HEIGHT};
                 width: 100%;
                 height: #{$MOBILE_WRAPPER_HEADER_HEIGHT};

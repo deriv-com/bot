@@ -343,6 +343,8 @@ const QSInput: React.FC<TQSInput> = observer(
                                     has_error
                                     should_disable_pointer_events
                                     data-testid={`${name}-popover`}
+                                    relative_render
+                                    arrow_styles={{ left: '50%' }}
                                 >
                                     <Input
                                         data_testId='qs-input'
