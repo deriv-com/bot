@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 import PWAUpdateNotification from '@/components/pwa-update-notification';
 import { api_base } from '@/external/bot-skeleton';
@@ -16,7 +17,7 @@ import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
 
-const Layout = () => {
+const Layout = observer(() => {
     const { isDesktop } = useDevice();
     const { isOnline } = useOfflineDetection();
     const store = useStore();
@@ -247,6 +248,6 @@ const Layout = () => {
             <PWAUpdateNotification />
         </div>
     );
-};
+});
 
 export default Layout;
