@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import Cookies from 'js-cookie';
+import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
 import PWAUpdateNotification from '@/components/pwa-update-notification';
 import { api_base } from '@/external/bot-skeleton';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
+import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
 import { handleOidcAuthFailure } from '@/utils/auth-utils';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
@@ -15,9 +17,11 @@ import AppHeader from './header';
 import Body from './main-body';
 import './layout.scss';
 
-const Layout = () => {
+const Layout = observer(() => {
     const { isDesktop } = useDevice();
     const { isOnline } = useOfflineDetection();
+    const store = useStore();
+    const is_quick_strategy_active = store?.quick_strategy?.is_open;
 
     const isCallbackPage = window.location.pathname === '/callback';
     const { onRenderTMBCheck, is_tmb_enabled: tmb_enabled_from_hook, isTmbEnabled } = useTMB();
@@ -230,7 +234,12 @@ const Layout = () => {
     }, [isAuthenticating, isInitialAuthCheckComplete]);
 
     return (
-        <div className={clsx('layout', { responsive: isDesktop })}>
+        <div
+            className={clsx('layout', {
+                responsive: isDesktop,
+                'quick-strategy-active': is_quick_strategy_active && !isDesktop,
+            })}
+        >
             {!isCallbackPage && <AppHeader isAuthenticating={isAuthenticating || !isInitialAuthCheckComplete} />}
             <Body>
                 <Outlet />
@@ -239,6 +248,6 @@ const Layout = () => {
             <PWAUpdateNotification />
         </div>
     );
-};
+});
 
 export default Layout;
