@@ -5,6 +5,7 @@ import { getDecimalPlaces, toMoment } from '@/components/shared';
 import { FORM_ERROR_MESSAGES } from '@/components/shared/constants/form-error-messages';
 import { initFormErrorMessages } from '@/components/shared/utils/validation/declarative-validation-rules';
 import { api_base } from '@/external/bot-skeleton';
+import { CONNECTION_STATUS } from '@/external/bot-skeleton/services/api/observables/connection-status-stream';
 import { useOauth2 } from '@/hooks/auth/useOauth2';
 import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
@@ -92,27 +93,47 @@ const CoreStoreProvider: React.FC<{ children: React.ReactNode }> = observer(({ c
     }, [currentLang, common]);
 
     useEffect(() => {
-        if (client && !isAuthorizing && !appInitialization.current) {
-            if (!api_base?.api) return;
-            appInitialization.current = true;
+        const updateServerTime = () => {
+            api_base.api
+                .time()
+                .then((res: TSocketResponseData<'time'>) => {
+                    common.setServerTime(toMoment(res.time), false);
+                })
+                .catch(() => {
+                    common.setServerTime(toMoment(Date.now()), true);
+                });
+        };
 
-            api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
-                client.setWebsiteStatus(res.website_status);
-            });
-
-            // Update server time every 10 seconds
-            timeInterval.current = setInterval(() => {
-                api_base.api
-                    ?.time()
-                    .then((res: TSocketResponseData<'time'>) => {
-                        common.setServerTime(toMoment(res.time), false);
-                    })
-                    .catch(() => {
-                        common.setServerTime(toMoment(Date.now()), true);
-                    });
-            }, 10000);
+        // Clear any existing interval before setting up a new one
+        if (timeInterval.current) {
+            clearInterval(timeInterval.current);
+            timeInterval.current = null;
         }
-    }, [client, common, isAuthorizing, is_tmb_enabled]);
+
+        // Only setup the interval if the connection is open and we have access to the API
+        if (client && connectionStatus === CONNECTION_STATUS.OPENED && api_base?.api) {
+            if (!appInitialization.current) {
+                appInitialization.current = true;
+                api_base.api?.websiteStatus().then((res: TSocketResponseData<'website_status'>) => {
+                    client.setWebsiteStatus(res.website_status);
+                });
+            }
+
+            // Initial time update
+            updateServerTime();
+
+            // Schedule updates every 10 seconds
+            timeInterval.current = setInterval(updateServerTime, 10000);
+        }
+
+        // Cleanup on unmount or dependency change
+        return () => {
+            if (timeInterval.current) {
+                clearInterval(timeInterval.current);
+                timeInterval.current = null;
+            }
+        };
+    }, [client, common, is_tmb_enabled, connectionStatus]);
 
     const handleMessages = useCallback(
         async (res: Record<string, unknown>) => {
