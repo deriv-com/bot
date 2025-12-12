@@ -182,8 +182,10 @@
         "sass-embedded-win32-x64": "1.85.1"
     },
     "overrides": {
+        "glob": "10.5.0",
         "cross-spawn": "^7.0.6",
         "braces": "^3.0.3",
-        "brace-expansion@2.0.1": "2.0.2"
+        "brace-expansion@2.0.1": "2.0.2",
+        "@semantic-release/npm": "^13.1.2"
     }
 }

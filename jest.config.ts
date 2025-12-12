@@ -31,7 +31,7 @@ const config: Config = {
     coveragePathIgnorePatterns: ['/node_modules/'],
 
     // Indicates which provider should be used to instrument code for coverage
-    // coverageProvider: "babel",
+    coverageProvider: 'v8', // faster and avoids babel-plugin-istanbul
 
     // A list of reporter names that Jest uses when writing coverage reports
     // coverageReporters: [
@@ -174,8 +174,8 @@ const config: Config = {
 
     // A map from regular expressions to paths to transformers
     transform: {
+        '^.+\\.(ts|tsx)$': 'ts-jest',
         '^.+\\.(js|jsx)$': 'babel-jest',
-        '^.+\\.tsx?$': 'babel-jest',
         '^.+\\.xml$': 'jest-transform-stub',
     },
 
