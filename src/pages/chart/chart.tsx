@@ -39,7 +39,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     // Boolean state to control whether to refresh active symbols
     const [activeSymbols, setActiveSymbols] = useState<any[]>([]);
     const { activeLoginid } = useApiBase();
-    const previousLoginIdRef = useRef<string | null>(null);
 
     const {
         chart_type,
@@ -92,9 +91,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     // Function to fetch active symbols using chart_api
     const fetchActiveSymbols = async () => {
         try {
-            // First ensure chart API is authorized
-            await chart_api.authorizeChartConnection();
-
             // Then fetch active symbols
             const response = await chart_api.api.send({ active_symbols: 'brief' });
             if (response && response.active_symbols) {
@@ -108,16 +104,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     // Initialize previousLoginIdRef when component mounts and detect account changes
     useEffect(() => {
         // First time initialization
-        if (previousLoginIdRef.current === null) {
-            previousLoginIdRef.current = activeLoginid;
-            fetchActiveSymbols(); // Fetch active symbols on initial load
-        }
-        // Detect account ID changes
-        else if (activeLoginid && previousLoginIdRef.current !== activeLoginid) {
-            previousLoginIdRef.current = activeLoginid;
+        if (activeLoginid && chart_api.is_authorized) {
             fetchActiveSymbols();
         }
-    }, [activeLoginid]);
+    }, [activeLoginid, chart_api.is_authorized]);
 
     const requestAPI = (req: ServerTimeRequest | ActiveSymbolsRequest | TradingTimesRequest) => {
         return chart_api.api.send(req);
