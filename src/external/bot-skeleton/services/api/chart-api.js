@@ -1,4 +1,4 @@
-import { generateDerivApiInstance } from './appId';
+import { generateDerivApiInstance, V2GetActiveToken } from './appId';
 
 class ChartAPI {
     api;
@@ -15,8 +15,25 @@ class ChartAPI {
             }
             this.api = await generateDerivApiInstance();
             this.api?.connection.addEventListener('close', this.onsocketclose.bind(this));
+
+            // Authorize the chart WebSocket connection if token is available
+            await this.authorizeChartConnection();
         }
         this.getTime();
+    };
+
+    authorizeChartConnection = async () => {
+        const token = V2GetActiveToken();
+        if (!token || !this.api) return;
+
+        try {
+            const { error } = await this.api.authorize(token);
+            if (error) {
+                console.error('Chart API authorization error:', error);
+            }
+        } catch (e) {
+            console.error('Chart API authorization failed:', e);
+        }
     };
 
     getTime() {

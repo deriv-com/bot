@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import chart_api from '@/external/bot-skeleton/services/api/chart-api';
+import { useApiBase } from '@/hooks/useApiBase';
 import { useStore } from '@/hooks/useStore';
 import {
     ActiveSymbolsRequest,
@@ -35,6 +36,10 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     const { common, ui } = useStore();
     const { chart_store, run_panel, dashboard } = useStore();
     const [isSafari, setIsSafari] = useState(false);
+    // Boolean state to control whether to refresh active symbols
+    const [activeSymbols, setActiveSymbols] = useState<any[]>([]);
+    const { activeLoginid } = useApiBase();
+    const previousLoginIdRef = useRef<string | null>(null);
 
     const {
         chart_type,
@@ -61,19 +66,6 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     };
-    console.log({
-        chart_type,
-        getMarketsOrder,
-        granularity,
-        onSymbolChange,
-        setChartStatus,
-        symbol,
-        updateChartType,
-        updateGranularity,
-        updateSymbol,
-        setChartSubscriptionId,
-        chart_subscription_id,
-    });
 
     useEffect(() => {
         // Safari browser detection
@@ -96,6 +88,36 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
     useEffect(() => {
         if (!symbol) updateSymbol();
     }, [symbol, updateSymbol]);
+
+    // Function to fetch active symbols using chart_api
+    const fetchActiveSymbols = async () => {
+        try {
+            // First ensure chart API is authorized
+            await chart_api.authorizeChartConnection();
+
+            // Then fetch active symbols
+            const response = await chart_api.api.send({ active_symbols: 'brief' });
+            if (response && response.active_symbols) {
+                setActiveSymbols(response.active_symbols);
+            }
+        } catch (error) {
+            console.error('Failed to fetch active symbols:', error);
+        }
+    };
+
+    // Initialize previousLoginIdRef when component mounts and detect account changes
+    useEffect(() => {
+        // First time initialization
+        if (previousLoginIdRef.current === null) {
+            previousLoginIdRef.current = activeLoginid;
+            fetchActiveSymbols(); // Fetch active symbols on initial load
+        }
+        // Detect account ID changes
+        else if (activeLoginid && previousLoginIdRef.current !== activeLoginid) {
+            previousLoginIdRef.current = activeLoginid;
+            fetchActiveSymbols();
+        }
+    }, [activeLoginid]);
 
     const requestAPI = (req: ServerTimeRequest | ActiveSymbolsRequest | TradingTimesRequest) => {
         return chart_api.api.send(req);
@@ -163,6 +185,9 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
                 isConnectionOpened={is_connection_opened}
                 getMarketsOrder={getMarketsOrder}
+                chartData={{
+                    activeSymbols: JSON.parse(JSON.stringify(activeSymbols)),
+                }}
                 isLive
                 leftMargin={80}
             />
