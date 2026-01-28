@@ -25,6 +25,27 @@ const BotStopped = observer(() => {
     const onClickClose = () => {
         location.reload();
     };
+    console.log(
+        'Bot Status Logs:',
+        '\n• isInternetDisconnection:',
+        isInternetDisconnection,
+        '- True when user is offline AND bot is running',
+        '\n• isInternalIssue:',
+        isInternalIssue,
+        '- True when websocket is not initialized BUT user is online',
+        '\n• shouldShowPopup:',
+        shouldShowPopup,
+        '- True when either connection issue is detected',
+        '\n• isOnline:',
+        isOnline,
+        '- Current internet connectivity status',
+        '\n• is_running:',
+        is_running,
+        '- Current bot running status',
+        '\n• is_web_socket_intialised:',
+        is_web_socket_intialised,
+        '- WebSocket connection status'
+    );
 
     return (
         <Dialog
