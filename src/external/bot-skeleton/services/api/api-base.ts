@@ -188,12 +188,18 @@ class APIBase {
             this.is_authorized = true;
             localStorage.setItem('client_account_details', JSON.stringify(authorize?.account_list));
             localStorage.setItem('client.country', authorize?.country);
-
-            if (this.has_active_symbols) {
-                this.toggleRunButton(false);
-            } else {
-                this.active_symbols_promise = this.getActiveSymbols();
-            }
+            this.toggleRunButton(false);
+            this.has_active_symbols = false;
+            this.active_symbols_promise = this.getActiveSymbols().then(() => {
+                // After getting active symbols, refresh them in the ApiHelpers instance too
+                // Use type casting to fix TypeScript errors
+                const apiHelpers = ApiHelpers.instance as any;
+                if (apiHelpers?.active_symbols) {
+                    apiHelpers.active_symbols.retrieveActiveSymbols(true).catch((error: Error) => {
+                        console.error('[API] Failed to retrieve active symbols:', error);
+                    });
+                }
+            });
             this.subscribe();
             // this.getSelfExclusion(); commented this so we dont call it from two places
         } catch (e) {

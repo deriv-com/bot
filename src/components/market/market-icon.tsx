@@ -173,6 +173,18 @@ const MARKET_ICONS = {
     BOOM1000: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom1000Icon }))
     ),
+    BOOM50: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom50Icon }))
+    ),
+    BOOM150N: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedBoom150Icon }))
+    ),
+    CRASH50: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedCrash50Icon }))
+    ),
+    CRASH150N: lazy(() =>
+        import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedCrash150Icon }))
+    ),
     CRASH300N: lazy(() =>
         import('@deriv/quill-icons/Markets').then(module => ({ default: module.MarketDerivedCrash300Icon }))
     ),
