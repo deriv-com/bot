@@ -170,6 +170,9 @@ export default class RunPanelStore {
     };
 
     onRunButtonClick = async () => {
+        // Show notification to keep screen alive when user clicks run button
+        botNotification(notification_message().keep_screen_alive);
+
         let timer_counter = 1;
         if (window.sendRequestsStatistic) {
             performance.clearMeasures();

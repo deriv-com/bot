@@ -46,6 +46,7 @@ export const notification_message = () => ({
     strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
     google_drive_error: localize('Your session has expired. Please sign in again.'),
     xml_import_error: localize('Unsupported file format. Please import a valid XML file.'),
+    keep_screen_alive: localize('Ensure your screen is active and your connection is stable to avoid interruptions.'),
 });
 
 export const notification_style = {
