@@ -170,9 +170,6 @@ export default class RunPanelStore {
     };
 
     onRunButtonClick = async () => {
-        // Show notification to keep screen alive when user clicks run button
-        botNotification(notification_message().keep_screen_alive);
-
         let timer_counter = 1;
         if (window.sendRequestsStatistic) {
             performance.clearMeasures();
@@ -230,6 +227,8 @@ export default class RunPanelStore {
 
             summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
+            // Show notification to keep screen alive after all validations pass
+            botNotification(notification_message().keep_screen_alive);
             this.dbot.runBot();
         });
         this.setShowBotStopMessage(false);
