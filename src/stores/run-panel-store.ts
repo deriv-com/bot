@@ -227,6 +227,8 @@ export default class RunPanelStore {
 
             summary_card.clear();
             this.setContractStage(contract_stages.STARTING);
+            // Show notification to keep screen alive after all validations pass
+            botNotification(notification_message().keep_screen_alive);
             this.dbot.runBot();
         });
         this.setShowBotStopMessage(false);
