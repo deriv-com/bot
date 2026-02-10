@@ -89,7 +89,7 @@ const BotStopped = observer(() => {
                 {isInternetDisconnection ? (
                     <Localize i18n_default_text='Your bot is paused while you’re offline. Reconnect to continue trading.' />
                 ) : (
-                    <Localize i18n_default_text='Your connection to the server was lost. All trades have been settled. Check the Reports page for final results.' />
+                    <Localize i18n_default_text='Your connection to the server was lost, all trades have been settled. Check the Reports page for final results.' />
                 )}
             </Text>
         </Dialog>
