@@ -187,7 +187,8 @@
         "braces": "^3.0.3",
         "brace-expansion@2.0.1": "2.0.2",
         "@semantic-release/npm": "^13.1.2",
-        "minimatch": ">=9.0.7",
-        "@tootallnate/once": ">=3.0.1"
+        "minimatch": ">=10.2.3",
+        "@tootallnate/once": ">=3.0.1",
+        "tar": ">=7.5.9"
     }
 }
