@@ -1,11 +1,10 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { isDemoAccount } from '@/analytics/utils';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
-import { clearAuthData } from '@/utils/auth-utils';
+import { clearAuthData, isDemoAccount } from '@/utils/auth-utils';
 import { localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
 import App from './App';
@@ -81,7 +80,7 @@ const setLocalStorageToken = async (
                         const accountParam =
                             urlParams.get('account') || sessionStorage.getItem('query_param_currency') || '';
                         const wantsDemo =
-                            accountParam.toLowerCase() === 'demo' || defaultActiveAccount?.loginid?.startsWith('VR');
+                            accountParam.toLowerCase() === 'demo' || isDemoAccount(defaultActiveAccount?.loginid ?? '');
 
                         // Pick the correct account based on what the user had selected
                         let targetAccount;
@@ -93,6 +92,11 @@ const setLocalStorageToken = async (
 
                         // Fallback to first account from authorize response
                         if (!targetAccount) {
+                            if (wantsDemo) {
+                                console.warn(
+                                    '[Auth] Demo account requested but none found, falling back to first account'
+                                );
+                            }
                             const firstId = authorize?.account_list[0]?.loginid;
                             targetAccount = loginInfo.find(account => account.loginid === firstId);
                         }

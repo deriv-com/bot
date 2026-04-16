@@ -1,10 +1,9 @@
 import Cookies from 'js-cookie';
-import { isDemoAccount } from '@/analytics/utils';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
 import useTMB from '@/hooks/useTMB';
-import { clearAuthData } from '@/utils/auth-utils';
+import { clearAuthData, isDemoAccount } from '@/utils/auth-utils';
 import { Callback } from '@deriv-com/auth-client';
 import { Button } from '@deriv-com/ui';
 
@@ -26,7 +25,7 @@ const getSelectedCurrency = (
     const firstAccountCurrency = clientAccounts[firstAccountKey]?.currency;
 
     const validCurrencies = [...fiat_currencies_display_order, ...crypto_currencies_display_order];
-    if (tokens.acct1?.startsWith('VR') || currency === 'demo') return 'demo';
+    if (isDemoAccount(tokens.acct1 ?? '') || currency === 'demo') return 'demo';
     if (currency && validCurrencies.includes(currency.toUpperCase())) return currency;
     return firstAccountCurrency || 'USD';
 };
@@ -101,6 +100,11 @@ const CallbackPage = () => {
 
                         // Fallback to first account from authorize response
                         if (!targetAccount) {
+                            if (selected_currency === 'demo') {
+                                console.warn(
+                                    '[Auth] Demo account requested but none found, falling back to first account'
+                                );
+                            }
                             const firstId = authorize?.account_list[0]?.loginid;
                             targetAccount = clientAccountsArray.find(account => account.loginid === firstId);
                         }
