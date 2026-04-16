@@ -4,6 +4,17 @@
 import Cookies from 'js-cookie';
 
 /**
+ * Check if a loginid represents a demo account.
+ * Demo accounts use the VR prefix:
+ * - VRTC: Classic demo accounts
+ * - VRW: Demo wallet accounts
+ */
+export const isDemoAccount = (loginid: string): boolean => {
+    if (!loginid) return false;
+    return loginid.startsWith('VRTC') || loginid.startsWith('VRW');
+};
+
+/**
  * Clears authentication data from local storage and reloads the page
  */
 export const clearAuthData = (is_reload: boolean = true): void => {
