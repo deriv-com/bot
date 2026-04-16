@@ -8,7 +8,7 @@ import { api_base } from '@/external/bot-skeleton';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
 import { useStore } from '@/hooks/useStore';
 import useTMB from '@/hooks/useTMB';
-import { handleOidcAuthFailure } from '@/utils/auth-utils';
+import { handleOidcAuthFailure, isDemoAccount } from '@/utils/auth-utils';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useDevice } from '@deriv-com/ui';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '../shared';
@@ -35,12 +35,15 @@ const Layout = observer(() => {
     const checkClientAccount = JSON.parse(localStorage.getItem('clientAccounts') ?? '{}');
     const getQueryParams = new URLSearchParams(window.location.search);
     const currency = getQueryParams.get('account') ?? '';
+    // When no account param in URL, check if current active account is demo
+    const activeLoginId = localStorage.getItem('active_loginid') ?? '';
+    const effectiveCurrency = currency || (isDemoAccount(activeLoginId) ? 'demo' : '');
     const accountsList = JSON.parse(localStorage.getItem('accountsList') ?? '{}');
     const isClientAccountsPopulated = Object.keys(accountsList).length > 0;
     const ifClientAccountHasCurrency =
-        Object.values(checkClientAccount).some((account: any) => account.currency === currency) ||
-        currency === 'demo' ||
-        currency === '';
+        Object.values(checkClientAccount).some((account: any) => account.currency === effectiveCurrency) ||
+        effectiveCurrency === 'demo' ||
+        effectiveCurrency === '';
     const [clientHasCurrency, setClientHasCurrency] = useState(ifClientAccountHasCurrency);
     const [isAuthenticating, setIsAuthenticating] = useState(true); // Start with true to prevent flashing
 
@@ -99,11 +102,14 @@ const Layout = observer(() => {
                 setClientHasCurrency(false);
             } else {
                 const account_list_ =
-                    account_list_filter?.find((acc: { currency: string }) => acc.currency === currency) ||
+                    account_list_filter?.find((acc: { currency: string }) => acc.currency === effectiveCurrency) ||
                     account_list_filter?.[0];
 
                 let session_storage_currency =
-                    sessionStorage.getItem('query_param_currency') || account_list_?.currency || 'USD';
+                    effectiveCurrency ||
+                    sessionStorage.getItem('query_param_currency') ||
+                    account_list_?.currency ||
+                    'USD';
 
                 session_storage_currency = `account=${session_storage_currency}`;
                 setClientHasCurrency(true);
@@ -133,8 +139,8 @@ const Layout = observer(() => {
         // Always set the currency in session storage, even if the user is not logged in
         // This ensures the currency is available on the callback page
         setIsAuthenticating(true);
-        if (currency) {
-            sessionStorage.setItem('query_param_currency', currency);
+        if (effectiveCurrency) {
+            sessionStorage.setItem('query_param_currency', effectiveCurrency);
         }
 
         const checkOIDCEnabledWithMissingAccount = !isEndpointPage && !isCallbackPage && !clientHasCurrency;
@@ -161,7 +167,8 @@ const Layout = observer(() => {
                 if (tmbEnabled) {
                     await onRenderTMBCheck();
                 } else if (shouldAuthenticate) {
-                    const query_param_currency = currency || sessionStorage.getItem('query_param_currency') || 'USD';
+                    const query_param_currency =
+                        effectiveCurrency || sessionStorage.getItem('query_param_currency') || 'USD';
 
                     // Make sure we have the currency in session storage before redirecting
                     if (query_param_currency) {
@@ -199,7 +206,7 @@ const Layout = observer(() => {
         clientHasCurrency,
         tmb_enabled_from_hook,
         onRenderTMBCheck,
-        currency,
+        effectiveCurrency,
         is_tmb_enabled,
         isOnline, // Add isOnline to dependencies
     ]);
