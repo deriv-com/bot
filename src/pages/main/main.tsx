@@ -156,7 +156,7 @@ const AppWrapper = observer(() => {
             if (!isDesktop) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
-            navigate(`#${hash[active_tab] || hash[0]}`);
+            navigate({ search: window.location.search, hash: `#${hash[active_tab] || hash[0]}` });
         }
         if (active_tour !== '') {
             setActiveTour('');
