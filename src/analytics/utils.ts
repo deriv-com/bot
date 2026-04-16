@@ -40,6 +40,24 @@ export const getTradeParameterData = ({ form_values }: TFormStrategy) => {
     };
 };
 
+/**
+ * Check if a loginid represents a demo account.
+ * Demo accounts have specific prefixes:
+ * - VRTC: Classic demo accounts
+ * - VRW: Demo wallet accounts
+ * - DEM: Demo accounts with DEM prefix
+ * - DOT: Demo accounts with DOT prefix
+ */
+export const isDemoAccount = (loginid: string): boolean => {
+    if (!loginid) return false;
+    return (
+        loginid.startsWith('VRTC') ||
+        loginid.startsWith('VRW') ||
+        loginid.startsWith('DEM') ||
+        loginid.startsWith('DOT')
+    );
+};
+
 export const getStrategyType = (block_string: string | ArrayBuffer) => {
     try {
         const xmlDoc = new DOMParser().parseFromString(block_string.toString(), 'application/xml');

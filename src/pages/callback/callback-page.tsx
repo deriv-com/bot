@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { isDemoAccount } from '@/analytics/utils';
 import { crypto_currencies_display_order, fiat_currencies_display_order } from '@/components/shared';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
@@ -61,6 +62,7 @@ const CallbackPage = () => {
                 localStorage.setItem('clientAccounts', JSON.stringify(clientAccounts));
 
                 let is_token_set = false;
+                const selected_currency = getSelectedCurrency(tokens, clientAccounts, state);
 
                 const api = await generateDerivApiInstance();
                 if (api) {
@@ -86,11 +88,26 @@ const CallbackPage = () => {
                     } else {
                         localStorage.setItem('callback_token', authorize.toString());
                         const clientAccountsArray = Object.values(clientAccounts);
-                        const firstId = authorize?.account_list[0]?.loginid;
-                        const filteredTokens = clientAccountsArray.filter(account => account.loginid === firstId);
-                        if (filteredTokens.length) {
-                            localStorage.setItem('authToken', filteredTokens[0].token);
-                            localStorage.setItem('active_loginid', filteredTokens[0].loginid);
+
+                        // Pick the correct account based on what the user had selected
+                        let targetAccount;
+                        if (selected_currency === 'demo') {
+                            targetAccount = clientAccountsArray.find(account => isDemoAccount(account.loginid));
+                        } else {
+                            targetAccount =
+                                clientAccountsArray.find(account => account.currency === selected_currency) ||
+                                clientAccountsArray.find(account => !isDemoAccount(account.loginid));
+                        }
+
+                        // Fallback to first account from authorize response
+                        if (!targetAccount) {
+                            const firstId = authorize?.account_list[0]?.loginid;
+                            targetAccount = clientAccountsArray.find(account => account.loginid === firstId);
+                        }
+
+                        if (targetAccount) {
+                            localStorage.setItem('authToken', targetAccount.token);
+                            localStorage.setItem('active_loginid', targetAccount.loginid);
                             is_token_set = true;
                         }
                     }
@@ -99,8 +116,6 @@ const CallbackPage = () => {
                     localStorage.setItem('authToken', tokens.token1);
                     localStorage.setItem('active_loginid', tokens.acct1);
                 }
-                // Determine the appropriate currency to use
-                const selected_currency = getSelectedCurrency(tokens, clientAccounts, state);
 
                 window.location.replace(window.location.origin + `bot/?account=${selected_currency}`);
             }}

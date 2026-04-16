@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import { isDemoAccount } from '@/analytics/utils';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { generateDerivApiInstance } from '@/external/bot-skeleton/services/api/appId';
 import { observer as globalObserver } from '@/external/bot-skeleton/utils/observer';
@@ -74,11 +75,31 @@ const setLocalStorageToken = async (
                         }
                     } else {
                         localStorage.setItem('client.country', authorize.country);
-                        const firstId = authorize?.account_list[0]?.loginid;
-                        const filteredTokens = loginInfo.filter(token => token.loginid === firstId);
-                        if (filteredTokens.length) {
-                            localStorage.setItem('authToken', filteredTokens[0].token);
-                            localStorage.setItem('active_loginid', filteredTokens[0].loginid);
+
+                        // Determine if the user should be on demo from URL or session
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const accountParam =
+                            urlParams.get('account') || sessionStorage.getItem('query_param_currency') || '';
+                        const wantsDemo =
+                            accountParam.toLowerCase() === 'demo' || defaultActiveAccount?.loginid?.startsWith('VR');
+
+                        // Pick the correct account based on what the user had selected
+                        let targetAccount;
+                        if (wantsDemo) {
+                            targetAccount = loginInfo.find(account => isDemoAccount(account.loginid));
+                        } else {
+                            targetAccount = loginInfo.find(account => !isDemoAccount(account.loginid)) || loginInfo[0];
+                        }
+
+                        // Fallback to first account from authorize response
+                        if (!targetAccount) {
+                            const firstId = authorize?.account_list[0]?.loginid;
+                            targetAccount = loginInfo.find(account => account.loginid === firstId);
+                        }
+
+                        if (targetAccount) {
+                            localStorage.setItem('authToken', targetAccount.token);
+                            localStorage.setItem('active_loginid', targetAccount.loginid);
                             return;
                         }
                     }
