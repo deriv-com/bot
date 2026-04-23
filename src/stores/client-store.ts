@@ -89,6 +89,7 @@ export default class ClientStore {
             is_trading_experience_incomplete: computed,
             is_cr_account: computed,
             account_open_date: computed,
+            is_platform_migrated: computed,
         });
     }
 
@@ -234,6 +235,10 @@ export default class ClientStore {
         return Object.keys(this.accounts[this.loginid]).includes('created_at')
             ? this.accounts[this.loginid].created_at
             : undefined;
+    }
+
+    get is_platform_migrated() {
+        return this.website_status?.message === 'migrated';
     }
 
     isBotAllowed = () => {

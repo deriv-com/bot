@@ -5,6 +5,7 @@ import AuthLoadingWrapper from '@/components/auth-loading-wrapper';
 import useLiveChat from '@/components/chat/useLiveChat';
 import { BOT_RESTRICTED_COUNTRIES_LIST } from '@/components/layout/header/utils';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import MigrationModal from '@/components/migration-modal';
 import PWAInstallModal from '@/components/pwa-install-modal';
 import { getUrlBase } from '@/components/shared';
 import TncStatusUpdateModal from '@/components/tnc-status-update-modal';
@@ -295,6 +296,7 @@ const AppContent = observer(() => {
                         <PWAInstallModal />
                         <ToastContainer limit={3} draggable={false} />
                         <TncStatusUpdateModal />
+                        <MigrationModal />
                     </div>
                 </ThemeProvider>
             </AuthLoadingWrapper>
@@ -317,6 +319,7 @@ const AppContent = observer(() => {
                     <PWAInstallModal />
                     <ToastContainer limit={3} draggable={false} />
                     <TncStatusUpdateModal />
+                    <MigrationModal />
                 </div>
             </ThemeProvider>
         </AuthLoadingWrapper>

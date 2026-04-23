@@ -17,9 +17,10 @@ import { setTourSettings, tour_list } from '../utils';
 import './tour-start-dialog.scss';
 
 const TourStartDialog = observer(() => {
-    const { dashboard } = useStore();
+    const { dashboard, client } = useStore();
     const { active_tab, is_tour_dialog_visible, setTourDialogVisibility, setActiveTour, setShowMobileTourDialog } =
         dashboard;
+    const { is_platform_migrated } = client;
     const { isDesktop } = useDevice();
     const tour_token = active_tab === 0 ? 'onboard_tour_token' : 'bot_builder_token';
     const toggleTour = () => {
@@ -36,7 +37,7 @@ const TourStartDialog = observer(() => {
     const is_tnc_needed = useIsTNCNeeded();
 
     React.useEffect(() => {
-        if (is_tnc_needed) {
+        if (is_tnc_needed || is_platform_migrated) {
             setIsTourOpen(false);
         } else {
             if (is_tour_dialog_visible) {
@@ -45,7 +46,7 @@ const TourStartDialog = observer(() => {
                 setIsTourOpen(false);
             }
         }
-    }, [is_tnc_needed, is_tour_dialog_visible]);
+    }, [is_tnc_needed, is_platform_migrated, is_tour_dialog_visible]);
 
     const getTourContent = () => {
         return (

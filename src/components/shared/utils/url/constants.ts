@@ -19,4 +19,7 @@ export const deriv_urls = Object.freeze({
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domain_url}`,
     BINARYBOT_PRODUCTION: `https://bot.${domain_url}`,
     BINARYBOT_STAGING: `https://staging-bot.${domain_url}`,
+    HOME_PRODUCTION: `https://home.${domain_url}`,
+    HOME_STAGING: `https://staging-home.${domain_url}`,
+    HELP_CENTRE: `https://trade.${domain_url}/help-centre`,
 });
