@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { usePositionsBannerSeen } from '@/components/positions-banner/use-positions-banner-seen';
 import Dialog from '@/components/shared_ui/dialog';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
@@ -35,9 +36,12 @@ const TourStartDialog = observer(() => {
     const tour_dialog_action = getTourDialogAction(!isDesktop);
     const [is_tour_open, setIsTourOpen] = React.useState(false);
     const is_tnc_needed = useIsTNCNeeded();
+    // Suppress welcome/tour while the mobile positions-banner modal is pending.
+    const is_positions_banner_seen = usePositionsBannerSeen();
+    const is_positions_banner_pending = !isDesktop && !is_positions_banner_seen;
 
     React.useEffect(() => {
-        if (is_tnc_needed || is_platform_migrated) {
+        if (is_tnc_needed || is_platform_migrated || is_positions_banner_pending) {
             setIsTourOpen(false);
         } else {
             if (is_tour_dialog_visible) {
@@ -46,7 +50,7 @@ const TourStartDialog = observer(() => {
                 setIsTourOpen(false);
             }
         }
-    }, [is_tnc_needed, is_platform_migrated, is_tour_dialog_visible]);
+    }, [is_tnc_needed, is_platform_migrated, is_positions_banner_pending, is_tour_dialog_visible]);
 
     const getTourContent = () => {
         return (

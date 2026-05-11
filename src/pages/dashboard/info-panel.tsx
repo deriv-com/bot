@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { usePositionsBannerSeen } from '@/components/positions-banner/use-positions-banner-seen';
 import Modal from '@/components/shared_ui/modal';
 import Text from '@/components/shared_ui/text';
 import { DBOT_TABS } from '@/constants/bot-contents';
@@ -34,6 +35,11 @@ const InfoPanel = observer(() => {
         };
     };
 
+    // Suppress the Welcome / Guide / FAQs panel while the mobile positions-
+    // banner modal is pending, so the upgrade notice gets first attention.
+    const is_positions_banner_seen = usePositionsBannerSeen();
+    const is_positions_banner_pending = !isDesktop && !is_positions_banner_seen;
+
     const handleClose = () => {
         setInfoPanelVisibility(false);
         setIsTourOpen(false);
@@ -41,7 +47,7 @@ const InfoPanel = observer(() => {
     };
 
     React.useEffect(() => {
-        if (is_tnc_needed) {
+        if (is_tnc_needed || is_positions_banner_pending) {
             setIsTourOpen(false);
         } else {
             if (is_info_panel_visible) {
@@ -50,7 +56,7 @@ const InfoPanel = observer(() => {
                 setIsTourOpen(false);
             }
         }
-    }, [is_tnc_needed, is_info_panel_visible]);
+    }, [is_tnc_needed, is_positions_banner_pending, is_info_panel_visible]);
 
     const renderInfo = () => (
         <div className='db-info-panel'>

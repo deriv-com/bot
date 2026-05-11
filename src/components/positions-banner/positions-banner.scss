@@ -1,0 +1,44 @@
+.positions-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+    min-height: 3.6rem; // Figma: 36px desktop
+    padding: 0.8rem 1.6rem;
+    flex-shrink: 0; // never collapse inside the Layout flex column
+    background-color: var(--semantic-color-yellow-solid-surface-normal-lowest);
+    border-bottom: 1px solid var(--general-section-2);
+    color: var(--text-general);
+    font-size: var(--text-size-xs);
+    line-height: 1.4;
+
+    &__icon,
+    &__chevron {
+        flex-shrink: 0;
+    }
+
+    &__text {
+        flex: 1;
+    }
+
+    &__link {
+        color: var(--brand-red-coral);
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    // Mobile variant — button-styled banner with chevron
+    &--mobile {
+        height: 3.2rem; // Figma: 32px mobile
+        min-height: 3.2rem;
+        padding: 0 1.6rem;
+        border: none;
+        border-bottom: 1px solid var(--semantic-color-slate-solid-surface-frame-mid);
+        color: var(--component-textIcon-normal-prominent);
+        cursor: pointer;
+        text-align: start;
+
+        // Strip default <button> background — the .positions-banner yellow stays.
+        appearance: none;
+    }
+}
