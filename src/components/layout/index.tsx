@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Cookies from 'js-cookie';
 import { observer } from 'mobx-react-lite';
 import { Outlet } from 'react-router-dom';
+import PositionsBanner, { PositionsBannerMobile, PositionsBannerModal } from '@/components/positions-banner';
 import PWAUpdateNotification from '@/components/pwa-update-notification';
 import { api_base } from '@/external/bot-skeleton';
 import { useOfflineDetection } from '@/hooks/useOfflineDetection';
@@ -247,12 +248,15 @@ const Layout = observer(() => {
                 'quick-strategy-active': is_quick_strategy_active && !isDesktop,
             })}
         >
+            {!isCallbackPage && !isEndpointPage && <PositionsBanner />}
+            {!isCallbackPage && !isEndpointPage && <PositionsBannerMobile />}
             {!isCallbackPage && <AppHeader isAuthenticating={isAuthenticating || !isInitialAuthCheckComplete} />}
             <Body>
                 <Outlet />
             </Body>
             {!isCallbackPage && isDesktop && <Footer />}
             <PWAUpdateNotification />
+            {!isCallbackPage && !isEndpointPage && <PositionsBannerModal />}
         </div>
     );
 });

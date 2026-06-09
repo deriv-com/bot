@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
+import { usePositionsBannerSeen } from '@/components/positions-banner/use-positions-banner-seen';
 import ProgressBarTracker from '@/components/shared_ui/progress-bar-tracker';
 import Text from '@/components/shared_ui/text';
 import { useStore } from '@/hooks/useStore';
@@ -33,6 +34,9 @@ const OnboardingTourMobile = observer(() => {
     const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
     const hide_prev_button = [1, 2, 8];
     const is_tour_active = active_tour === 'onboarding';
+    // Defer the onboarding tour while the mobile positions-banner modal
+    // is pending — the upgrade notice gets first attention.
+    const is_positions_banner_seen = usePositionsBannerSeen();
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
@@ -45,6 +49,7 @@ const OnboardingTourMobile = observer(() => {
     }, [tour_step]);
 
     React.useEffect(() => {
+        if (!is_positions_banner_seen) return;
         const checkTokenForTour = () => {
             const token = getSetting('onboard_tour_token');
             if (!token && active_tab === 0) {
@@ -52,9 +57,10 @@ const OnboardingTourMobile = observer(() => {
             }
         };
         checkTokenForTour();
-    }, [active_tab, active_tour]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [active_tab, active_tour, is_positions_banner_seen]);
 
-    if (!active_tour) {
+    if (!active_tour || !is_positions_banner_seen) {
         return null;
     }
 
